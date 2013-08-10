@@ -16,5 +16,7 @@ namespace Services
         IQueryable<Disaster> Disasters { get; }
         IQueryable<Person> Persons { get; }
         IQueryable<User> Users { get; }
+        Person AddPerson(Person newPerson);
+        Commitment AddCommitment(Commitment newCommitment);
     }
 }

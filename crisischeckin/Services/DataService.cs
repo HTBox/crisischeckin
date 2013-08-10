@@ -23,6 +23,20 @@ namespace Services
         { get { return context.Users; } }
 
 
+        public Person AddPerson(Person newPerson)
+        {
+            Person result = context.Persons.Add(newPerson);
+            context.SaveChanges();
+            return result;
+        }
+
+        public Commitment AddCommitment(Commitment newCommitment)
+        {
+            Commitment result = context.Commitments.Add(newCommitment);
+            context.SaveChanges();
+            return result;
+        }
+
         public void Dispose()
         {
             if (context != null)

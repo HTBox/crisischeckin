@@ -1,22 +1,28 @@
-﻿
+﻿@model Models.Disaster
+
 @{
     ViewBag.Title = "Create / Edit Disaster";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
+@using (Html.BeginForm("Edit","Disaster")){
 <h2>Create / Edit Disaster</h2>
-
+@Html.HiddenFor(m => m.Id)
 <table>
     <tr>
         <td>Disaster Name:</td>
-        <td><input type="text" id="DisasterNameTextBox"/></td>
+        <td>@Html.TextBoxFor(m => m.Name)</td>
     </tr>
     <tr>
         <td>Is Currently Active?</td>
-        <td><input type="checkbox" id="IsActiveCheckBox" /></td>
+        <td>@Html.CheckBoxFor(m => m.IsActive)</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
     </tr>
     <tr>
         <td><input type="submit" id="SaveButton" value="Save"/></td>
-        <td><input type="button" id="CancelButton" value="Cancel"/></td>
+        <td>@Html.ActionLink("Cancel","List","Disaster")@*<input type="button" id="CancelButton" value="Cancel"/>*@</td>
     </tr>
 </table>
+}

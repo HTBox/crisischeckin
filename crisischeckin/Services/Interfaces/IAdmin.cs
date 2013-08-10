@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,6 @@ namespace Services.Interfaces
 {
     public interface IAdmin
     {
-        IEnumerable<string> GetVolunteers(int disasterId);
+        IEnumerable<Person> GetVolunteers(Disaster disaster);
     }
 }
