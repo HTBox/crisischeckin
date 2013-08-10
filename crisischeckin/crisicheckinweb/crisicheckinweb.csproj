@@ -159,6 +159,8 @@
     <Content Include="Content\bootstrap\bootstrap.min.css" />
     <Content Include="Content\fonts\glyphiconshalflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="scripts\App\config.js" />
+    <Content Include="scripts\App\Controllers\Volunteer\listByDisaster.js" />
     <Content Include="scripts\bootstrap.js" />
     <Content Include="scripts\bootstrap.min.js" />
     <Content Include="scripts\html5shiv.js" />
@@ -222,9 +224,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\_AdminLayout.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Volunteer\ListOfDisasters.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Models\Models.csproj">

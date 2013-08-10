@@ -27,12 +27,5 @@ namespace crisicheckinweb.Controllers
         {
             return View();
         }
-
-        [HttpGet]
-        public ActionResult ListOfDisasters()
-        {
-
-            return View();
-        }
     }
 }
