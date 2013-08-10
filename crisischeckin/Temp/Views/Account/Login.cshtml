@@ -1,12 +1,15 @@
-﻿@model crisicheckinweb.Models.LoginModel
+﻿@model Temp.Models.LoginModel
 
 @{
-    ViewBag.Title = "Log in to existing account...";
+    ViewBag.Title = "Log in";
 }
 
-<h1>@ViewBag.Title.</h1>
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+</hgroup>
 
-
+<section id="loginForm">
+<h2>Use a local account to log in.</h2>
 @using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl })) {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
@@ -34,4 +37,14 @@
     <p>
         @Html.ActionLink("Register", "Register") if you don't have an account.
     </p>
+}
+</section>
+
+<section class="social" id="socialLoginForm">
+    <h2>Use another service to log in.</h2>
+    @Html.Action("ExternalLoginsList", new { ReturnUrl = ViewBag.ReturnUrl })
+</section>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
 }
