@@ -4,10 +4,6 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-@section scripts {
-    <script type="text/javascript" data-main="App/Controllers/Volunteer/listByDisasterController" src="/scripts/require.js"></script>
-}
-
 <h2>List of Volunteers</h2>
 @using (Ajax.BeginForm("Filter", "Volunteer", new AjaxOptions() {UpdateTargetId = "results"}))
 {
@@ -17,22 +13,4 @@
     <text>Filter by Date: </text>@Html.TextBoxFor(m => m.CommitmentDate)
     <input id="GoButton" type="submit" value="Go"/>
 }
-<table>
-    <tr>
-        <th>Volunteer Name</th>
-        <th>Email</th>
-        <th>Phone</th>
-        <th>Start Date</th>
-        <th>End Date</th>
-    </tr>
-    @*@foreach(){ *@
-    <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
-    @*}*@
-</table>    
-
+<div id="results"></div>
