@@ -56,6 +56,7 @@ namespace crisicheckinweb.App_Start
         private static void RegisterServices(IKernel kernel)
         {
             kernel.Bind<IDisaster>().To<DisasterService>().InRequestScope();
+            kernel.Bind<IDataService>().To<DataService>().InRequestScope();
         }        
     }
 }
