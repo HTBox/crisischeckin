@@ -1,4 +1,5 @@
-﻿@{
+﻿@model 
+@{
     ViewBag.Title = "Volunteers for this Disaster";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
@@ -9,7 +10,7 @@
 
 <h2>List of Volunteers for this Disaster</h2>
 
-<h3>Disaster: </h3>  @*@Html.LabelFor()*@
+<h3>Disaster: </h3>
 
 Filter by Date: <input id="DateTextBox" type="text"/> &nbsp; <input id="GoButton" type="button" value="Go"/>
 
