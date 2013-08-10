@@ -31,15 +31,23 @@ namespace crisicheckinweb.Controllers
             bool validId = false;
             int disasterId = 0;
 
-            var viewData = new Disaster();
+            Disaster viewData;
 
             validId = int.TryParse(id, out disasterId);
 
-            if (validId)
+            if (validId && disasterId != -1)
             {
                 // TODO: Pull actual disaster by ID
-                viewData.Id = disasterId;
-                viewData.Name = "Disaster Name " + disasterId.ToString();
+                viewData = new Disaster{
+                        Id = disasterId,
+                        Name = "Disaster Name " + disasterId.ToString(),
+                        IsActive = true
+                    };
+            }
+            else
+            {
+                // Adding new Disaster here
+                viewData = new Disaster();
                 viewData.IsActive = true;
             }
             
@@ -50,8 +58,14 @@ namespace crisicheckinweb.Controllers
         public RedirectResult Edit(Disaster disaster)
         {
             // TODO: Update the disaster data by ID
+            if (disaster.Id == -1)
+            {
 
-
+            }
+            else
+            {
+                
+            }
 
             return Redirect("/Disaster/List");
         }
