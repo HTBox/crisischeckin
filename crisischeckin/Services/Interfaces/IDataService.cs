@@ -18,5 +18,7 @@ namespace Services
         IQueryable<User> Users { get; }
         Person AddPerson(Person newPerson);
         Commitment AddCommitment(Commitment newCommitment);
+        Disaster AddDisaster(Disaster newDisaster);
+        void SubmitChanges();
     }
 }

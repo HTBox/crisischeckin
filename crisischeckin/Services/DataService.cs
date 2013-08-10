@@ -37,6 +37,18 @@ namespace Services
             return result;
         }
 
+       public Disaster AddDisaster(Disaster newDisaster)
+       {
+           Disaster result = context.Disasters.Add(newDisaster);
+           context.SaveChanges();
+           return result;
+       }
+
+        public void SubmitChanges()
+        {
+            context.SaveChanges();
+        }
+
         public void Dispose()
         {
             if (context != null)
