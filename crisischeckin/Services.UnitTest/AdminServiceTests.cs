@@ -13,8 +13,11 @@ namespace WebProjectTests.ServiceTests
     {
         private const int disasterWithVolunteersID = 1;
         private const int disasterWithNoVolunteersID = 2;
-        private const int personWithCommitmentsID = 3;
-        private const int commitmentId = 4;
+
+        private const int personWithCommitmentsID = 11;
+        private const int personWithNoCommitmentsID = 12;
+
+        private const int commitmentId = 101;
 
         private readonly Disaster disasterWithCommitments = new Disaster
         {
@@ -24,7 +27,7 @@ namespace WebProjectTests.ServiceTests
 
         private readonly Disaster disasterWithNoCommitments = new Disaster
         {
-            Id = disasterWithVolunteersID,
+            Id = disasterWithNoVolunteersID,
             Name = "Post Conference party cleanup"
         };
 
@@ -35,6 +38,15 @@ namespace WebProjectTests.ServiceTests
             LastName = "Campbell",
             PhoneNumber = "(111) 555-1212",
             Email = "unused@nothere.com"
+        };
+
+        private readonly Person personWithNoCommitments = new Person
+        {
+            Id = personWithNoCommitmentsID,
+            FirstName = "Lazy",
+            LastName = "Volunteer",
+            PhoneNumber = "(111) 555-1414",
+            Email = "DontCallMe@nothere.com"
         };
         
         private readonly Commitment commitment = new Commitment
@@ -61,22 +73,16 @@ namespace WebProjectTests.ServiceTests
             var underTest = new AdminService(default(IDataService));
         }
 
-        [TestMethod,
-        ExpectedException(typeof(ArgumentException))]
+        [TestMethod]
         public void WhenOneVolunteerHasRegisteredReturnThatOneRecord()
         {
             initializeDisasterCollection(disasterWithCommitments);
             initializeVolunteerCollection(personWithCommitments);
             initializeCommitmentCollection(commitment);
 
-            var missingDisaster = new Disaster
-            {
-                Id = -1
-            };
-
             var underTest = new AdminService(mockService.Object);
 
-            var result = underTest.GetVolunteers(missingDisaster);
+            var result = underTest.GetVolunteers(disasterWithCommitments);
 
             Assert.AreEqual(1, result.Count());
         }
@@ -101,7 +107,8 @@ namespace WebProjectTests.ServiceTests
             var result = underTest.GetVolunteers(default(Disaster));
         }
 
-        [TestMethod]
+        [TestMethod,
+        ExpectedException(typeof(ArgumentException))]
         public void WhenDisasterIsNotFoundThrowArgumentException()
         {
             var underTst = new AdminService(mockService.Object);
@@ -109,7 +116,55 @@ namespace WebProjectTests.ServiceTests
             initializeDisasterCollection(disasterWithCommitments);
             initializeVolunteerCollection(personWithCommitments);
             initializeCommitmentCollection(commitment);
+
+            var disaster = new Disaster
+            {
+                Id = -1,
+                Name = "DoesNotExist"
+            };
+            underTst.GetVolunteers(disaster);
         }
+
+        [TestMethod]
+        public void WhenVolunteerDontCommitReturnCommittedRecords()
+        {
+            initializeDisasterCollection(disasterWithCommitments);
+            initializeVolunteerCollection(personWithCommitments, personWithNoCommitments);
+            initializeCommitmentCollection(commitment);
+
+            var underTest = new AdminService(mockService.Object);
+
+            var result = underTest.GetVolunteers(disasterWithCommitments);
+
+            Assert.AreEqual(1, result.Count());
+        }
+
+
+        // person with multiple commitments only once
+        [TestMethod]
+        public void WhenOneVolunteerHasMultipleRegistrationsReturnExactlyOneRecord()
+        {
+            initializeDisasterCollection(disasterWithCommitments);
+            initializeVolunteerCollection(personWithCommitments);
+
+            var secondCommitment = new Commitment
+            {
+                DisasterId = disasterWithVolunteersID,
+                Id = 102,
+                PersonId = personWithNoCommitmentsID,
+                StartDate = new DateTime(2013, 8, 15),
+                EndDate = new DateTime(2013, 8, 20)
+            };
+            initializeCommitmentCollection(commitment, secondCommitment);
+
+            var underTest = new AdminService(mockService.Object);
+
+            var result = underTest.GetVolunteers(disasterWithCommitments);
+
+            Assert.AreEqual(1, result.Count());
+        }
+
+        // people with commitments on other disasters does not show up
 
         private void initializeDisasterCollection(params Disaster [] disasters)
         {
