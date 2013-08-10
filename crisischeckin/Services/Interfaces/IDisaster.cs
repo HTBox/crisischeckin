@@ -11,7 +11,7 @@ namespace Services.Interfaces
     {
         Commitment AssignToVolunteer(Disaster disaster, Person person, DateTime startDate, DateTime endDate);
         Disaster Get(int disasterId);
-        Disaster Create(string disasterName, bool IsActive);
+        Disaster Create(Disaster disaster);
         void Update(int disasterId, string disasterName, bool isActive);
         IEnumerable<Disaster> GetActiveList();
         IEnumerable<Disaster> GetList();

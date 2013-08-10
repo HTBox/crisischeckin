@@ -25,7 +25,8 @@ namespace Services
             if (person == null) throw new ArgumentNullException("person");
             if (DateTime.Compare(endDate, startDate) < 0) throw new ArgumentException("endDate cannot be earlier than startDate");
 
-            return ourService.AddCommitment(new Commitment() {
+            return ourService.AddCommitment(new Commitment()
+            {
                 PersonId = person.Id,
                 DisasterId = disaster.Id,
                 StartDate = startDate,
@@ -38,15 +39,12 @@ namespace Services
             return ourService.Disasters.SingleOrDefault(d => d.Id.Equals(disasterId));
         }
 
-        public Disaster Create(string disasterName, bool isActive)
+        public Disaster Create(Disaster disaster)
         {
-           if (String.IsNullOrWhiteSpace(disasterName)) throw new ArgumentNullException("disasterName");
+            if (disaster == null) throw new ArgumentNullException("disaster");
+            if (String.IsNullOrWhiteSpace(disaster.Name)) throw new ArgumentNullException("disasterName");
 
-            return ourService.AddDisaster(new Disaster()
-                {
-                    Name = disasterName,
-                    IsActive = isActive
-                });
+            return ourService.AddDisaster(disaster);
         }
 
         public void Update(int disasterId, string disasterName, bool isActive)

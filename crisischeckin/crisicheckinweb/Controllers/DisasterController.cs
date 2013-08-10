@@ -54,7 +54,7 @@ namespace crisicheckinweb.Controllers
         {
             if (disaster.Id == -1)
             {
-                _disasterSvc.Create(disaster.Name, disaster.IsActive);
+                _disasterSvc.Create(disaster);
             }
             else
             {
