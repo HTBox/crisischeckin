@@ -10,12 +10,12 @@ namespace crisicheckinweb.Controllers
 {
     public class DisasterController : Controller
     {
-
-        private IDisaster _disasterSvc;
+        private readonly IDisaster _disasterSvc;
         public DisasterController(IDisaster disasterSvc)
         {
             _disasterSvc = disasterSvc;
         }
+
         //
         // GET: /Disaster/
         public ActionResult List()
@@ -24,7 +24,7 @@ namespace crisicheckinweb.Controllers
 
             return View(viewData);
         }
-
+        
         [HttpGet]
         public ActionResult Edit(string id)
         {
@@ -45,7 +45,7 @@ namespace crisicheckinweb.Controllers
                 viewData = new Disaster();
                 viewData.IsActive = true;
             }
-
+            
             return View(viewData);
         }
 
@@ -63,5 +63,12 @@ namespace crisicheckinweb.Controllers
 
             return Redirect("/Disaster/List");
         }
+
+        #region api methods
+        public JsonResult GetActiveDisasters()
+        {
+            return Json(_disasterSvc.GetActiveList(), JsonRequestBehavior.AllowGet);
+        }
+        #endregion
     }
 }

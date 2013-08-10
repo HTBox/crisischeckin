@@ -1,7 +1,7 @@
-﻿require(['jquery'], function($) {
+﻿require(['jquery', 'amplify'], function($, amplify) {
     var controller = function() {
         var init = function() {
-            console.log("disasters!  woo!");
+            
         };
 
         return {
