@@ -122,6 +122,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="App_Start\AuthConfig.cs" />
     <Compile Include="Controllers\DisasterController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -164,6 +165,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Volunteer\ListByDisaster.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Account\Login.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\_AdminLayout.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Volunteer\ListOfDisasters.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Models\Models.csproj">

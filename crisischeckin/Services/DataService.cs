@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,11 +7,26 @@ using System.Threading.Tasks;
 
 namespace Services
 {
-    // This service manages the communication to the Models project
-    // using the live database in production, but it can be mocked
-    // for test purposes.
-    internal class DataService
+    public class DataService : IDisposable, IDataService
     {
+        private readonly CrisisCheckin context;
+        public IQueryable<Commitment> Commitments
+        { get { return context.Commitments; } }
 
+        public IQueryable<Disaster> Disasters
+        { get { return context.Disasters; } }
+
+        public IQueryable<Person> Persons
+        { get { return context.Persons; } }
+
+        public IQueryable<User> Users
+        { get { return context.Users; } }
+
+
+        public void Dispose()
+        {
+            if (context != null)
+                context.Dispose();
+        }
     }
 }
