@@ -50,6 +50,7 @@
     <Compile Include="Commitment.cs" />
     <Compile Include="CrisisCheckin.cs" />
     <Compile Include="Disaster.cs" />
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Person.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="User.cs" />
