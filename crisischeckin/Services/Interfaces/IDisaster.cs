@@ -8,7 +8,7 @@ namespace Services.Interfaces
 {
     public interface IDisaster
     {
-        bool AssignToVolunteer(int disasterId, string volunteerEmail, DateTime startDate, DateTime endDate);
+        bool AssignToVolunteer(int disasterId, int volunteerId, DateTime startDate, DateTime endDate);
 
     }
 }
