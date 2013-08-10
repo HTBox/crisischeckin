@@ -23,20 +23,22 @@
                         <h1>Crisis Check-In Admin Section</h1>
                     </div>
                 </div>
-                </div>
-                <div class="row">
-                    <div class="col-3">
-                        <div class="AdminMenu">
-                            <a href="/Disaster/List">Disaster List</a><br />
-                            <a href="/Volunteer/ListbyDisaster">View Volunteers</a>
-                        </div>
-                    </div>
-                    <div class="col-9">
-                        @RenderBody()
-                    </div>
-                </div>
-
             </div>
+            <div class="row">
+                <div class="col-3">
+                    <div class="AdminMenu">
+                        <a href="/Disaster/List">Disaster List</a><br />
+                        <a href="/Volunteer/ListbyDisaster">View Volunteers</a>
+                    </div>
+                </div>
+                <div class="col-9">
+                    @RenderBody()
+                </div>
+            </div>
+
         </div>
+    </div>
+    <script type="text/javascript" src="/scripts/App/config.js"></script>
+    @RenderSection("scripts", false)
 </body>
 </html>

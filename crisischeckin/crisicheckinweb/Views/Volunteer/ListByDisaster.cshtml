@@ -3,6 +3,10 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
+@section scripts {
+    <script type="text/javascript" data-main="/scripts/app/controllers/volunteer/listByDisaster" src="/scripts/require.js"></script>
+}
+
 <h2>List of Volunteers for this Disaster</h2>
 
 <h3>Disaster: </h3>  @*@Html.LabelFor()*@
