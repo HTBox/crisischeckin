@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Services
 {
-    public class Admin : IAdmin
+    public class AdminService : IAdmin
     {
         public IEnumerable<string> GetVolunteers(int disasterId)
         {
