@@ -8,6 +8,6 @@ namespace Services.Interfaces
 {
     public interface IAdmin
     {
-        string GetVolunteers(int disasterId);
+        IEnumerable<string> GetVolunteers(int disasterId);
     }
 }

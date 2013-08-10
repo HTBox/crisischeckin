@@ -42,7 +42,6 @@
     <Compile Include="Interfaces\IAdmin.cs" />
     <Compile Include="Interfaces\IDisaster.cs" />
     <Compile Include="Interfaces\IVolunteer.cs" />
-    <Compile Include="Interfaces\Placeholder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VolunteerService.cs" />
   </ItemGroup>
