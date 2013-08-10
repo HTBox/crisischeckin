@@ -6,15 +6,19 @@ using System.Web.Mvc;
 
 namespace crisicheckinweb.Controllers
 {
-    public class VolunteerController : Controller
+    public class DisasterController : Controller
     {
         //
-        // GET: /Volunteer/
+        // GET: /Disaster/
 
-        public ActionResult Index()
+        public ActionResult List()
         {
             return View();
         }
-
+        
+        public ActionResult Edit()
+        {
+            return View();
+        }
     }
 }
