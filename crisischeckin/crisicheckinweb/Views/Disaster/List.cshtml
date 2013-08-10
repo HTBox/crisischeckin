@@ -1,30 +1,23 @@
-﻿@{
+﻿@model List<Models.Disaster>
+@{
     ViewBag.Title = "List of Disasters";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
 <h2>List of Disasters</h2>
 
-<table>
+<table cellpadding="0" cellspacing="0" border="1">
     <tr>
-        <th>Disaster Name</th>
-        <th>Is Currently Active?</th>
+        <th width="300px;">Disaster Name</th>
+        <th>Is Active?</th>
+        <th></th>
     </tr>
-    @*@foreach(){ *@
-    <tr>
-        <td>Name</td>
-        <td>True</td>
-        <td><a href="/Disaster/Edit/1"></a></td>
+    @foreach (Models.Disaster d in Model)
+    {
+     <tr>
+        <td>@d.Name</td>
+        <td>@d.IsActive</td>
+        <td><a href=@String.Format("/Disaster/Edit/{0}", d.Id.ToString())>Edit</a></td>
     </tr>
-    @*}*@
-    <tr>
-        <td>Name 2</td>
-        <td>True</td>
-        <td><a href="/Disaster/Edit/2"></a></td>
-    </tr>
-        <tr>
-        <td>Name 3</td>
-        <td>False</td>
-        <td><a href="/Disaster/Edit/3"></a></td>
-    </tr>
+    }
 </table>

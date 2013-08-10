@@ -12,6 +12,7 @@ namespace crisicheckinweb.Controllers
         [HttpGet]
         public ActionResult ListByDisaster(string id)
         {
+
             return View();
         }
 
@@ -24,6 +25,7 @@ namespace crisicheckinweb.Controllers
         [HttpGet]
         public ActionResult ListOfDisasters()
         {
+
             return View();
         }
     }
