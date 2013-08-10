@@ -5,12 +5,21 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using crisicheckinweb.ViewModels;
+using Models;
+using Services.Exceptions;
+using Services.Interfaces;
 using WebMatrix.WebData;
 
 namespace crisicheckinweb.Controllers
 {
     public class AccountController : BaseController
     {
+        private readonly IVolunteer _volunteerSvc;
+        public AccountController(IVolunteer volunteerSvc)
+        {
+            _volunteerSvc = volunteerSvc;
+        }
+
         //
         // GET: /Account/Login
         [AllowAnonymous]
@@ -77,9 +86,15 @@ namespace crisicheckinweb.Controllers
                 // Attempt to register the user
                 try
                 {
+                    Person newPerson = _volunteerSvc.Register(model.FirstName, model.LastName, model.Email, model.PhoneNumber);
+
                     WebSecurity.CreateUserAndAccount(model.UserName, model.Password);
                     WebSecurity.Login(model.UserName, model.Password);
                     return RedirectToAction("Index", "Home");
+                }
+                catch (PersonAlreadyExistsException e)
+                {
+                    ModelState.AddModelError("", "Email is already in use!");
                 }
                 catch (MembershipCreateUserException e)
                 {
