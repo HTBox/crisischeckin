@@ -23,6 +23,13 @@ namespace Services
         { get { return context.Users; } }
 
 
+        public Person AddPerson(Person newPerson)
+        {
+            context.Persons.Add(newPerson);
+            context.SaveChanges();
+            return newPerson;
+        }
+
         public void Dispose()
         {
             if (context != null)
