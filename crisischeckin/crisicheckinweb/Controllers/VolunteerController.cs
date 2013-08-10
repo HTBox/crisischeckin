@@ -8,10 +8,15 @@ namespace crisicheckinweb.Controllers
 {
     public class VolunteerController : Controller
     {
-        //
-        // GET: /Volunteer/
+     
+        [HttpGet]
+        public ActionResult ListByDisaster()
+        {
+            return View();
+        }
 
-        public ActionResult Index()
+        [HttpPost]
+        public ActionResult ListByDisaster(string filterDate)
         {
             return View();
         }
