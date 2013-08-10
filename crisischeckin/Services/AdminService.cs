@@ -1,4 +1,5 @@
-﻿using Services.Interfaces;
+﻿using Models;
+using Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,18 @@ namespace Services
 {
     public class AdminService : IAdmin
     {
-        public IEnumerable<string> GetVolunteers(int disasterId)
+        private readonly IDataService dataService;
+
+        public AdminService(IDataService service)
         {
-            return new List<string>();
+            if (service == null)
+                throw new ArgumentNullException("service", "Service Interface must not be null");
+            this.dataService = service;
+        }
+
+        public IEnumerable<Person> GetVolunteers(Disaster disaster)
+        {
+            return new List<Person>();
         }
     }
 }
