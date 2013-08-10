@@ -50,6 +50,7 @@
     <Compile Include="AdminService.cs" />
     <Compile Include="DataService.cs" />
     <Compile Include="Interfaces\IAdmin.cs" />
+    <Compile Include="Interfaces\IDataService.cs" />
     <Compile Include="Interfaces\IDisaster.cs" />
     <Compile Include="Interfaces\IVolunteer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
