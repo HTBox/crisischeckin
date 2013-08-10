@@ -10,16 +10,21 @@ namespace crisicheckinweb.Controllers
     {
      
         [HttpGet]
-        public ActionResult ListByDisaster()
+        public ActionResult ListByDisaster(string id)
         {
             return View();
         }
 
         [HttpPost]
-        public ActionResult ListByDisaster(string filterDate)
+        public ActionResult ListByDisaster(string id, string filterDate)
         {
             return View();
         }
 
+        [HttpGet]
+        public ActionResult ListOfDisasters()
+        {
+            return View();
+        }
     }
 }

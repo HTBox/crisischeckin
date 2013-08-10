@@ -1,5 +1,6 @@
 ﻿@{
     ViewBag.Title = "List of Disasters";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
 <h2>List of Disasters</h2>
@@ -11,8 +12,19 @@
     </tr>
     @*@foreach(){ *@
     <tr>
-        <td></td>
-        <td></td>
+        <td>Name</td>
+        <td>True</td>
+        <td><a href="/Disaster/Edit/1"></a></td>
     </tr>
     @*}*@
+    <tr>
+        <td>Name 2</td>
+        <td>True</td>
+        <td><a href="/Disaster/Edit/2"></a></td>
+    </tr>
+        <tr>
+        <td>Name 3</td>
+        <td>False</td>
+        <td><a href="/Disaster/Edit/3"></a></td>
+    </tr>
 </table>

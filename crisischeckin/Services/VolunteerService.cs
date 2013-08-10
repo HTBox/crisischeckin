@@ -10,6 +10,20 @@ namespace Services
 {
     public class VolunteerService : IVolunteer
     {
+        private IDataService ourService;
+
+        public VolunteerService(IDataService service = null)
+        {
+            if (service == null)
+            {
+                ourService = new DataService();
+            }
+            else
+            {
+                ourService = service;
+            }
+        }
+
         public Person Register(string firstName, string lastName, string email, string phoneNumber)
         {
             if (string.IsNullOrEmpty(firstName)) { throw new ArgumentNullException("firstName"); }
@@ -17,14 +31,13 @@ namespace Services
             if (string.IsNullOrEmpty(email)) { throw new ArgumentNullException("email"); }
             if (string.IsNullOrEmpty(phoneNumber)) { throw new ArgumentNullException("phoneNumber"); }
 
-            // TODO: call into DB using entity framework
-
+            // TODO: eventually support User object
             Person person = new Person() 
             { 
-                Id = 1, UserId = null, FirstName = "Bob", LastName = "jones", Email = "bob.jones@email.com", PhoneNumber = "555-333-1111" 
+                UserId = null, FirstName = firstName, LastName = lastName, Email = email, PhoneNumber = phoneNumber
             };
 
-            return person;
+            return ourService.AddPerson(person);
         }
     }
 }

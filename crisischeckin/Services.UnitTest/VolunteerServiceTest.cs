@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Models;
 using Moq;
 using Services.Interfaces;
 
@@ -44,18 +45,18 @@ namespace Services.UnitTest
         public void Register_ValidVolunteer()
         {
             VolunteerService service = new VolunteerService();
-            bool actual = service.Register("Bob", "Jones", "bob.jones@email.com", "555-222-9139");
+            Person actual = service.Register("Bob", "Jones", "bob.jones@email.com", "555-222-9139");
 
-            Assert.AreEqual(true, actual);
+            Assert.AreEqual("Bob", actual.FirstName);
         }
 
         [TestMethod]
         public void Register_ValidVolunteerTwo()
         {
             VolunteerService service = new VolunteerService();
-            bool actual = service.Register("Cathy", "Jones", "cathy.jones@email.com", "555-222-9139 ext 33");
+            Person actual = service.Register("Cathy", "Jones", "cathy.jones@email.com", "555-222-9139 ext 33");
 
-            Assert.AreEqual(true, actual);
+            Assert.AreEqual("Cathy", actual.FirstName);
         }
 
     }

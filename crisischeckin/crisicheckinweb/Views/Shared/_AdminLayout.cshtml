@@ -1,0 +1,27 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Admin</title>
+</head>
+    <body>
+        <table cellpadding="1" cellspacing="1" width="95%">
+            <tr>
+                <td style="border-right:black solid thin; width:125px;">
+                    <div class="AdminMenu">
+                        <a href="/Disaster/List"> Disaster List</a><br/>
+                        <a href="/Volunteer/ListbyDisaster">View Volunteers</a>
+                    </div>
+                </td>
+                <td style="padding-left:20px;">
+                    @RenderBody()
+                </td>
+            </tr>
+        </table>
+    </body>
+</html>
