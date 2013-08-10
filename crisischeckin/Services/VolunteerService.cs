@@ -12,9 +12,13 @@ namespace Services
         public bool Register(string firstName, string lastName, string email, string phoneNumber)
         {
             if (string.IsNullOrEmpty(firstName)) { throw new ArgumentNullException("firstName"); }
+            if (string.IsNullOrEmpty(lastName)) { throw new ArgumentNullException("lastName"); }
+            if (string.IsNullOrEmpty(email)) { throw new ArgumentNullException("email"); }
+            if (string.IsNullOrEmpty(phoneNumber)) { throw new ArgumentNullException("phoneNumber"); }
 
+            // TODO: call into DB using entity framework
 
-            throw new NotImplementedException();
+            return true;
         }
     }
 }

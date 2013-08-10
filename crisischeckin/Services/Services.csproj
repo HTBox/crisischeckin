@@ -39,11 +39,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdminService.cs" />
+    <Compile Include="DataService.cs" />
     <Compile Include="Interfaces\IAdmin.cs" />
     <Compile Include="Interfaces\IDisaster.cs" />
     <Compile Include="Interfaces\IVolunteer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VolunteerService.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Models\Models.csproj">
+      <Project>{3fd36cf5-7d79-4505-a0bb-12e35a613d88}</Project>
+      <Name>Models</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
