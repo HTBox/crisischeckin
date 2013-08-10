@@ -7,8 +7,11 @@ using System.Threading.Tasks;
 
 namespace Services
 {
-    public class DataService : IDisposable, IDataService
+    public class DataService : IDataService
     {
+        // This class does not dispose of the context,
+        // because the Ninject librar takes care of that for us.
+
         private readonly CrisisCheckin context;
 
         public DataService(CrisisCheckin ctx)
@@ -67,12 +70,6 @@ namespace Services
         public void SubmitChanges()
         {
             context.SaveChanges();
-        }
-
-        public void Dispose()
-        {
-            if (context != null)
-                context.Dispose();
         }
     }
 }
