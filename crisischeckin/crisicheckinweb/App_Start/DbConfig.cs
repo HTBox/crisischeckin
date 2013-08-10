@@ -7,7 +7,7 @@ namespace crisicheckinweb
 {
     public class DbConfig
     {
-        public void Initialize()
+        public static void Initialize()
         {
             
         }
