@@ -1,4 +1,4 @@
-﻿
+﻿@model crisicheckinweb.ViewModels.ListByDisasterViewModel
 @{
     ViewBag.Title = "Volunteers for this Disaster";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
@@ -8,12 +8,15 @@
     <script type="text/javascript" data-main="App/Controllers/Volunteer/listByDisasterController" src="/scripts/require.js"></script>
 }
 
-<h2>List of Volunteers for this Disaster</h2>
+<h2>List of Volunteers</h2>
+@using (Ajax.BeginForm("Filter", "Volunteer", new AjaxOptions() {UpdateTargetId = "results"}))
+{
+    <h3>Disaster: </h3>
+    @Html.DropDownListFor(m => m.SelectedDisaster, new SelectList(Model.Disasters, "Id", "Name", Model.SelectedDisaster), "-- Choose One --")
 
-<h3>Disaster: </h3>
-
-Filter by Date: <input id="DateTextBox" type="text"/> &nbsp; <input id="GoButton" type="button" value="Go"/>
-
+    <text>Filter by Date: </text>@Html.TextBoxFor(m => m.CommitmentDate)
+    <input id="GoButton" type="submit" value="Go"/>
+}
 <table>
     <tr>
         <th>Volunteer Name</th>
@@ -31,4 +34,5 @@ Filter by Date: <input id="DateTextBox" type="text"/> &nbsp; <input id="GoButton
         <td></td>
     </tr>
     @*}*@
-</table>
+</table>    
+

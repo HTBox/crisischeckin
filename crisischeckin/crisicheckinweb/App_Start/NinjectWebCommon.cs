@@ -59,6 +59,7 @@ namespace crisicheckinweb.App_Start
         {
             kernel.Bind<IDisaster>().To<DisasterService>().InRequestScope();
             kernel.Bind<IDataService>().To<DataService>().InRequestScope();
+            kernel.Bind<IAdmin>().To<AdminService>().InRequestScope();
             kernel.Bind<CrisisCheckin>().ToSelf().InRequestScope();
         }        
     }

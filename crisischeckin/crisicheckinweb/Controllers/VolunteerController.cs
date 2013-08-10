@@ -4,28 +4,33 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using crisicheckinweb.ViewModels;
 
 namespace crisicheckinweb.Controllers
 {
     public class VolunteerController : Controller
     {
         private IDisaster _disasterSvc;
-        public VolunteerController(IDisaster disasterSvc)
+        private IAdmin _adminSvc;
+        public VolunteerController(IDisaster disasterSvc, IAdmin adminSvc)
         {
             _disasterSvc = disasterSvc;
+            _adminSvc = adminSvc;
         }
 
         [HttpGet]
         public ActionResult ListByDisaster()
         {
-
-            return View();
+            var model = new ListByDisasterViewModel { Disasters = _disasterSvc.GetActiveList() };
+            return View(model);
         }
 
         [HttpPost]
-        public ActionResult ListByDisaster(string id, string filterDate)
+        public ActionResult Filter(ListByDisasterViewModel model)
         {
-            return View();
+            var disaster = _disasterSvc.Get(model.SelectedDisaster);
+            var results = _adminSvc.GetVolunteers(disaster);
+            return PartialView("_FilterResults", results);
         }
     }
 }
