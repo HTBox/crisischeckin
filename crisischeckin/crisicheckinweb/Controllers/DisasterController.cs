@@ -4,11 +4,18 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Models;
+using Services.Interfaces;
 
 namespace crisicheckinweb.Controllers
 {
     public class DisasterController : Controller
     {
+        private readonly IDisaster _disasterSvc;
+        public DisasterController(IDisaster disasterSvc)
+        {
+            _disasterSvc = disasterSvc;
+        }
+
         //
         // GET: /Disaster/
         public ActionResult List()
@@ -69,5 +76,12 @@ namespace crisicheckinweb.Controllers
 
             return Redirect("/Disaster/List");
         }
+
+        #region api methods
+        public JsonResult GetActiveDisasters()
+        {
+            return Json(_disasterSvc.GetActiveList(), JsonRequestBehavior.AllowGet);
+        }
+        #endregion
     }
 }

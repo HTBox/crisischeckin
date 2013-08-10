@@ -184,7 +184,8 @@
     <Content Include="scripts\amplify.min.js" />
     <Content Include="scripts\App\amplify-setup.js" />
     <Content Include="scripts\App\config.js" />
-    <Content Include="scripts\App\Controllers\Volunteer\listByDisaster.js" />
+    <Content Include="scripts\App\Controllers\Volunteer\listByDisasterController.js" />
+    <Content Include="scripts\App\Models\Volunteer\listByDisasterModel.js" />
     <Content Include="scripts\bootstrap.js" />
     <Content Include="scripts\bootstrap.min.js" />
     <Content Include="scripts\GPL-LICENSE.txt" />
