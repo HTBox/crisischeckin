@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Models;
+using Services.Exceptions;
 using Services.Interfaces;
 
 namespace Services
@@ -30,6 +31,13 @@ namespace Services
             if (string.IsNullOrEmpty(lastName)) { throw new ArgumentNullException("lastName"); }
             if (string.IsNullOrEmpty(email)) { throw new ArgumentNullException("email"); }
             if (string.IsNullOrEmpty(phoneNumber)) { throw new ArgumentNullException("phoneNumber"); }
+
+            var foundPerson = ourService.Persons.FirstOrDefault(p => p.Email == email);
+
+            if (foundPerson != null)
+            {
+                throw new PersonAlreadyExistsException();
+            }
 
             // TODO: eventually support User object
             Person person = new Person() 
