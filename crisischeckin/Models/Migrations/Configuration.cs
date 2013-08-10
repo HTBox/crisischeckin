@@ -28,8 +28,8 @@ namespace Models.Migrations
             //
 
             context.Disasters.AddOrUpdate(d => d.Id,
-                new Disaster { Id = 1, Name = "Fake Disaster 1" },
-                new Disaster { Id = 2, Name = "Fake Disaster 2" }
+                new Disaster { Id = 1, Name = "Fake Disaster 1", IsActive = true },
+                new Disaster { Id = 2, Name = "Fake Disaster 2", IsActive = true }
             );
 
             context.Users.AddOrUpdate(u => u.Id,
