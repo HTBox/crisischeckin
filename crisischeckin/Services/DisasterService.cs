@@ -33,6 +33,11 @@ namespace Services
             });
         }
 
+        public Disaster Get(int disasterId)
+        {
+            return ourService.Disasters.SingleOrDefault(d => d.Id.Equals(disasterId));
+        }
+
         public Disaster Create(string disasterName, bool isActive)
         {
            if (String.IsNullOrWhiteSpace(disasterName)) throw new ArgumentNullException("disasterName");
@@ -64,7 +69,7 @@ namespace Services
 
         public IEnumerable<Disaster> GetList()
         {
-            return ourService.Disasters.OrderBy(d => d.Name).ToList();
+            return ourService.Disasters.OrderByDescending(d => d.IsActive).ThenBy(d => d.Name).ToList();
         }
     }
 }

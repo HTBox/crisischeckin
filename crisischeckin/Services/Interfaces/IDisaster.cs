@@ -10,6 +10,7 @@ namespace Services.Interfaces
     public interface IDisaster
     {
         Commitment AssignToVolunteer(Disaster disaster, Person person, DateTime startDate, DateTime endDate);
+        Disaster Get(int disasterId);
         Disaster Create(string disasterName, bool IsActive);
         void Update(int disasterId, string disasterName, bool isActive);
         IEnumerable<Disaster> GetActiveList();
