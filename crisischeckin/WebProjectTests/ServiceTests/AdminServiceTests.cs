@@ -12,10 +12,12 @@ namespace WebProjectTests.ServiceTests
         [TestMethod]
         public void WhenNoVolunteersAreRegisteredReturnAnEmptyList()
         {
-            var underTest = new Admin();
+            var underTest = new AdminService();
 
             var result = underTest.GetVolunteers(0);
             Assert.IsFalse(result.Any());
         }
+
+
     }
 }
