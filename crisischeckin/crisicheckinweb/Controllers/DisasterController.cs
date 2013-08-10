@@ -4,27 +4,27 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Models;
+using Services.Interfaces;
 
 namespace crisicheckinweb.Controllers
 {
     public class DisasterController : Controller
     {
+
+        private IDisaster _disasterSvc;
+        public DisasterController(IDisaster disasterSvc)
+        {
+            _disasterSvc = disasterSvc;
+        }
         //
         // GET: /Disaster/
         public ActionResult List()
         {
-            var viewData = new List<Disaster>();
+            var viewData = _disasterSvc.GetList(); 
 
-            for (int intI = 0; intI < 5; intI++)
-            {
-                var disaster = new Disaster {Id = intI, IsActive = true, Name = "Disaster Name " + intI.ToString()};
-                viewData.Add(disaster);
-            }
-
-            // TODO: Pull actual List of all disasters here
             return View(viewData);
         }
-        
+
         [HttpGet]
         public ActionResult Edit(string id)
         {
@@ -37,12 +37,7 @@ namespace crisicheckinweb.Controllers
 
             if (validId && disasterId != -1)
             {
-                // TODO: Pull actual disaster by ID
-                viewData = new Disaster{
-                        Id = disasterId,
-                        Name = "Disaster Name " + disasterId.ToString(),
-                        IsActive = true
-                    };
+                viewData = _disasterSvc.Get(disasterId);
             }
             else
             {
@@ -50,7 +45,7 @@ namespace crisicheckinweb.Controllers
                 viewData = new Disaster();
                 viewData.IsActive = true;
             }
-            
+
             return View(viewData);
         }
 
@@ -64,7 +59,7 @@ namespace crisicheckinweb.Controllers
             }
             else
             {
-                
+
             }
 
             return Redirect("/Disaster/List");
