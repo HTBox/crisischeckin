@@ -21,7 +21,13 @@ namespace Services
 
         public IEnumerable<Person> GetVolunteers(Disaster disaster)
         {
-            return new List<Person>();
+            var commitments = from c in dataService.Commitments
+                              where c.DisasterId == disaster.Id
+                              select c;
+            var people = from c in commitments
+                         join p in dataService.Persons on c.PersonId equals p.Id
+                         select p;
+            return people;
         }
     }
 }
