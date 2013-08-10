@@ -10,6 +10,12 @@ namespace Services
     public class DataService : IDisposable, IDataService
     {
         private readonly CrisisCheckin context;
+
+        public DataService(CrisisCheckin ctx)
+        {
+            context = ctx;
+        }
+
         public IQueryable<Commitment> Commitments
         { get { return context.Commitments; } }
 

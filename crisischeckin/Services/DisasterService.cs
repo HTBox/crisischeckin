@@ -69,7 +69,7 @@ namespace Services
 
         public IEnumerable<Disaster> GetList()
         {
-            return ourService.Disasters.OrderBy(d => d.IsActive).ThenBy(d => d.Name).ToList();
+            return ourService.Disasters.OrderByDescending(d => d.IsActive).ThenBy(d => d.Name).ToList();
         }
     }
 }

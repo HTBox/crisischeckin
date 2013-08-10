@@ -52,14 +52,13 @@ namespace crisicheckinweb.Controllers
         [HttpPost]
         public RedirectResult Edit(Disaster disaster)
         {
-            // TODO: Update the disaster data by ID
             if (disaster.Id == -1)
             {
-
+                _disasterSvc.Create(disaster.Name, disaster.IsActive);
             }
             else
             {
-
+                _disasterSvc.Update(disaster.Id,disaster.Name, disaster.IsActive);
             }
 
             return Redirect("/Disaster/List");
