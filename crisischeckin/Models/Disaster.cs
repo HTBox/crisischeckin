@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Services.Interfaces
+namespace Models
 {
-    public interface IAdmin
+    public class Disaster
     {
-        IEnumerable<string> GetVolunteers(int disasterId);
+        public int Id { get; set; }
+        public string Name { get; set; }
     }
 }
