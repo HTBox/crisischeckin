@@ -16,7 +16,7 @@ namespace Services.UnitTest
         [ExpectedException(typeof(ArgumentNullException))]
         public void Register_NullFirstName()
         {
-            VolunteerService service = new VolunteerService();
+            VolunteerService service = new VolunteerService(new Mock<IDataService>().Object);
             service.Register("", "last", "email", "555-333-1111");
         }
 
@@ -24,7 +24,7 @@ namespace Services.UnitTest
         [ExpectedException(typeof(ArgumentNullException))]
         public void Register_NullLastName()
         {
-            VolunteerService service = new VolunteerService();
+            VolunteerService service = new VolunteerService(new Mock<IDataService>().Object);
             service.Register("first", "", "email", "555-333-1111");
         }
 
@@ -32,7 +32,7 @@ namespace Services.UnitTest
         [ExpectedException(typeof(ArgumentNullException))]
         public void Register_NullEmail()
         {
-            VolunteerService service = new VolunteerService();
+            VolunteerService service = new VolunteerService(new Mock<IDataService>().Object);
             service.Register("first", "last", "", "555-333-1111");
         }
 
@@ -40,7 +40,7 @@ namespace Services.UnitTest
         [ExpectedException(typeof(ArgumentNullException))]
         public void Register_NullPhoneNumber()
         {
-            VolunteerService service = new VolunteerService();
+            VolunteerService service = new VolunteerService(new Mock<IDataService>().Object);
             service.Register("first", "last", "email", "");
         }
 

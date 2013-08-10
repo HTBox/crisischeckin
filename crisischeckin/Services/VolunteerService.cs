@@ -13,16 +13,11 @@ namespace Services
     {
         private IDataService ourService;
 
-        public VolunteerService(IDataService service = null)
+        public VolunteerService(IDataService service)
         {
-            if (service == null)
-            {
-                ourService = new DataService();
-            }
-            else
-            {
-                ourService = service;
-            }
+            if (service == null) { throw new ArgumentNullException("service"); }
+
+            ourService = service;
         }
 
         public Person Register(string firstName, string lastName, string email, string phoneNumber)
@@ -40,12 +35,14 @@ namespace Services
             }
 
             // TODO: eventually support User object
-            Person person = new Person() 
-            { 
-                UserId = null, FirstName = firstName, LastName = lastName, Email = email, PhoneNumber = phoneNumber
-            };
-
-            return ourService.AddPerson(person);
+            return ourService.AddPerson(new Person()
+            {
+                UserId = null,
+                FirstName = firstName,
+                LastName = lastName,
+                Email = email,
+                PhoneNumber = phoneNumber
+            });
         }
     }
 }
