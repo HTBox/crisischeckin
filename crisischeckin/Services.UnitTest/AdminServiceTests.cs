@@ -28,7 +28,7 @@ namespace WebProjectTests.ServiceTests
         private readonly Disaster disasterWithNoCommitments = new Disaster
         {
             Id = disasterWithNoVolunteersID,
-            Name = "Post Conference party cleanup"
+            Name = "Post Conference security deposit grovelling"
         };
 
         private readonly Person personWithCommitments = new Person
@@ -165,6 +165,29 @@ namespace WebProjectTests.ServiceTests
         }
 
         // people with commitments on other disasters does not show up
+        // person with multiple commitments only once
+        [TestMethod]
+        public void WhenVolunteersExistForMultipleDisastersReturnCorrectDisaster()
+        {
+            initializeDisasterCollection(disasterWithCommitments, disasterWithNoCommitments);
+            initializeVolunteerCollection(personWithCommitments, personWithNoCommitments);
+
+            var secondCommitment = new Commitment
+            {
+                DisasterId = disasterWithNoVolunteersID,
+                Id = 102,
+                PersonId = personWithNoCommitmentsID,
+                StartDate = new DateTime(2013, 8, 15),
+                EndDate = new DateTime(2013, 8, 20)
+            };
+            initializeCommitmentCollection(commitment, secondCommitment);
+
+            var underTest = new AdminService(mockService.Object);
+
+            var result = underTest.GetVolunteers(disasterWithCommitments);
+
+            Assert.AreEqual(1, result.Count());
+        }
 
         private void initializeDisasterCollection(params Disaster [] disasters)
         {
