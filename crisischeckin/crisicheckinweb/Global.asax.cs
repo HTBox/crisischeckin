@@ -14,6 +14,7 @@ namespace crisicheckinweb
     {
         protected void Application_Start()
         {
+            AuthConfig.Register();
             AreaRegistration.RegisterAllAreas();
 
             WebApiConfig.Register(GlobalConfiguration.Configuration);
