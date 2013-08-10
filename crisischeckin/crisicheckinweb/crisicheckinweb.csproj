@@ -180,6 +180,7 @@
     <Content Include="Content\fonts\glyphiconshalflings-regular.svg" />
     <Content Include="Global.asax" />
     <None Include="scripts\amplify-vsdoc.js" />
+    <Content Include="Images\loading.gif" />
     <Content Include="scripts\amplify.js" />
     <Content Include="scripts\amplify.min.js" />
     <Content Include="scripts\App\amplify-setup.js" />
