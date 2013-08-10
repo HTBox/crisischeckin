@@ -11,6 +11,41 @@ namespace WebProjectTests.ServiceTests
     [TestClass]
     public class AdminServiceTests
     {
+        private const int disasterWithVolunteersID = 1;
+        private const int disasterWithNoVolunteersID = 2;
+        private const int personWithCommitmentsID = 3;
+        private const int commitmentId = 4;
+
+        private readonly Disaster disasterWithCommitments = new Disaster
+        {
+            Id = disasterWithVolunteersID,
+            Name = "Post Conference party cleanup"
+        };
+
+        private readonly Disaster disasterWithNoCommitments = new Disaster
+        {
+            Id = disasterWithVolunteersID,
+            Name = "Post Conference party cleanup"
+        };
+
+        private readonly Person personWithCommitments = new Person
+        {
+            Id = personWithCommitmentsID,
+            FirstName = "Richard",
+            LastName = "Campbell",
+            PhoneNumber = "(111) 555-1212",
+            Email = "unused@nothere.com"
+        };
+        
+        private readonly Commitment commitment = new Commitment
+                            {
+                                DisasterId = disasterWithVolunteersID,
+                                Id = commitmentId,
+                                PersonId = personWithCommitmentsID,
+                                StartDate = new DateTime(2013, 8, 10),
+                                EndDate = new DateTime(2013, 8, 15)
+                                };
+        
         private Mock<IDataService> mockService;
 
         [TestInitialize]
@@ -26,63 +61,69 @@ namespace WebProjectTests.ServiceTests
             var underTest = new AdminService(default(IDataService));
         }
 
-        [TestMethod]
+        [TestMethod,
+        ExpectedException(typeof(ArgumentException))]
         public void WhenOneVolunteerHasRegisteredReturnThatOneRecord()
         {
-            const int disasterId = 1;
-            const int personId = 2;
-            const int commitmentId = 3;
-            var disaster = new Disaster
-                    {
-                        Id = disasterId,
-                        Name = "Post Conference party cleanup"
-                    };
-            mockService.Setup(ds => ds.Disasters).Returns(new List<Disaster>
-                {
-                    disaster
-                }.AsQueryable());
+            initializeDisasterCollection(disasterWithCommitments);
+            initializeVolunteerCollection(personWithCommitments);
+            initializeCommitmentCollection(commitment);
 
-            mockService.Setup(ds => ds.Persons).Returns(new List<Person>
-                {
-                    new Person
-                    {
-                        Id=personId,
-                        FirstName="Richard",
-                        LastName="Campbell",
-                        PhoneNumber="(111) 555-1212",
-                        Email="unused@nothere.com"
-                    }
-                }.AsQueryable());
-            mockService.Setup(ds => ds.Commitments).Returns(new List<Commitment>
-                {
-                    new Commitment
-                    {
-                        DisasterId=disasterId,
-                        Id=commitmentId,
-                        PersonId=personId,
-                        StartDate=new DateTime(2013, 8, 10),
-                        EndDate = new DateTime(2013, 8, 15)
-                    }
-                }.AsQueryable());
+            var missingDisaster = new Disaster
+            {
+                Id = -1
+            };
 
             var underTest = new AdminService(mockService.Object);
-            var result = underTest.GetVolunteers(disaster);
+
+            var result = underTest.GetVolunteers(missingDisaster);
+
             Assert.AreEqual(1, result.Count());
         }
 
-        //With no volunteers, return an empty list.
+        //with empty collections, return an empty list.
         [TestMethod]
         public void WhenNoVolunteersAreRegisteredReturnAnEmptyList()
         {
             var underTest = new AdminService(mockService.Object);
 
-            var disaster = new Disaster();
+            initializeDisasterCollection(disasterWithNoCommitments);
 
-            var result = underTest.GetVolunteers(disaster);
+            var result = underTest.GetVolunteers(disasterWithNoCommitments);
             Assert.IsFalse(result.Any());
         }
 
+        [TestMethod,
+        ExpectedException(typeof(ArgumentNullException))]
+        public void WhenDisasterIsNullThrowNullArgumentException()
+        {
+            var underTest = new AdminService(mockService.Object);
+            var result = underTest.GetVolunteers(default(Disaster));
+        }
 
+        [TestMethod]
+        public void WhenDisasterIsNotFoundThrowArgumentException()
+        {
+            var underTst = new AdminService(mockService.Object);
 
+            initializeDisasterCollection(disasterWithCommitments);
+            initializeVolunteerCollection(personWithCommitments);
+            initializeCommitmentCollection(commitment);
+        }
+
+        private void initializeDisasterCollection(params Disaster [] disasters)
+        {
+            mockService.Setup(ds => ds.Disasters).Returns(disasters.AsQueryable());
+        }
+
+        private void initializeVolunteerCollection(params Person [] people)
+        {
+            mockService.Setup(ds => ds.Persons).Returns(people.AsQueryable());  
+        }
+
+        private void initializeCommitmentCollection(params Commitment[] commitments)
+        {
+            mockService.Setup(ds => ds.Commitments).Returns(commitments.AsQueryable());
+        }
     }
 }
