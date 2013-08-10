@@ -27,9 +27,9 @@ namespace Services
             if (string.IsNullOrWhiteSpace(email)) { throw new ArgumentNullException("email"); }
             if (string.IsNullOrWhiteSpace(phoneNumber)) { throw new ArgumentNullException("phoneNumber"); }
 
-            var foundPerson = ourService.Persons.FirstOrDefault(p => p.Email == email);
+            var foundPerson = ourService.Persons.Any(p => p.Email == email);
 
-            if (foundPerson != null)
+            if (foundPerson)
             {
                 throw new PersonAlreadyExistsException();
             }
@@ -49,14 +49,14 @@ namespace Services
         {
             if (updatedPerson == null) throw new ArgumentNullException("updatedPerson");
 
-            var foundPerson = ourService.Persons.FirstOrDefault(p => p.Id == updatedPerson.Id);
+            var foundPerson = ourService.Persons.SingleOrDefault(p => p.Id == updatedPerson.Id);
 
             if (foundPerson != null)
             {
                 if (foundPerson.Email != updatedPerson.Email)
                 {
                     // check that new email isn't already in use
-                    var u = ourService.Persons.FirstOrDefault(p => p.Email == updatedPerson.Email);
+                    var u = ourService.Persons.Any(p => p.Email == updatedPerson.Email);
 
                     if (u != null)
                     {
