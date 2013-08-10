@@ -1,4 +1,5 @@
-﻿@{
+﻿@using System.Web.Optimization
+@{
     Layout = null;
 }
 
@@ -8,20 +9,34 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Admin</title>
+    @Styles.Render("~/Content/body.css")
+    @Styles.Render("~/Content/bootstrap/bootstrap.min.css")
+    @*<link href="@Styles.Url("~/content/css")" rel="stylesheet"/>*@
+
 </head>
-    <body>
-        <table cellpadding="1" cellspacing="1" width="95%">
-            <tr>
-                <td style="border-right:black solid thin; width:125px;">
-                    <div class="AdminMenu">
-                        <a href="/Disaster/List"> Disaster List</a><br/>
-                        <a href="/Volunteer/ListbyDisaster">View Volunteers</a>
+<body>
+    <div>
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="page-header">
+                        <h1>Crisis Check-In Admin Section</h1>
                     </div>
-                </td>
-                <td style="padding-left:20px;">
-                    @RenderBody()
-                </td>
-            </tr>
-        </table>
-    </body>
+                </div>
+                </div>
+                <div class="row">
+                    <div class="col-3">
+                        <div class="AdminMenu">
+                            <a href="/Disaster/List">Disaster List</a><br />
+                            <a href="/Volunteer/ListbyDisaster">View Volunteers</a>
+                        </div>
+                    </div>
+                    <div class="col-9">
+                        @RenderBody()
+                    </div>
+                </div>
+
+            </div>
+        </div>
+</body>
 </html>

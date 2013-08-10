@@ -32,5 +32,21 @@ namespace Services
                 EndDate = endDate
             });
         }
+
+
+        public void Create(string disasterName, bool IsActive)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Models.Disaster> GetActiveList()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Models.Disaster> GetList()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
