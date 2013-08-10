@@ -31,6 +31,7 @@ namespace crisicheckinweb
                 {
                     using (var context = new CrisisCheckin())
                     {
+                        
                         if (!context.Database.Exists())
                         {
                             // Create the SimpleMembership database without Entity Framework migration schema
