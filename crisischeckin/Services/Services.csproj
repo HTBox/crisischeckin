@@ -51,6 +51,7 @@
     <Compile Include="DataService.cs" />
     <Compile Include="DisasterService.cs" />
     <Compile Include="Exceptions\PersonAlreadyExistsException.cs" />
+    <Compile Include="Exceptions\PersonNotFoundException.cs" />
     <Compile Include="Interfaces\IAdmin.cs" />
     <Compile Include="Interfaces\IDataService.cs" />
     <Compile Include="Interfaces\IDisaster.cs" />
@@ -66,6 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <Compile Include="Exceptions\PersonEmailAlreadyInUseException.cs" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

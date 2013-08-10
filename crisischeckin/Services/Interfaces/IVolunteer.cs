@@ -11,6 +11,6 @@ namespace Services.Interfaces
     {
         Person Register(string firstName, string lastName, string email, string phoneNumber);
 
-
+        Person UpdateDetails(Person person);
     }
 }

@@ -17,6 +17,7 @@ namespace Services
         IQueryable<Person> Persons { get; }
         IQueryable<User> Users { get; }
         Person AddPerson(Person newPerson);
+        Person UpdatePerson(Person updatedPerson);
         Commitment AddCommitment(Commitment newCommitment);
     }
 }

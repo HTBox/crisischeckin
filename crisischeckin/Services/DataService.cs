@@ -30,6 +30,20 @@ namespace Services
             return result;
         }
 
+        public Person UpdatePerson(Person updatedPerson)
+        {
+            Person result = context.Persons.FirstOrDefault(a => a.Id == updatedPerson.Id);
+
+            result.FirstName = updatedPerson.FirstName;
+            result.LastName = updatedPerson.LastName;
+            result.Email = updatedPerson.Email;
+            result.PhoneNumber = updatedPerson.PhoneNumber;
+
+            context.SaveChanges();
+
+            return result;
+        }
+
         public Commitment AddCommitment(Commitment newCommitment)
         {
             Commitment result = context.Commitments.Add(newCommitment);

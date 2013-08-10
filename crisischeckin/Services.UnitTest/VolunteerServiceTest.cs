@@ -99,5 +99,123 @@ namespace Services.UnitTest
             Assert.AreEqual("555-222-9139 ext 33", actual.PhoneNumber);
         }
 
+        [TestMethod]
+        public void UpdateDetails_Valid()
+        {
+            Person moqPerson = new Person()
+            {
+                Id = 1,
+                UserId = null,
+                FirstName = "Cathy",
+                LastName = "Jones",
+                Email = "cathy.jones@email.com",
+                PhoneNumber = "555-222-9139"
+            };
+
+            List<Person> people = new List<Person>();
+            people.Add(moqPerson);
+
+            var moqDataService = new Mock<IDataService>();
+            moqDataService.Setup(s => s.Persons).Returns(people.AsQueryable());
+            moqDataService.Setup(s => s.UpdatePerson(It.IsAny<Person>())).Returns(new Person() {
+                Id = 1,
+                Email = "cathy.jones@email.com",
+                FirstName = "Cathy",
+                LastName = "CHANGED",
+                PhoneNumber = "555-222-9139"
+            });
+
+            VolunteerService service = new VolunteerService(moqDataService.Object);
+            var actual = service.UpdateDetails(new Person()
+            {
+                Id = 1, Email = "cathy.jones@email.com", FirstName = "Cathy", LastName = "CHANGED", PhoneNumber = "555-222-9139"
+            });
+
+            // Only Last Name has been updated
+            Assert.AreEqual("CHANGED", actual.LastName);
+
+            Assert.AreEqual("Cathy", actual.FirstName);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(PersonNotFoundException))]
+        public void UpdateDetails_PersonNotFound()
+        {
+            Person moqPerson = new Person()
+            {
+                Id = 1,
+                UserId = null,
+                FirstName = "Cathy",
+                LastName = "Jones",
+                Email = "cathy.jones@email.com",
+                PhoneNumber = "555-222-9139"
+            };
+
+            List<Person> people = new List<Person>();
+            people.Add(moqPerson);
+
+            var moqDataService = new Mock<IDataService>();
+            moqDataService.Setup(s => s.Persons).Returns(people.AsQueryable());
+            VolunteerService service = new VolunteerService(moqDataService.Object);
+
+            service.UpdateDetails(new Person()
+            {
+                Id = 25,
+                Email = "matt.smith@email.com"
+            });
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(PersonEmailAlreadyInUseException))]
+        public void UpdateDetails_PersonEmailAlreadyInUse()
+        {
+            Person moqPersonOne = new Person()
+            {
+                Id = 1,
+                UserId = null,
+                FirstName = "Cathy",
+                LastName = "Jones",
+                Email = "cathy.jones@email.com",
+                PhoneNumber = "555-222-9139"
+            };
+
+            Person moqPersonTwo = new Person()
+            {
+                Id = 2,
+                UserId = null,
+                FirstName = "Stan",
+                LastName = "Smith",
+                Email = "stan.smith@email.com",
+                PhoneNumber = "111-333-2222"
+            };
+
+            List<Person> people = new List<Person>();
+            people.Add(moqPersonOne);
+            people.Add(moqPersonTwo);
+
+            var moqDataService = new Mock<IDataService>();
+            moqDataService.Setup(s => s.Persons).Returns(people.AsQueryable());
+
+            VolunteerService service = new VolunteerService(moqDataService.Object);
+            // Try to change Cathy Jones' email to Stan Smith's email...
+            service.UpdateDetails(new Person()
+            {
+                Id = 1,
+                Email = "stan.smith@email.com",
+                FirstName = "Cathy",
+                LastName = "Jones"
+            });
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void UpdateDetails_NullPerson()
+        {
+            var moqDataService = new Mock<IDataService>();
+            VolunteerService service = new VolunteerService(moqDataService.Object);
+
+            service.UpdateDetails(null);
+        }
+
     }
 }

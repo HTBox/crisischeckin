@@ -44,5 +44,32 @@ namespace Services
                 PhoneNumber = phoneNumber
             });
         }
+
+        public Person UpdateDetails(Person updatedPerson)
+        {
+            if (updatedPerson == null) throw new ArgumentNullException("updatedPerson");
+
+            var foundPerson = ourService.Persons.FirstOrDefault(p => p.Id == updatedPerson.Id);
+
+            if (foundPerson != null)
+            {
+                if (foundPerson.Email != updatedPerson.Email)
+                {
+                    // check that new email isn't already in use
+                    var u = ourService.Persons.FirstOrDefault(p => p.Email == updatedPerson.Email);
+
+                    if (u != null)
+                    {
+                        throw new PersonEmailAlreadyInUseException();
+                    }
+                }
+
+                return ourService.UpdatePerson(updatedPerson);
+            }
+            else
+            {
+                throw new PersonNotFoundException();
+            }
+        }
     }
 }
