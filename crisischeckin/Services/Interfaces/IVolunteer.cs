@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace Services.Interfaces
 {
-    public interface IAdmin
+    public interface IVolunteer
     {
-        IEnumerable<string> GetVolunteers(int disasterId);
+        bool Register(string firstName, string lastName, string email, string phoneNumber);
+
+
     }
 }
