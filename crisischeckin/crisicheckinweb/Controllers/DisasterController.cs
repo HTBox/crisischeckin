@@ -50,6 +50,9 @@ namespace crisicheckinweb.Controllers
         public RedirectResult Edit(Disaster disaster)
         {
             // TODO: Update the disaster data by ID
+
+
+
             return Redirect("/Disaster/List");
         }
     }

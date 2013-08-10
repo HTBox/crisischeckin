@@ -5,6 +5,7 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
+@using (Html.BeginForm("Edit","Disaster")){
 <h2>Create / Edit Disaster</h2>
 @Html.HiddenFor(m => m.Id)
 <table>
@@ -21,6 +22,7 @@
     </tr>
     <tr>
         <td><input type="submit" id="SaveButton" value="Save"/></td>
-        <td><input type="button" id="CancelButton" value="Cancel"/></td>
+        <td>@Html.ActionLink("Cancel","List","Disaster")@*<input type="button" id="CancelButton" value="Cancel"/>*@</td>
     </tr>
 </table>
+}

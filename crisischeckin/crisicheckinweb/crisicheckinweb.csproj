@@ -228,9 +228,6 @@
     <Content Include="Views\Shared\_AdminLayout.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Volunteer\ListOfDisasters.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Models\Models.csproj">
       <Project>{3fd36cf5-7d79-4505-a0bb-12e35a613d88}</Project>
       <Name>Models</Name>
