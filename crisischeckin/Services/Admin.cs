@@ -11,7 +11,7 @@ namespace Services
     {
         public IEnumerable<string> GetVolunteers(int disasterId)
         {
-            throw new NotImplementedException();
+            return new List<string>();
         }
     }
 }
