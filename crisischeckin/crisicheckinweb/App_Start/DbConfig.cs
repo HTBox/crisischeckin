@@ -11,8 +11,8 @@ namespace crisicheckinweb
     {
         public static void Initialize()
         {
-            Database.SetInitializer<CrisisCheckin>(
-                new MigrateDatabaseToLatestVersion<CrisisCheckin, Models.Migrations.Configuration>());
+          //  Database.SetInitializer<CrisisCheckin>(
+          //      new MigrateDatabaseToLatestVersion<CrisisCheckin, Models.Migrations.Configuration>());
         }
     }
 }
