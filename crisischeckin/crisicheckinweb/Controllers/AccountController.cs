@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
-using crisicheckinweb.Models;
+using crisicheckinweb.ViewModels;
 using WebMatrix.WebData;
 
 namespace crisicheckinweb.Controllers
