@@ -33,20 +33,43 @@ namespace Services
             });
         }
 
-
-        public void Create(string disasterName, bool IsActive)
+        public Disaster Get(int disasterId)
         {
-            throw new NotImplementedException();
+            return ourService.Disasters.SingleOrDefault(d => d.Id.Equals(disasterId));
         }
 
-        public List<Models.Disaster> GetActiveList()
+        public Disaster Create(string disasterName, bool isActive)
         {
-            throw new NotImplementedException();
+           if (String.IsNullOrWhiteSpace(disasterName)) throw new ArgumentNullException("disasterName");
+
+            return ourService.AddDisaster(new Disaster()
+                {
+                    Name = disasterName,
+                    IsActive = isActive
+                });
         }
 
-        public List<Models.Disaster> GetList()
+        public void Update(int disasterId, string disasterName, bool isActive)
         {
-            throw new NotImplementedException();
+            Disaster origDisaster = ourService.Disasters.SingleOrDefault(d => d.Id.Equals(disasterId));
+
+            if (origDisaster != null)
+            {
+                origDisaster.Name = disasterName;
+                origDisaster.IsActive = isActive;
+
+                ourService.SubmitChanges();
+            }
+        }
+
+        public IEnumerable<Disaster> GetActiveList()
+        {
+            return ourService.Disasters.Where(d => d.IsActive.Equals(true)).OrderBy(d => d.Name).ToList();
+        }
+
+        public IEnumerable<Disaster> GetList()
+        {
+            return ourService.Disasters.OrderByDescending(d => d.IsActive).ThenBy(d => d.Name).ToList();
         }
     }
 }

@@ -1,15 +1,16 @@
-﻿@{
+﻿
+@{
     ViewBag.Title = "Volunteers for this Disaster";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
 @section scripts {
-    <script type="text/javascript" data-main="/scripts/app/controllers/volunteer/listByDisaster" src="/scripts/require.js"></script>
+    <script type="text/javascript" data-main="App/Controllers/Volunteer/listByDisasterController" src="/scripts/require.js"></script>
 }
 
 <h2>List of Volunteers for this Disaster</h2>
 
-<h3>Disaster: </h3>  @*@Html.LabelFor()*@
+<h3>Disaster: </h3>
 
 Filter by Date: <input id="DateTextBox" type="text"/> &nbsp; <input id="GoButton" type="button" value="Go"/>
 

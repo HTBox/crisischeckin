@@ -1,0 +1,14 @@
+﻿@{
+    ViewBag.Title = "LogOffTest";
+}
+
+<h2>LogOff</h2>
+
+@using (Html.BeginForm("LogOff", "Account")) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+       <input type="submit" value="Log off" />
+    </fieldset>
+}

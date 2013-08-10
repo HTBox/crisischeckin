@@ -1,4 +1,4 @@
-﻿@model List<Models.Disaster>
+﻿@model IEnumerable<Models.Disaster>
 @{
     ViewBag.Title = "List of Disasters";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
@@ -14,10 +14,12 @@
     </tr>
     @foreach (Models.Disaster d in Model)
     {
-     <tr>
-        <td>@d.Name</td>
-        <td>@d.IsActive</td>
-        <td><a href=@String.Format("/Disaster/Edit/{0}", d.Id.ToString())>Edit</a></td>
-    </tr>
+        <tr>
+            <td>@d.Name</td>
+            <td>@d.IsActive</td>
+            <td><a href=@String.Format("/Disaster/Edit/{0}", d.Id.ToString())>Edit</a></td>
+        </tr>
     }
 </table>
+<br/>
+ <a href="/Disaster/Edit/-1">Add New Disaster</a>

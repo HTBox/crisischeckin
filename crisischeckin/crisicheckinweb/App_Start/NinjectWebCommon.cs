@@ -1,3 +1,5 @@
+using Models;
+
 [assembly: WebActivator.PreApplicationStartMethod(typeof(crisicheckinweb.App_Start.NinjectWebCommon), "Start")]
 [assembly: WebActivator.ApplicationShutdownMethodAttribute(typeof(crisicheckinweb.App_Start.NinjectWebCommon), "Stop")]
 
@@ -56,6 +58,8 @@ namespace crisicheckinweb.App_Start
         private static void RegisterServices(IKernel kernel)
         {
             kernel.Bind<IDisaster>().To<DisasterService>().InRequestScope();
+            kernel.Bind<IDataService>().To<DataService>().InRequestScope();
+            kernel.Bind<CrisisCheckin>().ToSelf().InRequestScope();
         }        
     }
 }

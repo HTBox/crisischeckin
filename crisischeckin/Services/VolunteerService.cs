@@ -11,7 +11,7 @@ namespace Services
 {
     public class VolunteerService : IVolunteer
     {
-        private IDataService ourService;
+        private readonly IDataService ourService;
 
         public VolunteerService(IDataService service)
         {
@@ -22,10 +22,10 @@ namespace Services
 
         public Person Register(string firstName, string lastName, string email, string phoneNumber)
         {
-            if (string.IsNullOrEmpty(firstName)) { throw new ArgumentNullException("firstName"); }
-            if (string.IsNullOrEmpty(lastName)) { throw new ArgumentNullException("lastName"); }
-            if (string.IsNullOrEmpty(email)) { throw new ArgumentNullException("email"); }
-            if (string.IsNullOrEmpty(phoneNumber)) { throw new ArgumentNullException("phoneNumber"); }
+            if (string.IsNullOrWhiteSpace(firstName)) { throw new ArgumentNullException("firstName"); }
+            if (string.IsNullOrWhiteSpace(lastName)) { throw new ArgumentNullException("lastName"); }
+            if (string.IsNullOrWhiteSpace(email)) { throw new ArgumentNullException("email"); }
+            if (string.IsNullOrWhiteSpace(phoneNumber)) { throw new ArgumentNullException("phoneNumber"); }
 
             var foundPerson = ourService.Persons.FirstOrDefault(p => p.Email == email);
 

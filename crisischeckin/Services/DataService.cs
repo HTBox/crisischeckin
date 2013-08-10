@@ -10,6 +10,12 @@ namespace Services
     public class DataService : IDisposable, IDataService
     {
         private readonly CrisisCheckin context;
+
+        public DataService(CrisisCheckin ctx)
+        {
+            context = ctx;
+        }
+
         public IQueryable<Commitment> Commitments
         { get { return context.Commitments; } }
 
@@ -49,6 +55,18 @@ namespace Services
             Commitment result = context.Commitments.Add(newCommitment);
             context.SaveChanges();
             return result;
+        }
+
+       public Disaster AddDisaster(Disaster newDisaster)
+       {
+           Disaster result = context.Disasters.Add(newDisaster);
+           context.SaveChanges();
+           return result;
+       }
+
+        public void SubmitChanges()
+        {
+            context.SaveChanges();
         }
 
         public void Dispose()
