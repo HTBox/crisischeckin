@@ -99,6 +99,7 @@ namespace Services
             return from c in ourService.Commitments
                    where c.PersonId == person.Id
                    where c.DisasterId == disaster.Id
+                   where showInactive || disaster.IsActive
                    select c;
         }
 
