@@ -127,14 +127,17 @@ namespace crisicheckinweb.Controllers
         // POST: /Account/Register
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult UpgradeVolunteerToAdministrator(RegisterModel model)
+        [Authorize(Roles = Constants.RoleAdmin)]
+        public ActionResult UpgradeVolunteerToAdministrator(UpgradeVolunteerRoleViewModel model)
         {
+            // Get username by selected uerId.
+            //var user = 
+            
             if (ModelState.IsValid)
             {
-                    Roles.AddUserToRole(model.UserName, Constants.RoleAdmin);
+                Roles.AddUserToRole(model.UserId, Constants.RoleAdmin);
 
-                    return RedirectToAction("Index", "Home");
-           
+                return RedirectToAction("Index", "Home");
             }
 
             // If we got this far, something failed, redisplay form
