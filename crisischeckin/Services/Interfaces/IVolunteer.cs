@@ -15,6 +15,6 @@ namespace Services.Interfaces
 
         IQueryable<Commitment> RetrieveCommitments(Person person, bool showInactive);
 
-        IQueryable<Commitment> RetrieveCommitmentsForDisaster(Person person, Disaster disaster, bool showInactive);
+        IQueryable<Commitment> RetrieveCommitmentsForDisaster(Person person, Disaster disaster);
     }
 }

@@ -219,21 +219,15 @@ namespace Services.UnitTest
 
         [TestMethod,
         ExpectedException(typeof(ArgumentNullException))]
-        public void WhenUserIsNullGetCommitmentsThrowsNullArgumentException()
+        public void WhenUserIsNullGetAllCommitmentsThrowsNullArgumentException()
         {
             var moqDataService = new Mock<IDataService>();
             var underTest = new VolunteerService(moqDataService.Object);
 
-            var disaster = new Disaster
-            {
-                Id = 1,
-                Name = "test",
-                IsActive = true
-            };
-
-            var results = underTest.RetrieveCommitmentsForDisaster(default(Person), disaster, false);
+            var results = underTest.RetrieveCommitments(default(Person), false);
         }
 
+        /*
         [TestMethod,
         ExpectedException(typeof(ArgumentNullException))]
         public void WhenDisasterIsNullGetCommitmentsThrowsNullArgumentException()
@@ -281,6 +275,11 @@ namespace Services.UnitTest
                 Name = "test",
                 IsActive = true
             };
+            moqDataService.Setup(ds => ds.Disasters)
+                .Returns(new List<Disaster>
+                {
+                    disaster
+                }.AsQueryable());
 
             var results = underTest.RetrieveCommitmentsForDisaster(person, disaster, false);
             Assert.IsTrue(results.Count() == 1);
@@ -307,6 +306,11 @@ namespace Services.UnitTest
                 Name = "test",
                 IsActive = true
             };
+            moqDataService.Setup(ds => ds.Disasters)
+                .Returns(new List<Disaster>
+                {
+                    disaster
+                }.AsQueryable());
 
             var results = underTest.RetrieveCommitmentsForDisaster(person, disaster, false);
             Assert.IsTrue(results.Count() == 0);
@@ -343,6 +347,11 @@ namespace Services.UnitTest
                 Name = "test",
                 IsActive = false
             };
+            moqDataService.Setup(ds => ds.Disasters)
+                .Returns(new List<Disaster>
+                {
+                    disaster
+                }.AsQueryable());
 
             var results = underTest.RetrieveCommitmentsForDisaster(person, disaster, true);
             Assert.IsTrue(results.Count() == 1);
@@ -379,6 +388,11 @@ namespace Services.UnitTest
                 Name = "test",
                 IsActive = false
             };
+            moqDataService.Setup(ds => ds.Disasters)
+                .Returns(new List<Disaster>
+                {
+                    disaster
+                }.AsQueryable());
 
             var results = underTest.RetrieveCommitmentsForDisaster(person, disaster, false);
             Assert.IsTrue(results.Count() == 0);
@@ -423,6 +437,11 @@ namespace Services.UnitTest
                 Name = "test",
                 IsActive = true
             };
+            moqDataService.Setup(ds => ds.Disasters)
+                .Returns(new List<Disaster>
+                {
+                    disaster
+                }.AsQueryable());
 
             var results = underTest.RetrieveCommitmentsForDisaster(person, disaster, false);
             Assert.IsTrue(results.Count() == 1);
@@ -467,9 +486,251 @@ namespace Services.UnitTest
                 Name = "test",
                 IsActive = true
             };
+            moqDataService.Setup(ds => ds.Disasters)
+                .Returns(new List<Disaster>
+                {
+                    disaster
+                }.AsQueryable());
 
             var results = underTest.RetrieveCommitmentsForDisaster(person, disaster, false);
             Assert.IsTrue(results.Count() == 1);
         }
+*/
+
+        [TestMethod,
+        ExpectedException(typeof(ArgumentNullException))]
+        public void WhenDisasterIsNullGetCommitmentsThrowsNullArgumentException()
+        {
+            var moqDataService = new Mock<IDataService>();
+            var underTest = new VolunteerService(moqDataService.Object);
+
+            var person = new Person
+            {
+                Id = 1,
+                FirstName = "test",
+                LastName = "tester"
+            };
+
+            var results = underTest.RetrieveCommitmentsForDisaster(person, default(Disaster));
+        }
+
+        [TestMethod]
+        public void WhenQueriedActiveCommitmentsAreReturned()
+        {
+            var moqDataService = new Mock<IDataService>();
+            moqDataService.Setup(ds => ds.Commitments)
+                .Returns(new List<Commitment>
+                {
+                    new Commitment
+                    {
+                        DisasterId=1,
+                        Id = 1,
+                        PersonId=1,
+                        StartDate=new DateTime(2013, 8, 1),
+                        EndDate = new DateTime(2013, 9, 1)
+                    }
+                }.AsQueryable());
+            var underTest = new VolunteerService(moqDataService.Object);
+
+            var person = new Person
+            {
+                Id = 1,
+                FirstName = "test",
+                LastName = "tester"
+            };
+            var disaster = new Disaster
+            {
+                Id = 1,
+                Name = "test",
+                IsActive = true
+            };
+            moqDataService.Setup(ds => ds.Disasters)
+                .Returns(new List<Disaster>
+                {
+                    disaster
+                }.AsQueryable());
+
+            var results = underTest.RetrieveCommitmentsForDisaster(person, disaster);
+            Assert.IsTrue(results.Count() == 1);
+            Assert.IsTrue(results.Single().Id == 1);
+        }
+
+        [TestMethod]
+        public void WhenNoCommitmentsExistEmptyCollectionIsReturned()
+        {
+            var moqDataService = new Mock<IDataService>();
+            moqDataService.Setup(ds => ds.Commitments)
+                .Returns(new List<Commitment>().AsQueryable());
+            var underTest = new VolunteerService(moqDataService.Object);
+
+            var person = new Person
+            {
+                Id = 1,
+                FirstName = "test",
+                LastName = "tester"
+            };
+            var disaster = new Disaster
+            {
+                Id = 1,
+                Name = "test",
+                IsActive = true
+            };
+            moqDataService.Setup(ds => ds.Disasters)
+                .Returns(new List<Disaster>
+                {
+                    disaster
+                }.AsQueryable());
+
+            var results = underTest.RetrieveCommitmentsForDisaster(person, disaster);
+            Assert.IsTrue(results.Count() == 0);
+        }
+
+        // Inactive disaster depends on flag
+        [TestMethod]
+        public void WhenQueryingInactiveDisastersAllCommitmentsReturned()
+        {
+            var moqDataService = new Mock<IDataService>();
+            moqDataService.Setup(ds => ds.Commitments)
+                .Returns(new List<Commitment>
+                {
+                    new Commitment
+                    {
+                        DisasterId=1,
+                        Id = 1,
+                        PersonId=1,
+                        StartDate=new DateTime(2013, 8, 1),
+                        EndDate = new DateTime(2013, 9, 1)
+                    }
+                }.AsQueryable());
+            var underTest = new VolunteerService(moqDataService.Object);
+
+            var person = new Person
+            {
+                Id = 1,
+                FirstName = "test",
+                LastName = "tester"
+            };
+            var disaster = new Disaster
+            {
+                Id = 1,
+                Name = "test",
+                IsActive = false
+            };
+            moqDataService.Setup(ds => ds.Disasters)
+                .Returns(new List<Disaster>
+                {
+                    disaster
+                }.AsQueryable());
+
+            var results = underTest.RetrieveCommitmentsForDisaster(person, disaster);
+            Assert.IsTrue(results.Count() == 1);
+            Assert.IsTrue(results.Single().Id == 1);
+        }
+
+        // only records for this user
+        [TestMethod]
+        public void WhenQueryingReturnCommitmentsOnlyForThisUser()
+        {
+            var moqDataService = new Mock<IDataService>();
+            moqDataService.Setup(ds => ds.Commitments)
+                .Returns(new List<Commitment>
+                {
+                    new Commitment
+                    {
+                        DisasterId=1,
+                        Id = 1,
+                        PersonId=1,
+                        StartDate=new DateTime(2013, 8, 1),
+                        EndDate = new DateTime(2013, 9, 1)
+                    },
+                    new Commitment
+                    {
+                        DisasterId=1,
+                        Id = 2,
+                        PersonId=2,
+                        StartDate=new DateTime(2013, 8, 1),
+                        EndDate = new DateTime(2013, 9, 1)
+                    }
+                }.AsQueryable());
+            var underTest = new VolunteerService(moqDataService.Object);
+
+            var person = new Person
+            {
+                Id = 1,
+                FirstName = "test",
+                LastName = "tester"
+            };
+            var disaster = new Disaster
+            {
+                Id = 1,
+                Name = "test",
+                IsActive = true
+            };
+            moqDataService.Setup(ds => ds.Disasters)
+                .Returns(new List<Disaster>
+                {
+                    disaster
+                }.AsQueryable());
+
+            var results = underTest.RetrieveCommitmentsForDisaster(person, disaster);
+            Assert.IsTrue(results.Count() == 1);
+        }
+
+        // Only records for the specific disaster
+        [TestMethod]
+        public void WhenQueryingReturnCommitmentsOnlyForThisDisaster()
+        {
+            var moqDataService = new Mock<IDataService>();
+            moqDataService.Setup(ds => ds.Commitments)
+                .Returns(new List<Commitment>
+                {
+                    new Commitment
+                    {
+                        DisasterId=1,
+                        Id = 1,
+                        PersonId=1,
+                        StartDate=new DateTime(2013, 8, 1),
+                        EndDate = new DateTime(2013, 9, 1)
+                    },
+                    new Commitment
+                    {
+                        DisasterId=2,
+                        Id = 2,
+                        PersonId=1,
+                        StartDate=new DateTime(2013, 8, 1),
+                        EndDate = new DateTime(2013, 9, 1)
+                    }
+                }.AsQueryable());
+            var underTest = new VolunteerService(moqDataService.Object);
+
+            var person = new Person
+            {
+                Id = 1,
+                FirstName = "test",
+                LastName = "tester"
+            };
+            var disaster = new Disaster
+            {
+                Id = 1,
+                Name = "test",
+                IsActive = true
+            };
+            var disaster2 = new Disaster
+            {
+                Id = 2,
+                Name = "test",
+                IsActive = true
+            };
+
+            moqDataService.Setup(ds => ds.Disasters)
+                .Returns(new List<Disaster>
+                {
+                    disaster,
+                    disaster2
+                }.AsQueryable());
+
+            var results = underTest.RetrieveCommitmentsForDisaster(person, disaster);
+            Assert.AreEqual(1, results.Count());
+        }    
     }
 }
