@@ -25,10 +25,11 @@ namespace crisicheckinweb.Controllers
         // GET: /Home/
         public ActionResult Index()
         {
-            var comms = _volunteerSvc.RetrieveCommitments(new Person() { Id = WebSecurity.CurrentUserId }, true); 
+            IQueryable<Commitment> comms = _volunteerSvc.RetrieveCommitments(new Person() { Id = WebSecurity.CurrentUserId }, true); 
             
-            HashSet<int> commsIds = new HashSet<int>(comms.Select(c => c.Id));
-
+            IEnumerable<int> commsIds = from c in comms
+                                        select c.Id;
+                
             IEnumerable<Disaster> activeDisasters = _disasterSvc.GetActiveList();
             IEnumerable<Disaster> openActiveDisasters = activeDisasters.Where(d => !commsIds.Contains(d.Id));
 

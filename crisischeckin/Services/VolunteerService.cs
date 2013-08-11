@@ -77,16 +77,11 @@ namespace Services
             if (person == null)
                 throw new ArgumentNullException("person", "Person cannot be null");
 
-            return new List<Commitment>{
-                new Commitment
-                {
-                    PersonId=1,
-                    DisasterId=1,
-                    StartDate=new DateTime(2013,8,1),
-                    EndDate=new DateTime(2013, 9,1),
-                    Id=-1
-                }
-            }.AsQueryable();
+            var answer = from c in ourService.Commitments
+                         where c.PersonId == person.Id
+                         where showInactive || c.Disaster.IsActive
+                         select c;
+            return answer;
         }
 
         public IQueryable<Commitment> RetrieveCommitmentsForDisaster(Person person, Disaster disaster)
