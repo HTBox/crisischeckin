@@ -49,20 +49,11 @@ namespace crisicheckinweb.Controllers
 
         //
         // GET: /Account/LogOff
-        public ActionResult LogOffTest()
-        {
-            return View();
-        }
-
-        //
-        // POST: /Account/LogOff
-        [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
             WebSecurity.Logout();
 
-            return View("UserLogOff");
+            return RedirectToAction("Login", "Account");
         }
 
         //
