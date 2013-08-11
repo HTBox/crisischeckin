@@ -12,15 +12,14 @@
 <body>
     <div class="container">
         <div class="row">
-            <div class="col-9">
+            <div class="col-7">
                 <div class="page-header">
                     Crisis Check-In
                 </div>
             </div>
-            <div class="col-3">
+            <div class="col-5">
                 <div class="page-header">
-                    @(Html.Encode(string.IsNullOrWhiteSpace(User.Identity.Name) ? "" : string.Format("Welcome, {0}!", User.Identity.Name)))
-
+                    @Html.Partial("_LoginStatus")
                 </div>
             </div>
         </div>

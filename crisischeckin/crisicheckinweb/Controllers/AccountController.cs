@@ -101,6 +101,18 @@ namespace crisicheckinweb.Controllers
             return View(model);
         }
 
+        public ActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ChangePassword(ChangePasswordViewModel model)
+        {
+
+            return View();
+        }
+
 
         //
         // GET: /Account/UpgradeVolunteerToAdministrator
