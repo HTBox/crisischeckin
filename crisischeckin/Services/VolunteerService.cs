@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Models;
 using Services.Exceptions;
 using Services.Interfaces;
+using System.Data.Entity;
 
 namespace Services
 {
@@ -77,11 +78,12 @@ namespace Services
             if (person == null)
                 throw new ArgumentNullException("person", "Person cannot be null");
 
-            var answer = from c in ourService.Commitments
+            var allCommitments = from c in ourService.Commitments
                          where c.PersonId == person.Id
-                         where showInactive || c.Disaster.IsActive
                          select c;
-            return answer;
+            var filteredCommitments = allCommitments.Include(c => c.Disaster)
+                .Where(c => c.Disaster.IsActive || showInactive);
+            return filteredCommitments;
         }
 
         public IQueryable<Commitment> RetrieveCommitmentsForDisaster(Person person, Disaster disaster)
