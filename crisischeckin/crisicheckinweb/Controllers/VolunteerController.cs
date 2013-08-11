@@ -28,9 +28,20 @@ namespace crisicheckinweb.Controllers
         [HttpPost]
         public PartialViewResult Filter(ListByDisasterViewModel model)
         {
-            var disaster = _disasterSvc.Get(model.SelectedDisaster);
-            var results = _adminSvc.GetVolunteersForDate(disaster, model.CommitmentDate.HasValue ? model.CommitmentDate.Value : DateTime.MinValue);
-            return PartialView("_FilterResults", results);
+            if (model.SelectedDisaster != 0)
+            {
+
+                var disaster = _disasterSvc.Get(model.SelectedDisaster);
+                var results = _adminSvc.GetVolunteersForDate(disaster,
+                                                             model.CommitmentDate.HasValue
+                                                                 ? model.CommitmentDate.Value
+                                                                 : DateTime.MinValue);
+                return PartialView("_FilterResults", results);
+            }
+            else
+            {
+                return (PartialView("_FilterResults"));
+            }
         }
     }
 }

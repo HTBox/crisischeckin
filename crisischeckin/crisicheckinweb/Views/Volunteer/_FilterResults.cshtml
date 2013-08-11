@@ -17,14 +17,17 @@
         <th>Phone</th>
         <th>Cluster</th>
     </tr>
-    @foreach (var person in Model)
+    @if (Model != null)
     {
-    <tr>
-        <td>@(person.LastName + ", " + person.FirstName)</td>
-        <td>@person.Email</td>
-        <td>@person.PhoneNumber</td>
-        <td>@(Html.Encode(person.Cluster != null ? person.Cluster.Name : ""))</td>
-    </tr>
+        foreach (var person in Model)
+        {
+            <tr>
+                <td>@(person.LastName + ", " + person.FirstName)</td>
+                <td>@person.Email</td>
+                <td>@person.PhoneNumber</td>
+                <td>@(Html.Encode(person.Cluster != null ? person.Cluster.Name : ""))</td>
+            </tr>
+        }
     }
 </table>    
 
