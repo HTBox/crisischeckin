@@ -1,5 +1,21 @@
-﻿@{
+﻿@model IEnumerable<Models.Person>
+@{
     ViewBag.Title = "_FilterResults";
 }
 
-<h2>_FilterResults</h2>
+<table>
+    <tr>
+        <th>Volunteer Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+    </tr>
+    @foreach (var person in Model)
+    {
+    <tr>
+        <td>@(person.LastName + ", " + person.FirstName)</td>
+        <td>@person.Email</td>
+        <td>@person.PhoneNumber</td>
+    </tr>
+    }
+</table>    
+

@@ -54,6 +54,12 @@
     <Compile Include="Person.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="User.cs" />
+    <Compile Include="v2\Assignment.cs" />
+    <Compile Include="v2\Cluster.cs" />
+    <Compile Include="v2\Location.cs" />
+    <Compile Include="v2\PersonCluster.cs" />
+    <Compile Include="v2\PersonPhone.cs" />
+    <Compile Include="v2\PhoneType.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

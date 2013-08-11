@@ -1,23 +1,7 @@
 ﻿@using System.Web.Optimization
 @{
-    Layout = null;
+    Layout = "/Views/Shared/_Layout.cshtml";
 }
-<!DOCTYPE html>
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Admin</title>
-   @* @Styles.Render("~/Content/body.css")*@
-    @Styles.Render("~/Content/bootstrap/bootstrap.min.css")
-    @*<link href="@Styles.Url("~/content/css")" rel="stylesheet"/>*@
-
-    @Scripts.Render("~/Scripts/jquery-1.9.1.js")
-    @Scripts.Render("~/Scripts/jquery-ui-1.10.3.min.js")
-    @Styles.Render("~/Content/themes/base/jquery.ui.all.css")
-
-</head>
-<body>
-        <div class="container">
             <div class="row">
                 <div class="col-12">
                     <div class="page-header">
@@ -35,10 +19,4 @@
                     <div class="col-10">
                         @RenderBody()
                     </div>
-                </div>
-
             </div>
-    <script type="text/javascript" src="/scripts/App/config.js"></script>
-    @RenderSection("scripts", false)
-</body>
-</html>

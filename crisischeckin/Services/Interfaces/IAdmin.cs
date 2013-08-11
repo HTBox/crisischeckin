@@ -10,5 +10,6 @@ namespace Services.Interfaces
     public interface IAdmin
     {
         IEnumerable<Person> GetVolunteers(Disaster disaster);
+        IEnumerable<Person> GetVolunteersForDate(Disaster disaster, DateTime date);
     }
 }

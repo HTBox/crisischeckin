@@ -8,7 +8,7 @@ using crisicheckinweb.ViewModels;
 
 namespace crisicheckinweb.Controllers
 {
-    public class VolunteerController : Controller
+    public class VolunteerController : BaseController
     {
         private IDisaster _disasterSvc;
         private IAdmin _adminSvc;
@@ -26,10 +26,10 @@ namespace crisicheckinweb.Controllers
         }
 
         [HttpPost]
-        public ActionResult Filter(ListByDisasterViewModel model)
+        public PartialViewResult Filter(ListByDisasterViewModel model)
         {
             var disaster = _disasterSvc.Get(model.SelectedDisaster);
-            var results = _adminSvc.GetVolunteers(disaster);
+            var results = _adminSvc.GetVolunteersForDate(disaster, model.CommitmentDate.HasValue ? model.CommitmentDate.Value : DateTime.MinValue);
             return PartialView("_FilterResults", results);
         }
     }

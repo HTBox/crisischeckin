@@ -1,0 +1,21 @@
+﻿@using System.Web.Optimization
+@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+        <div class="row">
+            <div class="col-12">
+                <div class="page-header">
+                    <h1>Crisis Check-In</h1>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-2">
+                <div class="AdminMenu">
+                    <a href="/">Home</a><br />
+                </div>
+            </div>
+            <div class="col-10">
+                @RenderBody()
+            </div>
+        </div>
