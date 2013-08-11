@@ -8,7 +8,7 @@ using crisicheckinweb.ViewModels;
 
 namespace crisicheckinweb.Controllers
 {
-    public class VolunteerController : Controller
+    public class VolunteerController : BaseController
     {
         private IDisaster _disasterSvc;
         private IAdmin _adminSvc;

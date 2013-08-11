@@ -8,7 +8,7 @@ using Services.Interfaces;
 
 namespace crisicheckinweb.Controllers
 {
-    public class DisasterController : Controller
+    public class DisasterController : BaseController
     {
         private readonly IDisaster _disasterSvc;
         public DisasterController(IDisaster disasterSvc)
