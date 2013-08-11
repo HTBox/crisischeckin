@@ -101,6 +101,7 @@ namespace crisicheckinweb.Controllers
             }
 
             // If we got this far, something failed, redisplay form
+            model.Clusters = _clusterSvc.GetList();
             return View(model);
         }
 
