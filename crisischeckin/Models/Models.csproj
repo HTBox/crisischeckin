@@ -54,12 +54,16 @@
     <Compile Include="Migrations\201308111603396_InitalDBCreation.Designer.cs">
       <DependentUpon>201308111603396_InitalDBCreation.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201308111819397_AddClusters.cs" />
+    <Compile Include="Migrations\201308111819397_AddClusters.Designer.cs">
+      <DependentUpon>201308111819397_AddClusters.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Person.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="User.cs" />
     <Compile Include="v2\Assignment.cs" />
-    <Compile Include="v2\Cluster.cs" />
+    <Compile Include="Cluster.cs" />
     <Compile Include="v2\Location.cs" />
     <Compile Include="v2\PersonCluster.cs" />
     <Compile Include="v2\PersonPhone.cs" />
@@ -72,6 +76,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201308111603396_InitalDBCreation.resx">
       <DependentUpon>201308111603396_InitalDBCreation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201308111819397_AddClusters.resx">
+      <DependentUpon>201308111819397_AddClusters.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
