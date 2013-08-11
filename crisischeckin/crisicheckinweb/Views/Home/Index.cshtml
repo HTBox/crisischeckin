@@ -21,6 +21,7 @@
         <td>@comm.DisasterId</td>
         <td>@comm.StartDate</td>
         <td>@comm.EndDate</td>
+        <td></td>
     </tr>
     }
 </table>
@@ -45,8 +46,8 @@
 <script type="text/javascript">
 (function ($) {
     $(document).ready(function () {
-        $("#dp_startDate").datepicker();
-        $("#dp_endDate").datepicker();
+        $("#dp_startDate").datepicker().datepicker('setDate', new Date());
+        $("#dp_endDate").datepicker().datepicker('setDate', '+1');
     });
 })(jQuery);
 </script>

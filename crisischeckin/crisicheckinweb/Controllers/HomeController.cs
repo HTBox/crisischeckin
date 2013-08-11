@@ -14,24 +14,26 @@ namespace crisicheckinweb.Controllers
     {
 
         private readonly IDisaster _disasterSvc;
-        public HomeController(IDisaster disasterSvc)
+        private readonly IVolunteer _volunteerSvc;
+
+        public HomeController(IDisaster disasterSvc, IVolunteer volunteerSvc)
         {
             _disasterSvc = disasterSvc;
+            _volunteerSvc = volunteerSvc;
         }
 
         // GET: /Home/
         public ActionResult Index()
         {
-            List<Commitment> comms = new List<Commitment>();
-            comms.Add(new Commitment() {
-                Id = 1,
-                DisasterId = 1,
-                PersonId = 1,
-                StartDate = new DateTime(2013,01,01),
-                EndDate = new DateTime(2013,04,01)
-            }); 
+            IQueryable<Commitment> comms = _volunteerSvc.RetrieveCommitments(new Person() { Id = WebSecurity.CurrentUserId }, true); 
+            
+            IEnumerable<int> commsIds = from c in comms
+                                        select c.Id;
+                
+            IEnumerable<Disaster> activeDisasters = _disasterSvc.GetActiveList();
+            IEnumerable<Disaster> openActiveDisasters = activeDisasters.Where(d => !commsIds.Contains(d.Id));
 
-            var model = new VolunteerViewModel { Disasters = _disasterSvc.GetActiveList(),
+            var model = new VolunteerViewModel { Disasters = openActiveDisasters,
                 MyCommitments = comms };
             return View(model);
         }
