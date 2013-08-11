@@ -41,6 +41,10 @@
                 @Html.LabelFor(m => m.ConfirmPassword)
                 @Html.PasswordFor(m => m.ConfirmPassword)
             </li>
+            <li>
+                @Html.LabelFor(m => m.Cluster)
+                @Html.DropDownListFor(m => m.Cluster, new SelectList(Model.Clusters, "Id", "Name", Model.Cluster))
+            </li>
         </ol>
         <input type="submit" value="Create new account" />
     </fieldset>
