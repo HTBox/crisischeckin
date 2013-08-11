@@ -1,1 +1,13 @@
-﻿
+﻿@{
+    if (User.Identity != null && string.IsNullOrWhiteSpace(User.Identity.Name))
+    {
+        Html.Encode("");
+    }
+    else
+    {
+        @(string.Format("Welcome, {0}!", User.Identity.Name))
+        <text>
+            [ <a href="/Account/Logoff"> Logout </a> ]
+        </text>
+    }
+}

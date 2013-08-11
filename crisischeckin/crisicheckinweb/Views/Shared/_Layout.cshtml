@@ -19,8 +19,7 @@
             </div>
             <div class="col-3">
                 <div class="page-header">
-                    @(Html.Encode(string.IsNullOrWhiteSpace(User.Identity.Name) ? "" : string.Format("Welcome, {0}!", User.Identity.Name)))
-
+                    @Html.Partial("_LoginStatus")
                 </div>
             </div>
         </div>
