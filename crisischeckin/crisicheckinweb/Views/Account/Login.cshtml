@@ -14,23 +14,31 @@
 
     <fieldset>
         <legend>Log in Form</legend>
-        <ol>
-            <li>
+        <div class="row">
+            <div class="span12">
                 @Html.LabelFor(m => m.UserName)
                 @Html.TextBoxFor(m => m.UserName)
                 @Html.ValidationMessageFor(m => m.UserName)
-            </li>
-            <li>
+            </div>
+        </div>
+        <div class="row">
+            <div class="span12">
                 @Html.LabelFor(m => m.Password)
                 @Html.PasswordFor(m => m.Password)
                 @Html.ValidationMessageFor(m => m.Password)
-            </li>
-            <li>
-                @Html.CheckBoxFor(m => m.RememberMe)
+            </div>
+        </div>
+        <div class="row">
+            <div class="span12">
+                @Html.CheckBoxFor(m => m.RememberMe, new { style = "float: left; margin-right: 5px;"})
                 @Html.LabelFor(m => m.RememberMe, new { @class = "checkbox" })
-            </li>
-        </ol>
-        <input type="submit" value="Log in" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="span12">
+                <input type="submit" value="Log in" />
+            </div>
+        </div>
     </fieldset>
     <p>
         @Html.ActionLink("Register", "Register") if you don't have an account.
