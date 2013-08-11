@@ -293,10 +293,6 @@
     <Content Include="Views\Web.config" />
     <Content Include="scripts\jquery-1.9.1.min.map" />
     <Content Include="Views\Shared\_validationSummary.cshtml" />
-    <Content Include="Views\Shared\_BootstrapLayout.narrow.cshtml" />
-    <Content Include="Views\Shared\_BootstrapLayout.empty.cshtml" />
-    <Content Include="Views\Shared\_BootstrapLayout.basic.cshtml" />
-    <Content Include="Views\Shared\_alerts.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Volunteer\_FilterResults.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
@@ -343,9 +339,6 @@
       <Project>{d7a71984-2cc2-4da7-9346-d697fdbf15b4}</Project>
       <Name>Services</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Shared\_html5shiv.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Account\Register.cshtml" />
