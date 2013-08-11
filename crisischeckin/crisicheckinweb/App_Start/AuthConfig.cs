@@ -1,4 +1,5 @@
 ﻿using System.Web.Security;
+using Common;
 using Models;
 using System;
 using System.Collections.Generic;
@@ -51,19 +52,19 @@ namespace crisicheckinweb
 
         public static void VerifyRolesAndDefaultAdminAccount()
         {
-            if (!Roles.RoleExists("Admin"))
+            if (!Roles.RoleExists(Constants.RoleAdmin))
             {
-                Roles.CreateRole("Admin");
+                Roles.CreateRole(Constants.RoleAdmin);
             }
 
-            if (!Roles.RoleExists("Volunteer"))
+            if (!Roles.RoleExists(Constants.RoleVolunteer))
             {
-                Roles.CreateRole("Volunteer");
+                Roles.CreateRole(Constants.RoleVolunteer);
             }
 
-            if (!WebSecurity.UserExists("Administrator"))
+            if (!WebSecurity.UserExists(Constants.DefaultAdministratorUserName))
             {
-                WebSecurity.CreateUserAndAccount("Administrator", "P@$$w0rd", null, false);
+                WebSecurity.CreateUserAndAccount(Constants.DefaultAdministratorUserName, Constants.DefaultAdministratorPassword, null, false);
             }
         }
     }
