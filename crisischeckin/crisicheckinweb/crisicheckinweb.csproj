@@ -229,6 +229,7 @@
     <Content Include="Views\Shared\_alerts.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Volunteer\_FilterResults.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
