@@ -17,7 +17,7 @@ namespace Services.UnitTest
         public void Register_NullFirstName()
         {
             VolunteerService service = new VolunteerService(new Mock<IDataService>().Object);
-            service.Register("", "last", "email", "555-333-1111", 1);
+            service.Register("", "last", "email", "555-333-1111", 1, 1);
         }
 
         [TestMethod]
@@ -25,7 +25,7 @@ namespace Services.UnitTest
         public void Register_NullLastName()
         {
             VolunteerService service = new VolunteerService(new Mock<IDataService>().Object);
-            service.Register("first", "", "email", "555-333-1111", 1);
+            service.Register("first", "", "email", "555-333-1111", 1, 2);
         }
 
         [TestMethod]
@@ -33,7 +33,7 @@ namespace Services.UnitTest
         public void Register_NullEmail()
         {
             VolunteerService service = new VolunteerService(new Mock<IDataService>().Object);
-            service.Register("first", "last", "", "555-333-1111", 1);
+            service.Register("first", "last", "", "555-333-1111", 1, 3);
         }
 
         [TestMethod]
@@ -41,7 +41,7 @@ namespace Services.UnitTest
         public void Register_NullPhoneNumber()
         {
             VolunteerService service = new VolunteerService(new Mock<IDataService>().Object);
-            service.Register("first", "last", "email", "", 1);
+            service.Register("first", "last", "email", "", 1, 3);
         }
 
         [TestMethod]
@@ -49,7 +49,7 @@ namespace Services.UnitTest
         public void Register_NullCluster()
         {
             VolunteerService service = new VolunteerService(new Mock<IDataService>().Object);
-            service.Register("first", "last", "email", "555-333-1111", 0);
+            service.Register("first", "last", "email", "555-333-1111", 0, 4);
         }
 
         [TestMethod]
@@ -70,7 +70,7 @@ namespace Services.UnitTest
             moqDataService.Setup(s => s.AddPerson(It.IsAny<Person>())).Returns(moqPerson);
 
             VolunteerService service = new VolunteerService(moqDataService.Object);
-            Person actual = service.Register("Bob", "Jones", "bob.jones@email.com", "555-222-9139", 1);
+            Person actual = service.Register("Bob", "Jones", "bob.jones@email.com", "555-222-9139", 1, 5);
 
             Assert.AreEqual(1, actual.Id);
             Assert.AreEqual("Bob", actual.FirstName);
@@ -102,7 +102,7 @@ namespace Services.UnitTest
             moqDataService.Setup(s => s.Persons).Returns(people.AsQueryable());
 
             VolunteerService service = new VolunteerService(moqDataService.Object);
-            Person actual = service.Register("Cathy", "Jones", "cathy.jones@email.com", "555-222-9139 ext 33", 1);
+            Person actual = service.Register("Cathy", "Jones", "cathy.jones@email.com", "555-222-9139 ext 33", 1, 6);
 
             Assert.AreEqual("Cathy", actual.FirstName);
             Assert.AreEqual("Jones", actual.LastName);

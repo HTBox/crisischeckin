@@ -41,9 +41,10 @@ namespace Services
                 throw new ArgumentException("Disaster was not found", "disaster");
             var commitments = from c in dataService.Commitments
                               where c.DisasterId == disaster.Id
+                              where date >= c.StartDate && date <= c.EndDate
                               select c;
+
             var people = from c in commitments
-                         where date >= c.StartDate && date <= c.EndDate
                          join p in dataService.Persons on c.PersonId equals p.Id
                          select p;
             people.Include(p => p.Cluster);

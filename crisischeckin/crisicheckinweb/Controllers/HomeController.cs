@@ -35,8 +35,9 @@ namespace crisicheckinweb.Controllers
             {
                 if (DateTime.Compare(model.SelectedEndDate, model.SelectedStartDate) >= 0)
                 {
+                    Person me = _volunteerSvc.FindById(WebSecurity.CurrentUserId);
                     _disasterSvc.AssignToVolunteer(new Disaster { Id = model.SelectedDisaster },
-                        new Person { Id = WebSecurity.CurrentUserId }, model.SelectedStartDate, model.SelectedEndDate);
+                        me, model.SelectedStartDate, model.SelectedEndDate);
                 }
                 else
                 {

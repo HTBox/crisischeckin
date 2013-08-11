@@ -81,12 +81,16 @@ namespace crisicheckinweb.Controllers
                 // Attempt to register the user
                 try
                 {
-                    Person newPerson = _volunteerSvc.Register(model.FirstName, model.LastName, model.Email, model.PhoneNumber, model.Cluster);
-
                     WebSecurity.CreateUserAndAccount(model.UserName, model.Password);
                     WebSecurity.Login(model.UserName, model.Password);
 
                     Roles.AddUserToRole(model.UserName, "Volunteer");
+
+                    var userId = WebSecurity.GetUserId(model.UserName);
+
+                    Person newPerson = _volunteerSvc.Register(model.FirstName, model.LastName, model.Email, model.PhoneNumber, model.Cluster, userId);
+
+                    _volunteerSvc.UpdateDetails(newPerson);
 
                     return RedirectToAction("Index", "Home");
                 }

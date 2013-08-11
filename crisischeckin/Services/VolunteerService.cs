@@ -21,7 +21,7 @@ namespace Services
             ourService = service;
         }
 
-        public Person Register(string firstName, string lastName, string email, string phoneNumber, int cluster)
+        public Person Register(string firstName, string lastName, string email, string phoneNumber, int cluster, int userId)
         {
             if (string.IsNullOrWhiteSpace(firstName)) { throw new ArgumentNullException("firstName"); }
             if (string.IsNullOrWhiteSpace(lastName)) { throw new ArgumentNullException("lastName"); }
@@ -39,7 +39,7 @@ namespace Services
             // TODO: eventually support User object
             return ourService.AddPerson(new Person()
             {
-                UserId = null,
+                UserId = userId,
                 FirstName = firstName,
                 LastName = lastName,
                 Email = email,
@@ -96,5 +96,9 @@ namespace Services
             return RetrieveCommitments(person, true).Where(c => c.DisasterId == disaster.Id);
         }
 
+        public Person FindById(int userId)
+        {
+            return ourService.Persons.Single(p => p.UserId == userId);
+        }
     }
 }
