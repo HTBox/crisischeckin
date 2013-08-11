@@ -71,5 +71,36 @@ namespace Services
                 throw new PersonNotFoundException();
             }
         }
+
+        public IQueryable<Commitment> RetrieveCommitments(Person person, bool showInactive)
+        {
+            if (person == null)
+                throw new ArgumentNullException("person", "Person cannot be null");
+
+            return new List<Commitment>{
+                new Commitment
+                {
+                    PersonId=1,
+                    DisasterId=1,
+                    StartDate=new DateTime(2013,8,1),
+                    EndDate=new DateTime(2013, 9,1),
+                    Id=-1
+                }
+            }.AsQueryable();
+        }
+
+        public IQueryable<Commitment> RetrieveCommitmentsForDisaster(Person person, Disaster disaster, bool showInactive)
+        {
+            if (person == null)
+                throw new ArgumentNullException("person", "Person cannot be null");
+            if (disaster == null)
+                throw new ArgumentNullException("disaster", "Disasterr cannot be null");
+
+            return from c in ourService.Commitments
+                   where c.PersonId == person.Id
+                   where c.DisasterId == disaster.Id
+                   select c;
+        }
+
     }
 }

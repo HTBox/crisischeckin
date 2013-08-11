@@ -109,7 +109,20 @@ namespace crisicheckinweb.Controllers
         [HttpPost]
         public ActionResult ChangePassword(ChangePasswordViewModel model)
         {
+            if (ModelState.IsValid)
+            {
+                if (Membership.ValidateUser(User.Identity.Name, model.OldPassword))
+                {
+                    WebSecurity.ChangePassword(User.Identity.Name, model.OldPassword, model.NewPassword);
+                    return RedirectToAction("PasswordChanged");
+                }
+                ModelState.AddModelError("OldPassword", "Old password is not correct.");
+            }
+            return View();
+        }
 
+        public ActionResult PasswordChanged()
+        {
             return View();
         }
 

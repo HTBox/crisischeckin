@@ -300,6 +300,7 @@
     <Content Include="Views\Shared\_VolunteerLayout.cshtml" />
     <Content Include="Views\Shared\_LoginStatus.cshtml" />
     <Content Include="Views\Account\ChangePassword.cshtml" />
+    <Content Include="Views\Account\PasswordChanged.cshtml" />
     <Content Include="Views\Account\UpgradeVolunteerToAdministrator.cshtml" />
   </ItemGroup>
   <ItemGroup>
