@@ -252,7 +252,43 @@ namespace Services.UnitTest
         }
 
 
-        // Active disaster returns records
+        [TestMethod]
+        public void WhenQueriedActiveCommitmentsAreReturned()
+        {
+            var moqDataService = new Mock<IDataService>();
+            moqDataService.Setup(ds => ds.Commitments)
+                .Returns(new List<Commitment>
+                {
+                    new Commitment
+                    {
+                        DisasterId=1,
+                        Id = 1,
+                        PersonId=1,
+                        StartDate=new DateTime(2013, 8, 1),
+                        EndDate = new DateTime(2013, 9, 1)
+                    }
+                }.AsQueryable());
+            var underTest = new VolunteerService(moqDataService.Object);
+
+            var person = new Person
+            {
+                Id = 1,
+                FirstName = "test",
+                LastName = "tester"
+            };
+            var disaster = new Disaster
+            {
+                Id = 1,
+                Name = "test",
+                IsActive = true
+            };
+
+            var results = underTest.RetrieveCommitmentsForDisaster(person, disaster, false);
+            Assert.IsTrue(results.Count() == 1);
+            Assert.IsTrue(results.Single().Id == 1);
+        }
+
+        // No commitments returns no records:
 
         // Inactive disaster depends on flag
 
