@@ -66,6 +66,11 @@ namespace crisicheckinweb
             {
                 WebSecurity.CreateUserAndAccount(Constants.DefaultAdministratorUserName, Constants.DefaultAdministratorPassword, null, false);
             }
+            if (WebSecurity.UserExists(Constants.DefaultAdministratorUserName) &&
+                !Roles.IsUserInRole(Constants.DefaultAdministratorUserName, Constants.RoleAdmin))
+            {
+               Roles.AddUserToRole(Constants.DefaultAdministratorUserName, Constants.RoleAdmin); 
+            }
         }
     }
 }

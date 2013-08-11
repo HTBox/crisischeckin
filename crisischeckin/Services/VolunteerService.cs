@@ -77,11 +77,10 @@ namespace Services
             if (person == null)
                 throw new ArgumentNullException("person", "Person cannot be null");
 
-            var answer= from c in ourService.Commitments
-                   let d = ourService.Disasters.Single(d => d.Id == c.DisasterId)
-                   where c.PersonId == person.Id
-                   where showInactive || d.IsActive
-                   select c;
+            var answer = from c in ourService.Commitments
+                         where c.PersonId == person.Id
+                         where showInactive || c.Disaster.IsActive
+                         select c;
             return answer;
         }
 

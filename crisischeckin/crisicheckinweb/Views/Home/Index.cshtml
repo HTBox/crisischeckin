@@ -10,17 +10,28 @@
 
 <h3>My Disasters</h3>
 
+<style>
+    table, th, tr, td
+    {
+        padding: 10px;
+        border:1px solid green;
+    }
+
+</style>
+
 <table>
     <tr>
         <th>Disaster Name</th>
         <th>Start Date</th>
         <th>End Date</th>
+        <th>Active</th>
     </tr>
     @foreach(var comm in Model.MyCommitments) { 
     <tr>
-        <td>@comm.DisasterId</td>
-        <td>@comm.StartDate</td>
-        <td>@comm.EndDate</td>
+        <td>@comm.Disaster.Name</td>
+        <td>@comm.StartDate.ToShortDateString()</td>
+        <td>@comm.EndDate.ToShortDateString()</td>
+        <td>@(comm.Disaster.IsActive == true ? "Yes" : "No") </td>
     </tr>
     }
 </table>
@@ -45,8 +56,8 @@
 <script type="text/javascript">
 (function ($) {
     $(document).ready(function () {
-        $("#dp_startDate").datepicker();
-        $("#dp_endDate").datepicker();
+        $("#dp_startDate").datepicker().datepicker('setDate', new Date());
+        $("#dp_endDate").datepicker().datepicker('setDate', '+1');
     });
 })(jQuery);
 </script>
