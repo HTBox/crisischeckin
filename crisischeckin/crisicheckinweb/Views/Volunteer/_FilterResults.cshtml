@@ -3,11 +3,19 @@
     ViewBag.Title = "_FilterResults";
 }
 
+<style>
+    table, tr, th, td {
+        padding: 7px;
+        border: 1px solid grey;
+    }
+</style>
+
 <table>
     <tr>
         <th>Volunteer Name</th>
         <th>Email</th>
         <th>Phone</th>
+        <th>Cluster</th>
     </tr>
     @foreach (var person in Model)
     {
@@ -15,6 +23,7 @@
         <td>@(person.LastName + ", " + person.FirstName)</td>
         <td>@person.Email</td>
         <td>@person.PhoneNumber</td>
+        <td>@(Html.Encode(person.Cluster != null ? person.Cluster.Name : ""))</td>
     </tr>
     }
 </table>    

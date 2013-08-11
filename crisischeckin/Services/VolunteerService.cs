@@ -21,12 +21,13 @@ namespace Services
             ourService = service;
         }
 
-        public Person Register(string firstName, string lastName, string email, string phoneNumber)
+        public Person Register(string firstName, string lastName, string email, string phoneNumber, int cluster)
         {
             if (string.IsNullOrWhiteSpace(firstName)) { throw new ArgumentNullException("firstName"); }
             if (string.IsNullOrWhiteSpace(lastName)) { throw new ArgumentNullException("lastName"); }
             if (string.IsNullOrWhiteSpace(email)) { throw new ArgumentNullException("email"); }
             if (string.IsNullOrWhiteSpace(phoneNumber)) { throw new ArgumentNullException("phoneNumber"); }
+            if (cluster <= 0) { throw new ArgumentNullException("cluster"); }
 
             var foundPerson = ourService.Persons.Any(p => p.Email == email);
 
@@ -42,7 +43,8 @@ namespace Services
                 FirstName = firstName,
                 LastName = lastName,
                 Email = email,
-                PhoneNumber = phoneNumber
+                PhoneNumber = phoneNumber,
+                ClusterId = cluster
             });
         }
 

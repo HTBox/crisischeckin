@@ -9,7 +9,7 @@ namespace Services.Interfaces
 {
     public interface IVolunteer
     {
-        Person Register(string firstName, string lastName, string email, string phoneNumber);
+        Person Register(string firstName, string lastName, string email, string phoneNumber, int cluster);
 
         Person UpdateDetails(Person person);
 

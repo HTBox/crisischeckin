@@ -16,8 +16,10 @@ namespace crisicheckinweb.Controllers
     public class AccountController : BaseController
     {
         private readonly IVolunteer _volunteerSvc;
-        public AccountController(IVolunteer volunteerSvc)
+        private readonly ICluster _clusterSvc;
+        public AccountController(IVolunteer volunteerSvc, ICluster clusterSvc)
         {
+            _clusterSvc = clusterSvc;
             _volunteerSvc = volunteerSvc;
         }
 
@@ -62,7 +64,8 @@ namespace crisicheckinweb.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
-            return View();
+            var model = new RegisterModel { Clusters = _clusterSvc.GetList() };
+            return View(model);
         }
 
 
@@ -78,7 +81,7 @@ namespace crisicheckinweb.Controllers
                 // Attempt to register the user
                 try
                 {
-                    Person newPerson = _volunteerSvc.Register(model.FirstName, model.LastName, model.Email, model.PhoneNumber);
+                    Person newPerson = _volunteerSvc.Register(model.FirstName, model.LastName, model.Email, model.PhoneNumber, model.Cluster);
 
                     WebSecurity.CreateUserAndAccount(model.UserName, model.Password);
                     WebSecurity.Login(model.UserName, model.Password);
@@ -98,6 +101,7 @@ namespace crisicheckinweb.Controllers
             }
 
             // If we got this far, something failed, redisplay form
+            model.Clusters = _clusterSvc.GetList();
             return View(model);
         }
 
@@ -145,7 +149,7 @@ namespace crisicheckinweb.Controllers
         {
             // Get username by selected uerId.
             //var user = 
-            
+
             if (ModelState.IsValid)
             {
                 Roles.AddUserToRole(model.UserId, Constants.RoleAdmin);
@@ -177,7 +181,7 @@ namespace crisicheckinweb.Controllers
             RemoveLoginSuccess,
         }
 
-       
+
 
         private static string ErrorCodeToString(MembershipCreateStatus createStatus)
         {

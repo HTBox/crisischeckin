@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data.Entity;
 
 namespace Services
 {
@@ -45,6 +46,7 @@ namespace Services
                          where date >= c.StartDate && date <= c.EndDate
                          join p in dataService.Persons on c.PersonId equals p.Id
                          select p;
+            people.Include(p => p.Cluster);
             return people;
         }
 
