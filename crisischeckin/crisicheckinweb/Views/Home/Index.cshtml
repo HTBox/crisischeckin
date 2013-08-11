@@ -1,5 +1,44 @@
-﻿@{
-    ViewBag.Title = "Index";
+﻿@model crisicheckinweb.ViewModels.VolunteerViewModel
+@{
+    ViewBag.Title = "Volunteer Home";
+    Layout = "~/Views/Shared/
 }
 
-<h2>Index</h2>
+<h2>Volunteer Home</h2>
+
+<h3>My Disasters</h3>
+
+<table>
+    <tr>
+        <th>Disaster Name</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+    </tr>
+    @*@foreach(){ *@
+    <tr>
+        <td>Disaster 1</td>
+        <td>1/1/2013</td>
+        <td>2/1/2013</td>
+    </tr>
+    @*}*@
+</table>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary()
+
+ <h3>Disaster: </h3>
+    @Html.DropDownListFor(m => m.SelectedDisaster, new SelectList(Model.Disasters, "Id", "Name", Model.SelectedDisaster), "-- Choose One --")
+
+    <label>Start Date:</label>
+    <input type="text" id="dp" size="20"/>
+    
+    <input id="GoButton" type="submit" value="Volunteer for Disaster"/>
+    
+}
+
+<script type="text/javascript">
+$(function() {
+    $('#dp').datepicker();
+});
+</script>
