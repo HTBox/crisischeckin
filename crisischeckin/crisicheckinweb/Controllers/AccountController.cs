@@ -100,6 +100,18 @@ namespace crisicheckinweb.Controllers
             return View(model);
         }
 
+        public ActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ChangePassword()
+        {
+
+            return View();
+        }
+
         #region Helpers
         private ActionResult RedirectToLocal(string returnUrl)
         {
