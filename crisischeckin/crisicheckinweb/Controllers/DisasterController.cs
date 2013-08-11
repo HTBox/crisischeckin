@@ -8,6 +8,7 @@ using Services.Interfaces;
 
 namespace crisicheckinweb.Controllers
 {
+    [Authorize(Roles = Common.Constants.RoleAdmin)]
     public class DisasterController : BaseController
     {
         private readonly IDisaster _disasterSvc;
@@ -63,12 +64,5 @@ namespace crisicheckinweb.Controllers
 
             return Redirect("/Disaster/List");
         }
-
-        #region api methods
-        public JsonResult GetActiveDisasters()
-        {
-            return Json(_disasterSvc.GetActiveList(), JsonRequestBehavior.AllowGet);
-        }
-        #endregion
     }
 }
