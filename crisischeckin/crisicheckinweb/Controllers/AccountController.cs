@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using Common;
 using crisicheckinweb.ViewModels;
 using Models;
 using Services.Exceptions;
@@ -81,6 +82,9 @@ namespace crisicheckinweb.Controllers
 
                     WebSecurity.CreateUserAndAccount(model.UserName, model.Password);
                     WebSecurity.Login(model.UserName, model.Password);
+
+                    Roles.AddUserToRole(model.UserName, "Volunteer");
+
                     return RedirectToAction("Index", "Home");
                 }
                 catch (PersonAlreadyExistsException e)
@@ -91,6 +95,46 @@ namespace crisicheckinweb.Controllers
                 {
                     ModelState.AddModelError("", ErrorCodeToString(e.StatusCode));
                 }
+            }
+
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
+
+        public ActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ChangePassword(ChangePasswordViewModel model)
+        {
+
+            return View();
+        }
+
+
+        //
+        // GET: /Account/UpgradeVolunteerToAdministrator
+        [Authorize(Roles = Constants.RoleAdmin)]
+        public ActionResult UpgradeVolunteerToAdministrator()
+        {
+            // Display list of active users so admin can select user to upgrade
+            return View();
+        }
+
+        //
+        // POST: /Account/Register
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult UpgradeVolunteerToAdministrator(RegisterModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                    Roles.AddUserToRole(model.UserName, Constants.RoleAdmin);
+
+                    return RedirectToAction("Index", "Home");
+           
             }
 
             // If we got this far, something failed, redisplay form

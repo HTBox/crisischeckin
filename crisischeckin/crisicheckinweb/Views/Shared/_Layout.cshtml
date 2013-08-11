@@ -7,13 +7,22 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Crisis Checkin</title>
-   @* @Styles.Render("~/Content/body.css")*@
-    @Styles.Render("~/Content/bootstrap/bootstrap.min.css")
-    @*<link href="@Styles.Url("~/content/css")" rel="stylesheet"/>*@
-
+    @Styles.Render("~/Content/bootstrap/bootstrap.css")
 </head>
 <body>
     <div class="container">
+        <div class="row">
+            <div class="col-7">
+                <div class="page-header">
+                    Crisis Check-In
+                </div>
+            </div>
+            <div class="col-5">
+                <div class="page-header">
+                    @Html.Partial("_LoginStatus")
+                </div>
+            </div>
+        </div>
         @RenderBody()
     </div>
     <script type="text/javascript" src="/scripts/jquery-1.9.1.js"></script>

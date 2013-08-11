@@ -15,6 +15,8 @@ namespace crisicheckinweb
         protected void Application_Start()
         {
             AuthConfig.Register();
+            AuthConfig.VerifyRolesAndDefaultAdminAccount();
+
             DbConfig.Initialize();
             AreaRegistration.RegisterAllAreas();
 
