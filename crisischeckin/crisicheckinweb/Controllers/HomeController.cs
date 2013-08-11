@@ -26,14 +26,8 @@ namespace crisicheckinweb.Controllers
         public ActionResult Index()
         {
             IQueryable<Commitment> comms = _volunteerSvc.RetrieveCommitments(new Person() { Id = WebSecurity.CurrentUserId }, true); 
-            
-            IEnumerable<int> commsIds = from c in comms
-                                        select c.Id;
-                
-            IEnumerable<Disaster> activeDisasters = _disasterSvc.GetActiveList();
-            IEnumerable<Disaster> openActiveDisasters = activeDisasters.Where(d => !commsIds.Contains(d.Id));
 
-            var model = new VolunteerViewModel { Disasters = openActiveDisasters,
+            var model = new VolunteerViewModel { Disasters = _disasterSvc.GetActiveList(),
                 MyCommitments = comms };
             return View(model);
         }
