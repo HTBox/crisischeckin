@@ -3,22 +3,6 @@
     Layout = "/Views/Shared/_Layout.cshtml";
 }
 
-<style>
-    .align-right {
-        text-align: right;
-        width: 100%;
-        padding-top: 10px;
-    }
-</style>
-
-<script type="text/javascript">
-    $(document).ready(function () {
-        $(".btn-navbar").click(function () {
-            $("#loginStatus").toggleClass("align-right");
-        });
-    });
-</script>
-
 <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-inner">
         <div class="container">
@@ -30,7 +14,7 @@
                 <ul class="nav">
                     <li class="active"><a href="/">Home</a></li>
                 </ul>
-                <div id="loginStatus" class="align-right" style="color: white; font-weight: 300; padding-left: 15px;">
+                <div id="loginStatus" class="navbar-form pull-right" style="font-weight:300; color:white; padding-top:10px;">
                     @Html.Partial("_LoginStatus")
                 </div>
             </div>
@@ -40,6 +24,5 @@
 </div>
 
 <div class="container">
-    <br/><br/>
     @RenderBody()
 </div>
