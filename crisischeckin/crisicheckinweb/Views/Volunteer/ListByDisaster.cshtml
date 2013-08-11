@@ -10,7 +10,17 @@
     <h3>Disaster: </h3>
     @Html.DropDownListFor(m => m.SelectedDisaster, new SelectList(Model.Disasters, "Id", "Name", Model.SelectedDisaster), "-- Choose One --")
 
-    <text>Filter by Date: </text>@Html.TextBoxFor(m => m.CommitmentDate)
+    <text>Filter by Date: </text>@Html.TextBoxFor(m => m.CommitmentDate, new {id = "dp_startDate"})
     <input id="GoButton" type="submit" value="Go"/>
 }
 <div id="results"></div>
+
+
+
+<script type="text/javascript">
+(function ($) {
+    $(document).ready(function () {
+        $("#dp_startDate").datepicker().datepicker('setDate', new Date());
+    });
+})(jQuery);
+</script>

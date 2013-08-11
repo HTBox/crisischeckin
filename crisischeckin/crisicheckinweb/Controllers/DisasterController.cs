@@ -21,11 +21,11 @@ namespace crisicheckinweb.Controllers
         // GET: /Disaster/
         public ActionResult List()
         {
-            var viewData = _disasterSvc.GetList(); 
+            var viewData = _disasterSvc.GetList();
 
             return View(viewData);
         }
-        
+
         [HttpGet]
         public ActionResult Edit(string id)
         {
@@ -46,23 +46,30 @@ namespace crisicheckinweb.Controllers
                 viewData = new Disaster();
                 viewData.IsActive = true;
             }
-            
+
             return View(viewData);
         }
 
         [HttpPost]
-        public RedirectResult Edit(Disaster disaster)
+        public ActionResult Edit(Disaster disaster)
         {
-            if (disaster.Id == -1)
+            if (ModelState.IsValid && !String.IsNullOrWhiteSpace(disaster.Name))
             {
-                _disasterSvc.Create(disaster);
-            }
-            else
-            {
-                _disasterSvc.Update(disaster.Id,disaster.Name, disaster.IsActive);
+                if (disaster.Id == -1)
+                {
+                    _disasterSvc.Create(disaster);
+                }
+                else
+                {
+                    _disasterSvc.Update(disaster.Id, disaster.Name, disaster.IsActive);
+                }
+
+                return Redirect("/Disaster/List");
             }
 
-            return Redirect("/Disaster/List");
+
+            ModelState.AddModelError("Name", "Disaster Name is required!");
+            return View(disaster);
         }
 
 
