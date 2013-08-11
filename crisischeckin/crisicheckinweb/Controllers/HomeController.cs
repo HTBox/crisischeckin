@@ -35,7 +35,7 @@ namespace crisicheckinweb.Controllers
             {
                 if (DateTime.Compare(model.SelectedEndDate, model.SelectedStartDate) >= 0)
                 {
-                    Person me = _volunteerSvc.FindById(WebSecurity.CurrentUserId);
+                    Person me = _volunteerSvc.FindByUserId(WebSecurity.CurrentUserId);
                     _disasterSvc.AssignToVolunteer(new Disaster { Id = model.SelectedDisaster },
                         me, model.SelectedStartDate, model.SelectedEndDate);
                 }
@@ -55,7 +55,8 @@ namespace crisicheckinweb.Controllers
 
         private VolunteerViewModel GetDefaultViewModel()
         {
-            IQueryable<Commitment> comms = _volunteerSvc.RetrieveCommitments(new Person() { Id = WebSecurity.CurrentUserId }, true);
+            var person = _volunteerSvc.FindByUserId(WebSecurity.CurrentUserId);
+            IQueryable<Commitment> comms = _volunteerSvc.RetrieveCommitments(person, true);
 
             var model = new VolunteerViewModel
             {

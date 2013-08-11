@@ -96,7 +96,7 @@ namespace Services
             return RetrieveCommitments(person, true).Where(c => c.DisasterId == disaster.Id);
         }
 
-        public Person FindById(int userId)
+        public Person FindByUserId(int userId)
         {
             return ourService.Persons.Single(p => p.UserId == userId);
         }

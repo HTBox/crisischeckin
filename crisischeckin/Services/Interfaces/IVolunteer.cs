@@ -17,6 +17,6 @@ namespace Services.Interfaces
 
         IQueryable<Commitment> RetrieveCommitmentsForDisaster(Person person, Disaster disaster);
 
-        Person FindById(int p);
+        Person FindByUserId(int p);
     }
 }
