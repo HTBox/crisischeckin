@@ -64,5 +64,13 @@ namespace crisicheckinweb.Controllers
 
             return Redirect("/Disaster/List");
         }
+
+
+        #region api methods
+        public JsonResult GetActiveDisasters()
+        {
+            return Json(_disasterSvc.GetActiveList(), JsonRequestBehavior.AllowGet);
+        }
+        #endregion
     }
 }

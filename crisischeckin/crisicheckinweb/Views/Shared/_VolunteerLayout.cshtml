@@ -2,18 +2,32 @@
 @{
     Layout = "/Views/Shared/_Layout.cshtml";
 }
-
 @Scripts.Render("~/Scripts/jquery-1.9.1.js")
 @Scripts.Render("~/Scripts/jquery-ui-1.10.3.min.js")
 @Styles.Render("~/Content/themes/base/jquery.ui.all.css")
 
-        <div class="row">
-            <div class="col-2">
-                <div class="AdminMenu">
-                    <a href="/">Home</a><br />
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+            </button>
+            <a class="brand" href="/">Crisis Check-In</a>
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    <li class="active"><a href="/">Home</a></li>
+                </ul>
+                   <div style="width: 100%; text-align: right; color: white; padding-top: 10px;">
+                    @Html.Partial("_LoginStatus")
                 </div>
             </div>
-            <div class="col-10">
-                @RenderBody()
-            </div>
+            <!--/.nav-collapse -->
         </div>
+    </div>
+</div>
+
+<div class="container">
+    <br />
+    <br />
+    @RenderBody()
+</div>

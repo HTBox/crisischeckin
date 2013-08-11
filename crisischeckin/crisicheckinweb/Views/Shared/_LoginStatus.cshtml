@@ -1,4 +1,5 @@
-﻿@{
+﻿@using Common
+@{
     if (User.Identity != null && string.IsNullOrWhiteSpace(User.Identity.Name))
     {
         Html.Encode("");
@@ -6,8 +7,18 @@
     else
     {
         @(string.Format("Welcome, {0}!", User.Identity.Name))
+    
+<text>
+    [
+</text>
+
+        if (User.IsInRole(Constants.RoleAdmin))
+        {
+            <text> <a href="/"> Home </a> | </text>
+        }
+    
         <text>
-            [ <a href="/Account/Logoff"> Logout </a> |
+             <a href="/Account/Logoff"> Logout </a> |
               <a href="/Account/ChangePassword"> Change Password </a> ]
         </text>
     }
