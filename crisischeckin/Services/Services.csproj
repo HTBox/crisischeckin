@@ -48,11 +48,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdminService.cs" />
+    <Compile Include="ClusterService.cs" />
     <Compile Include="DataService.cs" />
     <Compile Include="DisasterService.cs" />
     <Compile Include="Exceptions\PersonAlreadyExistsException.cs" />
     <Compile Include="Exceptions\PersonNotFoundException.cs" />
     <Compile Include="Interfaces\IAdmin.cs" />
+    <Compile Include="Interfaces\ICluster.cs" />
     <Compile Include="Interfaces\IDataService.cs" />
     <Compile Include="Interfaces\IDisaster.cs" />
     <Compile Include="Interfaces\IVolunteer.cs" />

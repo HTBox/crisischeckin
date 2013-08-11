@@ -19,6 +19,9 @@ namespace Services
             context = ctx;
         }
 
+        public IQueryable<Cluster> Clusters
+        { get { return context.Clusters; } }
+
         public IQueryable<Commitment> Commitments
         { get { return context.Commitments; } }
 

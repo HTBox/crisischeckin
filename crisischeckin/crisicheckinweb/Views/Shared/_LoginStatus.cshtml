@@ -8,13 +8,11 @@
     {
         @(string.Format("Welcome, {0}!", User.Identity.Name))
     
-<text>
-    [
-</text>
+    <text>[ </text>
 
         if (User.IsInRole(Constants.RoleAdmin))
         {
-            <text> <a href="/"> Home </a> | </text>
+            <text> <a href="/Disaster/List"> Admin </a> | </text>
         }
     
         <text>
