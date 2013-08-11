@@ -106,7 +106,7 @@ namespace crisicheckinweb.Controllers
         }
 
         [HttpPost]
-        public ActionResult ChangePassword()
+        public ActionResult ChangePassword(ChangePasswordViewModel model)
         {
 
             return View();
