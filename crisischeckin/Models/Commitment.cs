@@ -14,5 +14,6 @@ namespace Models
         public DateTime EndDate { get; set; }
         public int DisasterId { get; set; }
 
+        public virtual Disaster Disaster { get; set; }
     }
 }
