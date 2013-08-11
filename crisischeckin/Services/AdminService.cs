@@ -34,5 +34,22 @@ namespace Services
                          select p;
             return people;
         }
+
+
+        public IEnumerable<Person> GetVolunteersForDate(Disaster disaster, DateTime date)
+        {
+            if (disaster == null)
+                throw new ArgumentNullException("disaster", "disaster cannot be null");
+            var storedDisaster = dataService.Disasters.SingleOrDefault(d => d.Id == disaster.Id);
+            if (storedDisaster == null)
+                throw new ArgumentException("Disaster was not found", "disaster");
+            var commitments = from c in dataService.Commitments
+                              where c.DisasterId == disaster.Id
+                              select c;
+            var people = from c in commitments
+                         join p in dataService.Persons on c.PersonId equals p.Id
+                         select p;
+            return people;
+        }
     }
 }

@@ -26,10 +26,10 @@ namespace crisicheckinweb.Controllers
         }
 
         [HttpPost]
-        public ActionResult Filter(ListByDisasterViewModel model)
+        public PartialViewResult Filter(ListByDisasterViewModel model)
         {
             var disaster = _disasterSvc.Get(model.SelectedDisaster);
-            var results = _adminSvc.GetVolunteers(disaster);
+            var results = _adminSvc.GetVolunteersForDate(disaster, model.CommitmentDate);
             return PartialView("_FilterResults", results);
         }
     }
