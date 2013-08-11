@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using Common;
 using crisicheckinweb.ViewModels;
 using Models;
 using Services.Exceptions;
@@ -114,6 +115,34 @@ namespace crisicheckinweb.Controllers
                 return RedirectToAction("PasswordChanged");
             }
             return View();
+        }
+
+
+        //
+        // GET: /Account/UpgradeVolunteerToAdministrator
+        [Authorize(Roles = Constants.RoleAdmin)]
+        public ActionResult UpgradeVolunteerToAdministrator()
+        {
+            // Display list of active users so admin can select user to upgrade
+            return View();
+        }
+
+        //
+        // POST: /Account/Register
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult UpgradeVolunteerToAdministrator(RegisterModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                    Roles.AddUserToRole(model.UserName, Constants.RoleAdmin);
+
+                    return RedirectToAction("Index", "Home");
+           
+            }
+
+            // If we got this far, something failed, redisplay form
+            return View(model);
         }
 
         #region Helpers

@@ -217,5 +217,45 @@ namespace Services.UnitTest
             service.UpdateDetails(null);
         }
 
+        [TestMethod,
+        ExpectedException(typeof(ArgumentNullException))]
+        public void WhenUserIsNullGetCommitmentsThrowsNullArgumentException()
+        {
+            var moqDataService = new Mock<IDataService>();
+            var underTest = new VolunteerService(moqDataService.Object);
+
+            var disaster = new Disaster
+            {
+                Id = 1,
+                Name = "test",
+                IsActive = true
+            };
+
+            var results = underTest.RetrieveCommitmentsForDisaster(default(Person), disaster, false);
+        }
+
+        [TestMethod,
+        ExpectedException(typeof(ArgumentNullException))]
+        public void WhenDisasterIsNullGetCommitmentsThrowsNullArgumentException()
+        {
+            var moqDataService = new Mock<IDataService>();
+            var underTest = new VolunteerService(moqDataService.Object);
+
+            var person = new Person
+            {
+                Id = 1,
+                FirstName = "test",
+                LastName = "tester"
+            };
+
+            var results = underTest.RetrieveCommitmentsForDisaster(person, default(Disaster), false);
+        }
+
+
+        // Active disaster returns records
+
+        // Inactive disaster depends on flag
+
+        // only records for this user
     }
 }
