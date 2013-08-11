@@ -25,21 +25,38 @@ namespace crisicheckinweb.Controllers
         // GET: /Home/
         public ActionResult Index()
         {
-            IQueryable<Commitment> comms = _volunteerSvc.RetrieveCommitments(new Person() { Id = WebSecurity.CurrentUserId }, true); 
-
-            var model = new VolunteerViewModel { Disasters = _disasterSvc.GetActiveList(),
-                MyCommitments = comms };
-            return View(model);
+            return View(GetDefaultViewModel());
         }
 
         [HttpPost]
-        public RedirectResult Assign(VolunteerViewModel model)
+        public ActionResult Assign(VolunteerViewModel model)
         {
+            if (ModelState.IsValid)
+            {
+                _disasterSvc.AssignToVolunteer(new Disaster { Id = model.SelectedDisaster },
+                    new Person { Id = WebSecurity.CurrentUserId }, model.SelectedStartDate, model.SelectedEndDate);
 
-            _disasterSvc.AssignToVolunteer(new Disaster { Id = model.SelectedDisaster },
-                new Person { Id = WebSecurity.CurrentUserId }, model.SelectedStartDate, model.SelectedEndDate);
+                return Redirect("/Home");
+            }
+            else
+            {
+                return View("Index", GetDefaultViewModel());
+            }
 
-            return Redirect("/Home");
+            
+        }
+
+        private VolunteerViewModel GetDefaultViewModel()
+        {
+            IQueryable<Commitment> comms = _volunteerSvc.RetrieveCommitments(new Person() { Id = WebSecurity.CurrentUserId }, true);
+
+            var model = new VolunteerViewModel
+            {
+                Disasters = _disasterSvc.GetActiveList(),
+                MyCommitments = comms
+            };
+
+            return model;
         }
 
     }

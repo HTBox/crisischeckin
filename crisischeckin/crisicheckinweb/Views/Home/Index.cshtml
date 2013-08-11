@@ -38,16 +38,17 @@
 
 @using (Html.BeginForm("Assign", "Home")) {
     @Html.AntiForgeryToken()
-    @Html.ValidationSummary()
 
  <h3>Volunteer for Disaster: </h3>
+    @Html.ValidationSummary()
+    
     @Html.DropDownListFor(m => m.SelectedDisaster, new SelectList(Model.Disasters, "Id", "Name", Model.SelectedDisaster), "-- Choose One --")
 
     <label>Start Date:</label>
-    @Html.TextBoxFor(m => m.SelectedStartDate, new { id="dp_startDate", size="8", maxlength="8" })
+    @Html.TextBoxFor(m => m.SelectedStartDate, new { id="dp_startDate" })
     
     <label>End Date:</label>
-    @Html.TextBoxFor(m => m.SelectedEndDate, new { id="dp_endDate", size="8", maxlength="8" })
+    @Html.TextBoxFor(m => m.SelectedEndDate, new { id="dp_endDate" })
     
     <input id="GoButton" type="submit" value="Volunteer"/>
     
