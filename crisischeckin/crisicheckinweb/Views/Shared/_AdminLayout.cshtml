@@ -1,4 +1,5 @@
 ﻿@using System.Web.Optimization
+@using crisicheckinweb.Controllers
 @{
     Layout = "/Views/Shared/_Layout.cshtml";
 }
@@ -11,13 +12,31 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="brand" href="/">Crisis Check-In Admin</a>
+            <a class="brand" href="/Disaster/List">Crisis Check-In Admin</a>
             <div class="nav-collapse collapse">
                 <ul class="nav">
-                    <li class="active"><a href="/">Home</a></li>
-                    <li><a href="/Disaster/List">Disaster List</a></li>
-                    <li><a href="/Volunteer/ListbyDisaster">View Volunteers</a></li>
+                    <li><a href="/">Home</a></li>
+                     @if(this.ViewContext.Controller.ToString() == "crisicheckinweb.Controllers.DisasterController")
+                    {
+                        <li class="active"><a href="/Disaster/List">Disaster List</a></li>
+                    }
+                    else
+                    {
+                        <li><a href="/Disaster/List">Disaster List</a></li>
+                    }
+                  
+                    @if (this.ViewContext.Controller.ToString() == "crisicheckinweb.Controllers.VolunteerController")
+                    {
+                        <li class="active"><a href="/Volunteer/ListbyDisaster">View Volunteers</a></li>
+                    }
+                    else
+                    {
+                        <li><a href="/Volunteer/ListbyDisaster">View Volunteers</a></li>
+                    }
                 </ul>
+                <div style="width: 100%; text-align: right; color: white; padding-top: 10px;">
+                    @Html.Partial("_LoginStatus")
+                </div>
             </div>
             <!--/.nav-collapse -->
         </div>
