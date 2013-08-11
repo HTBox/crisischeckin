@@ -1,0 +1,33 @@
+﻿@using System.Web.Optimization
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Crisis Checkin</title>
+    @Styles.Render("~/Content/bootstrap/bootstrap.css")
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-9">
+                <div class="page-header">
+                    Crisis Check-In
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="page-header">
+                    @(Html.Encode(string.IsNullOrWhiteSpace(User.Identity.Name) ? "" : string.Format("Welcome, {0}!", User.Identity.Name)))
+
+                </div>
+            </div>
+        </div>
+        @RenderBody()
+    </div>
+    <script type="text/javascript" src="/scripts/jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="/scripts/jquery.unobtrusive-ajax.js"></script>
+    @RenderSection("scripts", false)
+</body>
+</html>

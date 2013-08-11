@@ -1,5 +1,60 @@
-﻿@{
-    ViewBag.Title = "Index";
+﻿@using System.Web.Optimization
+
+@model crisicheckinweb.ViewModels.VolunteerViewModel
+@{
+    ViewBag.Title = "Volunteer Home";
+    Layout = "~/Views/Shared/_VolunteerLayout.cshtml";
 }
 
-<h2>Index</h2>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Admin</title>
+    
+    @Scripts.Render("~/Scripts/jquery-1.9.1.js")
+    @Scripts.Render("~/Scripts/jquery-ui-1.10.3.min.js")
+    @Styles.Render("~/Content/themes/base/jquery.ui.all.css")
+</head>
+    <body>
+<h2>Volunteer Home</h2>
+
+<h3>My Disasters</h3>
+
+<table>
+    <tr>
+        <th>Disaster Name</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+    </tr>
+    @*@foreach(){ *@
+    <tr>
+        <td>Disaster 1</td>
+        <td>1/1/2013</td>
+        <td>2/1/2013</td>
+    </tr>
+    @*}*@
+</table>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary()
+
+ <h3>Disaster: </h3>
+    @Html.DropDownListFor(m => m.SelectedDisaster, new SelectList(Model.Disasters, "Id", "Name", Model.SelectedDisaster), "-- Choose One --")
+
+    <label>Start Date:</label>
+    <input type="text" id="dp" size="20"/>
+    
+    <input id="GoButton" type="submit" value="Volunteer for Disaster"/>
+    
+}
+</body>
+
+<script type="text/javascript">
+$(function() {
+    $('#dp').datepicker();
+});
+</script>
+
+</html>

@@ -2,9 +2,10 @@
 
 @{
     ViewBag.Title = "Log in to existing account...";
+    Layout = "/Views/Shared/_Layout.cshtml";
 }
 
-<h1>@ViewBag.Title.</h1>
+<h1>@ViewBag.Title</h1>
 
 
 @using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl })) {
