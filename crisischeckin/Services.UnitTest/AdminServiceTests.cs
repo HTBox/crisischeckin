@@ -189,7 +189,35 @@ namespace WebProjectTests.ServiceTests
             Assert.AreEqual(1, result.Count());
         }
 
-        private void initializeDisasterCollection(params Disaster [] disasters)
+        [TestMethod]
+        public void WhenOneVolunteerHasRegisteredReturnOneRecordInRange()
+        {
+            initializeDisasterCollection(disasterWithCommitments);
+            initializeVolunteerCollection(personWithCommitments);
+            initializeCommitmentCollection(commitment);
+
+            var underTest = new AdminService(mockService.Object);
+
+            var result = underTest.GetVolunteersForDate(disasterWithCommitments, new DateTime(2013,08,12));
+
+            Assert.AreEqual(1, result.Count());
+        }
+
+        [TestMethod]
+        public void WhenOneVolunteerHasRegisteredReturnNoRecordsInRange()
+        {
+            initializeDisasterCollection(disasterWithCommitments);
+            initializeVolunteerCollection(personWithCommitments);
+            initializeCommitmentCollection(commitment);
+
+            var underTest = new AdminService(mockService.Object);
+
+            var result = underTest.GetVolunteersForDate(disasterWithCommitments, new DateTime(2013, 08, 5));
+
+            Assert.AreEqual(0, result.Count());
+        }
+
+        private void initializeDisasterCollection(params Disaster[] disasters)
         {
             mockService.Setup(ds => ds.Disasters).Returns(disasters.AsQueryable());
         }

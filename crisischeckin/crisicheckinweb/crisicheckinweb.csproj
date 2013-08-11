@@ -162,6 +162,7 @@
     <Compile Include="NavigationRoutes\NavigationExtensions.cs" />
     <Compile Include="NavigationRoutes\NavigationRouteConfigurationExtensions.cs" />
     <Compile Include="NavigationRoutes\NavigationRouteFilter.cs" />
+    <Compile Include="ViewModels\ChangePasswordViewModel.cs" />
     <Compile Include="ViewModels\ListByDisasterViewModel.cs" />
     <Compile Include="ViewModels\LoginModel.cs" />
     <Compile Include="ViewModels\RegisterModel.cs" />
@@ -299,7 +300,9 @@
     <Content Include="Views\Volunteer\_FilterResults.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Shared\_VolunteerLayout.cshtml" />
-    <Content Include="Views\Disaster\Test.cshtml" />
+    <Content Include="Views\Shared\_LoginStatus.cshtml" />
+    <Content Include="Views\Account\ChangePassword.cshtml" />
+    <Content Include="Views\Account\PasswordChanged.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -326,6 +329,10 @@
     <Content Include="Views\Shared\_AdminLayout.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{85D45B1B-D669-4370-8D5C-60D2350C5544}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Models\Models.csproj">
       <Project>{3fd36cf5-7d79-4505-a0bb-12e35a613d88}</Project>
       <Name>Models</Name>

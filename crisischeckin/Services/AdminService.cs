@@ -38,7 +38,13 @@ namespace Services
             var storedDisaster = dataService.Disasters.SingleOrDefault(d => d.Id == disaster.Id);
             if (storedDisaster == null)
                 throw new ArgumentException("Disaster was not found", "disaster");
-            var people = GetPeople(disaster);
+            var commitments = from c in dataService.Commitments
+                              where c.DisasterId == disaster.Id
+                              select c;
+            var people = from c in commitments
+                         where date >= c.StartDate && date <= c.EndDate
+                         join p in dataService.Persons on c.PersonId equals p.Id
+                         select p;
             return people;
         }
 

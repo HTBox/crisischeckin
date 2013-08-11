@@ -12,5 +12,9 @@ namespace Services.Interfaces
         Person Register(string firstName, string lastName, string email, string phoneNumber);
 
         Person UpdateDetails(Person person);
+
+        IQueryable<Commitment> RetrieveCommitments(Person person, bool showInactive);
+
+        IQueryable<Commitment> RetrieveCommitmentsForDisaster(Person person, Disaster disaster, bool showInactive);
     }
 }
