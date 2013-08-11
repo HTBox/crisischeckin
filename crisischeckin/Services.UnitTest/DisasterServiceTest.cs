@@ -98,14 +98,26 @@ namespace Services.UnitTest
             service.Create(null);
         }
 
-         [TestMethod]
-         [ExpectedException(typeof (ArgumentNullException))]
-         public void CreateDisaster_DisasterNameNull()
-         {
-             var moqDataService = new Mock<IDataService>();
-             DisasterService service = new DisasterService(moqDataService.Object);
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void CreateDisaster_DisasterNameNull()
+        {
+            var moqDataService = new Mock<IDataService>();
+            DisasterService service = new DisasterService(moqDataService.Object);
 
-             service.Create(new Disaster(){IsActive = true, Name=""});
-         }
+            service.Create(new Disaster() { IsActive = true, Name = "" });
+        }
+
+        [TestMethod]
+        public void GetList_Valid()
+        {
+            // arrange
+            var moqDataService = new Mock<IDataService>();
+               moqDataService.Setup(m => m.Disasters).Returns(disaster);
+               DisasterService service = new DisasterService(moqDataService.Object);
+
+
+
+        }
     }
 }
