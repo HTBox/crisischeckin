@@ -6,17 +6,6 @@
     Layout = "~/Views/Shared/_VolunteerLayout.cshtml";
 }
 
-<!DOCTYPE html>
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Admin</title>
-    
-    @Scripts.Render("~/Scripts/jquery-1.9.1.js")
-    @Scripts.Render("~/Scripts/jquery-ui-1.10.3.min.js")
-    @Styles.Render("~/Content/themes/base/jquery.ui.all.css")
-</head>
-    <body>
 <h2>Volunteer Home</h2>
 
 <h3>My Disasters</h3>
@@ -27,34 +16,37 @@
         <th>Start Date</th>
         <th>End Date</th>
     </tr>
-    @*@foreach(){ *@
+    @foreach(var comm in Model.MyCommitments) { 
     <tr>
-        <td>Disaster 1</td>
-        <td>1/1/2013</td>
-        <td>2/1/2013</td>
+        <td>@comm.DisasterId</td>
+        <td>@comm.StartDate</td>
+        <td>@comm.EndDate</td>
     </tr>
-    @*}*@
+    }
 </table>
 
-@using (Html.BeginForm()) {
+@using (Html.BeginForm("Assign", "Home")) {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary()
 
- <h3>Disaster: </h3>
+ <h3>Volunteer for Disaster: </h3>
     @Html.DropDownListFor(m => m.SelectedDisaster, new SelectList(Model.Disasters, "Id", "Name", Model.SelectedDisaster), "-- Choose One --")
 
     <label>Start Date:</label>
-    <input type="text" id="dp" size="20"/>
+    @Html.TextBoxFor(m => m.SelectedStartDate, new { id="dp_startDate", size="8", maxlength="8" })
     
-    <input id="GoButton" type="submit" value="Volunteer for Disaster"/>
+    <label>End Date:</label>
+    @Html.TextBoxFor(m => m.SelectedEndDate, new { id="dp_endDate", size="8", maxlength="8" })
+    
+    <input id="GoButton" type="submit" value="Volunteer"/>
     
 }
-</body>
 
 <script type="text/javascript">
-$(function() {
-    $('#dp').datepicker();
-});
+(function ($) {
+    $(document).ready(function () {
+        $("#dp_startDate").datepicker();
+        $("#dp_endDate").datepicker();
+    });
+})(jQuery);
 </script>
-
-</html>
