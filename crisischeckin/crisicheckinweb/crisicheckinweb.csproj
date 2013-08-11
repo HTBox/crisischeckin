@@ -296,6 +296,7 @@
     <Content Include="Views\Volunteer\_FilterResults.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Shared\_VolunteerLayout.cshtml" />
+    <Content Include="Views\Shared\_LoginStatus.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
