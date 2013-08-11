@@ -1,4 +1,5 @@
-﻿using Models;
+﻿using System.Web.Security;
+using Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
@@ -45,6 +46,24 @@ namespace crisicheckinweb
                 {
                     throw new InvalidOperationException("The ASP.NET Simple Membership database could not be initialized. For more information, please see http://go.microsoft.com/fwlink/?LinkId=256588", ex);
                 }
+            }
+        }
+
+        public static void VerifyRolesAndDefaultAdminAccount()
+        {
+            if (!Roles.RoleExists("Admin"))
+            {
+                Roles.CreateRole("Admin");
+            }
+
+            if (!Roles.RoleExists("Volunteer"))
+            {
+                Roles.CreateRole("Volunteer");
+            }
+
+            if (!WebSecurity.UserExists("Administrator"))
+            {
+                WebSecurity.CreateUserAndAccount("Administrator", "P@$$w0rd", null, false);
             }
         }
     }
