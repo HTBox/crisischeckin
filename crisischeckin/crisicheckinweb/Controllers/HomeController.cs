@@ -33,8 +33,16 @@ namespace crisicheckinweb.Controllers
         {
             if (ModelState.IsValid)
             {
-                _disasterSvc.AssignToVolunteer(new Disaster { Id = model.SelectedDisaster },
-                    new Person { Id = WebSecurity.CurrentUserId }, model.SelectedStartDate, model.SelectedEndDate);
+                if (DateTime.Compare(model.SelectedEndDate, model.SelectedStartDate) >= 0)
+                {
+                    _disasterSvc.AssignToVolunteer(new Disaster { Id = model.SelectedDisaster },
+                        new Person { Id = WebSecurity.CurrentUserId }, model.SelectedStartDate, model.SelectedEndDate);
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Start Date must come before End Date.");
+                    return View("Index", GetDefaultViewModel());
+                }
 
                 return Redirect("/Home");
             }
@@ -42,8 +50,6 @@ namespace crisicheckinweb.Controllers
             {
                 return View("Index", GetDefaultViewModel());
             }
-
-            
         }
 
         private VolunteerViewModel GetDefaultViewModel()
