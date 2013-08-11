@@ -5,15 +5,13 @@
     Layout = "/Views/Shared/_VolunteerLayout.cshtml";
 }
 
-<h2>@ViewBag.Title</h2>
-
 
 @using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl })) {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
 
     <fieldset>
-        <legend>Log in Form</legend>
+        <legend>Log In</legend>
         <div class="row">
             <div class="span12">
                 @Html.LabelFor(m => m.UserName)
