@@ -56,7 +56,9 @@ namespace crisicheckinweb.Controllers
         private VolunteerViewModel GetDefaultViewModel()
         {
             var person = _volunteerSvc.FindByUserId(WebSecurity.CurrentUserId);
-            IQueryable<Commitment> comms = _volunteerSvc.RetrieveCommitments(person, true);
+            IEnumerable<Commitment> comms = (person != null) ?
+                _volunteerSvc.RetrieveCommitments(person, true) :
+                new List<Commitment>().AsEnumerable();
 
             var model = new VolunteerViewModel
             {

@@ -98,7 +98,7 @@ namespace Services
 
         public Person FindByUserId(int userId)
         {
-            return ourService.Persons.Single(p => p.UserId == userId);
+            return ourService.Persons.SingleOrDefault(p => p.UserId == userId);
         }
     }
 }
