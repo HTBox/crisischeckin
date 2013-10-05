@@ -42,25 +42,13 @@
             <!--Panorama item one-->
             <phone:PanoramaItem Header="Ongoing">
                 <!--Single line list with text wrapping-->
-                <phone:LongListSelector Margin="0,0,-22,0" ItemsSource="{Binding OngoingDisasters}">
+                <phone:LongListSelector Margin="0,0,-22,0" ItemsSource="{Binding OngoingDisasters}" MouseEnter ="OngoingDisasters_MouseEnter">
                     <phone:LongListSelector.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Margin="0,-6,0,12">
-                                <TextBlock Text="{Binding Path=Disaster.Name}" TextWrapping="Wrap" Style="{StaticResource PhoneTextExtraLargeStyle}" FontSize="{StaticResource PhoneFontSizeExtraLarge}"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </phone:LongListSelector.ItemTemplate>
-                </phone:LongListSelector>
-            </phone:PanoramaItem>
-
-            <!--Panorama item one-->
-            <phone:PanoramaItem Header="Profile">
-                <!--Single line list with text wrapping-->
-                <phone:LongListSelector Margin="0,0,-22,0" ItemsSource="{Binding Items}">
-                    <phone:LongListSelector.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Margin="0,-6,0,12">
-                                <TextBlock Text="{Binding LineOne}" TextWrapping="Wrap" Style="{StaticResource PhoneTextExtraLargeStyle}" FontSize="{StaticResource PhoneFontSizeExtraLarge}"/>
+                                <TextBlock  Text="{Binding Path=Disaster.Name}" TextWrapping="Wrap" 
+                                            MouseEnter="OngoingDisaster_MouseEnter"
+                                            Style="{StaticResource PhoneTextExtraLargeStyle}" FontSize="{StaticResource PhoneFontSizeExtraLarge}"/>
                             </StackPanel>
                         </DataTemplate>
                     </phone:LongListSelector.ItemTemplate>
@@ -75,11 +63,28 @@
                         <DataTemplate>
                             <StackPanel Margin="0,-6,0,12">
                                 <TextBlock Text="{Binding LineOne}" TextWrapping="Wrap" Style="{StaticResource PhoneTextExtraLargeStyle}" FontSize="{StaticResource PhoneFontSizeExtraLarge}"/>
+                                <TextBlock Text="{Binding LineTwo}" TextWrapping="Wrap" Style="{StaticResource PhoneTextSmallStyle}" FontSize="{StaticResource PhoneFontSizeSmall}" Foreground="#FF09BAF6"/>
                             </StackPanel>
                         </DataTemplate>
                     </phone:LongListSelector.ItemTemplate>
                 </phone:LongListSelector>
             </phone:PanoramaItem>
+            
+            <!--Panorama item one-->
+            <phone:PanoramaItem Header="Profile">
+                <!--Single line list with text wrapping-->
+                <phone:LongListSelector Margin="0,0,-22,0" ItemsSource="{Binding Items}">
+                    <phone:LongListSelector.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Margin="0,-6,0,12">
+                                <TextBlock Text="{Binding LineOne}" TextWrapping="Wrap" Style="{StaticResource PhoneTextExtraLargeStyle}" FontSize="{StaticResource PhoneFontSizeExtraLarge}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </phone:LongListSelector.ItemTemplate>
+                </phone:LongListSelector>
+            </phone:PanoramaItem>
+
+           
 
             <!--Panorama item two-->
             <phone:PanoramaItem>
