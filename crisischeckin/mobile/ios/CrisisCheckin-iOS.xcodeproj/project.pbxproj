@@ -1,0 +1,493 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		BE7B2C18180074FB00D0932D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE7B2C17180074FB00D0932D /* Foundation.framework */; };
+		BE7B2C1A180074FB00D0932D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE7B2C19180074FB00D0932D /* CoreGraphics.framework */; };
+		BE7B2C1C180074FB00D0932D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE7B2C1B180074FB00D0932D /* UIKit.framework */; };
+		BE7B2C22180074FB00D0932D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = BE7B2C20180074FB00D0932D /* InfoPlist.strings */; };
+		BE7B2C24180074FB00D0932D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7B2C23180074FB00D0932D /* main.m */; };
+		BE7B2C28180074FB00D0932D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7B2C27180074FB00D0932D /* AppDelegate.m */; };
+		BE7B2C2B180074FB00D0932D /* Main_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BE7B2C29180074FB00D0932D /* Main_iPhone.storyboard */; };
+		BE7B2C2E180074FB00D0932D /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BE7B2C2C180074FB00D0932D /* Main_iPad.storyboard */; };
+		BE7B2C31180074FB00D0932D /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7B2C30180074FB00D0932D /* ViewController.m */; };
+		BE7B2C33180074FB00D0932D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BE7B2C32180074FB00D0932D /* Images.xcassets */; };
+		BE7B2C3A180074FB00D0932D /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE7B2C39180074FB00D0932D /* XCTest.framework */; };
+		BE7B2C3B180074FB00D0932D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE7B2C17180074FB00D0932D /* Foundation.framework */; };
+		BE7B2C3C180074FB00D0932D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE7B2C1B180074FB00D0932D /* UIKit.framework */; };
+		BE7B2C44180074FB00D0932D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = BE7B2C42180074FB00D0932D /* InfoPlist.strings */; };
+		BE7B2C46180074FB00D0932D /* CrisisCheckin_iOSTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7B2C45180074FB00D0932D /* CrisisCheckin_iOSTests.m */; };
+		BE7B2C5218008D4600D0932D /* logo-red.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7B2C5118008D4600D0932D /* logo-red.png */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		BE7B2C3D180074FB00D0932D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BE7B2C0C180074FB00D0932D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BE7B2C13180074FB00D0932D;
+			remoteInfo = "CrisisCheckin-iOS";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		BE7B2C14180074FB00D0932D /* CrisisCheckin-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "CrisisCheckin-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		BE7B2C17180074FB00D0932D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		BE7B2C19180074FB00D0932D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		BE7B2C1B180074FB00D0932D /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		BE7B2C1F180074FB00D0932D /* CrisisCheckin-iOS-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CrisisCheckin-iOS-Info.plist"; sourceTree = "<group>"; };
+		BE7B2C21180074FB00D0932D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		BE7B2C23180074FB00D0932D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		BE7B2C25180074FB00D0932D /* CrisisCheckin-iOS-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CrisisCheckin-iOS-Prefix.pch"; sourceTree = "<group>"; };
+		BE7B2C26180074FB00D0932D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		BE7B2C27180074FB00D0932D /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		BE7B2C2A180074FB00D0932D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPhone.storyboard; sourceTree = "<group>"; };
+		BE7B2C2D180074FB00D0932D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPad.storyboard; sourceTree = "<group>"; };
+		BE7B2C2F180074FB00D0932D /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		BE7B2C30180074FB00D0932D /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		BE7B2C32180074FB00D0932D /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		BE7B2C38180074FB00D0932D /* CrisisCheckin-iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "CrisisCheckin-iOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		BE7B2C39180074FB00D0932D /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		BE7B2C41180074FB00D0932D /* CrisisCheckin-iOSTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CrisisCheckin-iOSTests-Info.plist"; sourceTree = "<group>"; };
+		BE7B2C43180074FB00D0932D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		BE7B2C45180074FB00D0932D /* CrisisCheckin_iOSTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CrisisCheckin_iOSTests.m; sourceTree = "<group>"; };
+		BE7B2C5118008D4600D0932D /* logo-red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo-red.png"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		BE7B2C11180074FB00D0932D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BE7B2C1A180074FB00D0932D /* CoreGraphics.framework in Frameworks */,
+				BE7B2C1C180074FB00D0932D /* UIKit.framework in Frameworks */,
+				BE7B2C18180074FB00D0932D /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BE7B2C35180074FB00D0932D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BE7B2C3A180074FB00D0932D /* XCTest.framework in Frameworks */,
+				BE7B2C3C180074FB00D0932D /* UIKit.framework in Frameworks */,
+				BE7B2C3B180074FB00D0932D /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		BE7B2C0B180074FB00D0932D = {
+			isa = PBXGroup;
+			children = (
+				BE7B2C1D180074FB00D0932D /* CrisisCheckin-iOS */,
+				BE7B2C3F180074FB00D0932D /* CrisisCheckin-iOSTests */,
+				BE7B2C16180074FB00D0932D /* Frameworks */,
+				BE7B2C15180074FB00D0932D /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		BE7B2C15180074FB00D0932D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BE7B2C14180074FB00D0932D /* CrisisCheckin-iOS.app */,
+				BE7B2C38180074FB00D0932D /* CrisisCheckin-iOSTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		BE7B2C16180074FB00D0932D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BE7B2C17180074FB00D0932D /* Foundation.framework */,
+				BE7B2C19180074FB00D0932D /* CoreGraphics.framework */,
+				BE7B2C1B180074FB00D0932D /* UIKit.framework */,
+				BE7B2C39180074FB00D0932D /* XCTest.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		BE7B2C1D180074FB00D0932D /* CrisisCheckin-iOS */ = {
+			isa = PBXGroup;
+			children = (
+				BE7B2C26180074FB00D0932D /* AppDelegate.h */,
+				BE7B2C27180074FB00D0932D /* AppDelegate.m */,
+				BE7B2C29180074FB00D0932D /* Main_iPhone.storyboard */,
+				BE7B2C2C180074FB00D0932D /* Main_iPad.storyboard */,
+				BE7B2C2F180074FB00D0932D /* ViewController.h */,
+				BE7B2C30180074FB00D0932D /* ViewController.m */,
+				BE7B2C32180074FB00D0932D /* Images.xcassets */,
+				BE7B2C1E180074FB00D0932D /* Supporting Files */,
+			);
+			path = "CrisisCheckin-iOS";
+			sourceTree = "<group>";
+		};
+		BE7B2C1E180074FB00D0932D /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				BE7B2C5118008D4600D0932D /* logo-red.png */,
+				BE7B2C1F180074FB00D0932D /* CrisisCheckin-iOS-Info.plist */,
+				BE7B2C20180074FB00D0932D /* InfoPlist.strings */,
+				BE7B2C23180074FB00D0932D /* main.m */,
+				BE7B2C25180074FB00D0932D /* CrisisCheckin-iOS-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		BE7B2C3F180074FB00D0932D /* CrisisCheckin-iOSTests */ = {
+			isa = PBXGroup;
+			children = (
+				BE7B2C45180074FB00D0932D /* CrisisCheckin_iOSTests.m */,
+				BE7B2C40180074FB00D0932D /* Supporting Files */,
+			);
+			path = "CrisisCheckin-iOSTests";
+			sourceTree = "<group>";
+		};
+		BE7B2C40180074FB00D0932D /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				BE7B2C41180074FB00D0932D /* CrisisCheckin-iOSTests-Info.plist */,
+				BE7B2C42180074FB00D0932D /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		BE7B2C13180074FB00D0932D /* CrisisCheckin-iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BE7B2C49180074FB00D0932D /* Build configuration list for PBXNativeTarget "CrisisCheckin-iOS" */;
+			buildPhases = (
+				BE7B2C10180074FB00D0932D /* Sources */,
+				BE7B2C11180074FB00D0932D /* Frameworks */,
+				BE7B2C12180074FB00D0932D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "CrisisCheckin-iOS";
+			productName = "CrisisCheckin-iOS";
+			productReference = BE7B2C14180074FB00D0932D /* CrisisCheckin-iOS.app */;
+			productType = "com.apple.product-type.application";
+		};
+		BE7B2C37180074FB00D0932D /* CrisisCheckin-iOSTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BE7B2C4C180074FB00D0932D /* Build configuration list for PBXNativeTarget "CrisisCheckin-iOSTests" */;
+			buildPhases = (
+				BE7B2C34180074FB00D0932D /* Sources */,
+				BE7B2C35180074FB00D0932D /* Frameworks */,
+				BE7B2C36180074FB00D0932D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				BE7B2C3E180074FB00D0932D /* PBXTargetDependency */,
+			);
+			name = "CrisisCheckin-iOSTests";
+			productName = "CrisisCheckin-iOSTests";
+			productReference = BE7B2C38180074FB00D0932D /* CrisisCheckin-iOSTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		BE7B2C0C180074FB00D0932D /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0500;
+				ORGANIZATIONNAME = "Humanitarian Toolbox";
+				TargetAttributes = {
+					BE7B2C37180074FB00D0932D = {
+						TestTargetID = BE7B2C13180074FB00D0932D;
+					};
+				};
+			};
+			buildConfigurationList = BE7B2C0F180074FB00D0932D /* Build configuration list for PBXProject "CrisisCheckin-iOS" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = BE7B2C0B180074FB00D0932D;
+			productRefGroup = BE7B2C15180074FB00D0932D /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				BE7B2C13180074FB00D0932D /* CrisisCheckin-iOS */,
+				BE7B2C37180074FB00D0932D /* CrisisCheckin-iOSTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		BE7B2C12180074FB00D0932D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BE7B2C5218008D4600D0932D /* logo-red.png in Resources */,
+				BE7B2C2E180074FB00D0932D /* Main_iPad.storyboard in Resources */,
+				BE7B2C33180074FB00D0932D /* Images.xcassets in Resources */,
+				BE7B2C2B180074FB00D0932D /* Main_iPhone.storyboard in Resources */,
+				BE7B2C22180074FB00D0932D /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BE7B2C36180074FB00D0932D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BE7B2C44180074FB00D0932D /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		BE7B2C10180074FB00D0932D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BE7B2C31180074FB00D0932D /* ViewController.m in Sources */,
+				BE7B2C28180074FB00D0932D /* AppDelegate.m in Sources */,
+				BE7B2C24180074FB00D0932D /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BE7B2C34180074FB00D0932D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BE7B2C46180074FB00D0932D /* CrisisCheckin_iOSTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		BE7B2C3E180074FB00D0932D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BE7B2C13180074FB00D0932D /* CrisisCheckin-iOS */;
+			targetProxy = BE7B2C3D180074FB00D0932D /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		BE7B2C20180074FB00D0932D /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BE7B2C21180074FB00D0932D /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		BE7B2C29180074FB00D0932D /* Main_iPhone.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BE7B2C2A180074FB00D0932D /* Base */,
+			);
+			name = Main_iPhone.storyboard;
+			sourceTree = "<group>";
+		};
+		BE7B2C2C180074FB00D0932D /* Main_iPad.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BE7B2C2D180074FB00D0932D /* Base */,
+			);
+			name = Main_iPad.storyboard;
+			sourceTree = "<group>";
+		};
+		BE7B2C42180074FB00D0932D /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BE7B2C43180074FB00D0932D /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		BE7B2C47180074FB00D0932D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		BE7B2C48180074FB00D0932D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		BE7B2C4A180074FB00D0932D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "CrisisCheckin-iOS/CrisisCheckin-iOS-Prefix.pch";
+				INFOPLIST_FILE = "CrisisCheckin-iOS/CrisisCheckin-iOS-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		BE7B2C4B180074FB00D0932D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "CrisisCheckin-iOS/CrisisCheckin-iOS-Prefix.pch";
+				INFOPLIST_FILE = "CrisisCheckin-iOS/CrisisCheckin-iOS-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		BE7B2C4D180074FB00D0932D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/CrisisCheckin-iOS.app/CrisisCheckin-iOS";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "CrisisCheckin-iOS/CrisisCheckin-iOS-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "CrisisCheckin-iOSTests/CrisisCheckin-iOSTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		BE7B2C4E180074FB00D0932D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/CrisisCheckin-iOS.app/CrisisCheckin-iOS";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "CrisisCheckin-iOS/CrisisCheckin-iOS-Prefix.pch";
+				INFOPLIST_FILE = "CrisisCheckin-iOSTests/CrisisCheckin-iOSTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		BE7B2C0F180074FB00D0932D /* Build configuration list for PBXProject "CrisisCheckin-iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BE7B2C47180074FB00D0932D /* Debug */,
+				BE7B2C48180074FB00D0932D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BE7B2C49180074FB00D0932D /* Build configuration list for PBXNativeTarget "CrisisCheckin-iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BE7B2C4A180074FB00D0932D /* Debug */,
+				BE7B2C4B180074FB00D0932D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		BE7B2C4C180074FB00D0932D /* Build configuration list for PBXNativeTarget "CrisisCheckin-iOSTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BE7B2C4D180074FB00D0932D /* Debug */,
+				BE7B2C4E180074FB00D0932D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = BE7B2C0C180074FB00D0932D /* Project object */;
+}
