@@ -1,1 +1,4 @@
-The place for the crisis checkin android mobile app
+crisischeckin-android
+=====================
+
+Android project for Crisis Checkin project
