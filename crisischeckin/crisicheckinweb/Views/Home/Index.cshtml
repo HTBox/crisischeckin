@@ -57,8 +57,10 @@
 <script type="text/javascript">
 (function ($) {
     $(document).ready(function () {
-        $("#dp_startDate").datepicker().datepicker('setDate', new Date());
-        $("#dp_endDate").datepicker().datepicker('setDate', '+1');
+        $("#dp_startDate").datepicker().datepicker('setDate',
+            '@(Model.SelectedStartDate == default(DateTime) ? DateTime.Now : Model.SelectedStartDate)');
+        $("#dp_endDate").datepicker().datepicker('setDate',
+            '@(Model.SelectedEndDate == default(DateTime) ? DateTime.Now : Model.SelectedEndDate)');
     });
 })(jQuery);
 </script>

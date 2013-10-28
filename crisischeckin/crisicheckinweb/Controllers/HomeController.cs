@@ -42,7 +42,11 @@ namespace crisicheckinweb.Controllers
                 else
                 {
                     ModelState.AddModelError("", "Start Date must come before End Date.");
-                    return View("Index", GetDefaultViewModel());
+                    var modelToReturn = GetDefaultViewModel();
+                    modelToReturn.SelectedDisaster = model.SelectedDisaster;
+                    modelToReturn.SelectedStartDate = model.SelectedStartDate;
+                    modelToReturn.SelectedEndDate = model.SelectedEndDate;
+                    return View("Index", modelToReturn);
                 }
 
                 return Redirect("/Home");
