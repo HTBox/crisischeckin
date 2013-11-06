@@ -33,26 +33,17 @@ namespace crisicheckinweb.Controllers
         {
             if (ModelState.IsValid)
             {
-                // validate the date entry - make sure it's not in the past and
-                // that the start date is not ahead of the end date
-                if (DateTime.Compare(DateTime.Today, model.SelectedStartDate) > 0)
-                {
-                    ModelState.AddModelError("", "Please enter a start date that is greater than today's date.");
-                }
-
-                if (DateTime.Compare(model.SelectedStartDate, model.SelectedEndDate) >= 0)
-                {
-                    ModelState.AddModelError("", "Start Date must come before End Date.");
-                }
-
-                // check again if the dates are valid
-                if (ModelState.IsValid)
+                try
                 {
                     Person me = _volunteerSvc.FindByUserId(WebSecurity.CurrentUserId);
                     _disasterSvc.AssignToVolunteer(new Disaster { Id = model.SelectedDisaster },
                         me, model.SelectedStartDate, model.SelectedEndDate);
 
                     return Redirect("/Home");
+                }
+                catch (ArgumentException ex)
+                {
+                    ModelState.AddModelError("", ex.Message);
                 }
 
                 var modelToReturn = GetDefaultViewModel();
