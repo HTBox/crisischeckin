@@ -31,30 +31,32 @@ namespace crisicheckinweb.Controllers
         [HttpPost]
         public ActionResult Assign(VolunteerViewModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid) return View("Index", GetDefaultViewModel());
+                
+            try
             {
-                try
-                {
-                    Person me = _volunteerSvc.FindByUserId(WebSecurity.CurrentUserId);
-                    _disasterSvc.AssignToVolunteer(new Disaster { Id = model.SelectedDisaster },
-                        me, model.SelectedStartDate, model.SelectedEndDate);
-
-                    return Redirect("/Home");
-                }
-                catch (ArgumentException ex)
-                {
-                    ModelState.AddModelError("", ex.Message);
+	            if (DateTime.Compare(DateTime.Today, model.SelectedStartDate) > 0)
+	            {
+	                throw new ArgumentException("Please enter a start date that is greater than today's date.");
                 }
 
-                var modelToReturn = GetDefaultViewModel();
-                modelToReturn.SelectedDisaster = model.SelectedDisaster;
-                modelToReturn.SelectedStartDate = model.SelectedStartDate;
-                modelToReturn.SelectedEndDate = model.SelectedEndDate;
+                Person me = _volunteerSvc.FindByUserId(WebSecurity.CurrentUserId);
+                _disasterSvc.AssignToVolunteer(new Disaster { Id = model.SelectedDisaster },
+                    me, model.SelectedStartDate, model.SelectedEndDate);
 
-                return View("Index", modelToReturn);
+                return Redirect("/Home");
+            }
+            catch (ArgumentException ex)
+            {
+                ModelState.AddModelError("", ex.Message);
             }
 
-            return View("Index", GetDefaultViewModel());
+            var modelToReturn = GetDefaultViewModel();
+            modelToReturn.SelectedDisaster = model.SelectedDisaster;
+            modelToReturn.SelectedStartDate = model.SelectedStartDate;
+            modelToReturn.SelectedEndDate = model.SelectedEndDate;
+
+            return View("Index", modelToReturn);
         }
 
         private VolunteerViewModel GetDefaultViewModel()
