@@ -14,6 +14,7 @@ namespace crisicheckinweb.App_Start
     using Ninject.Web.Common;
     using Services.Interfaces;
     using Services;
+    using crisicheckinweb.Wrappers;
 
     public static class NinjectWebCommon 
     {
@@ -63,6 +64,7 @@ namespace crisicheckinweb.App_Start
             kernel.Bind<IAdmin>().To<AdminService>().InRequestScope();
             kernel.Bind<ICluster>().To<ClusterService>().InRequestScope();
             kernel.Bind<CrisisCheckin>().ToSelf().InRequestScope();
+            kernel.Bind<IWebSecurityWrapper>().To<WebSecurityWrapper>().InRequestScope();
         }        
     }
 }
