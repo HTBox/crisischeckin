@@ -72,6 +72,50 @@ namespace Services.UnitTest
         }
 
         [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void AssignToVolunteer_StartDateIsWithinExistingCommitment()
+        {
+            var moqDataService = new Mock<IDataService>();
+            DisasterService service = new DisasterService(moqDataService.Object);
+
+            var commitments = new List<Commitment>() { 
+                new Commitment() {
+                    StartDate = new DateTime(2013, 6, 10),
+                    EndDate = new DateTime(2013, 6, 15),
+                    DisasterId = 2
+                }
+            };
+            var disasters = new List<Disaster>() { new Disaster() { Id = 2, IsActive = true } };
+
+            moqDataService.Setup(s => s.Commitments).Returns(commitments.AsQueryable());
+            moqDataService.Setup(s => s.Disasters).Returns(disasters.AsQueryable());
+
+            service.AssignToVolunteer(new Disaster(), new Person(), new DateTime(2013, 6, 11), new DateTime(2013, 6, 20));
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void AssignToVolunteer_EndDateIsWithinExistingCommitment()
+        {
+            var moqDataService = new Mock<IDataService>();
+            DisasterService service = new DisasterService(moqDataService.Object);
+
+            var commitments = new List<Commitment>() { 
+                new Commitment() {
+                    StartDate = new DateTime(2013, 6, 10),
+                    EndDate = new DateTime(2013, 6, 15),
+                    DisasterId = 2
+                }
+            };
+            var disasters = new List<Disaster>() { new Disaster() { Id = 2, IsActive = true } };
+
+            moqDataService.Setup(s => s.Commitments).Returns(commitments.AsQueryable());
+            moqDataService.Setup(s => s.Disasters).Returns(disasters.AsQueryable());
+
+            service.AssignToVolunteer(new Disaster(), new Person(), new DateTime(2013, 6, 5), new DateTime(2013, 6, 12));
+        }
+
+        [TestMethod]
         public void AssignToVolunteer_Valid()
         {
             var moqDataService = new Mock<IDataService>();
