@@ -7,6 +7,7 @@ using crisicheckinweb.ViewModels;
 using Models;
 using Services.Interfaces;
 using WebMatrix.WebData;
+using crisicheckinweb.Wrappers;
 
 namespace crisicheckinweb.Controllers
 {
@@ -15,11 +16,13 @@ namespace crisicheckinweb.Controllers
 
         private readonly IDisaster _disasterSvc;
         private readonly IVolunteer _volunteerSvc;
+        private readonly IWebSecurityWrapper _webSecurity;
 
-        public HomeController(IDisaster disasterSvc, IVolunteer volunteerSvc)
+        public HomeController(IDisaster disasterSvc, IVolunteer volunteerSvc, IWebSecurityWrapper webSecurity)
         {
             _disasterSvc = disasterSvc;
             _volunteerSvc = volunteerSvc;
+            _webSecurity = webSecurity;
         }
 
         // GET: /Home/
@@ -40,7 +43,7 @@ namespace crisicheckinweb.Controllers
 	                throw new ArgumentException("Please enter a start date that is greater than today's date.");
                 }
 
-                Person me = _volunteerSvc.FindByUserId(WebSecurity.CurrentUserId);
+                Person me = _volunteerSvc.FindByUserId(_webSecurity.CurrentUserId);
                 _disasterSvc.AssignToVolunteer(new Disaster { Id = model.SelectedDisaster },
                     me, model.SelectedStartDate, model.SelectedEndDate);
 
@@ -61,7 +64,7 @@ namespace crisicheckinweb.Controllers
 
         private VolunteerViewModel GetDefaultViewModel()
         {
-            var person = _volunteerSvc.FindByUserId(WebSecurity.CurrentUserId);
+            var person = _volunteerSvc.FindByUserId(_webSecurity.CurrentUserId);
             IEnumerable<Commitment> comms = (person != null) ?
                 _volunteerSvc.RetrieveCommitments(person, true) :
                 new List<Commitment>().AsEnumerable();
