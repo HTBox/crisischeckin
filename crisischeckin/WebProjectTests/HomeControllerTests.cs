@@ -14,7 +14,6 @@ namespace WebProjectTests
     public class HomeControllerTests
     {
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
         public void Assign_BadStartDate_ReturnsIndexView()
         {
             // Arrange
@@ -38,7 +37,6 @@ namespace WebProjectTests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
         public void Assign_BadDateRange_ReturnsIndexView()
         {
             // Arrange
