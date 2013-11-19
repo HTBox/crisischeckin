@@ -52,7 +52,7 @@ namespace Services
         {
             if (updatedPerson == null) throw new ArgumentNullException("updatedPerson");
 
-            Person foundPerson = ourService.Persons.SingleOrDefault(p => p.Id == updatedPerson.Id);
+            var foundPerson = ourService.Persons.SingleOrDefault(p => p.Id == updatedPerson.Id);
 
             if (foundPerson != null)
             {
