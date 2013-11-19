@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Models;
 using Services.Interfaces;
+using Services.Exceptions;
 
 namespace Services
 {
@@ -59,6 +60,7 @@ namespace Services
         {
             if (disaster == null) throw new ArgumentNullException("disaster");
             if (String.IsNullOrWhiteSpace(disaster.Name)) throw new ArgumentNullException("disasterName");
+            if (ourService.Disasters.Any(d => d.Name == disaster.Name)) throw new DisasterAlreadyExistsException();
 
             return ourService.AddDisaster(disaster);
         }

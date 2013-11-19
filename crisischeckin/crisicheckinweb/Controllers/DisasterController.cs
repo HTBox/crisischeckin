@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using Models;
 using Services.Interfaces;
+using Services.Exceptions;
 
 namespace crisicheckinweb.Controllers
 {
@@ -57,7 +58,15 @@ namespace crisicheckinweb.Controllers
             {
                 if (disaster.Id == -1)
                 {
-                    _disasterSvc.Create(disaster);
+                    try
+                    {
+                        _disasterSvc.Create(disaster);
+                    }
+                    catch (DisasterAlreadyExistsException e)
+                    {
+                        ModelState.AddModelError("Name", "A Disaster already exists with that Name!");
+                        return View("Edit", disaster);
+                    }   
                 }
                 else
                 {

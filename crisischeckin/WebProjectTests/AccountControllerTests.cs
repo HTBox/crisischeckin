@@ -14,11 +14,12 @@ namespace WebProjectTests
     [TestClass]
     public class AccountControllerTests
     {
-        //TODO: httpContext needs to be set
+        //TODO: httpContext needs to be mocked in order to test the accountController
+        /*
         [TestMethod]
         public void Assign_ValidData_ReturnsContactInfoChangedView()
         {
-            /*
+            
             // Arrange
             var volunteer = new Mock<IVolunteer>();
             var cluster = new Mock<ICluster>();

@@ -41,6 +41,10 @@ namespace crisicheckinweb.Controllers
         {
             if (ModelState.IsValid && WebSecurity.Login(model.UserName, model.Password, persistCookie: model.RememberMe))
             {
+                if (Roles.IsUserInRole(model.UserName, Constants.RoleAdmin))
+                {
+                    return RedirectToAction("List", "Disaster");
+                }
                 return RedirectToLocal(returnUrl);
             }
 
@@ -136,7 +140,7 @@ namespace crisicheckinweb.Controllers
 
         public ActionResult ChangeContactInfo()
         {
-            Person personToUpdate = _volunteerSvc.FindByUserId(WebSecurity.CurrentUserId);
+            var personToUpdate = _volunteerSvc.FindByUserId(WebSecurity.CurrentUserId);
             ChangeContactInfoViewModel model = new ChangeContactInfoViewModel { Email = personToUpdate.Email, PhoneNumber = personToUpdate.PhoneNumber };
             return View(model);
         }
