@@ -52,7 +52,7 @@ namespace Services
         {
             if (updatedPerson == null) throw new ArgumentNullException("updatedPerson");
 
-            var foundPerson = ourService.Persons.SingleOrDefault(p => p.Id == updatedPerson.Id);
+            Person foundPerson = ourService.Persons.SingleOrDefault(p => p.Id == updatedPerson.Id);
 
             if (foundPerson != null)
             {
@@ -61,7 +61,7 @@ namespace Services
                     // check that new email isn't already in use
                     var u = ourService.Persons.Any(p => p.Email == updatedPerson.Email);
 
-                    if (u != null)
+                    if (u == true)
                     {
                         throw new PersonEmailAlreadyInUseException();
                     }
@@ -100,5 +100,6 @@ namespace Services
         {
             return ourService.Persons.SingleOrDefault(p => p.UserId == userId);
         }
+
     }
 }

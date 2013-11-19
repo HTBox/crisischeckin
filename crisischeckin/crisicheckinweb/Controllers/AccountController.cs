@@ -134,6 +134,46 @@ namespace crisicheckinweb.Controllers
             return View();
         }
 
+        public ActionResult ChangeContactInfo()
+        {
+            Person personToUpdate = _volunteerSvc.FindByUserId(WebSecurity.CurrentUserId);
+            ChangeContactInfoViewModel model = new ChangeContactInfoViewModel { Email = personToUpdate.Email, PhoneNumber = personToUpdate.PhoneNumber };
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult ChangeContactInfo(ChangeContactInfoViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var personToUpdate = _volunteerSvc.FindByUserId(WebSecurity.CurrentUserId);
+                try
+                {
+                    _volunteerSvc.UpdateDetails(new Person {
+                        Id = personToUpdate.Id,
+                        Cluster= personToUpdate.Cluster,
+                        ClusterId = personToUpdate.ClusterId,
+                        FirstName = personToUpdate.FirstName,
+                        LastName = personToUpdate.LastName,
+                        UserId = personToUpdate.UserId,
+                        Email =  model.Email,
+                        PhoneNumber = model.PhoneNumber
+                    });
+                    return RedirectToAction("ContactInfoChanged");
+                }
+                catch (PersonEmailAlreadyInUseException e)
+                {
+                    ModelState.AddModelError("Email", "This Email Address is already in use!");
+                }
+            }
+            return View();
+        }
+
+        public ActionResult ContactInfoChanged()
+        {
+            return View();
+        }
+
 
         //
         // GET: /Account/UpgradeVolunteerToAdministrator
