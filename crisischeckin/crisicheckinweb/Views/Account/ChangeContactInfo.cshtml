@@ -1,0 +1,36 @@
+﻿@model crisicheckinweb.ViewModels.ChangeContactInfoViewModel
+@{
+    ViewBag.Title = "ChangeContactInfo";
+    Layout = "~/Views/Shared/_VolunteerLayout.cshtml";
+}
+
+<h2>Change Contact Info</h2>
+
+@using (Html.BeginForm("ChangeContactInfo", "Account", FormMethod.Post))
+{
+    <div class="row">
+        <div class="col-3">
+            @Html.LabelFor(m => m.Email)
+        </div>
+        <div class="col-9">
+            @Html.TextBoxFor(m => m.Email)
+            @Html.ValidationMessageFor(m => m.Email)
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-3">
+            @Html.LabelFor(m => m.PhoneNumber)
+        </div>
+        <div class="col-9">
+            @Html.TextBoxFor(m => m.PhoneNumber)
+            @Html.ValidationMessageFor(m => m.PhoneNumber)
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <input type="submit" value="Submit" />
+        </div>
+    </div>
+}

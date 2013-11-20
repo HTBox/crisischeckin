@@ -153,6 +153,7 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\DisasterController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="ViewModels\ChangeContactInfoViewModel.cs" />
     <Compile Include="Wrappers\IWebSecurityWrapper.cs" />
     <Compile Include="Controllers\VolunteerController.cs" />
     <Compile Include="Global.asax.cs">
@@ -303,6 +304,8 @@
     <Content Include="Views\Account\ChangePassword.cshtml" />
     <Content Include="Views\Account\PasswordChanged.cshtml" />
     <Content Include="Views\Account\UpgradeVolunteerToAdministrator.cshtml" />
+    <Content Include="Views\Account\ChangeContactInfo.cshtml" />
+    <Content Include="Views\Account\ContactInfoChanged.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

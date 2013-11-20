@@ -7,26 +7,20 @@
 
 @using (Html.BeginForm("Edit", "Disaster"))
 {
-    <h3>Create / Edit Disaster</h3>
     @Html.HiddenFor(m => m.Id)
-    @Html.ValidationSummary()
-
-    <table>
-        <tr>
-            <td>Disaster Name:</td>
-            <td>&nbsp;&nbsp; @Html.TextBoxFor(m => m.Name)</td>
-        </tr>
-        <tr>
-            <td>Is Currently Active?</td>
-            <td>&nbsp;&nbsp; @Html.CheckBoxFor(m => m.IsActive)</td>
-        </tr>
-        <tr>
-            <td>&nbsp;</td>
-        </tr>
-        <tr>
-            <td>
-                <input type="submit" id="SaveButton" value="Save" /></td>
-            <td>&nbsp;&nbsp; @Html.ActionLink("Cancel", "List", "Disaster")@*<input type="button" id="CancelButton" value="Cancel"/>*@</td>
-        </tr>
-    </table>
+    <fieldset>
+        <legend>Create / Edit Disaster</legend>
+        @Html.ValidationSummary()
+        <ol>
+            <li>
+                @Html.LabelFor(m => m.Name)
+                @Html.TextBoxFor(m => m.Name)
+            </li>
+            <li>
+                Is Currently Active?
+                @Html.CheckBoxFor(m => m.IsActive)
+            </li>
+        </ol>
+        <input type="submit" value="Create" />
+    </fieldset>
 }

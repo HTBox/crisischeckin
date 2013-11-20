@@ -41,6 +41,10 @@ namespace crisicheckinweb.Controllers
         {
             if (ModelState.IsValid && WebSecurity.Login(model.UserName, model.Password, persistCookie: model.RememberMe))
             {
+                if (Roles.IsUserInRole(model.UserName, Constants.RoleAdmin))
+                {
+                    return RedirectToAction("List", "Disaster");
+                }
                 return RedirectToLocal(returnUrl);
             }
 
@@ -130,6 +134,46 @@ namespace crisicheckinweb.Controllers
         }
 
         public ActionResult PasswordChanged()
+        {
+            return View();
+        }
+
+        public ActionResult ChangeContactInfo()
+        {
+            var personToUpdate = _volunteerSvc.FindByUserId(WebSecurity.CurrentUserId);
+            ChangeContactInfoViewModel model = new ChangeContactInfoViewModel { Email = personToUpdate.Email, PhoneNumber = personToUpdate.PhoneNumber };
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult ChangeContactInfo(ChangeContactInfoViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var personToUpdate = _volunteerSvc.FindByUserId(WebSecurity.CurrentUserId);
+                try
+                {
+                    _volunteerSvc.UpdateDetails(new Person {
+                        Id = personToUpdate.Id,
+                        Cluster= personToUpdate.Cluster,
+                        ClusterId = personToUpdate.ClusterId,
+                        FirstName = personToUpdate.FirstName,
+                        LastName = personToUpdate.LastName,
+                        UserId = personToUpdate.UserId,
+                        Email =  model.Email,
+                        PhoneNumber = model.PhoneNumber
+                    });
+                    return RedirectToAction("ContactInfoChanged");
+                }
+                catch (PersonEmailAlreadyInUseException e)
+                {
+                    ModelState.AddModelError("Email", "This Email Address is already in use!");
+                }
+            }
+            return View();
+        }
+
+        public ActionResult ContactInfoChanged()
         {
             return View();
         }
