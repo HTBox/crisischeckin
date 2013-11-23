@@ -59,9 +59,9 @@ namespace Services
                 if (foundPerson.Email != updatedPerson.Email)
                 {
                     // check that new email isn't already in use
-                    var u = ourService.Persons.Any(p => p.Email == updatedPerson.Email);
+                    bool emailIsInUse = ourService.Persons.Any(p => p.Email == updatedPerson.Email);
 
-                    if (u != null)
+                    if (emailIsInUse)
                     {
                         throw new PersonEmailAlreadyInUseException();
                     }

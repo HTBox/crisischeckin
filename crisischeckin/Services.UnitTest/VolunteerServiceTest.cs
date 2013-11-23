@@ -222,6 +222,36 @@ namespace Services.UnitTest
         }
 
         [TestMethod]
+        public void UpdateDetails_ChangeEmailToUnusuedEmail_DoesNotThrowPersonEmailAlreadyInUseException()
+        {
+            Person moqPersonOne = new Person()
+            {
+                Id = 1,
+                UserId = null,
+                FirstName = "Cathy",
+                LastName = "Jones",
+                Email = "cathy.jones@email.com",
+                PhoneNumber = "555-222-9139"
+            };
+
+            List<Person> people = new List<Person>();
+            people.Add(moqPersonOne);
+
+            var moqDataService = new Mock<IDataService>();
+            moqDataService.Setup(s => s.Persons).Returns(people.AsQueryable());
+
+            VolunteerService service = new VolunteerService(moqDataService.Object);
+            // Try to change Cathy Jones' email to something not in use...
+            service.UpdateDetails(new Person()
+            {
+                Id = 1,
+                Email = "unused@email.com",
+                FirstName = "Cathy",
+                LastName = "Jones"
+            });
+        }
+
+        [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void UpdateDetails_NullPerson()
         {
