@@ -43,7 +43,7 @@
             </li>
             <li>
                 @Html.LabelFor(m => m.Cluster)
-                @Html.DropDownListFor(m => m.Cluster, new SelectList(Model.Clusters, "Id", "Name", Model.Cluster))
+                @Html.DropDownListFor(m => m.Cluster, new SelectList(Model.Clusters, "Id", "Name", Model.Cluster), "-- Choose One --")
             </li>
         </ol>
         <input type="submit" value="Create new account" />
