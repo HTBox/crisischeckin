@@ -56,11 +56,10 @@ namespace Services
             return result;
         }
 
-        public Commitment AddCommitment(Commitment newCommitment)
+        public void AddCommitment(Commitment newCommitment)
         {
-            Commitment result = context.Commitments.Add(newCommitment);
+            context.Commitments.Add(newCommitment);
             context.SaveChanges();
-            return result;
         }
 
        public Disaster AddDisaster(Disaster newDisaster)
