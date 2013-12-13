@@ -98,7 +98,7 @@ namespace crisicheckinweb.Controllers
 
                     return RedirectToAction("Index", "Home");
                 }
-                catch (PersonAlreadyExistsException e)
+                catch (PersonAlreadyExistsException)
                 {
                     ModelState.AddModelError("", "Email is already in use!");
                 }
@@ -165,7 +165,7 @@ namespace crisicheckinweb.Controllers
                     });
                     return RedirectToAction("ContactInfoChanged");
                 }
-                catch (PersonEmailAlreadyInUseException e)
+                catch (PersonEmailAlreadyInUseException)
                 {
                     ModelState.AddModelError("Email", "This Email Address is already in use!");
                 }

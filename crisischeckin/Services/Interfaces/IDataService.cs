@@ -19,7 +19,7 @@ namespace Services
         IQueryable<Cluster> Clusters { get; }
         Person AddPerson(Person newPerson);
         Person UpdatePerson(Person updatedPerson);
-        Commitment AddCommitment(Commitment newCommitment);
+        void AddCommitment(Commitment newCommitment);
         Disaster AddDisaster(Disaster newDisaster);
         void SubmitChanges();
     }
