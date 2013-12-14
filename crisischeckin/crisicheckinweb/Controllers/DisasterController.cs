@@ -62,7 +62,7 @@ namespace crisicheckinweb.Controllers
                     {
                         _disasterSvc.Create(disaster);
                     }
-                    catch (DisasterAlreadyExistsException e)
+                    catch (DisasterAlreadyExistsException)
                     {
                         ModelState.AddModelError("Name", "A Disaster already exists with that Name!");
                         return View("Edit", disaster);
