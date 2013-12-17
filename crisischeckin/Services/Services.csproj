@@ -58,7 +58,7 @@
     <Compile Include="Interfaces\ICluster.cs" />
     <Compile Include="Interfaces\IDataService.cs" />
     <Compile Include="Interfaces\IDisaster.cs" />
-    <Compile Include="Interfaces\IVolunteer.cs" />
+    <Compile Include="Interfaces\IVolunteerService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VolunteerService.cs" />
   </ItemGroup>

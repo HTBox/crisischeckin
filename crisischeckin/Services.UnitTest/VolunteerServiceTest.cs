@@ -261,14 +261,14 @@ namespace Services.UnitTest
             service.UpdateDetails(null);
         }
 
-        [TestMethod,
-        ExpectedException(typeof(ArgumentNullException))]
-        public void WhenUserIsNullGetAllCommitmentsThrowsNullArgumentException()
+        [TestMethod]
+        public void WhenPersonIdDoesNotExistReturnsEmptyList()
         {
             var moqDataService = new Mock<IDataService>();
+            moqDataService.Setup(service => service.Commitments).Returns(new List<Commitment>().AsQueryable);
             var underTest = new VolunteerService(moqDataService.Object);
 
-            var results = underTest.RetrieveCommitments(default(Person), false);
+            var results = underTest.RetrieveCommitments(0, false);
         }
 
         [TestMethod]
@@ -302,16 +302,10 @@ namespace Services.UnitTest
                 }.AsQueryable());
             var underTest = new VolunteerService(moqDataService.Object);
 
-            var person = new Person
-            {
-                Id = 1,
-                FirstName = "test",
-                LastName = "tester"
-            };
-
-            var results = underTest.RetrieveCommitments(person, false);
+            const int personId = 1;
+            var results = underTest.RetrieveCommitments(personId, false);
             Assert.IsTrue(results.Count() == 1);
-            Assert.IsTrue(results.Single().Id == 1);
+            Assert.IsTrue(results.Single().Id == personId);
         }
 
         [TestMethod]
@@ -322,12 +316,6 @@ namespace Services.UnitTest
                 .Returns(new List<Commitment>().AsQueryable());
             var underTest = new VolunteerService(moqDataService.Object);
 
-            var person = new Person
-            {
-                Id = 1,
-                FirstName = "test",
-                LastName = "tester"
-            };
             var disaster = new Disaster
             {
                 Id = 1,
@@ -339,9 +327,10 @@ namespace Services.UnitTest
                 {
                     disaster
                 }.AsQueryable());
+            const int personId = 1;
 
-            var results = underTest.RetrieveCommitments(person, false);
-            Assert.IsTrue(results.Count() == 0);
+            var results = underTest.RetrieveCommitments(personId, false);
+            Assert.IsTrue(!results.Any());
         }
 
         // Inactive disaster depends on flag
@@ -376,13 +365,8 @@ namespace Services.UnitTest
                 }.AsQueryable());
             var underTest = new VolunteerService(moqDataService.Object);
 
-            var person = new Person
-            {
-                Id = 1,
-                FirstName = "test",
-                LastName = "tester"
-            };
-            var results = underTest.RetrieveCommitments(person, true);
+            const int personId = 1;
+            var results = underTest.RetrieveCommitments(personId, true);
             Assert.IsTrue(results.Count() == 1);
             Assert.IsTrue(results.Single().Id == 1);
         }
@@ -418,14 +402,9 @@ namespace Services.UnitTest
                 }.AsQueryable());
             var underTest = new VolunteerService(moqDataService.Object);
 
-            var person = new Person
-            {
-                Id = 1,
-                FirstName = "test",
-                LastName = "tester"
-            };
-            var results = underTest.RetrieveCommitments(person, false);
-            Assert.IsTrue(results.Count() == 0);
+            var personId = 1;
+            var results = underTest.RetrieveCommitments(personId, false);
+            Assert.IsTrue(!results.Any());
         }
 
         // only records for this user
@@ -469,13 +448,8 @@ namespace Services.UnitTest
                 }.AsQueryable());
             var underTest = new VolunteerService(moqDataService.Object);
 
-            var person = new Person
-            {
-                Id = 1,
-                FirstName = "test",
-                LastName = "tester"
-            };
-            var results = underTest.RetrieveCommitments(person, false);
+            const int personId = 1;
+            var results = underTest.RetrieveCommitments(personId, false);
             Assert.IsTrue(results.Count() == 1);
         }
 

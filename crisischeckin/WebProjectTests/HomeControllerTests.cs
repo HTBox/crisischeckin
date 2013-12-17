@@ -18,7 +18,7 @@ namespace WebProjectTests
         {
             // Arrange
             var disaster = new Mock<IDisaster>();
-            var volunteer = new Mock<IVolunteer>();
+            var volunteer = new Mock<IVolunteerService>();
             var webSecurity = new Mock<IWebSecurityWrapper>();
 
             var controller = new HomeController(disaster.Object, volunteer.Object, webSecurity.Object);
@@ -41,7 +41,7 @@ namespace WebProjectTests
         {
             // Arrange
             var disaster = new Mock<IDisaster>();
-            var volunteer = new Mock<IVolunteer>();
+            var volunteer = new Mock<IVolunteerService>();
             var webSecurity = new Mock<IWebSecurityWrapper>();
 
             var controller = new HomeController(disaster.Object, volunteer.Object, webSecurity.Object);
@@ -70,7 +70,7 @@ namespace WebProjectTests
         {
             // Arrange
             var disaster = new Mock<IDisaster>();
-            var volunteer = new Mock<IVolunteer>();
+            var volunteer = new Mock<IVolunteerService>();
             var webSecurity = new Mock<IWebSecurityWrapper>();
             
             var controller = new HomeController(disaster.Object, volunteer.Object, webSecurity.Object);
