@@ -18,121 +18,98 @@ namespace Services.UnitTest
             IsActive = true
         };
 
-        private readonly Disaster _inActiveDisaster = new Disaster
+        private readonly Disaster _inactiveDisaster = new Disaster
         {
             Id = 2,
             Name = "Test Disaster 2",
             IsActive = false
         };
 
-        private Mock<IDataService> _mockService;
+        private Mock<IDataService> _mockDataService;
+        private DisasterService _disasterService;
 
         [TestInitialize]
         public void CreateDependencies()
         {
-            _mockService = new Mock<IDataService>();
+            _mockDataService = new Mock<IDataService>();
+            _disasterService = new DisasterService(_mockDataService.Object);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Constructor_NullDataService()
         {
-            DisasterService service = new DisasterService(null);
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void AssignToVolunteer_NullDisaster()
-        {
-            var moqDataService = new Mock<IDataService>();
-            DisasterService service = new DisasterService(moqDataService.Object);
-
-            service.AssignToVolunteer(null, new Person(), new DateTime(2014, 01, 01), new DateTime(2014, 02, 02));
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void AssignToVolunteer_NullPerson()
-        {
-            var moqDataService = new Mock<IDataService>();
-            DisasterService service = new DisasterService(moqDataService.Object);
-
-            service.AssignToVolunteer(new Disaster(), null, new DateTime(2014, 01, 01), new DateTime(2014, 02, 02));
+            // ReSharper disable once ObjectCreationAsStatement
+            new DisasterService(null);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
         public void AssignToVolunteer_BeginDateGreaterThanEndDate()
         {
-            var moqDataService = new Mock<IDataService>();
-            DisasterService service = new DisasterService(moqDataService.Object);
-
-            service.AssignToVolunteer(new Disaster(), new Person(), new DateTime(2013, 6, 13), new DateTime(2013, 5, 10));
+            var startDate = new DateTime(2013, 6, 13);
+            var endDate = startDate.Subtract(TimeSpan.FromDays(1));
+            _disasterService.AssignToVolunteer(0, 0, startDate, endDate);
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException(typeof (ArgumentException))]
         public void AssignToVolunteer_StartDateIsWithinExistingCommitment()
         {
-            var moqDataService = new Mock<IDataService>();
-            DisasterService service = new DisasterService(moqDataService.Object);
-
-            var commitments = new List<Commitment>() { 
-                new Commitment() {
+            var commitments = new List<Commitment>
+            {
+                new Commitment
+                {
                     StartDate = new DateTime(2013, 6, 10),
                     EndDate = new DateTime(2013, 6, 15),
                     DisasterId = 2
                 }
             };
-            var disasters = new List<Disaster>() { new Disaster() { Id = 2, IsActive = true } };
+            var disasters = new List<Disaster> {new Disaster {Id = 2, IsActive = true}};
 
-            moqDataService.Setup(s => s.Commitments).Returns(commitments.AsQueryable());
-            moqDataService.Setup(s => s.Disasters).Returns(disasters.AsQueryable());
+            _mockDataService.Setup(s => s.Commitments).Returns(commitments.AsQueryable());
+            _mockDataService.Setup(s => s.Disasters).Returns(disasters.AsQueryable());
 
-            service.AssignToVolunteer(new Disaster(), new Person(), new DateTime(2013, 6, 11), new DateTime(2013, 6, 20));
+            _disasterService.AssignToVolunteer(0, 0, new DateTime(2013, 6, 11), new DateTime(2013, 6, 20));
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
         public void AssignToVolunteer_EndDateIsWithinExistingCommitment()
         {
-            var moqDataService = new Mock<IDataService>();
-            DisasterService service = new DisasterService(moqDataService.Object);
-
-            var commitments = new List<Commitment>() { 
-                new Commitment() {
+            var commitments = new List<Commitment>
+            {
+                new Commitment
+                {
                     StartDate = new DateTime(2013, 6, 10),
                     EndDate = new DateTime(2013, 6, 15),
                     DisasterId = 2
                 }
             };
-            var disasters = new List<Disaster>() { new Disaster() { Id = 2, IsActive = true } };
+            var disasters = new List<Disaster> {new Disaster {Id = 2, IsActive = true}};
 
-            moqDataService.Setup(s => s.Commitments).Returns(commitments.AsQueryable());
-            moqDataService.Setup(s => s.Disasters).Returns(disasters.AsQueryable());
+            _mockDataService.Setup(s => s.Commitments).Returns(commitments.AsQueryable());
+            _mockDataService.Setup(s => s.Disasters).Returns(disasters.AsQueryable());
 
-            service.AssignToVolunteer(new Disaster(), new Person(), new DateTime(2013, 6, 5), new DateTime(2013, 6, 12));
+            _disasterService.AssignToVolunteer(0, 0, new DateTime(2013, 6, 5), new DateTime(2013, 6, 12));
         }
 
         [TestMethod]
         public void AssignToVolunteer_Valid()
         {
-            var moqDataService = new Mock<IDataService>();
-
             Commitment createdCommitment = null;
-            moqDataService.Setup(s => s.AddCommitment(It.IsAny<Commitment>()))
+            _mockDataService.Setup(s => s.AddCommitment(It.IsAny<Commitment>()))
                 .Callback<Commitment>(commitment => createdCommitment = commitment);
-            var service = new DisasterService(moqDataService.Object);
 
-            var person = new Person {Id = 5, Email = "bob.jones@email.com"};
-            var disaster = new Disaster {Id = 10, Name = "A disaster"};
+            const int personId = 5;
+            const int disasterId = 10;
             var startDate = new DateTime(2013, 01, 01);
             var endDate = new DateTime(2013, 02, 01);
-            service.AssignToVolunteer(disaster, person, startDate, endDate);
+            _disasterService.AssignToVolunteer(disasterId, personId, startDate, endDate);
 
             Assert.IsNotNull(createdCommitment);
-            Assert.AreEqual(createdCommitment.PersonId, person.Id);
-            Assert.AreEqual(createdCommitment.DisasterId, disaster.Id);
+            Assert.AreEqual(createdCommitment.PersonId, personId);
+            Assert.AreEqual(createdCommitment.DisasterId, disasterId);
             Assert.AreEqual(createdCommitment.StartDate, startDate);
             Assert.AreEqual(createdCommitment.EndDate, endDate);
         }
@@ -141,48 +118,41 @@ namespace Services.UnitTest
         public void CreateDisaster_Valid()
         {
             // arrange
-            var disaster = new Disaster() { Name = "name", IsActive = true };
-            _mockService.Setup(m => m.AddDisaster(disaster)).Returns(disaster);
-            DisasterService service = new DisasterService(_mockService.Object);
+            var disaster = new Disaster {Name = "name", IsActive = true};
+            Disaster createdDisaster = null;
+            _mockDataService.Setup(m => m.AddDisaster(disaster)).Callback<Disaster>(d => createdDisaster = d);
 
             // act
-            var result = service.Create(disaster);
+            _disasterService.Create(disaster);
 
             // assert
-            Assert.AreEqual(disaster.Name, result.Name);
-            Assert.AreEqual(disaster.IsActive, result.IsActive);
-            _mockService.Verify(m => m.AddDisaster(disaster));
+            Assert.AreEqual(disaster.Name, createdDisaster.Name);
+            Assert.AreEqual(disaster.IsActive, createdDisaster.IsActive);
+            _mockDataService.Verify(m => m.AddDisaster(disaster));
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void CreateDisaster_DisasterNull()
         {
-            var moqDataService = new Mock<IDataService>();
-            DisasterService service = new DisasterService(moqDataService.Object);
-
-            service.Create(null);
+            _disasterService.Create(null);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void CreateDisaster_DisasterNameNull()
         {
-            DisasterService service = new DisasterService(_mockService.Object);
-
-            service.Create(new Disaster() { IsActive = true, Name = "" });
+            _disasterService.Create(new Disaster { IsActive = true, Name = "" });
         }
 
         [TestMethod]
         public void GetList_ReturnsAllValid()
         {
             // arrange
-            initializeDisasterCollection(_activeDisaster, _inActiveDisaster);
-
-            var underTest = new DisasterService(_mockService.Object);
-
+            InitializeDisasterCollection(_activeDisaster, _inactiveDisaster);
+            
             // act
-            var result = underTest.GetList();
+            var result = _disasterService.GetList();
 
             // assert
             Assert.AreEqual(2, result.Count());
@@ -192,11 +162,10 @@ namespace Services.UnitTest
         public void GetActiveList_ReturnsAllActiveValid()
         {
             // arrange
-            initializeDisasterCollection(_activeDisaster, _inActiveDisaster);
-            var underTest = new DisasterService(_mockService.Object);
+            InitializeDisasterCollection(_activeDisaster, _inactiveDisaster);
 
             // act
-            var result = underTest.GetActiveList();
+            var result = _disasterService.GetActiveList();
 
             // assert
             Assert.AreEqual(1, result.Count());
@@ -206,9 +175,7 @@ namespace Services.UnitTest
         [TestMethod]
         public void WhenNoDisastersReturnAnEmptyList()
         {
-            var underTest = new DisasterService(_mockService.Object);
-
-            var result = underTest.GetList();
+            var result = _disasterService.GetList();
             Assert.IsFalse(result.Any());
         }
 
@@ -216,11 +183,10 @@ namespace Services.UnitTest
         public void GetByID_Valid()
         {
             // arrange
-            initializeDisasterCollection(_activeDisaster);
-            var underTest = new DisasterService(_mockService.Object);
+            InitializeDisasterCollection(_activeDisaster);
 
             // act
-            var result = underTest.Get(_activeDisaster.Id);
+            var result = _disasterService.Get(_activeDisaster.Id);
 
             // assert
             Assert.AreEqual(_activeDisaster.Id, result.Id);
@@ -230,20 +196,18 @@ namespace Services.UnitTest
         public void GetByID_NotFound()
         {
             // arrange
-           // initializeDisasterCollection(testDisaster1);
-            var underTest = new DisasterService(_mockService.Object);
 
             // act
-            var result = underTest.Get(_activeDisaster.Id);
+            var result = _disasterService.Get(_activeDisaster.Id);
 
             // assert
             Assert.AreEqual(null, result);
         }
 
 
-        private void initializeDisasterCollection(params Disaster[] disasters)
+        private void InitializeDisasterCollection(params Disaster[] disasters)
         {
-            _mockService.Setup(ds => ds.Disasters).Returns(disasters.AsQueryable());
+            _mockDataService.Setup(ds => ds.Disasters).Returns(disasters.AsQueryable());
         }
     }
 }

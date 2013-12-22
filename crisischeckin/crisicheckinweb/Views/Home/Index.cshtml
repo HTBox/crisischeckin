@@ -42,7 +42,7 @@
  <h3>Volunteer for Disaster: </h3>
     @Html.ValidationSummary()
     
-    @Html.DropDownListFor(m => m.SelectedDisaster, new SelectList(Model.Disasters, "Id", "Name", Model.SelectedDisaster), "-- Choose One --")
+    @Html.DropDownListFor(m => m.SelectedDisasterId, new SelectList(Model.Disasters, "Id", "Name", Model.SelectedDisasterId), "-- Choose One --")
 
     <label>Start Date:</label>
     @Html.TextBoxFor(m => m.SelectedStartDate, new { id="dp_startDate" })

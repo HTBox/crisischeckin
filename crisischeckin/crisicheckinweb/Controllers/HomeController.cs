@@ -41,9 +41,9 @@ namespace crisicheckinweb.Controllers
 	                throw new ArgumentException("Please enter a start date that is greater than today's date.");
                 }
 
-                Person me = _volunteerSvc.FindByUserId(_webSecurity.CurrentUserId);
-                _disasterSvc.AssignToVolunteer(new Disaster { Id = model.SelectedDisaster },
-                    me, model.SelectedStartDate, model.SelectedEndDate);
+                var person = _volunteerSvc.FindByUserId(_webSecurity.CurrentUserId);
+                _disasterSvc.AssignToVolunteer(model.SelectedDisasterId,
+                    person.Id, model.SelectedStartDate, model.SelectedEndDate);
 
                 return Redirect("/Home");
             }
@@ -53,7 +53,7 @@ namespace crisicheckinweb.Controllers
             }
 
             var modelToReturn = GetDefaultViewModel();
-            modelToReturn.SelectedDisaster = model.SelectedDisaster;
+            modelToReturn.SelectedDisasterId = model.SelectedDisasterId;
             modelToReturn.SelectedStartDate = model.SelectedStartDate;
             modelToReturn.SelectedEndDate = model.SelectedEndDate;
 
