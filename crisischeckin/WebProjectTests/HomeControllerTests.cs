@@ -18,7 +18,7 @@ namespace WebProjectTests
         {
             // Arrange
             var disaster = new Mock<IDisaster>();
-            var volunteer = new Mock<IVolunteer>();
+            var volunteer = new Mock<IVolunteerService>();
             var webSecurity = new Mock<IWebSecurityWrapper>();
 
             var controller = new HomeController(disaster.Object, volunteer.Object, webSecurity.Object);
@@ -41,14 +41,14 @@ namespace WebProjectTests
         {
             // Arrange
             var disaster = new Mock<IDisaster>();
-            var volunteer = new Mock<IVolunteer>();
+            var volunteer = new Mock<IVolunteerService>();
             var webSecurity = new Mock<IWebSecurityWrapper>();
 
             var controller = new HomeController(disaster.Object, volunteer.Object, webSecurity.Object);
 
             disaster.Setup(x => x.AssignToVolunteer(
-                It.IsAny<Disaster>(),
-                It.IsAny<Person>(),
+                It.IsAny<int>(),
+                It.IsAny<int>(),
                 It.IsAny<DateTime>(),
                 It.IsAny<DateTime>())).Throws(new ArgumentException(""));
 
@@ -70,9 +70,9 @@ namespace WebProjectTests
         {
             // Arrange
             var disaster = new Mock<IDisaster>();
-            var volunteer = new Mock<IVolunteer>();
+            var volunteer = new Mock<IVolunteerService>();
             var webSecurity = new Mock<IWebSecurityWrapper>();
-            
+            volunteer.Setup(service => service.FindByUserId(It.IsAny<int>())).Returns(new Person());
             var controller = new HomeController(disaster.Object, volunteer.Object, webSecurity.Object);
 
             // Act

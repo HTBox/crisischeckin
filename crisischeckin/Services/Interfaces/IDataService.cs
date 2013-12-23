@@ -20,7 +20,7 @@ namespace Services
         Person AddPerson(Person newPerson);
         Person UpdatePerson(Person updatedPerson);
         void AddCommitment(Commitment newCommitment);
-        Disaster AddDisaster(Disaster newDisaster);
+        void AddDisaster(Disaster newDisaster);
         void SubmitChanges();
     }
 }

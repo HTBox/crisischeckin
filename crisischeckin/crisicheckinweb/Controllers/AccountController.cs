@@ -15,9 +15,9 @@ namespace crisicheckinweb.Controllers
 {
     public class AccountController : BaseController
     {
-        private readonly IVolunteer _volunteerSvc;
+        private readonly IVolunteerService _volunteerSvc;
         private readonly ICluster _clusterSvc;
-        public AccountController(IVolunteer volunteerSvc, ICluster clusterSvc)
+        public AccountController(IVolunteerService volunteerSvc, ICluster clusterSvc)
         {
             _clusterSvc = clusterSvc;
             _volunteerSvc = volunteerSvc;

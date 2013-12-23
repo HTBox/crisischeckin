@@ -10,7 +10,7 @@ using System.Data.Entity;
 
 namespace Services
 {
-    public class VolunteerService : IVolunteer
+    public class VolunteerService : IVolunteerService
     {
         private readonly IDataService ourService;
 
@@ -75,13 +75,10 @@ namespace Services
             }
         }
 
-        public IQueryable<Commitment> RetrieveCommitments(Person person, bool showInactive)
+        public IQueryable<Commitment> RetrieveCommitments(int personId, bool showInactive)
         {
-            if (person == null)
-                throw new ArgumentNullException("person", "Person cannot be null");
-
             var allCommitments = from c in ourService.Commitments
-                         where c.PersonId == person.Id
+                         where c.PersonId == personId
                          select c;
             var filteredCommitments = allCommitments.Include(c => c.Disaster)
                 .Where(c => c.Disaster.IsActive || showInactive);
@@ -93,7 +90,7 @@ namespace Services
             if (disaster == null)
                 throw new ArgumentNullException("disaster", "Disaster cannot be null");
 
-            return RetrieveCommitments(person, true).Where(c => c.DisasterId == disaster.Id);
+            return RetrieveCommitments(person.Id, true).Where(c => c.DisasterId == disaster.Id);
         }
 
         public Person FindByUserId(int userId)

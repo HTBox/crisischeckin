@@ -21,7 +21,7 @@ namespace WebProjectTests
         {
             
             // Arrange
-            var volunteer = new Mock<IVolunteer>();
+            var volunteer = new Mock<IVolunteerService>();
             var cluster = new Mock<ICluster>();
             var webSecurity = new Mock<IWebSecurityWrapper>();
 
@@ -44,7 +44,7 @@ namespace WebProjectTests
         public void Assign_DuplicateEmailAddress_ReturnsChangeContactInfoView()
         {
             // Arrange
-            var volunteer = new Mock<IVolunteer>();
+            var volunteer = new Mock<IVolunteerService>();
             var cluster = new Mock<ICluster>();
             var webSecurity = new Mock<IWebSecurityWrapper>();
 

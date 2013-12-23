@@ -62,11 +62,10 @@ namespace Services
             context.SaveChanges();
         }
 
-       public Disaster AddDisaster(Disaster newDisaster)
+       public void AddDisaster(Disaster newDisaster)
        {
-           Disaster result = context.Disasters.Add(newDisaster);
+           context.Disasters.Add(newDisaster);
            context.SaveChanges();
-           return result;
        }
 
         public void SubmitChanges()

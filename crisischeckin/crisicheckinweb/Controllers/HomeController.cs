@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using crisicheckinweb.ViewModels;
 using Models;
 using Services.Interfaces;
-using WebMatrix.WebData;
 using crisicheckinweb.Wrappers;
 
 namespace crisicheckinweb.Controllers
@@ -15,10 +13,10 @@ namespace crisicheckinweb.Controllers
     {
 
         private readonly IDisaster _disasterSvc;
-        private readonly IVolunteer _volunteerSvc;
+        private readonly IVolunteerService _volunteerSvc;
         private readonly IWebSecurityWrapper _webSecurity;
 
-        public HomeController(IDisaster disasterSvc, IVolunteer volunteerSvc, IWebSecurityWrapper webSecurity)
+        public HomeController(IDisaster disasterSvc, IVolunteerService volunteerSvc, IWebSecurityWrapper webSecurity)
         {
             _disasterSvc = disasterSvc;
             _volunteerSvc = volunteerSvc;
@@ -43,9 +41,9 @@ namespace crisicheckinweb.Controllers
 	                throw new ArgumentException("Please enter a start date that is greater than today's date.");
                 }
 
-                Person me = _volunteerSvc.FindByUserId(_webSecurity.CurrentUserId);
-                _disasterSvc.AssignToVolunteer(new Disaster { Id = model.SelectedDisaster },
-                    me, model.SelectedStartDate, model.SelectedEndDate);
+                var person = _volunteerSvc.FindByUserId(_webSecurity.CurrentUserId);
+                _disasterSvc.AssignToVolunteer(model.SelectedDisasterId,
+                    person.Id, model.SelectedStartDate, model.SelectedEndDate);
 
                 return Redirect("/Home");
             }
@@ -55,7 +53,7 @@ namespace crisicheckinweb.Controllers
             }
 
             var modelToReturn = GetDefaultViewModel();
-            modelToReturn.SelectedDisaster = model.SelectedDisaster;
+            modelToReturn.SelectedDisasterId = model.SelectedDisasterId;
             modelToReturn.SelectedStartDate = model.SelectedStartDate;
             modelToReturn.SelectedEndDate = model.SelectedEndDate;
 
@@ -65,14 +63,14 @@ namespace crisicheckinweb.Controllers
         private VolunteerViewModel GetDefaultViewModel()
         {
             var person = _volunteerSvc.FindByUserId(_webSecurity.CurrentUserId);
-            IEnumerable<Commitment> comms = (person != null) ?
-                _volunteerSvc.RetrieveCommitments(person, true) :
+            var commitments = (person != null) ?
+                _volunteerSvc.RetrieveCommitments(person.Id, true) :
                 new List<Commitment>().AsEnumerable();
 
             var model = new VolunteerViewModel
             {
                 Disasters = _disasterSvc.GetActiveList(),
-                MyCommitments = comms
+                MyCommitments = commitments
             };
 
             return model;
