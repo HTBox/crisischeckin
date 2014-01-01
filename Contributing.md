@@ -33,3 +33,8 @@ To fix that, I'd just throw away the stuff in the database and start again by
     * sqllocaldb.exe delete v11.0
 
 After doing that, you should be able to run the Update-Database command again to get back to a clean database. 
+
+Jumping in
+====
+
+Once you've gotten the projet running in your local environment, check out these issues https://github.com/HTBox/crisischeckin/issues?labels=jump-in&state=open any of which would be a great place to get started helping our project.
