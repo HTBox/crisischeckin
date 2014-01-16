@@ -32,7 +32,7 @@ namespace crisicheckinweb.Controllers
         [HttpPost]
         public ActionResult Assign(VolunteerViewModel model)
         {
-            if (!ModelState.IsValid) return View("Index", GetDefaultViewModel());
+            if (!ModelState.IsValid) return View("Index", GetDefaultViewModel(model));
                 
             try
             {
@@ -60,7 +60,7 @@ namespace crisicheckinweb.Controllers
             return View("Index", modelToReturn);
         }
 
-        private VolunteerViewModel GetDefaultViewModel()
+        private VolunteerViewModel GetDefaultViewModel(VolunteerViewModel viewModel = null)
         {
             var person = _volunteerSvc.FindByUserId(_webSecurity.CurrentUserId);
             var commitments = (person != null) ?
@@ -72,6 +72,12 @@ namespace crisicheckinweb.Controllers
                 Disasters = _disasterSvc.GetActiveList(),
                 MyCommitments = commitments
             };
+            if (viewModel != null)
+            {
+                model.SelectedDisasterId = viewModel.SelectedDisasterId;
+                model.SelectedStartDate = viewModel.SelectedStartDate;
+                model.SelectedEndDate = viewModel.SelectedEndDate;
+            }
 
             return model;
         }
