@@ -16,23 +16,8 @@
             <div class="nav-collapse collapse">
                 <ul class="nav">
                     <li><a href="/">Home</a></li>
-                     @if(this.ViewContext.Controller.ToString() == "crisicheckinweb.Controllers.DisasterController")
-                    {
-                        <li class="active"><a href="/Disaster/List">Disaster List</a></li>
-                    }
-                    else
-                    {
-                        <li><a href="/Disaster/List">Disaster List</a></li>
-                    }
-                  
-                    @if (this.ViewContext.Controller.ToString() == "crisicheckinweb.Controllers.VolunteerController")
-                    {
-                        <li class="active"><a href="/Volunteer/ListbyDisaster">View Volunteers</a></li>
-                    }
-                    else
-                    {
-                        <li><a href="/Volunteer/ListbyDisaster">View Volunteers</a></li>
-                    }
+                    @Html.MenuItem("Disater List", "List", "Disaster")
+                    @Html.MenuItem("View Volunteers", "ListbyDisaster", "Volunteer")
                 </ul>
                  <div id="loginStatus" class="navbar-form pull-right" style="font-weight:300; color:white; padding-top:10px;">
                     @Html.Partial("_LoginStatus")
