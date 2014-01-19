@@ -246,6 +246,7 @@
     <Content Include="css\bootstrap-responsive.min.css" />
     <Content Include="css\bootstrap.css" />
     <Content Include="css\bootstrap.min.css" />
+    <Content Include="css\Forms.css" />
     <Content Include="Global.asax" />
     <None Include="scripts\amplify-vsdoc.js" />
     <Content Include="Images\loading.gif" />
