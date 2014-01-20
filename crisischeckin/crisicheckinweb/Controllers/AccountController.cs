@@ -178,6 +178,13 @@ namespace crisicheckinweb.Controllers
             return View();
         }
 
+		[HttpPost]
+		[AllowAnonymous]
+		public bool UsernameAvailable(string userName)
+		{
+			return _volunteerSvc.UsernameAvailable(userName);
+		}
+
 
         //
         // GET: /Account/UpgradeVolunteerToAdministrator

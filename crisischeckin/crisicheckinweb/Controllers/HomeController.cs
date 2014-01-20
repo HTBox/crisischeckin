@@ -42,6 +42,10 @@ namespace crisicheckinweb.Controllers
                 }
 
                 var person = _volunteerSvc.FindByUserId(_webSecurity.CurrentUserId);
+				if (person == null)
+				{
+					throw new ArgumentException("The logged in user is either the administrator or does not have a valid account for joining a crisis.");
+				}
                 _disasterSvc.AssignToVolunteer(model.SelectedDisasterId,
                     person.Id, model.SelectedStartDate, model.SelectedEndDate);
 

@@ -1,0 +1,19 @@
+﻿.success {
+	background-color: #39C339 !important;
+	color: white !important;
+}
+
+.failure {
+	background-color: #C33A3A !important;
+	color: white !important;
+}
+
+
+.feedbackHelper {
+	color: white;
+	display: inline-block;
+	padding: 5px;
+	position: relative;
+	top: -4px;
+	margin-left: 10px;
+}

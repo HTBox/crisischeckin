@@ -98,5 +98,10 @@ namespace Services
             return ourService.Persons.SingleOrDefault(p => p.UserId == userId);
         }
 
-    }
+		public bool UsernameAvailable(string userName)
+		{
+			if (ourService.Users.Where(p => p.UserName == userName).Count() > 0) return false;
+			return true;
+		}
+	}
 }
