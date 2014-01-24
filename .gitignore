@@ -83,6 +83,9 @@ publish
 # NuGet Packages Directory
 packages
 
+#Roslyn artifacts.
+*.sln.ide/
+
 # Windows Azure Build Output
 csx
 *.build.csdef
