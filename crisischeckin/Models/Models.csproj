@@ -47,6 +47,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClusterCoordinator.cs" />
+    <Compile Include="ClusterCoordinatorEvents.cs" />
+    <Compile Include="ClusterCoordinatorLog.cs" />
     <Compile Include="Commitment.cs" />
     <Compile Include="CrisisCheckin.cs" />
     <Compile Include="Disaster.cs" />

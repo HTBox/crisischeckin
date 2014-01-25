@@ -1,11 +1,7 @@
-using Models;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Models;
 
-namespace Services
+namespace Services.Interfaces
 {
     // This service manages the communication to the Models project
     // using the live database in production, but it can be mocked
@@ -17,10 +13,13 @@ namespace Services
         IQueryable<Person> Persons { get; }
         IQueryable<User> Users { get; }
         IQueryable<Cluster> Clusters { get; }
+        IQueryable<ClusterCoordinator> ClusterCoordinators { get; }
         Person AddPerson(Person newPerson);
         Person UpdatePerson(Person updatedPerson);
         void AddCommitment(Commitment newCommitment);
         void AddDisaster(Disaster newDisaster);
         void SubmitChanges();
+        void AddClusterCoordinator(ClusterCoordinator clusterCoordinator);
+        void AppendClusterCoordinatorLogEntry(ClusterCoordinatorLogEntry clusterCoordinatorLogEntry);
     }
 }

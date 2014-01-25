@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F6C6C990-7B39-457F-95A1-D22EC67F4A79}</ProjectGuid>
+    <ProjectGuid>{12248512-C6DE-4B1B-8560-D8A09911A300}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Services.UnitTest</RootNamespace>
-    <AssemblyName>Services.UnitTest</AssemblyName>
+    <RootNamespace>AcceptanceTests</RootNamespace>
+    <AssemblyName>AcceptanceTests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -16,8 +16,6 @@
     <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
     <IsCodedUITest>False</IsCodedUITest>
     <TestProjectType>UnitTest</TestProjectType>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
-    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -37,10 +35,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Moq">
-      <HintPath>..\packages\Moq.4.0.10827\lib\NET40\Moq.dll</HintPath>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Data.Entity" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -55,24 +55,23 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="AdminServiceTests.cs" />
-    <Compile Include="ClusterCoordinatorService\AssignClusterCoordinatorTests.cs" />
-    <Compile Include="ClusterCoordinatorService\GetClusterCoordinatorTests.cs" />
-    <Compile Include="DisasterServiceTest.cs" />
-    <Compile Include="MessageCoordinatorTest.cs" />
-    <Compile Include="VolunteerServiceTest.cs" />
+    <Compile Include="With_an_empty_database_environment.cs" />
+    <Compile Include="ClusterCoordinatorFeature\A_person_can_be_assigned_as_a_cluster_coordinator_for_a_disaster.cs" />
+    <Compile Include="ClusterCoordinatorFeature\A_person_can_be_unassigned_as_a_cluster_coordinator_for_a_disaster.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Models\Models.csproj">
-      <Project>{3fd36cf5-7d79-4505-a0bb-12e35a613d88}</Project>
+      <Project>{3FD36CF5-7D79-4505-A0BB-12E35A613D88}</Project>
       <Name>Models</Name>
     </ProjectReference>
     <ProjectReference Include="..\Services\Services.csproj">
-      <Project>{d7a71984-2cc2-4da7-9346-d697fdbf15b4}</Project>
+      <Project>{D7A71984-2CC2-4DA7-9346-D697FDBF15B4}</Project>
       <Name>Services</Name>
     </ProjectReference>
   </ItemGroup>
