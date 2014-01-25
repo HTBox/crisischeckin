@@ -31,16 +31,21 @@ namespace Services
             return people;
         }
 
-
         public IEnumerable<Person> GetVolunteersForDate(Disaster disaster, DateTime date)
         {
-            if (disaster == null)
-                throw new ArgumentNullException("disaster", "disaster cannot be null");
-            var storedDisaster = dataService.Disasters.SingleOrDefault(d => d.Id == disaster.Id);
+            return GetVolunteersForDate(disaster.Id, date);
+        }
+
+        public IEnumerable<Person> GetVolunteersForDate(int disasterId, DateTime date)
+        {
+            if (0 == disasterId)
+                throw new ArgumentException("disasterId must be greater than zero", "disasterId");
+            var storedDisaster = dataService.Disasters.SingleOrDefault(x => x.Id.Equals(disasterId));
             if (storedDisaster == null)
                 throw new ArgumentException("Disaster was not found", "disaster");
+
             var commitments = from c in dataService.Commitments
-                              where c.DisasterId == disaster.Id
+                              where c.DisasterId == disasterId
                               where date >= c.StartDate && date <= c.EndDate
                               select c;
 
@@ -48,6 +53,9 @@ namespace Services
                          join p in dataService.Persons on c.PersonId equals p.Id
                          select p;
             people.Include(p => p.Cluster);
+
+            //var p = dataService.Persons.Where(x => x.Id.Equals())
+
             return people;
         }
 
