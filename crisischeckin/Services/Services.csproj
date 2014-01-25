@@ -59,6 +59,7 @@
     <Compile Include="Interfaces\IDataService.cs" />
     <Compile Include="Interfaces\IDisaster.cs" />
     <Compile Include="Interfaces\IMessageService.cs" />
+    <Compile Include="MessageService.cs" />
     <Compile Include="Interfaces\IVolunteerService.cs" />
     <Compile Include="Message.cs" />
     <Compile Include="RecipientCriterion.cs" />
