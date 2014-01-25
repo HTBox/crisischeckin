@@ -26,7 +26,7 @@ namespace AcceptanceTests.ClusterCoordinatorFeature
         [TestMethod]
         public void Assign_a_user_and_verify_results()
         {
-            IClusterCoordinatorService clusterCoordinatorService = new ClusterCoordinatorService();
+            IClusterCoordinatorService clusterCoordinatorService = new ClusterCoordinatorService(_dataService);
             clusterCoordinatorService.AssignClusterCoordinator(_disaster.Id, _clusterId, _person.Id);
 
             var clusterCoordinators = clusterCoordinatorService.GetAllCoordinators(_disaster.Id);
@@ -48,7 +48,7 @@ namespace AcceptanceTests.ClusterCoordinatorFeature
                             IsActive = true,
                             Name = "Great Seattle Starbucks Strike",
                         };
-
+            _dataService.AddDisaster(_disaster);
             _clusterId = _dataService.Clusters.First().Id;
         }
     }

@@ -4,7 +4,6 @@ using System.Data.Entity.Infrastructure;
 using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Models;
-using Models.Migrations;
 
 namespace AcceptanceTests
 {
@@ -38,17 +37,18 @@ namespace AcceptanceTests
 
         protected void Seed(CrisisCheckin context)
         {
-            context.Clusters.Add(new Cluster() {Name = "Agriculture Cluster"});
-            context.Clusters.Add(new Cluster() {Name = "Camp Coordination and Management Cluster"});
-            context.Clusters.Add(new Cluster() {Name = "Early Recovery Cluster"});
-            context.Clusters.Add(new Cluster() {Name = "Emergency Shelter Cluster"});
-            context.Clusters.Add(new Cluster() {Name = "Emergency Telecommunications Cluster"});
-            context.Clusters.Add(new Cluster() {Name = "Food Cluster"});
-            context.Clusters.Add(new Cluster() {Name = "Health Cluster"});
-            context.Clusters.Add(new Cluster() {Name = "Logistics Cluster"});
-            context.Clusters.Add(new Cluster() {Name = "Nutrition Cluster"});
-            context.Clusters.Add(new Cluster() {Name = "Protection Cluster"});
-            context.Clusters.Add(new Cluster() {Name = "Water and Sanitation Cluster"});
+            context.Clusters.Add(new Cluster {Name = "Agriculture Cluster"});
+            context.Clusters.Add(new Cluster {Name = "Camp Coordination and Management Cluster"});
+            context.Clusters.Add(new Cluster {Name = "Early Recovery Cluster"});
+            context.Clusters.Add(new Cluster {Name = "Emergency Shelter Cluster"});
+            context.Clusters.Add(new Cluster {Name = "Emergency Telecommunications Cluster"});
+            context.Clusters.Add(new Cluster {Name = "Food Cluster"});
+            context.Clusters.Add(new Cluster {Name = "Health Cluster"});
+            context.Clusters.Add(new Cluster {Name = "Logistics Cluster"});
+            context.Clusters.Add(new Cluster {Name = "Nutrition Cluster"});
+            context.Clusters.Add(new Cluster {Name = "Protection Cluster"});
+            context.Clusters.Add(new Cluster {Name = "Water and Sanitation Cluster"});
+
             context.SaveChanges();
         }
     }

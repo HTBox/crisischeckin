@@ -18,5 +18,7 @@ namespace Services.Interfaces
         void AddCommitment(Commitment newCommitment);
         void AddDisaster(Disaster newDisaster);
         void SubmitChanges();
+        void AddClusterCoordinator(ClusterCoordinator clusterCoordinator);
+        void AppendClusterCoordinatorLogEntry(ClusterCoordinatorLogEntry clusterCoordinatorLogEntry);
     }
 }

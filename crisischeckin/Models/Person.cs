@@ -16,6 +16,8 @@ namespace Models
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
 
+        public string FullName { get { return LastName + ", " + FirstName; } }
+
         public virtual Cluster Cluster { get; set; }
     }
 }

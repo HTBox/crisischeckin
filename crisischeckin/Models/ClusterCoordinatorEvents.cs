@@ -1,8 +1,8 @@
 ﻿namespace Models
 {
-    public class ClusterCoordinatorEvents
+    public enum ClusterCoordinatorEvents
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
+        Assigned = 1,
+        Unassigned
     }
 }
