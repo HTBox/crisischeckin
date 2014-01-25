@@ -93,6 +93,7 @@
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Default-568h%402x.png" />
+    <BundleResource Include="Resources\keyboard%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -105,10 +106,24 @@
     <Compile Include="CrisisCheckin_IOSViewController.designer.cs">
       <DependentUpon>CrisisCheckin_IOSViewController.cs</DependentUpon>
     </Compile>
+    <Compile Include="Locker.cs" />
+    <Compile Include="UIHelper.cs" />
+    <Compile Include="LoginViewController.cs" />
+    <Compile Include="LoginViewController.designer.cs">
+      <DependentUpon>LoginViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RegistrationController.cs" />
+    <Compile Include="RegistrationController.designer.cs">
+      <DependentUpon>RegistrationController.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="CrisisCheckin_IOSViewController_iPhone.xib" />
     <InterfaceDefinition Include="CrisisCheckin_IOSViewController_iPad.xib" />
+    <InterfaceDefinition Include="LoginViewController_iPhone.xib" />
+    <InterfaceDefinition Include="LoginViewController_iPad.xib" />
+    <InterfaceDefinition Include="RegistrationController_iPhone.xib" />
+    <InterfaceDefinition Include="RegistrationController_iPad.xib" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
 </Project>
