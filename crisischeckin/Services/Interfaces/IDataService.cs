@@ -13,6 +13,7 @@ namespace Services.Interfaces
         IQueryable<Person> Persons { get; }
         IQueryable<User> Users { get; }
         IQueryable<Cluster> Clusters { get; }
+        IQueryable<ClusterCoordinator> ClusterCoordinators { get; }
         Person AddPerson(Person newPerson);
         Person UpdatePerson(Person updatedPerson);
         void AddCommitment(Commitment newCommitment);

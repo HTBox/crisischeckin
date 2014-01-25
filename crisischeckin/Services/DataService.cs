@@ -21,6 +21,11 @@ namespace Services
             get { return context.Clusters; }
         }
 
+        public IQueryable<ClusterCoordinator> ClusterCoordinators
+        {
+            get { return context.ClusterCoordinators; }
+        }
+
         public IQueryable<Commitment> Commitments
         {
             get { return context.Commitments; }

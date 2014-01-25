@@ -4,13 +4,13 @@ using Models;
 using Moq;
 using Services.Interfaces;
 
-namespace Services.UnitTest
+namespace Services.UnitTest.ClusterCoordinatorService
 {
     [TestClass]
-    public class ClusterCoordinatorServiceTests
+    public class AssignClusterCoordinatorTests
     {
         Cluster _cluster;
-        ClusterCoordinatorService _clusterCoordinatorService;
+        Services.ClusterCoordinatorService _clusterCoordinatorService;
         Mock<IDataService> _dataService;
         Disaster _disaster;
         Person _person;
@@ -27,7 +27,7 @@ namespace Services.UnitTest
             _dataService.Setup(x => x.Clusters).Returns(new EnumerableQuery<Cluster>(new[] {_cluster}));
             _dataService.Setup(x => x.Persons).Returns(new EnumerableQuery<Person>(new[] {_person}));
 
-            _clusterCoordinatorService = new ClusterCoordinatorService(_dataService.Object);
+            _clusterCoordinatorService = new Services.ClusterCoordinatorService(_dataService.Object);
         }
 
         [TestMethod]

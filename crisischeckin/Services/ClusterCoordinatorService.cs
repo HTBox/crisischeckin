@@ -34,7 +34,7 @@ namespace Services
 
         public List<ClusterCoordinator> GetAllCoordinators(int disasterId)
         {
-            throw new System.NotImplementedException();
+            return dataService.ClusterCoordinators.Where(x => x.DisasterId == disasterId).ToList();
         }
     }
 }
