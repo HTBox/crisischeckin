@@ -80,6 +80,7 @@
     <Compile Include="Message.cs" />
     <Compile Include="RecipientCriterion.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SmtpMessageSender.cs" />
     <Compile Include="VolunteerService.cs" />
   </ItemGroup>
   <ItemGroup>

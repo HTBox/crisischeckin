@@ -1,35 +1,34 @@
+using System.Net.Mail;
 using Models;
 
-[assembly: WebActivator.PreApplicationStartMethod(typeof(crisicheckinweb.App_Start.NinjectWebCommon), "Start")]
-[assembly: WebActivator.ApplicationShutdownMethodAttribute(typeof(crisicheckinweb.App_Start.NinjectWebCommon), "Stop")]
+[assembly: WebActivator.PreApplicationStartMethod(typeof (crisicheckinweb.App_Start.NinjectWebCommon), "Start")]
+[assembly: WebActivator.ApplicationShutdownMethodAttribute(typeof (crisicheckinweb.App_Start.NinjectWebCommon), "Stop")]
 
 namespace crisicheckinweb.App_Start
 {
     using System;
     using System.Web;
-
     using Microsoft.Web.Infrastructure.DynamicModuleHelper;
-
     using Ninject;
     using Ninject.Web.Common;
     using Services.Interfaces;
     using Services;
     using crisicheckinweb.Wrappers;
 
-    public static class NinjectWebCommon 
+    public static class NinjectWebCommon
     {
         private static readonly Bootstrapper bootstrapper = new Bootstrapper();
 
         /// <summary>
         /// Starts the application
         /// </summary>
-        public static void Start() 
+        public static void Start()
         {
-            DynamicModuleUtility.RegisterModule(typeof(OnePerRequestHttpModule));
-            DynamicModuleUtility.RegisterModule(typeof(NinjectHttpModule));
+            DynamicModuleUtility.RegisterModule(typeof (OnePerRequestHttpModule));
+            DynamicModuleUtility.RegisterModule(typeof (NinjectHttpModule));
             bootstrapper.Initialize(CreateKernel);
         }
-        
+
         /// <summary>
         /// Stops the application.
         /// </summary>
@@ -37,7 +36,7 @@ namespace crisicheckinweb.App_Start
         {
             bootstrapper.ShutDown();
         }
-        
+
         /// <summary>
         /// Creates the kernel that will manage your application.
         /// </summary>
@@ -47,7 +46,7 @@ namespace crisicheckinweb.App_Start
             var kernel = new StandardKernel();
             kernel.Bind<Func<IKernel>>().ToMethod(ctx => () => new Bootstrapper().Kernel);
             kernel.Bind<IHttpModule>().To<HttpApplicationInitializationHttpModule>();
-            
+
             RegisterServices(kernel);
             return kernel;
         }
@@ -65,6 +64,20 @@ namespace crisicheckinweb.App_Start
             kernel.Bind<ICluster>().To<ClusterService>().InRequestScope();
             kernel.Bind<CrisisCheckin>().ToSelf().InRequestScope();
             kernel.Bind<IWebSecurityWrapper>().To<WebSecurityWrapper>().InRequestScope();
-        }        
+            kernel.Bind<IMessageSender>().To<SmtpMessageSender>().InRequestScope();
+            kernel.Bind<IMessageCoordinator>().To<MessageCoordinator>().InRequestScope();
+            kernel.Bind<Func<SmtpClient>>().ToMethod(c => () => new SmtpClient()).InRequestScope();
+#if DEBUG
+            // TODO: Bind message sender interface to Debug-console sender.
+#else
+            kernel.Bind<SmtpMessageSender.SmtpSettings>()
+                .ToConstant(new SmtpMessageSender.SmtpSettings
+                {
+                    SenderName = "Admin", // TODO: Figure out how to make this come from current user
+                    SenderEmail = "test@test.com"
+                })
+                .InRequestScope();
+#endif
+        }
     }
 }
