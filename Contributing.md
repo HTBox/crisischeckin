@@ -34,6 +34,8 @@ To fix that, I'd just throw away the stuff in the database and start again by
 
 After doing that, you should be able to run the Update-Database command again to get back to a clean database. 
 
+You can also learn more on the wiki in the "Migrations" page on the wiki.
+
 Jumping in
 ====
 
