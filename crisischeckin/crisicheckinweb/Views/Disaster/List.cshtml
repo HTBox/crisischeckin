@@ -24,9 +24,16 @@
         <tr>
             <td>@d.Name</td>
             <td>@d.IsActive</td>
-            <td><a href=@String.Format("/Disaster/Edit/{0}", d.Id.ToString())>Edit</a></td>
+            <td>
+                <a href=@String.Format("/Disaster/Edit/{0}", d.Id.ToString())>Edit</a>
+                @if (d.IsActive)
+                {
+                    <text>|</text>
+                    @Html.ActionLink("Send Message to Volunteers", "CreateMessageToVolunteersByDisaster", new { controller = "Volunteer", d.Id })
+                }
+            </td>
         </tr>
     }
 </table>
 <br/>
- <a href="/Disaster/Edit/-1">Add New Disaster</a>
+<a href="/Disaster/Edit/-1">Add New Disaster</a>
