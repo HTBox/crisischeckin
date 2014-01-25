@@ -50,6 +50,7 @@
     <Compile Include="AdminService.cs" />
     <Compile Include="ClusterService.cs" />
     <Compile Include="DataService.cs" />
+    <Compile Include="DebugMessageSender.cs" />
     <Compile Include="DisasterService.cs" />
     <Compile Include="Exceptions\DisasterAlreadyExistsException.cs" />
     <Compile Include="Exceptions\PersonAlreadyExistsException.cs" />

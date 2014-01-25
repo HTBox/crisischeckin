@@ -68,7 +68,7 @@ namespace crisicheckinweb.App_Start
             kernel.Bind<IMessageCoordinator>().To<MessageCoordinator>().InRequestScope();
             kernel.Bind<Func<SmtpClient>>().ToMethod(c => () => new SmtpClient()).InRequestScope();
 #if DEBUG
-            // TODO: Bind message sender interface to Debug-console sender.
+            kernel.Bind<IMessageSender>().To<DebugMessageSender>();
 #else
             kernel.Bind<SmtpMessageSender.SmtpSettings>()
                 .ToConstant(new SmtpMessageSender.SmtpSettings

@@ -40,5 +40,4 @@ namespace Services
             public string SenderEmail { get; set; }
         }
     }
-
 }
