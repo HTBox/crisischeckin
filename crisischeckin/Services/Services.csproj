@@ -58,7 +58,10 @@
     <Compile Include="Interfaces\ICluster.cs" />
     <Compile Include="Interfaces\IDataService.cs" />
     <Compile Include="Interfaces\IDisaster.cs" />
+    <Compile Include="Interfaces\IMessageService.cs" />
     <Compile Include="Interfaces\IVolunteerService.cs" />
+    <Compile Include="Message.cs" />
+    <Compile Include="RecipientCriterion.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VolunteerService.cs" />
   </ItemGroup>
@@ -73,6 +76,7 @@
     <Compile Include="Exceptions\PersonEmailAlreadyInUseException.cs" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
