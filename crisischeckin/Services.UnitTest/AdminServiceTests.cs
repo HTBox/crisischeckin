@@ -1,10 +1,10 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Services;
-using System.Linq;
-using Moq;
-using Models;
 using System.Collections.Generic;
+using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Models;
+using Moq;
+using Services;
 
 namespace WebProjectTests.ServiceTests
 {
@@ -48,7 +48,7 @@ namespace WebProjectTests.ServiceTests
             PhoneNumber = "(111) 555-1414",
             Email = "DontCallMe@nothere.com"
         };
-        
+
         private readonly Commitment commitment = new Commitment
                             {
                                 DisasterId = disasterWithVolunteersID,
@@ -56,8 +56,8 @@ namespace WebProjectTests.ServiceTests
                                 PersonId = personWithCommitmentsID,
                                 StartDate = new DateTime(2013, 8, 10),
                                 EndDate = new DateTime(2013, 8, 15)
-                                };
-        
+                            };
+
         private Mock<IDataService> mockService;
 
         [TestInitialize]
@@ -198,7 +198,7 @@ namespace WebProjectTests.ServiceTests
 
             var underTest = new AdminService(mockService.Object);
 
-            var result = underTest.GetVolunteersForDate(disasterWithCommitments, new DateTime(2013,08,12));
+            var result = underTest.GetVolunteersForDate(disasterWithCommitments, new DateTime(2013, 08, 12));
 
             Assert.AreEqual(1, result.Count());
         }
@@ -217,14 +217,36 @@ namespace WebProjectTests.ServiceTests
             Assert.AreEqual(0, result.Count());
         }
 
+        [TestMethod]
+        public void GetVolunteersForDate_DoesNotReturnDuplicatePeople_WhenCommitmentsOverlap()
+        {
+            var mockData = new Mock<IDataService>();
+            var commitments = new List<Commitment>();
+            commitments.Add(new Commitment { DisasterId = 42, StartDate = DateTime.Today.AddDays(-2), EndDate = DateTime.Today.AddDays(1), PersonId = 1 });
+            commitments.Add(new Commitment { DisasterId = 42, StartDate = DateTime.Today.AddDays(-1), EndDate = DateTime.Today.AddDays(2), PersonId = 1 });
+            mockData.Setup(x => x.Commitments).Returns(commitments.AsQueryable());
+            var disasters = new List<Disaster>();
+            disasters.Add(new Disaster { Id = 42, Name = "disaster", IsActive = true });
+            mockData.Setup(x => x.Disasters).Returns(disasters.AsQueryable());
+            var persons = new List<Person>();
+            persons.Add(new Person { Id = 1, ClusterId = 2 });
+            mockData.Setup(x => x.Persons).Returns(persons.AsQueryable());
+
+            var underTest = new AdminService(mockData.Object);
+
+            var actual = underTest.GetVolunteersForDate(42, DateTime.Today);
+
+            Assert.AreEqual(1, actual.Count);
+        }
+
         private void initializeDisasterCollection(params Disaster[] disasters)
         {
             mockService.Setup(ds => ds.Disasters).Returns(disasters.AsQueryable());
         }
 
-        private void initializeVolunteerCollection(params Person [] people)
+        private void initializeVolunteerCollection(params Person[] people)
         {
-            mockService.Setup(ds => ds.Persons).Returns(people.AsQueryable());  
+            mockService.Setup(ds => ds.Persons).Returns(people.AsQueryable());
         }
 
         private void initializeCommitmentCollection(params Commitment[] commitments)

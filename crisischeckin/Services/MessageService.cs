@@ -14,9 +14,9 @@ namespace Services
 
         public void SendMessageToDisasterVolunteers(RecipientCriterion recipientCriterion, Message message)
         {
-            // Get volunteers for disaster where DateTime.Today between person.StartDate and person.EndDate
-            // 
             var volunteers = _adminSvc.GetVolunteersForDate(recipientCriterion.DisasterId, DateTime.Today);
+
+
         }
     }
 }
