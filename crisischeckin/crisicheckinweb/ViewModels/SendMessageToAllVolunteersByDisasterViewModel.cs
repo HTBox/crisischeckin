@@ -4,7 +4,6 @@ namespace crisicheckinweb.ViewModels
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using System.Web.Mvc;
 
     using Models;
 
@@ -12,6 +11,7 @@ namespace crisicheckinweb.ViewModels
     {
         private const int TextMessageLength = 160;
 
+        [Required]
         public int DisasterId { get; set; }
         public string DisasterName { get; set; }
         [Display(Name="Cluster")]

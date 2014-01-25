@@ -8,16 +8,21 @@ using crisicheckinweb.ViewModels;
 
 namespace crisicheckinweb.Controllers
 {
+    using Services;
+
     public class VolunteerController : BaseController
     {
-        private IDisaster _disasterSvc;
-        private ICluster _clusterSvc;
-        private IAdmin _adminSvc;
-        public VolunteerController(IDisaster disasterSvc, ICluster clusterService, IAdmin adminSvc)
+        private readonly IDisaster _disasterSvc;
+        private readonly ICluster _clusterSvc;
+        private readonly IAdmin _adminSvc;
+        private readonly IMessageService _messageSvc;
+
+        public VolunteerController(IDisaster disasterSvc, ICluster clusterSvc, IAdmin adminSvc, IMessageService messageSvc)
         {
             _disasterSvc = disasterSvc;
-            _clusterSvc = clusterService;
+            _clusterSvc = clusterSvc;
             _adminSvc = adminSvc;
+            _messageSvc = messageSvc;
         }
 
         [HttpGet]
@@ -53,7 +58,9 @@ namespace crisicheckinweb.Controllers
                 this.PopulateSendMessageViewModel(model);
                 return this.View("CreateMessage", model);
             }
-            throw new NotImplementedException();
+            var recipientCriterion = new RecipientCriterion(model.DisasterId, model.ClusterId);
+            var message = new Message(model.Subject, model.Message);
+            _messageSvc.SendMessageToDisasterVolunteers(recipientCriterion, message);
 
             return View(model);
         }

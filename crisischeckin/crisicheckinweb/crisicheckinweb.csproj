@@ -310,6 +310,7 @@
     <Content Include="Views\Account\ChangeContactInfo.cshtml" />
     <Content Include="Views\Account\ContactInfoChanged.cshtml" />
     <Content Include="Views\Volunteer\CreateMessage.cshtml" />
+    <Content Include="Views\Volunteer\SendMessageToVolunteersByDisaster.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
