@@ -21,7 +21,7 @@
             </li>
             <li>
                 @Html.LabelFor(m => m.ClusterId)
-                @Html.DropDownListFor(m => m.ClusterId, new SelectList(Model.Clusters, "Id", "Name", Model.ClusterId), "-- Choose One --")
+                @Html.DropDownListFor(m => m.ClusterId, new SelectList(Model.Clusters, "Id", "Name", Model.ClusterId), "All Clusters")
             </li>
         </ol>
         @Html.HiddenFor(m => m.DisasterId)

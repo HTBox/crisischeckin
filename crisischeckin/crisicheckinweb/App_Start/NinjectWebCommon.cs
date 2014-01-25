@@ -7,9 +7,7 @@ namespace crisicheckinweb.App_Start
 {
     using System;
     using System.Web;
-
     using Microsoft.Web.Infrastructure.DynamicModuleHelper;
-
     using Ninject;
     using Ninject.Web.Common;
     using Services.Interfaces;
@@ -65,6 +63,7 @@ namespace crisicheckinweb.App_Start
             kernel.Bind<ICluster>().To<ClusterService>().InRequestScope();
             kernel.Bind<CrisisCheckin>().ToSelf().InRequestScope();
             kernel.Bind<IWebSecurityWrapper>().To<WebSecurityWrapper>().InRequestScope();
+            kernel.Bind<IMessageService>().To<MessageService>();
         }        
     }
 }
