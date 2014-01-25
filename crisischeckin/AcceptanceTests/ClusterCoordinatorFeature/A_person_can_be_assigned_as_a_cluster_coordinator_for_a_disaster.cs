@@ -9,15 +9,16 @@ namespace AcceptanceTests.ClusterCoordinatorFeature
     [TestClass]
     public class A_person_can_be_assigned_as_a_cluster_coordinator_for_a_disaster : With_an_empty_database_environment
     {
-         int _clusterId = 5;
         const int UserId = 100;
+        int _clusterId = 5;
+        DataService _dataService;
         Disaster _disaster;
         Person _person;
-        DataService _dataService;
 
         [TestInitialize]
         public void Arrange()
         {
+            _dataService = new DataService(new CrisisCheckin());
             Create_a_disaster();
             Create_a_person();
         }
@@ -36,8 +37,7 @@ namespace AcceptanceTests.ClusterCoordinatorFeature
 
         void Create_a_person()
         {
-            _dataService = new DataService(new CrisisCheckin());
-            var volunteerService = new VolunteerService(_dataService);
+             var volunteerService = new VolunteerService(_dataService);
             _person = volunteerService.Register("Rob", "Lowe", "rob@lowe.com", "890-1230-4567", _clusterId, UserId);
         }
 
@@ -48,6 +48,7 @@ namespace AcceptanceTests.ClusterCoordinatorFeature
                             IsActive = true,
                             Name = "Great Seattle Starbucks Strike",
                         };
+
             _clusterId = _dataService.Clusters.First().Id;
         }
     }
