@@ -27,12 +27,11 @@ namespace crisicheckinweb.Controllers
         [HttpGet]
         public ActionResult Edit(string id)
         {
-            bool validId = false;
-            int disasterId = 0;
+            int disasterId;
 
             Disaster viewData;
 
-            validId = int.TryParse(id, out disasterId);
+            bool validId = int.TryParse(id, out disasterId);
 
             if (validId && disasterId != -1)
             {
@@ -41,14 +40,43 @@ namespace crisicheckinweb.Controllers
             else
             {
                 // Adding new Disaster here
-                viewData = new Disaster();
-                viewData.IsActive = true;
+                viewData = new Disaster {IsActive = true};
             }
 
             return View(viewData);
         }
 
         [HttpPost]
+        public ActionResult Create(Disaster disaster)
+        {
+            if (ModelState.IsValid && !String.IsNullOrWhiteSpace(disaster.Name))
+            {
+                if (disaster.Id == -1)
+                {
+                    try
+                    {
+                        _disasterSvc.Create(disaster);
+                    }
+                    catch (DisasterAlreadyExistsException)
+                    {
+                        ModelState.AddModelError("Name", "A Disaster already exists with that Name!");
+                        return View("Edit", disaster);
+                    }
+                }
+                else
+                {
+                    _disasterSvc.Update(disaster.Id, disaster.Name, disaster.IsActive);
+                }
+
+                return Redirect("/Disaster/List");
+            }
+            ModelState.AddModelError("Name", "Disaster Name is required!");
+            return View("Edit",disaster);
+        }
+
+        //TODO: Need to set a schedule for removal.
+        [HttpPost]
+        [Obsolete("POST /Edit is deprecated. Use POST /Create instead")]
         public ActionResult Edit(Disaster disaster)
         {
             if (ModelState.IsValid && !String.IsNullOrWhiteSpace(disaster.Name))

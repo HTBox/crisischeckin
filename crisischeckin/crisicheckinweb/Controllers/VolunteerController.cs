@@ -1,8 +1,5 @@
 ﻿using Services.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using crisicheckinweb.ViewModels;
 
@@ -10,8 +7,8 @@ namespace crisicheckinweb.Controllers
 {
     public class VolunteerController : BaseController
     {
-        private IDisaster _disasterSvc;
-        private IAdmin _adminSvc;
+        private readonly IDisaster _disasterSvc;
+        private readonly IAdmin _adminSvc;
         public VolunteerController(IDisaster disasterSvc, IAdmin adminSvc)
         {
             _disasterSvc = disasterSvc;
@@ -38,10 +35,7 @@ namespace crisicheckinweb.Controllers
                                                                  : DateTime.MinValue);
                 return PartialView("_FilterResults", results);
             }
-            else
-            {
-                return (PartialView("_FilterResults"));
-            }
+            return PartialView("_FilterResults");
         }
     }
 }
