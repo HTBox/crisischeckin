@@ -5,6 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Models;
 using Moq;
 using Services;
+using Services.Interfaces;
 
 namespace WebProjectTests.ServiceTests
 {

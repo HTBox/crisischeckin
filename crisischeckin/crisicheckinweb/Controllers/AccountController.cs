@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using System.Web.Security;
 using Common;
 using crisicheckinweb.ViewModels;
@@ -140,6 +136,11 @@ namespace crisicheckinweb.Controllers
 
         public ActionResult ChangeContactInfo()
         {
+            if (WebSecurity.CurrentUserId == 1)
+            {
+                TempData["AdminContactError"] = "Administrator is not allowed to have contact details!";
+                return RedirectToAction("Index", "Home");
+            }
             var personToUpdate = _volunteerSvc.FindByUserId(WebSecurity.CurrentUserId);
             ChangeContactInfoViewModel model = new ChangeContactInfoViewModel { Email = personToUpdate.Email, PhoneNumber = personToUpdate.PhoneNumber };
             return View(model);

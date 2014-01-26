@@ -48,30 +48,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdminService.cs" />
+    <Compile Include="ClusterCoordinatorService.cs" />
     <Compile Include="ClusterService.cs" />
     <Compile Include="DataService.cs" />
+    <Compile Include="DebugMessageSender.cs" />
     <Compile Include="DisasterService.cs" />
     <Compile Include="Exceptions\DisasterAlreadyExistsException.cs" />
     <Compile Include="Exceptions\PersonAlreadyExistsException.cs" />
     <Compile Include="Exceptions\PersonNotFoundException.cs" />
-    <Compile Include="Interfaces\IAdmin.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Interfaces\ICluster.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Interfaces\IDataService.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Interfaces\IDisaster.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Interfaces\IMessageCoordinator.cs" />
     <Compile Include="Interfaces\IMessageSender.cs" />
     <Compile Include="Interfaces\IMessageService.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Interfaces\IVolunteerService.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MessageCoordinator.cs" />
@@ -79,7 +66,14 @@
     <Compile Include="MessageService.cs" />
     <Compile Include="Message.cs" />
     <Compile Include="RecipientCriterion.cs" />
+    <Compile Include="Interfaces\IClusterCoordinatorService.cs" />
+    <Compile Include="Interfaces\IAdmin.cs" />
+    <Compile Include="Interfaces\ICluster.cs" />
+    <Compile Include="Interfaces\IDataService.cs" />
+    <Compile Include="Interfaces\IDisaster.cs" />
+    <Compile Include="Interfaces\IVolunteerService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SmtpMessageSender.cs" />
     <Compile Include="VolunteerService.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,3 +1,4 @@
+using System.Net.Mail;
 using Models;
 
 [assembly: WebActivator.PreApplicationStartMethod(typeof(crisicheckinweb.App_Start.NinjectWebCommon), "Start")]
@@ -64,6 +65,20 @@ namespace crisicheckinweb.App_Start
             kernel.Bind<CrisisCheckin>().ToSelf().InRequestScope();
             kernel.Bind<IWebSecurityWrapper>().To<WebSecurityWrapper>().InRequestScope();
             kernel.Bind<IMessageService>().To<MessageService>().InRequestScope();
+            kernel.Bind<IMessageSender>().To<SmtpMessageSender>().InRequestScope();
+            kernel.Bind<IMessageCoordinator>().To<MessageCoordinator>().InRequestScope();
+            kernel.Bind<Func<SmtpClient>>().ToMethod(c => () => new SmtpClient()).InRequestScope();
+#if DEBUG
+            kernel.Bind<IMessageSender>().To<DebugMessageSender>();
+#else
+            kernel.Bind<SmtpMessageSender.SmtpSettings>()
+                .ToConstant(new SmtpMessageSender.SmtpSettings
+                {
+                    SenderName = "Admin", // TODO: Figure out how to make this come from current user
+                    SenderEmail = "test@test.com"
+                })
+                .InRequestScope();
+#endif
         }
     }
 }
