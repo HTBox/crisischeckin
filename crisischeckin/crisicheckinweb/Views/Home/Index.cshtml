@@ -1,5 +1,4 @@
-﻿@using System.Web.Optimization
-
+﻿
 @model crisicheckinweb.ViewModels.VolunteerViewModel
 @{
     ViewBag.Title = "Volunteer Home";
@@ -7,13 +6,6 @@
 }
 
 <h2>Volunteer Home</h2>
-@if (TempData["AdminContactError"] != null)
-{
-    <div class="alert alert-danger alert-error fade in">
-        <a href="#" class="close" data-dismiss="alert">&times;</a>
-        @TempData["AdminContactError"]
-    </div>
-}
 
 <h3>My Commitments</h3>
 
@@ -38,7 +30,7 @@
         <td>@comm.Disaster.Name</td>
         <td>@comm.StartDate.ToShortDateString()</td>
         <td>@comm.EndDate.ToShortDateString()</td>
-        <td>@(comm.Disaster.IsActive == true ? "Yes" : "No") </td>
+        <td>@(comm.Disaster.IsActive ? "Yes" : "No") </td>
     </tr>
     }
 </table>
