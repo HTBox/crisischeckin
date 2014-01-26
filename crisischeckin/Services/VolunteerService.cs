@@ -66,10 +66,7 @@ namespace Services
 
                 return ourService.UpdatePerson(updatedPerson);
             }
-            else
-            {
-                throw new PersonNotFoundException();
-            }
+            throw new PersonNotFoundException();
         }
 
         public IQueryable<Commitment> RetrieveCommitments(int personId, bool showInactive)

@@ -1,4 +1,6 @@
-﻿namespace Services.Interfaces
+﻿using System;
+
+namespace Services.Interfaces
 {
     public interface IMessageService
     {

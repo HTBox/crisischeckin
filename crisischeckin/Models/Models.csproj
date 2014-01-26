@@ -47,6 +47,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClusterCoordinator.cs" />
+    <Compile Include="ClusterCoordinatorEvents.cs" />
+    <Compile Include="ClusterCoordinatorLog.cs" />
     <Compile Include="Commitment.cs" />
     <Compile Include="CrisisCheckin.cs" />
     <Compile Include="Disaster.cs" />
@@ -80,6 +83,9 @@
     <EmbeddedResource Include="Migrations\201308111819397_AddClusters.resx">
       <DependentUpon>201308111819397_AddClusters.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Migrations\DefaultData.sql.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

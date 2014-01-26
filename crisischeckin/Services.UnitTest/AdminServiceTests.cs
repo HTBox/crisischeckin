@@ -5,6 +5,7 @@ using System.Linq;
 using Moq;
 using Models;
 using System.Collections.Generic;
+using Services.Interfaces;
 
 namespace WebProjectTests.ServiceTests
 {

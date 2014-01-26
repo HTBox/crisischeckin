@@ -1,5 +1,4 @@
-﻿using System;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using System.Web.Security;
 using Common;
 using crisicheckinweb.ViewModels;
@@ -225,10 +224,7 @@ namespace crisicheckinweb.Controllers
             {
                 return Redirect(returnUrl);
             }
-            else
-            {
-                return RedirectToAction("Index", "Home");
-            }
+            return RedirectToAction("Index", "Home");
         }
 
         public enum ManageMessageId
