@@ -16,9 +16,12 @@
         }
     
         <text>
-             <a href="/Account/Logoff"> Logout </a> |
-             <a href="/Account/ChangeContactInfo"> Change Contact Info </a> |
-             <a href="/Account/ChangePassword"> Change Password</a>  ]
+            <a href="/Account/Logoff"> Logout </a> |
+            @if (!User.Identity.Name.ToLower().Equals("administrator")) 
+            {
+                <a href="/Account/ChangeContactInfo"> Change Contact Info </a> <span>|</span>
+            }
+            <a href="/Account/ChangePassword"> Change Password</a>  ]
         </text>
     }
 }

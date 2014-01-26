@@ -34,7 +34,7 @@ namespace crisicheckinweb.Controllers
         {
             ViewBag.Clusters = _clusterSvc.GetList();
             var model = new SendMessageToAllVolunteersByDisasterViewModel { DisasterId = id };
-            this.PopulateSendMessageViewModel(model);
+            PopulateSendMessageViewModel(model);
             // Default subject to disaster name so they can type just a message if they want to.
             model.Subject = model.DisasterName;
             return View("CreateMessage", model);
@@ -44,7 +44,7 @@ namespace crisicheckinweb.Controllers
         {
             var disaster = _disasterSvc.Get(model.DisasterId);
             model.DisasterName = disaster.Name;
-            model.Clusters = this._clusterSvc.GetList();
+            model.Clusters = _clusterSvc.GetList();
         }
 
         [HttpPost]
@@ -52,8 +52,8 @@ namespace crisicheckinweb.Controllers
         {
             if (!ModelState.IsValid)
             {
-                this.PopulateSendMessageViewModel(model);
-                return this.View("CreateMessage", model);
+                PopulateSendMessageViewModel(model);
+                return View("CreateMessage", model);
             }
             var recipientCriterion = new RecipientCriterion(model.DisasterId, model.ClusterId);
             var message = new Message(model.Subject, model.Message);
