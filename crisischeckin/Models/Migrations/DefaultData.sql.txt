@@ -13,3 +13,55 @@ INSERT INTO Cluster (Name) VALUES ('Water and Sanitation Cluster');
 INSERT INTO Disaster (Name, IsActive) VALUES ('Narnia','1');
 INSERT INTO Disaster (Name, IsActive) VALUES ('Kalimdor','1');
 INSERT INTO Disaster (Name, IsActive) VALUES ('Beleriand ','1');
+
+DECLARE @userName1 varchar(50), @userName2 varchar(50), @userName3 varchar(50)
+SET @userName1 = 'jsmith'
+SET @userName2 = 'sjones'
+SET @userName3 = 'ablake'
+
+INSERT INTO dbo.[User] (UserName) Values (@userName1);
+INSERT INTO dbo.[User] (UserName) Values (@userName2);
+INSERT INTO dbo.[User] (UserName) Values (@userName3);
+
+DECLARE @userId INT, @clusterId INT, @personId INT, @disaster1 INT, @disaster2 INT, @disaster3 INT
+SELECT TOP 1 @disaster1 = Id FROM Disaster WHERE Name = 'Narnia'
+SELECT TOP 1 @disaster2 = Id FROM Disaster WHERE Name = 'Kalimdor'
+SELECT TOP 1 @disaster3 = Id FROM Disaster WHERE Name = 'Beleriand'
+
+SELECT TOP 1 @userId = Id FROM dbo.[User] WHERE UserName = @userName1
+SELECT TOP 1 @clusterId = Id from Cluster WHERE [Name]='Protection Cluster'
+INSERT INTO Person (UserId, ClusterId, FirstName, LastName, Email, PhoneNumber) 
+  VALUES (@userId, @clusterId, N'John', N'Smith', N'john.smith@htbox.org', N'(111)111-1111')
+
+SELECT TOP 1 @personId = Id FROM Person WHERE UserId = @userId
+
+--The SQL expression for StartDate and EndDate clears the time part of the date, then it adds certain number of days in the future
+INSERT INTO Commitment (PersonId, StartDate, EndDate, DisasterId) 
+  VALUES (@personId, (SELECT DATEADD(dd, 3, DATEDIFF(dd, 0, GETDATE()))), (SELECT DATEADD(dd, 5, DATEDIFF(dd, 0, GETDATE()))), @disaster1)
+INSERT INTO Commitment (PersonId, StartDate, EndDate, DisasterId) 
+  VALUES (@personId, (SELECT DATEADD(dd, 8, DATEDIFF(dd, 0, GETDATE()))), (SELECT DATEADD(dd, 10, DATEDIFF(dd, 0, GETDATE()))), @disaster2)
+
+SELECT TOP 1 @userID = Id FROM dbo.[User] WHERE UserName = @userName2
+SELECT TOP 1 @clusterId = Id FROM Cluster WHERE [Name]='Camp Coordination and Management Cluster'
+INSERT INTO Person (UserId, ClusterId, FirstName, LastName, Email, PhoneNumber) 
+  VALUES (@userId, @clusterId, N'Sally', N'Jones', N'sally.jones@htbox.org', N'(222)222-2222')
+
+SELECT TOP 1 @personId = Id FROM Person WHERE UserId = @userId
+
+INSERT INTO Commitment (PersonId, StartDate, EndDate, DisasterId) 
+  VALUES (@personId, (SELECT DATEADD(dd, 3, DATEDIFF(dd, 0, GETDATE()))), (SELECT DATEADD(dd, 5, DATEDIFF(dd, 0, GETDATE()))), @disaster2)
+INSERT INTO Commitment (PersonId, StartDate, EndDate, DisasterId) 
+  VALUES (@personId, (SELECT DATEADD(dd, 8, DATEDIFF(dd, 0, GETDATE()))), (SELECT DATEADD(dd, 10, DATEDIFF(dd, 0, GETDATE()))), @disaster3)
+
+
+SELECT TOP 1 @userID = Id FROM dbo.[User] WHERE UserName = @userName3
+SELECT TOP 1 @clusterId = Id FROM Cluster WHERE [Name]='Health Cluster'
+INSERT INTO Person (UserId, ClusterId, FirstName, LastName, Email, PhoneNumber) 
+  VALUES (@userId, @clusterId, N'Allison', N'Blake', N'allison.blake@htbox.org', N'(333)333-3333')
+
+SELECT TOP 1 @personId = Id FROM Person WHERE UserId = @userId
+
+INSERT INTO Commitment (PersonId, StartDate, EndDate, DisasterId) 
+  VALUES (@personId, (SELECT DATEADD(dd, 3, DATEDIFF(dd, 0, GETDATE()))), (SELECT DATEADD(dd, 5, DATEDIFF(dd, 0, GETDATE()))), @disaster1)
+INSERT INTO Commitment (PersonId, StartDate, EndDate, DisasterId) 
+  VALUES (@personId, (SELECT DATEADD(dd, 8, DATEDIFF(dd, 0, GETDATE()))), (SELECT DATEADD(dd, 10, DATEDIFF(dd, 0, GETDATE()))), @disaster3)
