@@ -322,7 +322,7 @@
     <Content Include="Views\Disaster\List.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Disaster\Edit.cshtml" />
+    <Content Include="Views\Disaster\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Volunteer\ListByDisaster.cshtml" />

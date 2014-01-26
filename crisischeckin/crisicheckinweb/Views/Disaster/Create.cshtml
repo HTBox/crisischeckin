@@ -1,0 +1,26 @@
+﻿@model Models.Disaster
+
+@{
+    ViewBag.Title = "Create / Edit Disaster";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@using (Html.BeginForm("Create", "Disaster"))
+{
+    @Html.HiddenFor(m => m.Id)
+    <fieldset>
+        <legend>Create / Edit Disaster</legend>
+        @Html.ValidationSummary()
+        <ol>
+            <li>
+                @Html.LabelFor(m => m.Name)
+                @Html.TextBoxFor(m => m.Name)
+            </li>
+            <li>
+                Is Currently Active?
+                @Html.CheckBoxFor(m => m.IsActive)
+            </li>
+        </ol>
+        <input type="submit" value="Create" />
+    </fieldset>
+}

@@ -43,7 +43,7 @@ namespace crisicheckinweb.Controllers
                 viewData = new Disaster {IsActive = true};
             }
 
-            return View(viewData);
+            return View("Create", viewData);
         }
 
         [HttpPost]
@@ -60,7 +60,7 @@ namespace crisicheckinweb.Controllers
                     catch (DisasterAlreadyExistsException)
                     {
                         ModelState.AddModelError("Name", "A Disaster already exists with that Name!");
-                        return View("Edit", disaster);
+                        return View(disaster);
                     }
                 }
                 else
@@ -71,7 +71,7 @@ namespace crisicheckinweb.Controllers
                 return Redirect("/Disaster/List");
             }
             ModelState.AddModelError("Name", "Disaster Name is required!");
-            return View("Edit",disaster);
+            return View(disaster);
         }
 
         //TODO: Need to set a schedule for removal.
@@ -79,6 +79,7 @@ namespace crisicheckinweb.Controllers
         [Obsolete("POST /Edit is deprecated. Use POST /Create instead")]
         public ActionResult Edit(Disaster disaster)
         {
+            TempData["EditUrlDeprecatedWarning"] = "POST /Edit is deprecated. Use POST /Create instead";
             if (ModelState.IsValid && !String.IsNullOrWhiteSpace(disaster.Name))
             {
                 if (disaster.Id == -1)
@@ -90,7 +91,7 @@ namespace crisicheckinweb.Controllers
                     catch (DisasterAlreadyExistsException)
                     {
                         ModelState.AddModelError("Name", "A Disaster already exists with that Name!");
-                        return View("Edit", disaster);
+                        return View("Create", disaster);
                     }   
                 }
                 else
@@ -103,7 +104,7 @@ namespace crisicheckinweb.Controllers
 
 
             ModelState.AddModelError("Name", "Disaster Name is required!");
-            return View(disaster);
+            return View("Create", disaster);
         }
 
 
