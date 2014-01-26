@@ -9,12 +9,10 @@ namespace AcceptanceTests.ClusterCoordinatorFeature
     [TestClass]
     public class A_person_can_be_unassigned_as_a_cluster_coordinator_for_a_disaster : With_an_empty_database_environment
     {
+        ClusterCoordinator _clusterCoordinator;
         IClusterCoordinatorService _clusterCoordinatorService;
         DataAccessHelper _dataAccessHelper;
         DataService _dataService;
-        Disaster _disaster;
-        Person _person;
-        int _clusterId;
 
         [TestInitialize]
         public void Arrange()
@@ -22,23 +20,25 @@ namespace AcceptanceTests.ClusterCoordinatorFeature
             _dataService = new DataService(new CrisisCheckin());
             _dataAccessHelper = new DataAccessHelper(_dataService);
             _clusterCoordinatorService = new ClusterCoordinatorService(_dataService);
-            _disaster = _dataAccessHelper.Create_a_disaster();
-            _person = _dataAccessHelper.Create_a_volunteer();
-            _clusterId = _person.ClusterId.GetValueOrDefault();
-            _clusterCoordinatorService.AssignClusterCoordinator(_disaster.Id, _clusterId, _person.Id);
+            var disaster = _dataAccessHelper.Create_a_disaster();
+            var person = _dataAccessHelper.Create_a_volunteer();
+            var clusterId = person.ClusterId.GetValueOrDefault();
+            _clusterCoordinator = _clusterCoordinatorService.AssignClusterCoordinator(disaster.Id, clusterId, person.Id);
         }
 
         [TestMethod]
         public void Unassign_a_user_and_verify_results()
         {
-            _clusterCoordinatorService.UnassignClusterCoordinator(_disaster.Id, _clusterId, _person.Id);
+            _clusterCoordinatorService.UnassignClusterCoordinator(_clusterCoordinator);
 
-            var clusterCoordinators = _clusterCoordinatorService.GetAllCoordinators(_disaster.Id);
+            var clusterCoordinators = _clusterCoordinatorService.GetAllCoordinators(_clusterCoordinator.DisasterId);
 
-            Assert.IsFalse(clusterCoordinators.Any(c => c.DisasterId == _disaster.Id && c.ClusterId == _clusterId && c.PersonId == _person.Id));
-            Assert.IsTrue(_dataService.ClusterCoordinatorLogEntries.Any(c => c.DisasterId == _disaster.Id &&
-                                                                             c.ClusterId == _clusterId &&
-                                                                             c.PersonId == _person.Id &&
+            Assert.IsFalse(clusterCoordinators.Any(c => c.DisasterId == _clusterCoordinator.DisasterId &&
+                                                        c.ClusterId == _clusterCoordinator.ClusterId &&
+                                                        c.PersonId == _clusterCoordinator.PersonId));
+            Assert.IsTrue(_dataService.ClusterCoordinatorLogEntries.Any(c => c.DisasterId == _clusterCoordinator.DisasterId &&
+                                                                             c.ClusterId == _clusterCoordinator.ClusterId &&
+                                                                             c.PersonId == _clusterCoordinator.PersonId &&
                                                                              c.Event == ClusterCoordinatorEvents.Unassigned));
         }
     }

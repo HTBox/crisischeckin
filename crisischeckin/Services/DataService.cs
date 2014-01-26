@@ -89,9 +89,16 @@ namespace Services
             context.SaveChanges();
         }
 
-        public void AddClusterCoordinator(ClusterCoordinator clusterCoordinator)
+        public ClusterCoordinator AddClusterCoordinator(ClusterCoordinator clusterCoordinator)
         {
             context.ClusterCoordinators.Add(clusterCoordinator);
+            context.SaveChanges();
+            return clusterCoordinator;
+        }
+
+        public void RemoveClusterCoordinator(ClusterCoordinator clusterCoordinator)
+        {
+            context.ClusterCoordinators.Remove(clusterCoordinator);
             context.SaveChanges();
         }
 

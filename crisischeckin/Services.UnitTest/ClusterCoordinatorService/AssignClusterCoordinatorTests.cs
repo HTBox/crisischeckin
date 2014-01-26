@@ -9,9 +9,9 @@ namespace Services.UnitTest.ClusterCoordinatorService
     [TestClass]
     public class AssignClusterCoordinatorTests
     {
-        Cluster _cluster;
         Services.ClusterCoordinatorService _clusterCoordinatorService;
         Mock<IDataService> _dataService;
+        Cluster _cluster;
         Disaster _disaster;
         Person _person;
 
