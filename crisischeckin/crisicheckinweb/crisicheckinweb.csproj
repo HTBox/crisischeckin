@@ -179,6 +179,10 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Content Include="App_Data\VolunteerContext-20130810104538.mdf" />
+    <Content Include="App_Data\VolunteerContext-20130810104538_log.ldf">
+      <DependentUpon>VolunteerContext-20130810104538.mdf</DependentUpon>
+    </Content>
     <Content Include="Content\body.css" />
     <Content Include="Content\fonts\glyphiconshalflings-regular.svg" />
     <Content Include="Content\themes\base\images\animated-overlay.gif" />
@@ -312,9 +316,7 @@
     <Content Include="Views\Volunteer\CreateMessage.cshtml" />
     <Content Include="Views\Volunteer\SendMessageToVolunteersByDisaster.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>

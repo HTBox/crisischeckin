@@ -28,22 +28,13 @@ namespace crisicheckinweb.Controllers
         public ActionResult Edit(string id)
         {
             int disasterId;
-
-            Disaster viewData;
-
-            bool validId = int.TryParse(id, out disasterId);
+            var validId = int.TryParse(id, out disasterId);
 
             if (validId && disasterId != -1)
             {
-                viewData = _disasterSvc.Get(disasterId);
+                return View("Create", _disasterSvc.Get(disasterId));
             }
-            else
-            {
-                // Adding new Disaster here
-                viewData = new Disaster {IsActive = true};
-            }
-
-            return View("Create", viewData);
+            return View("Create", new Disaster {IsActive = true});
         }
 
         [HttpPost]
