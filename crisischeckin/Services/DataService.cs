@@ -46,6 +46,11 @@ namespace Services
             get { return context.Users; }
         }
 
+        public IQueryable<ClusterCoordinatorLogEntry> ClusterCoordinatorLogEntries
+        {
+            get { return context.ClusterCoordinatorLogEntries; }
+        }
+
         public Person AddPerson(Person newPerson)
         {
             var result = context.Persons.Add(newPerson);
@@ -84,9 +89,16 @@ namespace Services
             context.SaveChanges();
         }
 
-        public void AddClusterCoordinator(ClusterCoordinator clusterCoordinator)
+        public ClusterCoordinator AddClusterCoordinator(ClusterCoordinator clusterCoordinator)
         {
             context.ClusterCoordinators.Add(clusterCoordinator);
+            context.SaveChanges();
+            return clusterCoordinator;
+        }
+
+        public void RemoveClusterCoordinator(ClusterCoordinator clusterCoordinator)
+        {
+            context.ClusterCoordinators.Remove(clusterCoordinator);
             context.SaveChanges();
         }
 

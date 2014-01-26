@@ -15,9 +15,9 @@ namespace Services
             this.dataService = dataService;
         }
 
-        public void AssignClusterCoordinator(int disasterId, int clusterId, int personId)
+        public ClusterCoordinator AssignClusterCoordinator(int disasterId, int clusterId, int personId)
         {
-            dataService.AddClusterCoordinator(new ClusterCoordinator {DisasterId = disasterId, ClusterId = clusterId, PersonId = personId});
+            ClusterCoordinator clusterCoordinator = dataService.AddClusterCoordinator(new ClusterCoordinator {DisasterId = disasterId, ClusterId = clusterId, PersonId = personId});
             var clusterCoordinatorLogEntry = new ClusterCoordinatorLogEntry
                                              {
                                                  Event = ClusterCoordinatorEvents.Assigned,
@@ -29,6 +29,24 @@ namespace Services
                                                  PersonId = personId,
                                                  PersonName = dataService.Persons.Single(x=>x.Id == personId).FullName,
                                              };
+            dataService.AppendClusterCoordinatorLogEntry(clusterCoordinatorLogEntry);
+            return clusterCoordinator;
+        }
+
+        public void UnassignClusterCoordinator(ClusterCoordinator clusterCoordinator)
+        {
+            dataService.RemoveClusterCoordinator(clusterCoordinator);
+            var clusterCoordinatorLogEntry = new ClusterCoordinatorLogEntry
+            {
+                Event = ClusterCoordinatorEvents.Unassigned,
+                TimeStampUtc = DateTime.UtcNow,
+                ClusterId = clusterCoordinator.ClusterId,
+                ClusterName = dataService.Clusters.Single(x => x.Id == clusterCoordinator.ClusterId).Name,
+                DisasterId = clusterCoordinator.DisasterId,
+                DisasterName = dataService.Disasters.Single(x => x.Id == clusterCoordinator.DisasterId).Name,
+                PersonId = clusterCoordinator.PersonId,
+                PersonName = dataService.Persons.Single(x => x.Id == clusterCoordinator.PersonId).FullName,
+            };
             dataService.AppendClusterCoordinatorLogEntry(clusterCoordinatorLogEntry);
         }
 

@@ -1,0 +1,29 @@
+﻿@model crisicheckinweb.ViewModels.DisasterClusterCoordinatorsViewModel
+@{
+    ViewBag.Title = "View / Edit Cluster Coordinators";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<style>
+    table, tr, th, td {
+        padding: 7px;
+        border: 1px solid grey;
+    }
+</style>
+
+<h3>Cluster Coordinators for @Model.DisasterName</h3>
+
+<div id="coordinators">
+    @Html.Partial("AssignCoordinator", Model)
+</div>
+ <hr />
+@using (Ajax.BeginForm("AssignCoordinator", "ClusterCoordinator", new AjaxOptions() { UpdateTargetId = "coordinators" }))
+{
+    @Html.HiddenFor(m=>m.DisasterId)
+    <h3>Assign Cluster Coordinator: </h3>
+    @Html.LabelFor(m=>m.AvailableClusters)
+    @Html.DropDownListFor(m => m.SelectedClusterId, new SelectList(Model.AvailableClusters, "Id", "Name", Model.SelectedClusterId), "-- Choose One --")
+    <br/>
+    @Html.LabelFor(m=>m.AvailablePeople)
+    @Html.DropDownListFor(m => m.SelectedPersonId, new SelectList(Model.AvailablePeople, "Id", "FullName", Model.SelectedPersonId), "-- Choose One --")
+    <input id="AddButton" type="submit" value="Add" />
+}

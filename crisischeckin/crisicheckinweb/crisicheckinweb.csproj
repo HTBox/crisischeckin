@@ -151,10 +151,13 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="App_Start\AuthConfig.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\ClusterCoordinatorController.cs" />
     <Compile Include="Controllers\DisasterController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Helpers\MenuExtensions.cs" />
+    <Compile Include="ViewModels\AssignClusterCoordinatorViewModel.cs" />
     <Compile Include="ViewModels\ChangeContactInfoViewModel.cs" />
+    <Compile Include="ViewModels\DisasterClusterCoordinatorsViewModel.cs" />
     <Compile Include="ViewModels\SendMessageToAllVolunteersByDisasterViewModel.cs" />
     <Compile Include="Wrappers\IWebSecurityWrapper.cs" />
     <Compile Include="Controllers\VolunteerController.cs" />
@@ -179,6 +182,10 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Content Include="App_Data\VolunteerContext-20130810104538.mdf" />
+    <Content Include="App_Data\VolunteerContext-20130810104538_log.ldf">
+      <DependentUpon>VolunteerContext-20130810104538.mdf</DependentUpon>
+    </Content>
     <Content Include="Content\body.css" />
     <Content Include="Content\fonts\glyphiconshalflings-regular.svg" />
     <Content Include="Content\themes\base\images\animated-overlay.gif" />
@@ -311,10 +318,10 @@
     <Content Include="Views\Account\ContactInfoChanged.cshtml" />
     <Content Include="Views\Volunteer\CreateMessage.cshtml" />
     <Content Include="Views\Volunteer\SendMessageToVolunteersByDisaster.cshtml" />
+    <Content Include="Views\ClusterCoordinator\Index.cshtml" />
+    <Content Include="Views\ClusterCoordinator\AssignCoordinator.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>

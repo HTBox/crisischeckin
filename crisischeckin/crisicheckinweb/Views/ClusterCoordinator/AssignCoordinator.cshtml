@@ -1,0 +1,21 @@
+﻿@model crisicheckinweb.ViewModels.DisasterClusterCoordinatorsViewModel
+
+<table cellpadding="0" cellspacing="0" border="1">
+    <tr>
+        <th width="300px;">Cluster</th>
+        <th>Coordinator(s)</th>
+    </tr>
+    @foreach (var cluster in Model.Clusters)
+    {
+        <tr>
+            <td>@cluster.Name</td>
+            <td>
+                @foreach (var coordinator in cluster.Coordinators)
+                {
+                    @coordinator.Name
+                    <br />
+                }
+            </td>
+        </tr>
+    }
+</table>
