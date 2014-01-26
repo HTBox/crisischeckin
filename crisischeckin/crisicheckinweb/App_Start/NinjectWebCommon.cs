@@ -8,12 +8,12 @@ namespace crisicheckinweb.App_Start
 {
     using System;
     using System.Web;
+    using crisicheckinweb.Wrappers;
     using Microsoft.Web.Infrastructure.DynamicModuleHelper;
     using Ninject;
     using Ninject.Web.Common;
-    using Services.Interfaces;
     using Services;
-    using crisicheckinweb.Wrappers;
+    using Services.Interfaces;
 
     public static class NinjectWebCommon
     {
@@ -64,6 +64,7 @@ namespace crisicheckinweb.App_Start
             kernel.Bind<ICluster>().To<ClusterService>().InRequestScope();
             kernel.Bind<CrisisCheckin>().ToSelf().InRequestScope();
             kernel.Bind<IWebSecurityWrapper>().To<WebSecurityWrapper>().InRequestScope();
+            kernel.Bind<IMessageService>().To<MessageService>().InRequestScope();
             kernel.Bind<IMessageSender>().To<SmtpMessageSender>().InRequestScope();
             kernel.Bind<IMessageCoordinator>().To<MessageCoordinator>().InRequestScope();
             kernel.Bind<Func<SmtpClient>>().ToMethod(c => () => new SmtpClient()).InRequestScope();
