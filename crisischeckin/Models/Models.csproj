@@ -61,6 +61,10 @@
     <Compile Include="Migrations\201308111819397_AddClusters.Designer.cs">
       <DependentUpon>201308111819397_AddClusters.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201401260810326_ClusterCoordinator.cs" />
+    <Compile Include="Migrations\201401260810326_ClusterCoordinator.Designer.cs">
+      <DependentUpon>201401260810326_ClusterCoordinator.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Person.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -82,6 +86,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201308111819397_AddClusters.resx">
       <DependentUpon>201308111819397_AddClusters.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201401260810326_ClusterCoordinator.resx">
+      <DependentUpon>201401260810326_ClusterCoordinator.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

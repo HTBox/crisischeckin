@@ -19,7 +19,7 @@
         <th>Is Active?</th>
         <th></th>
     </tr>
-    @foreach (Models.Disaster d in Model)
+    @foreach (var d in Model)
     {
         <tr>
             <td>@d.Name</td>
@@ -30,10 +30,12 @@
                 {
                     <text>|</text>
                     @Html.ActionLink("Send Message to Volunteers", "CreateMessageToVolunteersByDisaster", new { controller = "Volunteer", d.Id })
+                    <text>|</text>
+                    @Html.ActionLink("Cluster Coordinators", "Index", new { controller = "ClusterCoordinator", d.Id })
                 }
             </td>
         </tr>
     }
 </table>
-<br/>
+<br />
 <a href="/Disaster/Edit/-1">Add New Disaster</a>
