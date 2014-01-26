@@ -8,6 +8,15 @@
 	color: white !important;
 }
 
+.validation-summary-errors{
+	color: #C33A3A !important;
+	background-color: white !important;
+}
+
+.input-validation-error {
+    border-color: #C33A3A !important;
+	color: white !important;
+}
 
 .feedbackHelper {
 	color: white;

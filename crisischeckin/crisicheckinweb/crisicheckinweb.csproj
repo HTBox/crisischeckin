@@ -155,6 +155,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Helpers\MenuExtensions.cs" />
     <Compile Include="ViewModels\ChangeContactInfoViewModel.cs" />
+    <Compile Include="ViewModels\SendMessageToAllVolunteersByDisasterViewModel.cs" />
     <Compile Include="Wrappers\IWebSecurityWrapper.cs" />
     <Compile Include="Controllers\VolunteerController.cs" />
     <Compile Include="Global.asax.cs">
@@ -308,6 +309,8 @@
     <Content Include="Views\Account\UpgradeVolunteerToAdministrator.cshtml" />
     <Content Include="Views\Account\ChangeContactInfo.cshtml" />
     <Content Include="Views\Account\ContactInfoChanged.cshtml" />
+    <Content Include="Views\Volunteer\CreateMessage.cshtml" />
+    <Content Include="Views\Volunteer\SendMessageToVolunteersByDisaster.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -322,7 +325,7 @@
     <Content Include="Views\Disaster\List.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Disaster\Edit.cshtml" />
+    <Content Include="Views\Disaster\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Volunteer\ListByDisaster.cshtml" />

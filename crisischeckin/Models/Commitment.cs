@@ -11,5 +11,6 @@ namespace Models
         public int DisasterId { get; set; }
 
         public virtual Disaster Disaster { get; set; }
+        public virtual Person Person { get; set; }
     }
 }

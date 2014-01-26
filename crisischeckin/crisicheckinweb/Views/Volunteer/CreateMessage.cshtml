@@ -1,0 +1,30 @@
+﻿@using Microsoft.Web.Mvc
+@model crisicheckinweb.ViewModels.SendMessageToAllVolunteersByDisasterViewModel
+@{
+    ViewBag.Title = "SendMessageToAllVolunteersByDisaster";
+}
+
+<h2>SendMessageToAllVolunteersByDisaster @Model.DisasterName</h2>
+@using (Html.BeginForm("SendMessageToVolunteersByDisaster", "Volunteer"))
+{
+    @Html.ValidationSummary()
+    <fieldset>
+        <legend>Send message</legend>
+        <ol>
+            <li>
+                @Html.LabelFor(m => m.Subject)
+                @Html.TextBoxFor(m => m.Subject)
+            </li>
+            <li>
+                @Html.LabelFor(m => m.Message)
+                @Html.TextAreaFor(m => m.Message)
+            </li>
+            <li>
+                @Html.LabelFor(m => m.ClusterId)
+                @Html.DropDownListFor(m => m.ClusterId, new SelectList(Model.Clusters, "Id", "Name", Model.ClusterId), "All Clusters")
+            </li>
+        </ol>
+        @Html.HiddenFor(m => m.DisasterId)
+        @Html.SubmitButton("Send")
+    </fieldset>
+}

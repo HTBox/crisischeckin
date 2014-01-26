@@ -1,11 +1,8 @@
-﻿using Models;
-using Services.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data.Entity;
+using Models;
+using Services.Interfaces;
 
 namespace Services
 {
@@ -31,24 +28,20 @@ namespace Services
             return people;
         }
 
-
         public IEnumerable<Person> GetVolunteersForDate(Disaster disaster, DateTime date)
         {
-            if (disaster == null)
-                throw new ArgumentNullException("disaster", "disaster cannot be null");
-            var storedDisaster = dataService.Disasters.SingleOrDefault(d => d.Id == disaster.Id);
-            if (storedDisaster == null)
-                throw new ArgumentException("Disaster was not found", "disaster");
-            var commitments = from c in dataService.Commitments
-                              where c.DisasterId == disaster.Id
-                              where date >= c.StartDate && date <= c.EndDate
-                              select c;
+            return GetVolunteersForDate(disaster.Id, date);
+        }
 
-            var people = from c in commitments
-                         join p in dataService.Persons on c.PersonId equals p.Id
-                         select p;
-            people.Include(p => p.Cluster);
-            return people;
+        public IReadOnlyCollection<Person> GetVolunteersForDate(int disasterId, DateTime date)
+        {
+            if (0 == disasterId)
+                throw new ArgumentException("disasterId must be greater than zero", "disasterId");
+
+            return dataService.Commitments.Where(
+                   x => x.DisasterId.Equals(disasterId) &&
+                   x.StartDate <= date &&
+                   x.EndDate >= date).Select(x => x.Person).Distinct().ToList();
         }
 
         private IQueryable<Person> GetPeople(Disaster disaster)

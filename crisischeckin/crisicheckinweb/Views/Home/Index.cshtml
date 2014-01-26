@@ -1,5 +1,4 @@
-﻿@using System.Web.Optimization
-
+﻿
 @model crisicheckinweb.ViewModels.VolunteerViewModel
 @{
     ViewBag.Title = "Volunteer Home";
@@ -31,7 +30,7 @@
         <td>@comm.Disaster.Name</td>
         <td>@comm.StartDate.ToShortDateString()</td>
         <td>@comm.EndDate.ToShortDateString()</td>
-        <td>@(comm.Disaster.IsActive == true ? "Yes" : "No") </td>
+        <td>@(comm.Disaster.IsActive ? "Yes" : "No") </td>
     </tr>
     }
 </table>

@@ -1,9 +1,6 @@
-﻿using Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Models;
 
 namespace Services.Interfaces
 {
@@ -11,5 +8,6 @@ namespace Services.Interfaces
     {
         IEnumerable<Person> GetVolunteers(Disaster disaster);
         IEnumerable<Person> GetVolunteersForDate(Disaster disaster, DateTime date);
+        IReadOnlyCollection<Person> GetVolunteersForDate(int disasterId, DateTime date);
     }
 }

@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Models;
 using Services.Exceptions;
 using Services.Interfaces;
@@ -37,7 +34,7 @@ namespace Services
             }
 
             // TODO: eventually support User object
-            return ourService.AddPerson(new Person()
+            return ourService.AddPerson(new Person
             {
                 UserId = userId,
                 FirstName = firstName,
@@ -69,10 +66,7 @@ namespace Services
 
                 return ourService.UpdatePerson(updatedPerson);
             }
-            else
-            {
-                throw new PersonNotFoundException();
-            }
+            throw new PersonNotFoundException();
         }
 
         public IQueryable<Commitment> RetrieveCommitments(int personId, bool showInactive)
@@ -100,8 +94,7 @@ namespace Services
 
 		public bool UsernameAvailable(string userName)
 		{
-			if (ourService.Users.Where(p => p.UserName == userName).Count() > 0) return false;
-			return true;
+		    return ourService.Users.Count(p => p.UserName == userName) <= 0;
 		}
-	}
+    }
 }
