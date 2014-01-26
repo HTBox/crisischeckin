@@ -46,6 +46,11 @@ namespace Services
             get { return context.Users; }
         }
 
+        public IQueryable<ClusterCoordinatorLogEntry> ClusterCoordinatorLogEntries
+        {
+            get { return context.ClusterCoordinatorLogEntries; }
+        }
+
         public Person AddPerson(Person newPerson)
         {
             var result = context.Persons.Add(newPerson);

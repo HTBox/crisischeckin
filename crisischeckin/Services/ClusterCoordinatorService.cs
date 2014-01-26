@@ -32,6 +32,11 @@ namespace Services
             dataService.AppendClusterCoordinatorLogEntry(clusterCoordinatorLogEntry);
         }
 
+        public void UnassignClusterCoordinator(int disasterId, int clusterId, int personId)
+        {
+            throw new NotImplementedException();
+        }
+
         public List<ClusterCoordinator> GetAllCoordinators(int disasterId)
         {
             return dataService.ClusterCoordinators.Where(x => x.DisasterId == disasterId).ToList();

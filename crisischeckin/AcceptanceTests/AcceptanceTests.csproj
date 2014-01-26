@@ -55,6 +55,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="ClusterCoordinatorFeature\DataAccessHelper.cs" />
     <Compile Include="With_an_empty_database_environment.cs" />
     <Compile Include="ClusterCoordinatorFeature\A_person_can_be_assigned_as_a_cluster_coordinator_for_a_disaster.cs" />
     <Compile Include="ClusterCoordinatorFeature\A_person_can_be_unassigned_as_a_cluster_coordinator_for_a_disaster.cs" />
