@@ -20,6 +20,15 @@ When the site starts up, you should be presented with a log in page. You can use
 
 To log in as an administrator you can use "Administrator" and "P@$$w0rd" for the user name and password.
 
+To get test data into your database:
+* Open Solution Explorer in Visual Studio
+* Find the file `Models/Migrations/DefaultData.sql.txt` and copy its contents into the buffer. 
+* Open up Server Explorer tab in your Visual Studio and expand the connection to CrisisCheckin database.
+* Right-click on any table and choose `New Query`. 
+* Paste script into query window and run it.
+
+This script will give you information on three people who volunteered to work in two different disaster areas each in several days, the list is visible under Administrator account.
+
 What if something goes wrong?
 ====
 
