@@ -11,34 +11,31 @@ namespace Services.UnitTest.ClusterCoordinatorService
     {
         Services.ClusterCoordinatorService _clusterCoordinatorService;
         Mock<IDataService> _dataService;
-        int _disasterId;
-        int _notDisasterId;
+        int _coordinatorId;
+        int _notCoordinatorId;
 
         [TestInitialize]
         public void Init()
         {
-            _disasterId = 4;
-            _notDisasterId = 5;
-
+            _coordinatorId = 42;
+            _notCoordinatorId = 10;
             _dataService = new Mock<IDataService>();
             _clusterCoordinatorService = new Services.ClusterCoordinatorService(_dataService.Object);
         }
 
         [TestMethod]
-        public void GetClusterCoordinators_return_only_the_ClusterCoordinators_for_the_specified_disaster()
+        public void GetClusterCoordinator_returns_the_expected_coordinator()
         {
             var coordinators = new EnumerableQuery<ClusterCoordinator>(new[]
                                                                        {
-                                                                           new ClusterCoordinator {DisasterId = _disasterId},
-                                                                           new ClusterCoordinator {DisasterId = _disasterId},
-                                                                           new ClusterCoordinator {DisasterId = _notDisasterId},
-                                                                           new ClusterCoordinator {DisasterId = _notDisasterId},
+                                                                           new ClusterCoordinator {Id = _notCoordinatorId},
+                                                                           new ClusterCoordinator {Id = _coordinatorId},
                                                                        });
             _dataService.Setup(x => x.ClusterCoordinators).Returns(coordinators);
 
-            var clusterCoordinators = _clusterCoordinatorService.GetAllCoordinators(_disasterId);
+            var clusterCoordinator = _clusterCoordinatorService.GetCoordinator(_coordinatorId);
 
-            Assert.IsTrue(clusterCoordinators.All(cc => cc.DisasterId == _disasterId));
+            Assert.AreEqual(_coordinatorId, clusterCoordinator.Id);
         }
     }
 }

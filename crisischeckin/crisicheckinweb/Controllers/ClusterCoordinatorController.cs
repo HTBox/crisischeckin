@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Web.Mvc;
+using System.Web.Routing;
 using crisicheckinweb.ViewModels;
 using Services.Interfaces;
 
@@ -51,7 +52,11 @@ namespace crisicheckinweb.Controllers
                                          Name = c.Name,
                                          Coordinators = clusterCoordinators
                                              .Where(x => x.ClusterId == c.Id)
-                                             .Select(x => new ClusterCoordinatorViewModel {Name = x.Coordinator.FullName})
+                                             .Select(x => new ClusterCoordinatorViewModel
+                                                          {
+                                                              Name = x.Coordinator.FullName,
+                                                              Id = x.Id,
+                                                          })
                                              .ToList(),
                                      })
                         .ToList(),
@@ -69,6 +74,30 @@ namespace crisicheckinweb.Controllers
                 clusterCoordinator.SelectedPersonId);
             var disasterClusterCoordinatorsViewModel = GetDisasterClusterCoordinatorsViewModel(clusterCoordinator.DisasterId);
             return PartialView(disasterClusterCoordinatorsViewModel);
+        }
+
+        [HttpGet]
+        public ActionResult ConfirmUnassignCoordinator(int id)
+        {
+            var clusterCoordinator = _clusterCoordinatorService.GetCoordinator(id);
+            var vm = new UnassignClusterCoordinatorViewModel
+                     {
+                         DisasterId = clusterCoordinator.Id,
+                         CoordinatorId = id,
+                         CoordinatorName = clusterCoordinator.Coordinator.FullName,
+                         ClusterName = clusterCoordinator.Coordinator.Cluster.Name,
+                     };
+            return View(vm);
+        }
+
+        [HttpPost]
+        public ActionResult UnassignCoordinator(int id)
+        {
+            var clusterCoordinator = _clusterCoordinatorService.GetCoordinator(id);
+            if (null == clusterCoordinator)
+                return RedirectToAction("Index", "Home");
+            _clusterCoordinatorService.UnassignClusterCoordinator(clusterCoordinator);
+            return RedirectToAction("Index", new { id = clusterCoordinator.DisasterId });
         }
     }
 }

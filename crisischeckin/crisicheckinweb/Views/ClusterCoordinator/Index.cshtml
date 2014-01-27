@@ -25,5 +25,5 @@
     <br/>
     @Html.LabelFor(m=>m.AvailablePeople)
     @Html.DropDownListFor(m => m.SelectedPersonId, new SelectList(Model.AvailablePeople, "Id", "FullName", Model.SelectedPersonId), "-- Choose One --")
-    <input id="AddButton" type="submit" value="Add" />
+    <input id="AddButton" type="submit" value="Assign" />
 }

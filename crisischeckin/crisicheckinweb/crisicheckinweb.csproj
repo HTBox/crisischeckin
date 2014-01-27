@@ -157,8 +157,12 @@
     <Compile Include="Helpers\MenuExtensions.cs" />
     <Compile Include="ViewModels\AssignClusterCoordinatorViewModel.cs" />
     <Compile Include="ViewModels\ChangeContactInfoViewModel.cs" />
+    <Compile Include="ViewModels\ClusterCoordinatorViewModel.cs" />
+    <Compile Include="ViewModels\ClusterViewModel.cs" />
+    <Compile Include="ViewModels\ConfirmUnassignClusterCoordinatorViewModel.cs" />
     <Compile Include="ViewModels\DisasterClusterCoordinatorsViewModel.cs" />
     <Compile Include="ViewModels\SendMessageToAllVolunteersByDisasterViewModel.cs" />
+    <Compile Include="ViewModels\UnassignClusterCoordinatorViewModel.cs" />
     <Compile Include="Wrappers\IWebSecurityWrapper.cs" />
     <Compile Include="Controllers\VolunteerController.cs" />
     <Compile Include="Global.asax.cs">
@@ -320,6 +324,7 @@
     <Content Include="Views\Volunteer\SendMessageToVolunteersByDisaster.cshtml" />
     <Content Include="Views\ClusterCoordinator\Index.cshtml" />
     <Content Include="Views\ClusterCoordinator\AssignCoordinator.cshtml" />
+    <Content Include="Views\ClusterCoordinator\ConfirmUnassignCoordinator.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

@@ -8,5 +8,6 @@ namespace Services.Interfaces
         IEnumerable<ClusterCoordinator> GetAllCoordinators(int disasterId);
         ClusterCoordinator AssignClusterCoordinator(int disasterId, int clusterId, int personId);
         void UnassignClusterCoordinator(ClusterCoordinator clusterCoordinator);
+        ClusterCoordinator GetCoordinator(int id);
     }
 }

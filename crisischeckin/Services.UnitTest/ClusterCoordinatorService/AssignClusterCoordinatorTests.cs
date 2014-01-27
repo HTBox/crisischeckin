@@ -41,6 +41,26 @@ namespace Services.UnitTest.ClusterCoordinatorService
         }
 
         [TestMethod]
+        public void AssignClusterCoordinator_with_no_cluster_id_does_nothing()
+        {
+            var result = _clusterCoordinatorService.AssignClusterCoordinator(_disaster.Id, 0, _person.Id);
+
+            _dataService.Verify(x => x.AddClusterCoordinator(It.IsAny<ClusterCoordinator>()), Times.Never());
+            _dataService.Verify(x => x.AppendClusterCoordinatorLogEntry(It.IsAny<ClusterCoordinatorLogEntry>()), Times.Never());
+            Assert.IsNull(result);
+        }
+
+        [TestMethod]
+        public void AssignClusterCoordinator_with_no_person_id_does_nothing()
+        {
+            var result = _clusterCoordinatorService.AssignClusterCoordinator(_disaster.Id, _cluster.Id, 0);
+
+            _dataService.Verify(x => x.AddClusterCoordinator(It.IsAny<ClusterCoordinator>()), Times.Never());
+            _dataService.Verify(x => x.AppendClusterCoordinatorLogEntry(It.IsAny<ClusterCoordinatorLogEntry>()), Times.Never());
+            Assert.IsNull(result);
+        }
+
+        [TestMethod]
         public void AssignClusterCoordinator_appends_a_ClusterCoordinatorLogEntry()
         {
             _clusterCoordinatorService.AssignClusterCoordinator(_disaster.Id, _cluster.Id, _person.Id);

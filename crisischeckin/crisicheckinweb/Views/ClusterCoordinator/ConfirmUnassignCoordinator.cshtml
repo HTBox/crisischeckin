@@ -1,0 +1,19 @@
+﻿@model crisicheckinweb.ViewModels.UnassignClusterCoordinatorViewModel
+
+@{
+    ViewBag.Title = "Confirm Cluster Coordinator Unassignment";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h3>Confirm Unassignment</h3>
+
+<div style="padding-bottom:20px;font-size:larger">
+    Really remove <strong>@Model.CoordinatorName</strong> as a coordinator for <strong>@Model.ClusterName</strong>?
+</div>
+
+@using (Html.BeginForm("UnassignCoordinator", "ClusterCoordinator", new {id=@Model.CoordinatorId}))
+{
+    @Html.AntiForgeryToken()
+    <input class="ui-button" type="submit" value="Yes, please!"/>
+}
+<a class="ui-button" href="@Url.Action("Index", new {id=@Model.DisasterId})">No, please take me back.</a>
