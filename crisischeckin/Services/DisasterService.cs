@@ -31,8 +31,8 @@ namespace Services
                 (DateTime.Compare(c.StartDate, endDate) <= 0 && DateTime.Compare(c.EndDate, endDate) >= 0);
 
             var hasExistingCommitment = (from c in _dataService.Commitments
-                join d in _dataService.Disasters on c.DisasterId equals d.Id
-                where d.IsActive
+                join d in _dataService.Disasters on c.DisasterId equals d.Id 
+                where d.IsActive && c.PersonId == personId
                 select c).Any(dateInRange);
 
             if (hasExistingCommitment)
