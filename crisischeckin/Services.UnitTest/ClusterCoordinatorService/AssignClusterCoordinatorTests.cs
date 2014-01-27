@@ -9,9 +9,9 @@ namespace Services.UnitTest.ClusterCoordinatorService
     [TestClass]
     public class AssignClusterCoordinatorTests
     {
+        Cluster _cluster;
         Services.ClusterCoordinatorService _clusterCoordinatorService;
         Mock<IDataService> _dataService;
-        Cluster _cluster;
         Disaster _disaster;
         Person _person;
 
@@ -41,17 +41,66 @@ namespace Services.UnitTest.ClusterCoordinatorService
         }
 
         [TestMethod]
+        public void AssignClusterCoordinator_with_no_cluster_id_does_nothing()
+        {
+            var result = _clusterCoordinatorService.AssignClusterCoordinator(_disaster.Id, 0, _person.Id);
+
+            _dataService.Verify(x => x.AddClusterCoordinator(It.IsAny<ClusterCoordinator>()), Times.Never());
+            _dataService.Verify(x => x.AppendClusterCoordinatorLogEntry(It.IsAny<ClusterCoordinatorLogEntry>()), Times.Never());
+            Assert.IsNull(result);
+        }
+
+        [TestMethod]
+        public void AssignClusterCoordinator_with_no_person_id_does_nothing()
+        {
+            var result = _clusterCoordinatorService.AssignClusterCoordinator(_disaster.Id, _cluster.Id, 0);
+
+            _dataService.Verify(x => x.AddClusterCoordinator(It.IsAny<ClusterCoordinator>()), Times.Never());
+            _dataService.Verify(x => x.AppendClusterCoordinatorLogEntry(It.IsAny<ClusterCoordinatorLogEntry>()), Times.Never());
+            Assert.IsNull(result);
+        }
+
+        [TestMethod]
         public void AssignClusterCoordinator_appends_a_ClusterCoordinatorLogEntry()
         {
             _clusterCoordinatorService.AssignClusterCoordinator(_disaster.Id, _cluster.Id, _person.Id);
 
-            _dataService.Verify(x => x.AppendClusterCoordinatorLogEntry(It.Is<ClusterCoordinatorLogEntry>(cc => cc.DisasterId == _disaster.Id &&
-                                                                                                                cc.DisasterName == _disaster.Name &&
-                                                                                                                cc.ClusterId == _cluster.Id &&
-                                                                                                                cc.ClusterName == _cluster.Name &&
-                                                                                                                cc.PersonId == _person.Id &&
-                                                                                                                cc.PersonName == _person.FullName &&
-                                                                                                                cc.Event == ClusterCoordinatorEvents.Assigned)));
+            _dataService.Verify(x => x.AppendClusterCoordinatorLogEntry(
+                It.Is<ClusterCoordinatorLogEntry>(cc => cc.DisasterId == _disaster.Id &&
+                                                        cc.DisasterName == _disaster.Name &&
+                                                        cc.ClusterId == _cluster.Id &&
+                                                        cc.ClusterName == _cluster.Name &&
+                                                        cc.PersonId == _person.Id &&
+                                                        cc.PersonName == _person.FullName &&
+                                                        cc.Event == ClusterCoordinatorEvents.Assigned)));
+        }
+
+        [TestMethod]
+        public void AssignClusterCoordinator_does_not_add_duplicates()
+        {
+            const int existingClusterCoordinatorId = 8929;
+
+            // Arrange
+            _dataService.Setup(x => x.ClusterCoordinators).Returns(
+                new EnumerableQuery<ClusterCoordinator>(
+                    new[]
+                    {
+                        new ClusterCoordinator
+                        {
+                            Id = existingClusterCoordinatorId,
+                            DisasterId = _disaster.Id,
+                            ClusterId = _cluster.Id,
+                            PersonId = _person.Id,
+                        }
+                    }));
+
+            // Act
+            var result = _clusterCoordinatorService.AssignClusterCoordinator(_disaster.Id, _cluster.Id, _person.Id);
+
+            // Assert
+            _dataService.Verify(x => x.AddClusterCoordinator(It.IsAny<ClusterCoordinator>()), Times.Never());
+            _dataService.Verify(x => x.AppendClusterCoordinatorLogEntry(It.IsAny<ClusterCoordinatorLogEntry>()), Times.Never());
+            Assert.AreEqual(existingClusterCoordinatorId, result.Id);
         }
     }
 }

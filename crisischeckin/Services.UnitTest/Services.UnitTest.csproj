@@ -56,9 +56,10 @@
   </Choose>
   <ItemGroup>
     <Compile Include="AdminServiceTests.cs" />
+    <Compile Include="ClusterCoordinatorService\GetClusterCoordinatorTests.cs" />
     <Compile Include="ClusterCoordinatorService\UnassignClusterCoordinatorTests.cs" />
     <Compile Include="ClusterCoordinatorService\AssignClusterCoordinatorTests.cs" />
-    <Compile Include="ClusterCoordinatorService\GetClusterCoordinatorTests.cs" />
+    <Compile Include="ClusterCoordinatorService\GetClusterCoordinatorsTests.cs" />
     <Compile Include="DisasterServiceTest.cs" />
     <Compile Include="MessageServiceTests.cs" />
     <Compile Include="MessageCoordinatorTest.cs" />
