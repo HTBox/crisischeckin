@@ -19,12 +19,35 @@ namespace Services
         {
             if (clusterId == 0 || personId == 0)
                 return null;
-            var coordinator = dataService.AddClusterCoordinator(new ClusterCoordinator
-                                              {
-                                                  DisasterId = disasterId,
-                                                  ClusterId = clusterId,
-                                                  PersonId = personId,
-                                              });
+            var existingCoordinator = FindExistingCoordinator(disasterId, clusterId, personId);
+            if (null != existingCoordinator)
+                return existingCoordinator;
+            var newCoordinator = AddClusterCoordinator(disasterId, clusterId, personId);
+            AppendLogEntry(disasterId, clusterId, personId);
+            return newCoordinator;
+        }
+
+        ClusterCoordinator FindExistingCoordinator(int disasterId, int clusterId, int personId)
+        {
+            var existingCoordinator = dataService.ClusterCoordinators.FirstOrDefault(
+                x => x.DisasterId == disasterId
+                     && x.ClusterId == clusterId
+                     && x.PersonId == personId);
+            return existingCoordinator;
+        }
+
+        ClusterCoordinator AddClusterCoordinator(int disasterId, int clusterId, int personId)
+        {
+            return dataService.AddClusterCoordinator(new ClusterCoordinator
+                                                     {
+                                                         DisasterId = disasterId,
+                                                         ClusterId = clusterId,
+                                                         PersonId = personId,
+                                                     });
+        }
+
+        void AppendLogEntry(int disasterId, int clusterId, int personId)
+        {
             var clusterCoordinatorLogEntry = new ClusterCoordinatorLogEntry
                                              {
                                                  Event = ClusterCoordinatorEvents.Assigned,
@@ -37,7 +60,6 @@ namespace Services
                                                  PersonName = dataService.Persons.Single(x => x.Id == personId).FullName,
                                              };
             dataService.AppendClusterCoordinatorLogEntry(clusterCoordinatorLogEntry);
-            return coordinator;
         }
 
         public void UnassignClusterCoordinator(ClusterCoordinator clusterCoordinator)
