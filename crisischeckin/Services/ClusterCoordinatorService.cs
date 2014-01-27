@@ -17,7 +17,12 @@ namespace Services
 
         public ClusterCoordinator AssignClusterCoordinator(int disasterId, int clusterId, int personId)
         {
-            ClusterCoordinator clusterCoordinator = dataService.AddClusterCoordinator(new ClusterCoordinator {DisasterId = disasterId, ClusterId = clusterId, PersonId = personId});
+            var clusterCoordinator = dataService.AddClusterCoordinator(new ClusterCoordinator
+                                                                       {
+                                                                           DisasterId = disasterId, 
+                                                                           ClusterId = clusterId, 
+                                                                           PersonId = personId,
+                                                                       });
             var clusterCoordinatorLogEntry = new ClusterCoordinatorLogEntry
                                              {
                                                  Event = ClusterCoordinatorEvents.Assigned,
@@ -50,7 +55,7 @@ namespace Services
             dataService.AppendClusterCoordinatorLogEntry(clusterCoordinatorLogEntry);
         }
 
-        public List<ClusterCoordinator> GetAllCoordinators(int disasterId)
+        public IEnumerable<ClusterCoordinator> GetAllCoordinators(int disasterId)
         {
             return dataService.ClusterCoordinators.Where(x => x.DisasterId == disasterId).ToList();
         }

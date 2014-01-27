@@ -5,7 +5,7 @@ namespace Services.Interfaces
 {
     public interface IClusterCoordinatorService
     {
-        List<ClusterCoordinator> GetAllCoordinators(int disasterId);
+        IEnumerable<ClusterCoordinator> GetAllCoordinators(int disasterId);
         ClusterCoordinator AssignClusterCoordinator(int disasterId, int clusterId, int personId);
         void UnassignClusterCoordinator(ClusterCoordinator clusterCoordinator);
     }
