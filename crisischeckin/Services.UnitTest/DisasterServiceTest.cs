@@ -115,6 +115,41 @@ namespace Services.UnitTest
         }
 
         [TestMethod]
+        public void AssignToVolunteer_ValidForMoreThanOneVolunteerPerDisaster()
+        {
+            var commitments = new List<Commitment>
+            {
+                new Commitment
+                {
+                    PersonId = 0,
+                    StartDate = new DateTime(2013, 1, 1),
+                    EndDate = new DateTime(2013, 2, 1),
+                    DisasterId = 2
+                }
+            };
+            var disasters = new List<Disaster> { new Disaster { Id = 2, IsActive = true } };
+
+            _mockDataService.Setup(s => s.Commitments).Returns(commitments.AsQueryable());
+            _mockDataService.Setup(s => s.Disasters).Returns(disasters.AsQueryable());
+
+            const int personId = 5;
+            const int disasterId = 2;
+            var startDate = new DateTime(2013, 01, 02);
+            var endDate = new DateTime(2013, 01, 03);
+
+            Commitment createdCommitment = null;
+            _mockDataService.Setup(s => s.AddCommitment(It.IsAny<Commitment>()))
+                .Callback<Commitment>(commitment => createdCommitment = commitment);
+
+            _disasterService.AssignToVolunteer(disasterId, personId, startDate, endDate);            
+            Assert.IsNotNull(createdCommitment);
+            Assert.AreEqual(createdCommitment.PersonId, personId);
+            Assert.AreEqual(createdCommitment.DisasterId, disasterId);
+            Assert.AreEqual(createdCommitment.StartDate, startDate);
+            Assert.AreEqual(createdCommitment.EndDate, endDate);
+        }
+
+        [TestMethod]
         public void CreateDisaster_Valid()
         {
             // arrange
