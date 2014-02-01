@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Web.Mvc;
+using crisicheckinweb.ViewModels;
 using Models;
 using Services.Interfaces;
 using Services.Exceptions;
@@ -29,40 +30,49 @@ namespace crisicheckinweb.Controllers
         {
             int disasterId;
             var validId = int.TryParse(id, out disasterId);
+            
+            AddUpdateDisasterModel model = new AddUpdateDisasterModel();
 
             if (validId && disasterId != -1)
             {
-                return View("Create", _disasterSvc.Get(disasterId));
+                model.Disaster = _disasterSvc.Get(disasterId);
+                model.EditMode = EditMode.Updating;
             }
-            return View("Create", new Disaster {IsActive = true});
+            else
+            {
+                model.Disaster = new Disaster {Id = -1, IsActive = true};
+                model.EditMode = EditMode.Creating;
+            }
+            
+            return View("Create", model);
         }
 
         [HttpPost]
-        public ActionResult Create(Disaster disaster)
+        public ActionResult Create(AddUpdateDisasterModel model)
         {
-            if (ModelState.IsValid && !String.IsNullOrWhiteSpace(disaster.Name))
+            if (ModelState.IsValid && !String.IsNullOrWhiteSpace(model.Disaster.Name))
             {
-                if (disaster.Id == -1)
+                if (model.Disaster.Id == -1)
                 {
                     try
                     {
-                        _disasterSvc.Create(disaster);
+                        _disasterSvc.Create(model.Disaster);
                     }
                     catch (DisasterAlreadyExistsException)
                     {
                         ModelState.AddModelError("Name", "A Disaster already exists with that Name!");
-                        return View(disaster);
+                        return View(model);
                     }
                 }
                 else
                 {
-                    _disasterSvc.Update(disaster.Id, disaster.Name, disaster.IsActive);
+                    _disasterSvc.Update(model.Disaster.Id, model.Disaster.Name, model.Disaster.IsActive);
                 }
 
                 return Redirect("/Disaster/List");
             }
             ModelState.AddModelError("Name", "Disaster Name is required!");
-            return View(disaster);
+            return View(model);
         }
 
         //TODO: Need to set a schedule for removal.

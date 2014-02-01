@@ -1,11 +1,11 @@
-﻿using System.Web.Mvc;
+﻿using System.Security.Principal;
+using System.Web.Mvc;
 using System.Web.Security;
 using Common;
 using crisicheckinweb.ViewModels;
 using Models;
 using Services.Exceptions;
 using Services.Interfaces;
-using WebMatrix.WebData;
 
 namespace crisicheckinweb.Controllers
 {
@@ -13,9 +13,14 @@ namespace crisicheckinweb.Controllers
     {
         private readonly IVolunteerService _volunteerSvc;
         private readonly ICluster _clusterSvc;
-        public AccountController(IVolunteerService volunteerSvc, ICluster clusterSvc)
+        private readonly ISecurity _securitySvc;
+        private readonly IPrincipal _currentUser;
+
+        public AccountController(IVolunteerService volunteerSvc, ICluster clusterSvc, ISecurity securitySvc, IPrincipal currentUser)
         {
             _clusterSvc = clusterSvc;
+            _securitySvc = securitySvc;
+            _currentUser = currentUser;
             _volunteerSvc = volunteerSvc;
         }
 
@@ -35,9 +40,9 @@ namespace crisicheckinweb.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(LoginModel model, string returnUrl)
         {
-            if (ModelState.IsValid && WebSecurity.Login(model.UserName, model.Password, persistCookie: model.RememberMe))
+            if (ModelState.IsValid && _securitySvc.Login(model.UserName, model.Password, shouldPersist: model.RememberMe))
             {
-                if (Roles.IsUserInRole(model.UserName, Constants.RoleAdmin))
+                if (_securitySvc.IsUserInRole(model.UserName, Constants.RoleAdmin))
                 {
                     return RedirectToAction("List", "Disaster");
                 }
@@ -54,7 +59,7 @@ namespace crisicheckinweb.Controllers
         // GET: /Account/LogOff
         public ActionResult LogOff()
         {
-            WebSecurity.Logout();
+            _securitySvc.Logout();
 
             return RedirectToAction("Login", "Account");
         }
@@ -81,12 +86,12 @@ namespace crisicheckinweb.Controllers
                 // Attempt to register the user
                 try
                 {
-                    WebSecurity.CreateUserAndAccount(model.UserName, model.Password);
-                    WebSecurity.Login(model.UserName, model.Password);
+                    _securitySvc.CreateUser(model.UserName, model.Password);
+                    _securitySvc.Login(model.UserName, model.Password);
 
-                    Roles.AddUserToRole(model.UserName, "Volunteer");
+                    _securitySvc.AddUserToRole(model.UserName, Constants.RoleVolunteer);
 
-                    var userId = WebSecurity.GetUserId(model.UserName);
+                    var userId = _securitySvc.GetInfoFor(model.UserName).Id;
 
                     Person newPerson = _volunteerSvc.Register(model.FirstName, model.LastName, model.Email, model.PhoneNumber, model.Cluster, userId);
 
@@ -119,9 +124,9 @@ namespace crisicheckinweb.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (Membership.ValidateUser(User.Identity.Name, model.OldPassword))
+                if (_securitySvc.ValidateUser(User.Identity.Name, model.OldPassword))
                 {
-                    WebSecurity.ChangePassword(User.Identity.Name, model.OldPassword, model.NewPassword);
+                    _securitySvc.ChangePassword(_currentUser.Identity.Name, model.OldPassword, model.NewPassword);
                     return RedirectToAction("PasswordChanged");
                 }
                 ModelState.AddModelError("OldPassword", "Old password is not correct.");
@@ -136,12 +141,14 @@ namespace crisicheckinweb.Controllers
 
         public ActionResult ChangeContactInfo()
         {
-            if (WebSecurity.CurrentUserId == 1)
+            int idOfCurrentUser = _securitySvc.GetInfoForCurrentUser().Id;
+
+            if (idOfCurrentUser == 1)
             {
                 TempData["AdminContactError"] = "Administrator is not allowed to have contact details!";
                 return RedirectToAction("Index", "Home");
             }
-            var personToUpdate = _volunteerSvc.FindByUserId(WebSecurity.CurrentUserId);
+            var personToUpdate = _volunteerSvc.FindByUserId(idOfCurrentUser);
             ChangeContactInfoViewModel model = new ChangeContactInfoViewModel { Email = personToUpdate.Email, PhoneNumber = personToUpdate.PhoneNumber };
             return View(model);
         }
@@ -151,7 +158,7 @@ namespace crisicheckinweb.Controllers
         {
             if (ModelState.IsValid)
             {
-                var personToUpdate = _volunteerSvc.FindByUserId(WebSecurity.CurrentUserId);
+                var personToUpdate = _volunteerSvc.FindByUserId(_securitySvc.GetInfoForCurrentUser().Id);
                 try
                 {
                     _volunteerSvc.UpdateDetails(new Person {
@@ -208,7 +215,7 @@ namespace crisicheckinweb.Controllers
 
             if (ModelState.IsValid)
             {
-                Roles.AddUserToRole(model.UserId, Constants.RoleAdmin);
+                _securitySvc.AddUserToRole(model.UserId, Constants.RoleAdmin);
 
                 return RedirectToAction("Index", "Home");
             }

@@ -45,6 +45,7 @@
       <HintPath>..\packages\Moq.4.0.10827\lib\NET40\Moq.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.Helpers.dll</HintPath>
@@ -89,6 +90,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{85D45B1B-D669-4370-8D5C-60D2350C5544}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\crisicheckinweb\crisicheckinweb.csproj">
       <Project>{212deac4-d307-4480-94ce-2951e22b13f8}</Project>
       <Name>crisicheckinweb</Name>

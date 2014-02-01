@@ -1,43 +1,41 @@
 ﻿using System;
+using System.Security.Principal;
+using Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Services;
+using Services.Exceptions;
 using Services.Interfaces;
 using crisicheckinweb.Controllers;
 using Models;
 using System.Web.Mvc;
 using crisicheckinweb.ViewModels;
-using crisicheckinweb.Wrappers;
-using System.Diagnostics;
 
 namespace WebProjectTests
 {
     [TestClass]
     public class AccountControllerTests
     {
-        //TODO: httpContext needs to be mocked in order to test the accountController
-        /*
         [TestMethod]
         public void Assign_ValidData_ReturnsContactInfoChangedView()
         {
-            
             // Arrange
             var volunteer = new Mock<IVolunteerService>();
             var cluster = new Mock<ICluster>();
-            var webSecurity = new Mock<IWebSecurityWrapper>();
+            var webSecurity = new Mock<ISecurity>();
+            var principal = new GenericPrincipal(new GenericIdentity("johndoe"), new[] { Constants.RoleVolunteer });
 
-            var controller = new AccountController(volunteer.Object, cluster.Object);
+            var controller = new AccountController(volunteer.Object, cluster.Object, webSecurity.Object, principal);
 
             volunteer.Setup(x => x.FindByUserId(It.IsAny<int>())).Returns(new Person());
-            webSecurity.SetupGet(x => x.CurrentUserId).Returns(10);
+            webSecurity.Setup(x => x.GetInfoForCurrentUser()).Returns(new UserInfo { Id = 10, Username = "johndoe" });
 
             // Act
             var viewModel = new ChangeContactInfoViewModel { Email = "test@neverEverUsedDomain123141.com", PhoneNumber = "123456789" };
-            var response = controller.ChangeContactInfo(viewModel);
+            var response = (RedirectToRouteResult)controller.ChangeContactInfo(viewModel);
 
             // Assert
-            var view = response as ViewResult;
-            Debug.WriteLine(view.ViewName);
-            Assert.IsTrue(view.ViewName.Equals("ContactInfoChanged"));
+            Assert.IsTrue(response.RouteValues["action"].Equals("ContactInfoChanged"));
         }
 
         [TestMethod]
@@ -46,29 +44,23 @@ namespace WebProjectTests
             // Arrange
             var volunteer = new Mock<IVolunteerService>();
             var cluster = new Mock<ICluster>();
-            var webSecurity = new Mock<IWebSecurityWrapper>();
+            var webSecurity = new Mock<ISecurity>();
+            var principal = new GenericPrincipal(new GenericIdentity("johndoe"), new[] { Constants.RoleVolunteer });
 
-            var controller = new AccountController(volunteer.Object, cluster.Object);
+            var controller = new AccountController(volunteer.Object, cluster.Object, webSecurity.Object, principal);
 
             volunteer.Setup(x => x.FindByUserId(It.IsAny<int>())).Returns(new Person());
+            volunteer.Setup(x => x.UpdateDetails(It.IsAny<Person>())).Throws<PersonEmailAlreadyInUseException>();
 
-            var viewModel1 = new ChangeContactInfoViewModel { Email = "test@UsedDomain123141.com", PhoneNumber = "123456789" };
-            var viewModel2 = new ChangeContactInfoViewModel { Email = "test@UsedDomain123141.com", PhoneNumber = "234567890" };
+            var viewModel = new ChangeContactInfoViewModel { Email = "test@neverEverUsedDomain123141.com", PhoneNumber = "123456789" };
 
             // Act
-            webSecurity.SetupGet(x => x.CurrentUserId).Returns(10);
-            var response1 = controller.ChangeContactInfo(viewModel1);
-            webSecurity.SetupGet(x => x.CurrentUserId).Returns(9);
-            var response2 = controller.ChangeContactInfo(viewModel2);
+            webSecurity.Setup(x => x.GetInfoForCurrentUser()).Returns(new UserInfo { Id = 10, Username = "johndoe" });
+            var response = (ViewResult)controller.ChangeContactInfo(viewModel);
 
             // Assert
-            var view1 = response1 as ViewResult;
-            var view2 = response2 as ViewResult;
-            Assert.IsTrue(view1.ViewName.Equals("ContactInfoChanged"));
-
-            Assert.IsTrue(view2.ViewName.Equals("ChangeContactInfo"));
-            Assert.IsTrue(view2.ViewData.ModelState.Count >= 1);
+            Assert.IsTrue(response.ViewName.Equals(String.Empty));
+            Assert.IsTrue(response.ViewData.ModelState.Count >= 1);
         }
-             */
     }
 }

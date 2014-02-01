@@ -40,11 +40,13 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="WebMatrix.WebData, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdminService.cs" />
@@ -61,6 +63,9 @@
     <Compile Include="Interfaces\IMessageService.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Interfaces\ISecurity.cs" />
+    <Compile Include="Security.cs" />
+    <Compile Include="UserInfo.cs" />
     <Compile Include="MessageCoordinator.cs" />
     <Compile Include="MessageRecipient.cs" />
     <Compile Include="MessageService.cs" />
