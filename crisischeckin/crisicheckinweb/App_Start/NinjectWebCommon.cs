@@ -1,4 +1,5 @@
 using System.Net.Mail;
+using System.Security.Principal;
 using Models;
 
 [assembly: WebActivator.PreApplicationStartMethod(typeof(crisicheckinweb.App_Start.NinjectWebCommon), "Start")]
@@ -69,6 +70,8 @@ namespace crisicheckinweb.App_Start
             kernel.Bind<IMessageCoordinator>().To<MessageCoordinator>().InRequestScope();
             kernel.Bind<IClusterCoordinatorService>().To<ClusterCoordinatorService>().InRequestScope();
             kernel.Bind<Func<SmtpClient>>().ToMethod(c => () => new SmtpClient()).InRequestScope();
+            kernel.Bind<ISecurity>().To<Security>().InRequestScope();
+            kernel.Bind<IPrincipal>().ToMethod(m => HttpContext.Current.User);
 #if DEBUG
             kernel.Bind<IMessageSender>().To<DebugMessageSender>();
 #else

@@ -325,6 +325,7 @@
     <Content Include="Views\ClusterCoordinator\Index.cshtml" />
     <Content Include="Views\ClusterCoordinator\AssignCoordinator.cshtml" />
     <Content Include="Views\ClusterCoordinator\ConfirmUnassignCoordinator.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\Boolean.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
