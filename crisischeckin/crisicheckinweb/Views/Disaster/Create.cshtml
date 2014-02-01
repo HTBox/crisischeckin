@@ -1,25 +1,28 @@
-@model Models.Disaster
+@using crisicheckinweb.ViewModels
+@model crisicheckinweb.ViewModels.AddUpdateDisasterModel
 @{
-    ViewBag.Title = "Create / Edit Disaster";
+    var action = Model.EditMode == EditMode.Creating ? "Add" : "Update";
+    
+    ViewBag.Title = action + " Disaster";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
 @using (Html.BeginForm("Create", "Disaster"))
 {
-    @Html.HiddenFor(m => m.Id)
+    @Html.HiddenFor(m => m.Disaster.Id)
     <fieldset>
-        <legend>Create / Edit Disaster</legend>
+        <legend>@action Disaster</legend>
         @Html.ValidationSummary()
         <ol>
             <li>
-                @Html.LabelFor(m => m.Name)
-                @Html.TextBoxFor(m => m.Name)
+                @Html.LabelFor(m => m.Disaster.Name)
+                @Html.TextBoxFor(m => m.Disaster.Name)
             </li>
             <li>
                 Is Currently Active?
-                @Html.CheckBoxFor(m => m.IsActive)
+                @Html.CheckBoxFor(m => m.Disaster.IsActive)
             </li>
         </ol>
-        <input type="submit" value="Create" />
+        <input type="submit" value="@action" />
     </fieldset>
 }

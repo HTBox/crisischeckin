@@ -155,6 +155,7 @@
     <Compile Include="Controllers\DisasterController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Helpers\MenuExtensions.cs" />
+    <Compile Include="ViewModels\AddUpdateDisasterModel.cs" />
     <Compile Include="ViewModels\AssignClusterCoordinatorViewModel.cs" />
     <Compile Include="ViewModels\ChangeContactInfoViewModel.cs" />
     <Compile Include="ViewModels\ClusterCoordinatorViewModel.cs" />
