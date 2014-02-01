@@ -15,7 +15,7 @@
 
 <table cellpadding="0" cellspacing="0" border="1">
     <tr>
-        <th width="300px;">Disaster Name</th>
+        <th width="50%">Disaster Name</th>
         <th>Is Active?</th>
         <th></th>
     </tr>
@@ -23,19 +23,17 @@
     {
         <tr>
             <td>@d.Name</td>
-            <td>@d.IsActive</td>
-            <td>
-                <a href=@String.Format("/Disaster/Edit/{0}", d.Id.ToString())>Edit</a>
+            <td>@Html.DisplayFor(m => d.IsActive)</td>
+            <td style="min-width:133px">
+                <a href="@String.Format("/Disaster/Edit/{0}", d.Id)" class="btn" title="Edit"><i class="icon-pencil"></i> <span class="hidden-phone hidden-tablet">Edit</span></a>
                 @if (d.IsActive)
                 {
-                    <text>|</text>
-                    @Html.ActionLink("Send Message to Volunteers", "CreateMessageToVolunteersByDisaster", new { controller = "Volunteer", d.Id })
-                    <text>|</text>
-                    @Html.ActionLink("Cluster Coordinators", "Index", new { controller = "ClusterCoordinator", d.Id })
+                    <a href="@Url.Action("CreateMessageToVolunteersByDisaster", "Volunteer", new { d.Id })" class="btn" title="Send Message to Volunteers"><i class="icon-envelope"></i> <span class="hidden-phone hidden-tablet">Send Message to Volunteers</span></a>
+                    <a href="@Url.Action("Index", "ClusterCoordinator", new { d.Id })" class="btn" title="Cluster Coordinators"><i class="icon-user"></i> <span class="hidden-phone hidden-tablet">Cluster Coordinators</span></a>
                 }
             </td>
         </tr>
     }
 </table>
 <br />
-<a href="/Disaster/Edit/-1">Add New Disaster</a>
+<a href="/Disaster/Edit/-1" class="btn" title="Add Disaster">Add Disaster</a>

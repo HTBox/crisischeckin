@@ -20,10 +20,13 @@
 {
     @Html.HiddenFor(m=>m.DisasterId)
     <h3>Assign Cluster Coordinator: </h3>
+    
     @Html.LabelFor(m=>m.AvailableClusters)
     @Html.DropDownListFor(m => m.SelectedClusterId, new SelectList(Model.AvailableClusters, "Id", "Name", Model.SelectedClusterId), "-- Choose One --")
-    <br/>
+
     @Html.LabelFor(m=>m.AvailablePeople)
     @Html.DropDownListFor(m => m.SelectedPersonId, new SelectList(Model.AvailablePeople, "Id", "FullName", Model.SelectedPersonId), "-- Choose One --")
+    
+    <div class="clearfix"></div>
     <input id="AddButton" type="submit" value="Assign" />
 }
