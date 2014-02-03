@@ -141,8 +141,13 @@ namespace crisicheckinweb.Controllers
         public ActionResult ChangeContactInfo()
         {
             var personToUpdate = _volunteerSvc.FindByUserId(WebSecurity.CurrentUserId);
-            ChangeContactInfoViewModel model = new ChangeContactInfoViewModel { Email = personToUpdate.Email, PhoneNumber = personToUpdate.PhoneNumber };
-            return View(model);
+            if (personToUpdate != null)
+            {
+                ChangeContactInfoViewModel model = new ChangeContactInfoViewModel { Email = personToUpdate.Email, PhoneNumber = personToUpdate.PhoneNumber };
+                return View(model);
+            }
+
+            return View();
         }
 
         [HttpPost]

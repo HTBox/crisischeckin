@@ -8,6 +8,7 @@
 
 @using (Html.BeginForm("ChangeContactInfo", "Account", FormMethod.Post))
 {
+    if (!User.IsInRole("Admin")) { 
     <div class="row">
         <div class="col-3">
             @Html.LabelFor(m => m.Email)
@@ -33,4 +34,9 @@
             <input type="submit" value="Submit" />
         </div>
     </div>
+    }
+    else
+    {
+        <div>You may not change your contact info at this time.</div>
+    }
 }
