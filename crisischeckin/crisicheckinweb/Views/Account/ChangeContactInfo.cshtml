@@ -1,14 +1,13 @@
 ﻿@model crisicheckinweb.ViewModels.ChangeContactInfoViewModel
 @{
     ViewBag.Title = "ChangeContactInfo";
-    Layout = "~/Views/Shared/_VolunteerLayout.cshtml";
 }
 
 <h2>Change Contact Info</h2>
 
 @using (Html.BeginForm("ChangeContactInfo", "Account", FormMethod.Post))
 {
-    if (!User.IsInRole(Common.Constants.RoleAdmin)) { 
+    if(@Model != null) {
     <div class="row">
         <div class="col-3">
             @Html.LabelFor(m => m.Email)

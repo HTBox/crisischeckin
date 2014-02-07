@@ -111,7 +111,7 @@ namespace crisicheckinweb.Controllers
 
         public ActionResult ChangePassword()
         {
-            return View();
+            return View("ChangePassword", DetermineLayout(), null);
         }
 
         [HttpPost]
@@ -126,7 +126,7 @@ namespace crisicheckinweb.Controllers
                 }
                 ModelState.AddModelError("OldPassword", "Old password is not correct.");
             }
-            return View();
+            return View("ChangePassword", DetermineLayout(), null);
         }
 
         public ActionResult PasswordChanged()
@@ -148,7 +148,7 @@ namespace crisicheckinweb.Controllers
                 return View(model);
             }
 
-            return View();
+            return View("ChangeContactInfo", DetermineLayout(), null);
         }
 
         [HttpPost]
@@ -176,7 +176,7 @@ namespace crisicheckinweb.Controllers
                     ModelState.AddModelError("Email", "This Email Address is already in use!");
                 }
             }
-            return View();
+            return View("ChangeContactInfo", DetermineLayout(), model);
         }
 
         public ActionResult ContactInfoChanged()
@@ -230,6 +230,14 @@ namespace crisicheckinweb.Controllers
                 return Redirect(returnUrl);
             }
             return RedirectToAction("Index", "Home");
+        }
+
+        private string DetermineLayout()
+        {
+            if (!User.IsInRole(Constants.RoleAdmin))
+                return "~/Views/Shared/_VolunteerLayout.cshtml";
+            else
+                return "~/Views/Shared/_AdminLayout.cshtml";
         }
 
         public enum ManageMessageId
