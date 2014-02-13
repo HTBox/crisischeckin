@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic; 
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Services.Interfaces;
@@ -78,6 +80,48 @@ namespace WebProjectTests
             // Act
             var viewModel = new VolunteerViewModel { SelectedStartDate = DateTime.Today.AddDays(1) };
             var response = controller.Assign(viewModel);
+
+            // Assert
+            var result = response as RedirectResult;
+            Assert.IsTrue(result.Url.ToLower().Contains("home"));
+        }
+
+        [TestMethod]
+        public void RemoveCommitmentById_NotYourCommitment_ReturnsIndexView()
+        {
+            // Arrange
+            var disaster = new Mock<IDisaster>();
+            var volunteer = new Mock<IVolunteerService>();
+            var webSecurity = new Mock<IWebSecurityWrapper>();
+            volunteer.Setup(service => service.FindByUserId(It.IsAny<int>())).Returns(new Person());
+            var controller = new HomeController(disaster.Object, volunteer.Object, webSecurity.Object);
+
+            // Act
+            var viewModel = new VolunteerViewModel { RemoveCommitmentId = int.MinValue };
+            var response = controller.RemoveAssignment(viewModel);
+
+            // Assert
+            var view = response as ViewResult;
+            Assert.IsTrue(view.ViewName.Equals("Index"));
+            Assert.IsTrue(view.ViewData.ModelState.Count >= 1);
+        }
+
+        [TestMethod]
+        public void RemoveCommitmentById_Valid_RedirectsToHome()
+        {
+            // Arrange
+
+            var commitments = new List<Commitment>() { new Commitment() { Id = 7, PersonId = 13}};
+            var disaster = new Mock<IDisaster>();
+            var volunteer = new Mock<IVolunteerService>();
+            var webSecurity = new Mock<IWebSecurityWrapper>();
+            volunteer.Setup(service => service.FindByUserId(It.IsAny<int>())).Returns(new Person() { Id = 13 });
+            volunteer.Setup(service => service.RetrieveCommitments(13, true)).Returns(commitments.AsQueryable());
+            var controller = new HomeController(disaster.Object, volunteer.Object, webSecurity.Object);
+
+            // Act
+            var viewModel = new VolunteerViewModel { RemoveCommitmentId = 7 };
+            var response = controller.RemoveAssignment(viewModel);
 
             // Assert
             var result = response as RedirectResult;

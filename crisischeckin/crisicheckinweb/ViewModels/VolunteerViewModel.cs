@@ -10,7 +10,7 @@ namespace crisicheckinweb.ViewModels
     {
         public IEnumerable<Disaster> Disasters { get; set; }
         public IEnumerable<Commitment> MyCommitments { get; set; }
-
+        public int RemoveCommitmentId { get; set; }
         public int PersonId { get; set; }
         public int SelectedDisasterId { get; set; }
         public DateTime SelectedStartDate { get; set; }

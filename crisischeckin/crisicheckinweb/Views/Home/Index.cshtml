@@ -24,6 +24,10 @@
         <th>Start Date</th>
         <th>End Date</th>
         <th>Active</th>
+        @if (Model.MyCommitments.Any())
+        { 
+            <th>&nbsp;</th>
+        }
     </tr>
     @foreach(var comm in Model.MyCommitments) { 
     <tr>
@@ -31,6 +35,14 @@
         <td>@comm.StartDate.ToShortDateString()</td>
         <td>@comm.EndDate.ToShortDateString()</td>
         <td>@(comm.Disaster.IsActive ? "Yes" : "No") </td>
+        <td>
+            @using (Html.BeginForm("RemoveAssignment", "Home", FormMethod.Post, new { @class = "navbar-form" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(m => m.RemoveCommitmentId, new { @Value = comm.Id })
+                <button type="submit"><i class="icon-remove"></i></button>         
+            }
+        </td>
     </tr>
     }
 </table>
