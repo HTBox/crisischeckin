@@ -36,7 +36,7 @@
         <td>@comm.EndDate.ToShortDateString()</td>
         <td>@(comm.Disaster.IsActive ? "Yes" : "No") </td>
         <td>
-            @using (Html.BeginForm("RemoveAssignment", "Home", FormMethod.Post, new { @class = "navbar-form" }))
+            @using (Html.BeginForm("RemoveCommitment", "Home", FormMethod.Post, new { @class = "navbar-form" }))
             {
                 @Html.AntiForgeryToken()
                 @Html.HiddenFor(m => m.RemoveCommitmentId, new { @Value = comm.Id })

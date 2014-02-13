@@ -88,7 +88,7 @@ namespace crisicheckinweb.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult RemoveAssignment(VolunteerViewModel model)
+        public ActionResult RemoveCommitment(VolunteerViewModel model)
         {
             if (!ModelState.IsValid) return View("Index", GetDefaultViewModel(model));
 
