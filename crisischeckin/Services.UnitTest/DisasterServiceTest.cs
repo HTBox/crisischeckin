@@ -178,6 +178,8 @@ namespace Services.UnitTest
 
             // assert
             Assert.AreEqual(disaster.Name, createdDisaster.Name);
+            Assert.AreEqual(disaster.IsActive, createdDisaster.IsActive);
+            _mockDataService.Verify(m => m.AddDisaster(disaster));
         }
 
         [TestMethod]
