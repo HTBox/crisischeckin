@@ -78,6 +78,13 @@ namespace Services
             context.SaveChanges();
         }
 
+        public void RemoveCommitmentById(int id)
+        {
+            var commitment = context.Commitments.FirstOrDefault(c => c.Id == id);
+            context.Commitments.Remove(commitment);
+            context.SaveChanges();
+        }
+
         public void AddDisaster(Disaster newDisaster)
         {
             context.Disasters.Add(newDisaster);

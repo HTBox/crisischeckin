@@ -38,7 +38,7 @@ namespace crisicheckinweb.Controllers
             {
 	            if (DateTime.Compare(DateTime.Today, model.SelectedStartDate) > 0)
 	            {
-	                throw new ArgumentException("Please enter a start date that is greater than today's date.");
+                    throw new ArgumentException("Please enter a start date that is greater than today's date.");
                 }
 
                 var person = _volunteerSvc.FindByUserId(_webSecurity.CurrentUserId);
@@ -84,6 +84,39 @@ namespace crisicheckinweb.Controllers
             }
 
             return model;
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult RemoveCommitment(VolunteerViewModel model)
+        {
+            if (!ModelState.IsValid) return View("Index", GetDefaultViewModel(model));
+
+            try
+            {
+                var person = _volunteerSvc.FindByUserId(_webSecurity.CurrentUserId);
+                var commitments = _volunteerSvc.RetrieveCommitments(person.Id, true).AsEnumerable();
+
+                if (commitments.Where(c => c.Id == model.RemoveCommitmentId).FirstOrDefault() == null)
+                {
+                    throw new ArgumentException("Commitment supplied is not yours.");
+                }
+
+                _disasterSvc.RemoveCommitmentById(model.RemoveCommitmentId);
+
+                return Redirect("/Home");
+            }
+            catch (ArgumentException ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+            }
+
+            var modelToReturn = GetDefaultViewModel();
+            modelToReturn.SelectedDisasterId = model.SelectedDisasterId;
+            modelToReturn.SelectedStartDate = model.SelectedStartDate;
+            modelToReturn.SelectedEndDate = model.SelectedEndDate;
+
+            return View("Index", modelToReturn);
         }
 
     }

@@ -151,6 +151,21 @@ namespace Services.UnitTest
         }
 
         [TestMethod]
+        public void RemoveCommitmentById_Valid()
+        {
+            // arrange
+            var commitmentId = int.MinValue;
+            var removeCommitmentByIdMethodCalled = false;
+            _mockDataService.Setup(m => m.RemoveCommitmentById(It.IsAny<int>())).Callback(() => removeCommitmentByIdMethodCalled = true );
+                  
+            // act
+            _disasterService.RemoveCommitmentById(commitmentId);
+
+            // assert
+            Assert.IsTrue(removeCommitmentByIdMethodCalled);
+        }
+
+        [TestMethod]
         public void CreateDisaster_Valid()
         {
             // arrange

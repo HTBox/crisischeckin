@@ -64,6 +64,12 @@ namespace Services
             _dataService.AddDisaster(disaster);
         }
 
+        public void RemoveCommitmentById(int commitmentId)
+        {
+            //  idempotent method - don't care if the id does not exist. 
+            _dataService.RemoveCommitmentById(commitmentId);
+        }
+
         public void Update(int disasterId, string disasterName, bool isActive)
         {
             var origDisaster = _dataService.Disasters.SingleOrDefault(d => d.Id.Equals(disasterId));
