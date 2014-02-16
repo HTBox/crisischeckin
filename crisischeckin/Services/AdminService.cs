@@ -30,6 +30,7 @@ namespace Services
 
         public IEnumerable<Person> GetVolunteersForDate(Disaster disaster, DateTime date)
         {
+
             return GetVolunteersForDate(disaster.Id, date);
         }
 
@@ -38,21 +39,25 @@ namespace Services
             if (0 == disasterId)
                 throw new ArgumentException("disasterId must be greater than zero", "disasterId");
 
-            return dataService.Commitments.Where(
-                   x => x.DisasterId.Equals(disasterId) &&
-                   x.StartDate <= date &&
-                   x.EndDate >= date).Select(x => x.Person).Distinct().ToList();
+            var people = from p in dataService.Persons
+                          join c in dataService.Commitments on p.Id equals c.PersonId
+                          where c.DisasterId == disaster.Id
+                          where date >= c.StartDate && date <= c.EndDate
+                          select p;
+            people.Include(x => x.Cluster);
+
+            return people;
+
         }
 
         private IQueryable<Person> GetPeople(Disaster disaster)
         {
-            var commitments = from c in dataService.Commitments
-                              where c.DisasterId == disaster.Id
-                              select c;
-            var people = from c in commitments
-                         join p in dataService.Persons on c.PersonId equals p.Id
-                         select p;
-            return people;
+            var people2 = from p in dataService.Persons
+                          join c in dataService.Commitments on p.Id equals c.PersonId
+                          where c.DisasterId == disaster.Id
+                          select p;
+
+            return people2;
         }
     }
 }
