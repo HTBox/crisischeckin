@@ -77,11 +77,11 @@ namespace Services
 
         public IQueryable<Commitment> RetrieveCommitments(int personId, bool showInactive)
         {
-            var allCommitments = from c in ourService.Commitments
-                         where c.PersonId == personId
-                         select c;
-            var filteredCommitments = allCommitments.Include(c => c.Disaster)
-                .Where(c => c.Disaster.IsActive || showInactive);
+            var filteredCommitments = from c in ourService.Commitments.Include(c => c.Disaster)
+                    where c.PersonId == personId &&
+                    (c.Disaster.IsActive || showInactive)
+                    select c;
+
             return filteredCommitments;
         }
 
