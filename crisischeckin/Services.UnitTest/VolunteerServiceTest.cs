@@ -134,7 +134,42 @@ namespace Services.UnitTest
 			//test that a different username is available.
 			Assert.IsTrue(service.UsernameAvailable("test456"), "Username that was not added to our data source should report as available.");
 		}
-		
+
+        [TestMethod]
+        public void Register_EmailAlreadyInUse_ReturnFalse()
+        {
+            Person moqPerson = new Person()
+            {
+                Id = 1,
+                Email = "matt.smith@email.com"
+            };
+
+            List<Person> people = new List<Person>();
+            people.Add(moqPerson);
+
+            var moqDataService = new Mock<IDataService>();
+            moqDataService.Setup(s => s.Persons).Returns(people.AsQueryable());
+            VolunteerService service = new VolunteerService(moqDataService.Object);
+            Assert.IsFalse(service.EmailAlreadyInUse("cathy.jones@email.com"));
+        }
+
+        [TestMethod]
+        public void Register_EmailAlreadyInUse_ReturnTrue()
+        {
+            Person moqPerson = new Person()
+            {
+                Id = 1,
+                Email = "matt.smith@email.com"
+            };
+
+            List<Person> people = new List<Person>();
+            people.Add(moqPerson);
+
+            var moqDataService = new Mock<IDataService>();
+            moqDataService.Setup(s => s.Persons).Returns(people.AsQueryable());
+            VolunteerService service = new VolunteerService(moqDataService.Object);
+            Assert.IsTrue(service.EmailAlreadyInUse("matt.smith@email.com"));
+        }		
 
         [TestMethod]
         public void UpdateDetails_Valid()

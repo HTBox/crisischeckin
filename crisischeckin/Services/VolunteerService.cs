@@ -103,5 +103,11 @@ namespace Services
 			if (ourService.Users.Where(p => p.UserName == userName).Count() > 0) return false;
 			return true;
 		}
+
+        public bool EmailAlreadyInUse(string email)
+        {
+            if (ourService.Persons.Where(p => p.Email == email).Count() > 0) return true;
+            return false;
+        }
 	}
 }
