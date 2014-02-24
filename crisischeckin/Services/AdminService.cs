@@ -52,12 +52,12 @@ namespace Services
 
         private IQueryable<Person> GetPeople(Disaster disaster)
         {
-            var people2 = from p in dataService.Persons
+            var people = from p in dataService.Persons
                           join c in dataService.Commitments on p.Id equals c.PersonId
                           where c.DisasterId == disaster.Id
                           select p;
 
-            return people2;
+            return people;
         }
     }
 }
