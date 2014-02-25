@@ -106,7 +106,7 @@ namespace Services
 
         public bool EmailAlreadyInUse(string email)
         {
-            if (ourService.Persons.Where(p => p.Email == email).Count() > 0) return true;
+            if (ourService.Persons.Any(p => p.Email == email)) return true;
             return false;
         }
 	}
