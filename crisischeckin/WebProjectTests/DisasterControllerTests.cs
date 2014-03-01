@@ -53,7 +53,7 @@ namespace WebProjectTests
         }
 
         [TestMethod]
-        public void Assign_duplicateName_ReturnsEditView()
+        public void Assign_duplicateName_ReturnsCreateView()
         {
             // Arrange
             var disaster = new Mock<IDisaster>();
@@ -67,7 +67,7 @@ namespace WebProjectTests
             var response = controller.Edit(viewModel);
 
             var view = response as ViewResult;
-            Assert.IsTrue(view.ViewName.Equals("Edit"));
+            Assert.AreEqual("Create", view.ViewName);
             Assert.IsTrue(view.ViewData.ModelState.Count >= 1);
         }
     }

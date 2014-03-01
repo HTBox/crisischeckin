@@ -46,7 +46,7 @@ namespace Services
                           select p;
             //people.Include(x => x.Cluster);
 
-            return people;
+            return people.Distinct();
 
         }
 
