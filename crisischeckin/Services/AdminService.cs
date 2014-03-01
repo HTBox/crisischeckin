@@ -34,17 +34,17 @@ namespace Services
             return GetVolunteersForDate(disaster.Id, date);
         }
 
-        public IReadOnlyCollection<Person> GetVolunteersForDate(int disasterId, DateTime date)
+        public IEnumerable<Person> GetVolunteersForDate(int disasterId, DateTime date)
         {
             if (0 == disasterId)
                 throw new ArgumentException("disasterId must be greater than zero", "disasterId");
 
             var people = from p in dataService.Persons
                           join c in dataService.Commitments on p.Id equals c.PersonId
-                          where c.DisasterId == disaster.Id
+                          where c.DisasterId == disasterId
                           where date >= c.StartDate && date <= c.EndDate
                           select p;
-            people.Include(x => x.Cluster);
+            //people.Include(x => x.Cluster);
 
             return people;
 

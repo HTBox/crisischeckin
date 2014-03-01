@@ -98,7 +98,7 @@ namespace WebProjectTests
 
             // Act
             var viewModel = new VolunteerViewModel { RemoveCommitmentId = int.MinValue };
-            var response = controller.RemoveAssignment(viewModel);
+            var response = controller.RemoveCommitment(viewModel);
 
             // Assert
             var view = response as ViewResult;
@@ -121,7 +121,7 @@ namespace WebProjectTests
 
             // Act
             var viewModel = new VolunteerViewModel { RemoveCommitmentId = 7 };
-            var response = controller.RemoveAssignment(viewModel);
+            var response = controller.RemoveCommitment(viewModel);
 
             // Assert
             var result = response as RedirectResult;

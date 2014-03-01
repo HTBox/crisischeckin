@@ -21,7 +21,7 @@ namespace Services
                 {
                     messageSender.SendMessage(message, recipients);
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     //TODO: Add logging implementation--awaiting decision from Bill
                 }

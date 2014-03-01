@@ -237,7 +237,7 @@ namespace WebProjectTests.ServiceTests
 
             var actual = underTest.GetVolunteersForDate(42, DateTime.Today);
 
-            Assert.AreEqual(1, actual.Count);
+            Assert.AreEqual(1, actual.Count());
         }
 
         private void initializeDisasterCollection(params Disaster[] disasters)
