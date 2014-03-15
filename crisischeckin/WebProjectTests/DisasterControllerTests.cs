@@ -27,7 +27,7 @@ namespace WebProjectTests
 
             // Act
             var viewModel = new Disaster { Id = -1, Name ="test", IsActive = false};
-            var response = controller.Edit(viewModel);
+            var response = controller.Create(viewModel);
 
             // Assert
             var result = response as RedirectResult;
@@ -44,7 +44,7 @@ namespace WebProjectTests
 
             // Act
             var viewModel = new Disaster { Id = 0, Name = "updated", IsActive = true };
-            var response = controller.Edit(viewModel);
+            var response = controller.Create(viewModel);
 
             // Assert
 
@@ -64,7 +64,7 @@ namespace WebProjectTests
                 It.IsAny<Disaster>())).Throws(new DisasterAlreadyExistsException());
 
             var viewModel = new Disaster { Id = -1, Name = "test", IsActive = true };
-            var response = controller.Edit(viewModel);
+            var response = controller.Create(viewModel);
 
             var view = response as ViewResult;
             Assert.AreEqual("Create", view.ViewName);
