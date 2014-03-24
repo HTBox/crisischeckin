@@ -51,7 +51,7 @@ namespace crisicheckinweb.Controllers
                     catch (DisasterAlreadyExistsException)
                     {
                         ModelState.AddModelError("Name", "A Disaster already exists with that Name!");
-                        return View(disaster);
+                        return View("Create", disaster);
                     }
                 }
                 else
@@ -62,7 +62,7 @@ namespace crisicheckinweb.Controllers
                 return Redirect("/Disaster/List");
             }
             ModelState.AddModelError("Name", "Disaster Name is required!");
-            return View(disaster);
+            return View("Create", disaster);
         }
 
         //TODO: Need to set a schedule for removal.
