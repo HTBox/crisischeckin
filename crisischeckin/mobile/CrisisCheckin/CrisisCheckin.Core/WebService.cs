@@ -3,18 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace CrisisCheckin.Core
 {
 	#region Request and Response objects
 	public class RegisterRequest : ServiceRequest
 	{
+		public override string ServiceMethodUrl { get { return "register"; } }
+
 		public string FirstName { get;set; }
 		public string LastName { get;set; }
 		public string Email { get;set; }
 		public string Username { get;set; }
 		public string Token { get;set; }
-		public string ClusterId { get;set; }
+		public int ClusterId { get;set; }
 	}
 
 	public class RegisterResponse : ServiceResponse<bool>
@@ -54,7 +57,7 @@ namespace CrisisCheckin.Core
 		public override string ServiceMethodUrl { get {	return "checkin"; } }
 
 		public string Username { get;set; }
-		public string DisasterId { get;set; }
+		public int DisasterId { get;set; }
 		public double Latitude { get;set; }
 		public double Longitude { get;set; }
 	}
@@ -88,7 +91,7 @@ namespace CrisisCheckin.Core
 		public override string ServiceMethodUrl { get {	return "volunteer"; } }
 
 		public string Username { get;set; }
-		public string DisasterId { get;set; }
+		public int DisasterId { get;set; }
 		public DateTime StartDate { get;set; }
 		public DateTime EndDate { get;set; }
 	}
@@ -122,7 +125,7 @@ namespace CrisisCheckin.Core
 	#region Models
 	public class Disaster
 	{
-		public string Id { get;set; }
+		public int Id { get;set; }
 		public string Name { get;set; }
 		public bool IsActive { get;set; }
 		public string Location { get;set; }
@@ -130,13 +133,13 @@ namespace CrisisCheckin.Core
 
 	public class Cluster 
 	{
-		public string Id { get;set; }
+		public int Id { get;set; }
 		public string Name { get;set; }
 	}
 
 	public class Commitment
 	{
-		public string DisasterId { get;set; }
+		public int DisasterId { get;set; }
 		public DateTime StartDate { get;set; }
 		public DateTime EndDate { get;set; }
 		public bool IsActive { get;set; }
@@ -144,6 +147,14 @@ namespace CrisisCheckin.Core
 	#endregion
 
 	#region WebService Definition and Implementation
+	public class WebServiceFactory
+	{
+		public static IWebService Create()
+		{
+			return new MockWebService ();
+		}
+	}
+
 	public interface IWebService
 	{
 		Task<RegisterResponse> RegisterAsync (RegisterRequest request);
@@ -159,6 +170,8 @@ namespace CrisisCheckin.Core
 
 	public class WebService : IWebService
     {
+		const string API_URL_BASE = "http://crisischeckin.azurewebsites.net/api/";
+
 		#region IWebService implementation
 
 		public async Task<RegisterResponse> RegisterAsync (RegisterRequest request)
@@ -203,12 +216,13 @@ namespace CrisisCheckin.Core
 
 		public async Task<CommitmentsResponse> GetCommitmentsAsync (CommitmentsRequest request)
 		{
+
 			throw new NotImplementedException ();
 		}
 
 		#endregion
 
-		async string Request(string method, params KeyValuePair<string, string> parameters)
+		async Task<string> Request(string method, params KeyValuePair<string, string>[] parameters)
 		{
 			return string.Empty;
 		}

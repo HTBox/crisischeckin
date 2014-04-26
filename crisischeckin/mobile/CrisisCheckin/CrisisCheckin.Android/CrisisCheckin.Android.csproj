@@ -3,8 +3,6 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>10.0.0</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{233584AD-99A2-4809-99AA-8AC066AD6D87}</ProjectGuid>
     <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
@@ -45,11 +43,18 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="Mono.Android" />
+    <Reference Include="System.Json" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="App.cs" />
+    <Compile Include="RegisterActivity.cs" />
+    <Compile Include="SignInActivity.cs" />
+    <Compile Include="CommitmentsActivity.cs" />
+    <Compile Include="CommitmentDetailsActivity.cs" />
+    <Compile Include="DisastersActivity.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -61,6 +66,21 @@
     <AndroidResource Include="Resources\values\Strings.xml" />
     <AndroidResource Include="Resources\drawable\Icon.png" />
     <AndroidResource Include="Resources\layout\Register.axml" />
+    <AndroidResource Include="Resources\values\styles.xml" />
+    <AndroidResource Include="Resources\values-v11\styles.xml" />
+    <AndroidResource Include="Resources\layout\SignIn.axml" />
+    <AndroidResource Include="Resources\layout\Commitments.axml" />
+    <AndroidResource Include="Resources\layout\CommitmentItem.axml" />
+    <AndroidResource Include="Resources\layout\CommitmentDetails.axml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\CrisisCheckin.Core.Android\CrisisCheckin.Core.Android.csproj">
+      <Project>{5496CF9B-2DC1-4ED4-A988-CD053FC5586B}</Project>
+      <Name>CrisisCheckin.Core.Android</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\values-v11\" />
+  </ItemGroup>
 </Project>
