@@ -3,12 +3,6 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
-    <TextView
-        android:text="Create New Account"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textViewTitle" />
     <EditText
         android:inputType="textPersonName"
         android:layout_width="match_parent"
@@ -48,13 +42,13 @@
         android:inputType="textPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/editText1Password2"
+        android:id="@+id/editTextPassword2"
         android:hint="Confirm Password" />
-    <AutoCompleteTextView
+    <Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/autoCompleteTextViewCluster"
-        android:hint="Select Cluster" />
+        android:id="@+id/spinnerCluster"
+        android:spinnerMode="dialog" />
     <Button
         android:text="Create New Account"
         android:layout_width="match_parent"
