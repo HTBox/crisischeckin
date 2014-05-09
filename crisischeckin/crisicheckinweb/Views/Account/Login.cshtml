@@ -1,44 +1,38 @@
 ﻿@model crisicheckinweb.ViewModels.LoginModel
 
 @{
-    ViewBag.Title = "Log in to existing account...";
-    Layout = "/Views/Shared/_VolunteerLayout.cshtml";
+  ViewBag.Title = "Log in to existing account...";
+  Layout = "/Views/Shared/_VolunteerLayout.cshtml";
 }
 
 
-@using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl })) {
+<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+  <h3>Log In</h3>
+
+  @using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl }))
+  {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
 
-    <fieldset>
-        <legend>Log In</legend>
-        <div class="row">
-            <div class="span12">
-                @Html.LabelFor(m => m.UserName)
-                @Html.TextBoxFor(m => m.UserName)
-                @Html.ValidationMessageFor(m => m.UserName)
-            </div>
-        </div>
-        <div class="row">
-            <div class="span12">
-                @Html.LabelFor(m => m.Password)
-                @Html.PasswordFor(m => m.Password)
-                @Html.ValidationMessageFor(m => m.Password)
-            </div>
-        </div>
-        <div class="row">
-            <div class="span12">
-                @Html.CheckBoxFor(m => m.RememberMe, new { style = "float: left; margin-right: 5px;"})
-                @Html.LabelFor(m => m.RememberMe, new { @class = "checkbox" })
-            </div>
-        </div>
-        <div class="row">
-            <div class="span12">
-                <input type="submit" value="Log in" />
-            </div>
-        </div>
-    </fieldset>
-    <p>
-        @Html.ActionLink("Register", "Register") if you don't have an account.
+    <div class="form-group">
+      @Html.LabelFor(m => m.UserName)
+      @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
+      @Html.ValidationMessageFor(m => m.UserName)
+    </div>
+    <div class="form-group">
+      @Html.LabelFor(m => m.Password)
+      @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+      @Html.ValidationMessageFor(m => m.Password)
+    </div>
+    <div class="form-group">
+      @Html.CheckBoxFor(m => m.RememberMe)
+      @Html.LabelFor(m => m.RememberMe)
+    </div>
+    <div class="form-group">
+      <input type="submit" value="Log in" class="btn btn-success" />
+    </div>
+    <p class="text-muted">
+      @Html.ActionLink("Register", "Register") if you don't have an account.
     </p>
-}
+  }
+</div>
