@@ -1,111 +1,59 @@
 ﻿@model crisicheckinweb.ViewModels.RegisterModel
 
 @{
-    ViewBag.Title = "Create new account...";
+  ViewBag.Title = "Create new account...";
 }
 <h1>@ViewBag.Title.</h1>
 
-@using (Html.BeginForm()) {
-    @Html.AntiForgeryToken()
-    @Html.ValidationSummary()
+<div class="col-lg-6 col-sm-12 col-xs-12 col-md-6">
+  @using (Html.BeginForm())
+  {
+    <div class="form-group">
+      @Html.AntiForgeryToken()
+      @Html.ValidationSummary()
+    </div>
 
-    <fieldset>
-        <legend>Registration Form</legend>
-        <ol>
-            <li>
-                @Html.LabelFor(m => m.FirstName)
-                @Html.TextBoxFor(m => m.FirstName)
-            </li>
-            <li>
-                @Html.LabelFor(m => m.LastName)
-                @Html.TextBoxFor(m => m.LastName)
-            </li>
-            <li>
-                @Html.LabelFor(m => m.PhoneNumber)
-                @Html.TextBoxFor(m => m.PhoneNumber)
-            </li>
-            <li>
-                @Html.LabelFor(m => m.Email)
-                @Html.TextBoxFor(m => m.Email)
-            </li>
-            <li>
-                @Html.LabelFor(m => m.UserName)
-                @Html.TextBoxFor(m => m.UserName, new { id = "txt_userName" })
-            </li>
-            <li>
-                @Html.LabelFor(m => m.Password)
-                @Html.PasswordFor(m => m.Password)
-            </li>
-            <li>
-                @Html.LabelFor(m => m.ConfirmPassword)
-                @Html.PasswordFor(m => m.ConfirmPassword)
-            </li>
-            <li>
-                @Html.LabelFor(m => m.Cluster)
-                @Html.DropDownListFor(m => m.Cluster, new SelectList(Model.Clusters, "Id", "Name", Model.Cluster), "-- Choose One --")
-            </li>
-        </ol>
-        <input type="submit" value="Create new account" />
-    </fieldset>
-}
+    <div class="form-group">
+      @Html.LabelFor(m => m.FirstName)
+      @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
+    </div>
 
-<script type="text/javascript">
-(function ($) {
-    $(document).ready(function () {
-    	$("#txt_userName").delay({
-    		delay: 300,
-    		event: 'keyup',
-    		fn: function () {
-    			checkUsernameExists($("#txt_userName").val(), $("#txt_userName"));
-    		}
-    	});
-    });
+    <div class="form-group">
+      @Html.LabelFor(m => m.LastName)
+      @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
+    </div>
 
-    function checkUsernameExists(userName, parent) {
-    	if (userName == "") {
-    		$(parent).removeClass("success").removeClass("failure");
-    		if ($(parent).next().hasClass("feedbackHelper")) $(parent).next().remove();
-    		return;
-    	}
-    	$.ajax({
-    		url: "/Account/UsernameAvailable",
-    		type: "POST",
-    		data: {userName: userName},
-    		success: function (e) {
-    			$(parent).removeClass("success").removeClass("failure");
-    			if ($(parent).next().hasClass("feedbackHelper")) $(parent).next().remove();
-    			var vals = { output: "", class: "" };
-    			if (e == "False") {
-    				vals.class = "failure";
-    				vals.output = "Sorry, the username requested is not available.";
-    			} else {
-    				vals.class = "success";
-    				vals.output = "The username requested is available.";
-    			}
-    			var feedBack = $('<div class=\"feedbackHelper ' + vals.class + '\">' + vals.output + '</div>');
-    			$(parent).addClass(vals.class);
-    			$(parent).after(feedBack);
-    		}
-    	});
-    }
+    <div class="form-group">
+      @Html.LabelFor(m => m.PhoneNumber)
+      @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control" })
+    </div>
 
-    $.fn.delay = function (options) {
-    	var timer;
-    	var delayImpl = function (eventObj) {
-    		if (timer != null) {
-    			clearTimeout(timer);
-    		}
-    		var newFn = function () {
-    			options.fn(eventObj);
-    		};
-    		timer = setTimeout(newFn, options.delay);
-    	}
-    	return this.each(function () {
-    		var obj = $(this);
-    		obj.bind(options.event, function (eventObj) {
-    			delayImpl(eventObj);
-    		});
-    	});
-    };
-})(jQuery);
-</script>
+    <div class="form-group">
+      @Html.LabelFor(m => m.Email)
+      @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+    </div>
+
+
+    <div class="form-group">
+      @Html.LabelFor(m => m.UserName)
+      @Html.TextBoxFor(m => m.UserName, new { id = "txt_userName", @class = "form-control" })
+    </div>
+
+
+    <div class="form-group">
+      @Html.LabelFor(m => m.ConfirmPassword)
+      @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+      @Html.LabelFor(m => m.Cluster)
+      @Html.DropDownListFor(m => m.Cluster, new SelectList(Model.Clusters, "Id", "Name", Model.Cluster), "-- Choose One --", new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+      <input type="submit" value="Create new account" class="btn btn-success" />
+    </div>
+  }
+</div>
+
+<script src="~/scripts/App/accountRegister.js"></script>

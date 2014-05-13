@@ -1,41 +1,34 @@
 ﻿@model crisicheckinweb.ViewModels.ChangeContactInfoViewModel
 @{
-    ViewBag.Title = "ChangeContactInfo";
+  ViewBag.Title = "ChangeContactInfo";
 }
 
-<h2>Change Contact Info</h2>
 
-@using (Html.BeginForm("ChangeContactInfo", "Account", FormMethod.Post))
-{
-    if(@Model != null) {
-    <div class="row">
-        <div class="col-3">
-            @Html.LabelFor(m => m.Email)
-        </div>
-        <div class="col-9">
-            @Html.TextBoxFor(m => m.Email)
-            @Html.ValidationMessageFor(m => m.Email)
-        </div>
-    </div>
+<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+  <h2>Change Contact Info</h2>
+  @using (Html.BeginForm("ChangeContactInfo", "Account", FormMethod.Post))
+  {
+    if (@Model != null)
+    {
+      <div class="form-group">
+        @Html.LabelFor(m => m.Email)
+        @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Email)
+      </div>
 
-    <div class="row">
-        <div class="col-3">
-            @Html.LabelFor(m => m.PhoneNumber)
-        </div>
-        <div class="col-9">
-            @Html.TextBoxFor(m => m.PhoneNumber)
-            @Html.ValidationMessageFor(m => m.PhoneNumber)
-        </div>
-    </div>
+      <div class="form-group">
+        @Html.LabelFor(m => m.PhoneNumber)
+        @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.PhoneNumber)
+      </div>
 
-    <div class="row">
-        <div class="col-12">
-            <input type="submit" value="Submit" />
-        </div>
-    </div>
+      <div class="form-group">
+        <input type="submit" value="Submit" class="btn btn-success" />
+      </div>
     }
     else
     {
-        <div>You may not change your contact info at this time.</div>
+      <div class="text-danger">You may not change your contact info at this time.</div>
     }
-}
+  }
+</div>

@@ -26,3 +26,9 @@
 	top: -4px;
 	margin-left: 10px;
 }
+
+.loginNavBar {
+  font-weight: 300;
+  color: white;
+  padding-top: 10px;
+}
