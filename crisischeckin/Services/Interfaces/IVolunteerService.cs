@@ -20,5 +20,6 @@ namespace Services.Interfaces
         Person FindByUserId(int userId);
 
 		bool UsernameAvailable(string userName);
+        bool EmailAlreadyInUse(string email);
     }
 }

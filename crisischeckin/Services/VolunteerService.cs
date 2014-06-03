@@ -92,9 +92,15 @@ namespace Services
             return ourService.Persons.SingleOrDefault(p => p.UserId == userId);
         }
 
-		public bool UsernameAvailable(string userName)
-		{
-		    return ourService.Users.Count(p => p.UserName == userName) <= 0;
-		}
+	public bool UsernameAvailable(string userName)
+	{
+	    return ourService.Users.Count(p => p.UserName == userName) <= 0;
+	}
+
+        public bool EmailAlreadyInUse(string email)
+        {
+            if (ourService.Persons.Any(p => p.Email == email)) return true;
+            return false;
+        }
     }
 }

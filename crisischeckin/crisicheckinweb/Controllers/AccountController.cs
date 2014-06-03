@@ -81,6 +81,9 @@ namespace crisicheckinweb.Controllers
                 // Attempt to register the user
                 try
                 {
+                    if (_volunteerSvc.EmailAlreadyInUse(model.Email))
+                        throw new PersonAlreadyExistsException();
+
                     WebSecurity.CreateUserAndAccount(model.UserName, model.Password);
                     WebSecurity.Login(model.UserName, model.Password);
 
