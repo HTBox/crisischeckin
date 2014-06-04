@@ -69,10 +69,9 @@ namespace crisicheckinweb.Controllers
             {
 
                 var disaster = _disasterSvc.Get(model.SelectedDisaster);
-                var results = _adminSvc.GetVolunteersForDate(disaster,
-                                                             model.CommitmentDate.HasValue
-                                                                 ? model.CommitmentDate.Value
-                                                                 : DateTime.MinValue);
+                var results = model.CommitmentDate.HasValue ?
+                    _adminSvc.GetVolunteersForDate(disaster, model.CommitmentDate.Value) :
+                    _adminSvc.GetVolunteers(disaster);
                 return PartialView("_FilterResults", results);
             }
             return PartialView("_FilterResults");
