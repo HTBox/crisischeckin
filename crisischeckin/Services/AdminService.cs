@@ -54,8 +54,6 @@ namespace Services
             if (disasterId <= 0)
                 throw new ArgumentException("disasterId must be greater than zero", "disasterId");
 
-            // TODO: Use GetPeople() IQueryable here and apply the date filter
-            // Probably need to add navigation property to Commitment for Person in order to do it properly
             var people = from p in dataService.Persons
                          join c in dataService.Commitments on p.Id equals c.PersonId
                          where c.DisasterId == disasterId

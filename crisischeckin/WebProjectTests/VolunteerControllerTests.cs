@@ -7,7 +7,6 @@ using Models;
 using Moq;
 using Services.Interfaces;
 using System;
-using System.Collections.ObjectModel;
 
 namespace WebProjectTests
 {
@@ -41,7 +40,7 @@ namespace WebProjectTests
             var disaster = new Disaster();
             _disasterSvc.Setup(x => x.Get(disasterId)).Returns(disaster);
             var allVolunteers = new List<Person>();
-            _adminSvc.Setup(x => x.GetVolunteers(disaster)).Returns(allVolunteers);
+            _adminSvc.Setup(x => x.GetVolunteersForDisaster(disaster.Id, null)).Returns(allVolunteers);
 
             var controller = CreateVolunteerController();
             //Act
@@ -55,7 +54,7 @@ namespace WebProjectTests
             var model = response.Model as IEnumerable<Person>;
             Assert.IsNotNull(model, "View Model is not an IEnumerable<Person>.");
 
-            CollectionAssert.AreEqual(allVolunteers.ToArray(), model.ToArray());
+            CollectionAssert.AreEquivalent(allVolunteers.ToArray(), model.ToArray());
         }
 
         [TestMethod]
@@ -67,7 +66,7 @@ namespace WebProjectTests
             var disaster = new Disaster();
             _disasterSvc.Setup(x => x.Get(disasterId)).Returns(disaster);
             var filteredVolunteers = new List<Person>();
-            _adminSvc.Setup(x => x.GetVolunteersForDate(disaster, filteredDateTime)).Returns(filteredVolunteers);
+            _adminSvc.Setup(x => x.GetVolunteersForDisaster(disaster.Id, filteredDateTime)).Returns(filteredVolunteers);
 
             var controller = CreateVolunteerController();
             //Act
@@ -81,7 +80,7 @@ namespace WebProjectTests
             var model = response.Model as IEnumerable<Person>;
             Assert.IsNotNull(model, "View Model is not an IEnumerable<Person>.");
 
-            CollectionAssert.AreEqual(filteredVolunteers.ToArray(), model.ToArray());
+            CollectionAssert.AreEquivalent(filteredVolunteers.ToArray(), model.ToArray());
         }
     }
 }
