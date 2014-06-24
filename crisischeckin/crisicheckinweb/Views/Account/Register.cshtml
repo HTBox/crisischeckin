@@ -39,6 +39,10 @@
       @Html.TextBoxFor(m => m.UserName, new { id = "txt_userName", @class = "form-control" })
     </div>
 
+    <div class="form-group">
+        @Html.LabelFor(m => m.Password)
+        @Html.PasswordFor(m => m.Password, new { @class = "form-control"})
+    </div>
 
     <div class="form-group">
       @Html.LabelFor(m => m.ConfirmPassword)
