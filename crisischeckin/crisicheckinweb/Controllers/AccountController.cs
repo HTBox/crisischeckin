@@ -159,16 +159,10 @@ namespace crisicheckinweb.Controllers
         {
             if (ModelState.IsValid)
             {
-                var personToUpdate = _volunteerSvc.FindByUserId(WebSecurity.CurrentUserId);
                 try
                 {
                     _volunteerSvc.UpdateDetails(new Person {
-                        Id = personToUpdate.Id,
-                        Cluster= personToUpdate.Cluster,
-                        ClusterId = personToUpdate.ClusterId,
-                        FirstName = personToUpdate.FirstName,
-                        LastName = personToUpdate.LastName,
-                        UserId = personToUpdate.UserId,
+                        UserId = WebSecurity.CurrentUserId,
                         Email =  model.Email,
                         PhoneNumber = model.PhoneNumber
                     });

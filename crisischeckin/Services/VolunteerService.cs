@@ -49,23 +49,31 @@ namespace Services
         {
             if (updatedPerson == null) throw new ArgumentNullException("updatedPerson");
 
-            var foundPerson = ourService.Persons.SingleOrDefault(p => p.Id == updatedPerson.Id);
+            var query = (from personToUpdate in ourService.Persons
+                         let emailAddressExists = ourService.Persons.Any(p => p.Email == updatedPerson.Email)
+                         where personToUpdate.UserId == updatedPerson.UserId
+                         select new
+                         {
+                             PersonToUpdate = personToUpdate,
+                             EmailAddressAlreadyExists = emailAddressExists
+                         });
 
-            if (foundPerson != null)
+           
+            var result = query.SingleOrDefault();
+
+            if (result != null && result.PersonToUpdate != null)
             {
-                if (foundPerson.Email != updatedPerson.Email)
+                var personToUpdate = result.PersonToUpdate;
+                // check that new e-mail address isn't already in use
+                if (result.EmailAddressAlreadyExists && updatedPerson.Email != personToUpdate.Email)
                 {
-                    // check that new email isn't already in use
-                    bool emailIsInUse = ourService.Persons.Any(p => p.Email == updatedPerson.Email);
-
-                    if (emailIsInUse)
-                    {
-                        throw new PersonEmailAlreadyInUseException();
-                    }
+                    throw new PersonEmailAlreadyInUseException();
                 }
-
-                return ourService.UpdatePerson(updatedPerson);
+                personToUpdate.PhoneNumber = updatedPerson.PhoneNumber;
+                personToUpdate.Email = updatedPerson.Email;
+                return ourService.UpdatePerson(personToUpdate);
             }
+
             throw new PersonNotFoundException();
         }
 
