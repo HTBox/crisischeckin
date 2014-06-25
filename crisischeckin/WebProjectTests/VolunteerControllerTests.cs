@@ -1,15 +1,12 @@
-﻿using crisicheckinweb.Controllers;
+﻿using System.Collections.Generic;
+using System.Linq;
+using crisicheckinweb.Controllers;
 using crisicheckinweb.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Models;
 using Moq;
 using Services.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WebProjectTests
 {
@@ -42,16 +39,22 @@ namespace WebProjectTests
             int disasterId = 2;
             var disaster = new Disaster();
             _disasterSvc.Setup(x => x.Get(disasterId)).Returns(disaster);
-            var allVolunteers = new Collection<Person>();
-            _adminSvc.Setup(x => x.GetVolunteers(disaster)).Returns(allVolunteers);
+            var allVolunteers = new List<Person>();
+            _adminSvc.Setup(x => x.GetVolunteersForDisaster(disaster.Id, null)).Returns(allVolunteers);
 
             var controller = CreateVolunteerController();
             //Act
 
-            var response = controller.Filter(new ListByDisasterViewModel() { SelectedDisaster = disasterId, CommitmentDate = null });
+            var response = controller.Filter(new ListByDisasterViewModel
+            {
+                SelectedDisaster = disasterId, CommitmentDate = null
+            });
 
             //Assert
-            Assert.AreEqual(allVolunteers, response.Model);
+            var model = response.Model as IEnumerable<Person>;
+            Assert.IsNotNull(model, "View Model is not an IEnumerable<Person>.");
+
+            CollectionAssert.AreEquivalent(allVolunteers.ToArray(), model.ToArray());
         }
 
         [TestMethod]
@@ -62,16 +65,22 @@ namespace WebProjectTests
             DateTime filteredDateTime = new DateTime(2014, 6, 3, 10, 8, 6);
             var disaster = new Disaster();
             _disasterSvc.Setup(x => x.Get(disasterId)).Returns(disaster);
-            var filteredVolunteers = new Collection<Person>();
-            _adminSvc.Setup(x => x.GetVolunteersForDate(disaster, filteredDateTime)).Returns(filteredVolunteers);
+            var filteredVolunteers = new List<Person>();
+            _adminSvc.Setup(x => x.GetVolunteersForDisaster(disaster.Id, filteredDateTime)).Returns(filteredVolunteers);
 
             var controller = CreateVolunteerController();
             //Act
 
-            var response = controller.Filter(new ListByDisasterViewModel() { SelectedDisaster = disasterId, CommitmentDate = filteredDateTime });
+            var response = controller.Filter(new ListByDisasterViewModel
+            {
+                SelectedDisaster = disasterId, CommitmentDate = filteredDateTime
+            });
 
             //Assert
-            Assert.AreEqual(filteredVolunteers, response.Model);
+            var model = response.Model as IEnumerable<Person>;
+            Assert.IsNotNull(model, "View Model is not an IEnumerable<Person>.");
+
+            CollectionAssert.AreEquivalent(filteredVolunteers.ToArray(), model.ToArray());
         }
     }
 }
