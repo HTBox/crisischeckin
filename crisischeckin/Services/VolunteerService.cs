@@ -49,31 +49,25 @@ namespace Services
         {
             if (updatedPerson == null) throw new ArgumentNullException("updatedPerson");
 
-            var query = (from personToUpdate in ourService.Persons
-                         let emailAddressExists = ourService.Persons.Any(p => p.Email == updatedPerson.Email)
-                         where personToUpdate.UserId == updatedPerson.UserId
-                         select new
-                         {
-                             PersonToUpdate = personToUpdate,
-                             EmailAddressAlreadyExists = emailAddressExists
-                         });
+            var foundPerson = ourService.Persons.SingleOrDefault(p => p.UserId == updatedPerson.UserId);
 
-           
-            var result = query.SingleOrDefault();
-
-            if (result != null && result.PersonToUpdate != null)
+            if (foundPerson != null)
             {
-                var personToUpdate = result.PersonToUpdate;
-                // check that new e-mail address isn't already in use
-                if (result.EmailAddressAlreadyExists && updatedPerson.Email != personToUpdate.Email)
+                if (foundPerson.Email != updatedPerson.Email)
                 {
-                    throw new PersonEmailAlreadyInUseException();
-                }
-                personToUpdate.PhoneNumber = updatedPerson.PhoneNumber;
-                personToUpdate.Email = updatedPerson.Email;
-                return ourService.UpdatePerson(personToUpdate);
-            }
+                    // check that new email isn't already in use
+                    bool emailIsInUse = ourService.Persons.Any(p => p.Email == updatedPerson.Email);
 
+                    if (emailIsInUse)
+                    {
+                        throw new PersonEmailAlreadyInUseException();
+                    }
+                }
+                updatedPerson.Id = foundPerson.Id;
+                updatedPerson.FirstName = foundPerson.FirstName;
+                updatedPerson.LastName = foundPerson.LastName;
+                return ourService.UpdatePerson(updatedPerson);
+            }
             throw new PersonNotFoundException();
         }
 
