@@ -62,11 +62,19 @@ namespace Services
                     {
                         throw new PersonEmailAlreadyInUseException();
                     }
+                    foundPerson.Email = updatedPerson.Email;
                 }
-                updatedPerson.Id = foundPerson.Id;
-                updatedPerson.FirstName = foundPerson.FirstName;
-                updatedPerson.LastName = foundPerson.LastName;
-                return ourService.UpdatePerson(updatedPerson);
+                // update the found person with any appropriate changes
+                if (!string.IsNullOrEmpty(updatedPerson.FirstName))
+                {
+                    foundPerson.FirstName = updatedPerson.FirstName;
+                }               
+                if (!string.IsNullOrEmpty(updatedPerson.LastName))
+                {
+                    foundPerson.LastName = updatedPerson.LastName;
+                }
+                foundPerson.PhoneNumber = updatedPerson.PhoneNumber;
+                return ourService.UpdatePerson(foundPerson);
             }
             throw new PersonNotFoundException();
         }
