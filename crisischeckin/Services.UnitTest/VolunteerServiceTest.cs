@@ -235,7 +235,8 @@ namespace Services.UnitTest
             service.UpdateDetails(new Person()
             {
                 Id = 25,
-                Email = "matt.smith@email.com"
+                Email = "matt.smith@email.com",
+                UserId = 2
             });
         }
 
@@ -246,7 +247,7 @@ namespace Services.UnitTest
             Person moqPersonOne = new Person()
             {
                 Id = 1,
-                UserId = null,
+                UserId = 6,
                 FirstName = "Cathy",
                 LastName = "Jones",
                 Email = "cathy.jones@email.com",
@@ -256,7 +257,7 @@ namespace Services.UnitTest
             Person moqPersonTwo = new Person()
             {
                 Id = 2,
-                UserId = null,
+                UserId = 7,
                 FirstName = "Stan",
                 LastName = "Smith",
                 Email = "stan.smith@email.com",
@@ -275,6 +276,7 @@ namespace Services.UnitTest
             service.UpdateDetails(new Person()
             {
                 Id = 1,
+                UserId = 6,
                 Email = "stan.smith@email.com",
                 FirstName = "Cathy",
                 LastName = "Jones"
