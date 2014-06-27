@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Services
 {
@@ -18,7 +16,7 @@ namespace Services
 
         public IEnumerable<Models.Cluster> GetList()
         {
-            return _svc.Clusters.OrderBy(c => c.Name);
+            return _svc.Clusters.OrderBy(c => c.Name).ToList();
         }
     }
 }
