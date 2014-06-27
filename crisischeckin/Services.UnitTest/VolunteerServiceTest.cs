@@ -177,7 +177,7 @@ namespace Services.UnitTest
             Person moqPerson = new Person()
             {
                 Id = 1,
-                UserId = null,
+                UserId = 6,
                 FirstName = "Cathy",
                 LastName = "Jones",
                 Email = "cathy.jones@email.com",
@@ -192,6 +192,7 @@ namespace Services.UnitTest
             moqDataService.Setup(s => s.Persons).Returns(people.AsQueryable());
             moqDataService.Setup(s => s.UpdatePerson(It.IsAny<Person>())).Returns(new Person() {
                 Id = 1,
+                UserId = 6,
                 Email = "cathy.jones@email.com",
                 FirstName = "Cathy",
                 LastName = "CHANGED",
@@ -202,7 +203,7 @@ namespace Services.UnitTest
             VolunteerService service = new VolunteerService(moqDataService.Object);
             var actual = service.UpdateDetails(new Person()
             {
-                Id = 1, Email = "cathy.jones@email.com", FirstName = "Cathy", LastName = "CHANGED", PhoneNumber = "555-222-9139", ClusterId = 1
+                Id = 1, UserId = 6, Email = "cathy.jones@email.com", FirstName = "Cathy", LastName = "CHANGED", PhoneNumber = "555-222-9139", ClusterId = 1
             });
 
             // Only Last Name has been updated
@@ -218,7 +219,7 @@ namespace Services.UnitTest
             Person moqPerson = new Person()
             {
                 Id = 1,
-                UserId = null,
+                UserId = 6,
                 FirstName = "Cathy",
                 LastName = "Jones",
                 Email = "cathy.jones@email.com",
@@ -235,7 +236,8 @@ namespace Services.UnitTest
             service.UpdateDetails(new Person()
             {
                 Id = 25,
-                Email = "matt.smith@email.com"
+                Email = "matt.smith@email.com",
+                UserId = 2
             });
         }
 
@@ -246,7 +248,7 @@ namespace Services.UnitTest
             Person moqPersonOne = new Person()
             {
                 Id = 1,
-                UserId = null,
+                UserId = 6,
                 FirstName = "Cathy",
                 LastName = "Jones",
                 Email = "cathy.jones@email.com",
@@ -256,7 +258,7 @@ namespace Services.UnitTest
             Person moqPersonTwo = new Person()
             {
                 Id = 2,
-                UserId = null,
+                UserId = 7,
                 FirstName = "Stan",
                 LastName = "Smith",
                 Email = "stan.smith@email.com",
@@ -275,6 +277,7 @@ namespace Services.UnitTest
             service.UpdateDetails(new Person()
             {
                 Id = 1,
+                UserId = 6,
                 Email = "stan.smith@email.com",
                 FirstName = "Cathy",
                 LastName = "Jones"
@@ -287,15 +290,26 @@ namespace Services.UnitTest
             Person moqPersonOne = new Person()
             {
                 Id = 1,
-                UserId = null,
+                UserId = 6,
                 FirstName = "Cathy",
                 LastName = "Jones",
                 Email = "cathy.jones@email.com",
                 PhoneNumber = "555-222-9139"
             };
 
+            Person moqPersonTwo = new Person()
+            {
+                Id = 2,
+                UserId = 7,
+                FirstName = "Stan",
+                LastName = "Smith",
+                Email = "stan.smith@email.com",
+                PhoneNumber = "111-333-2222"
+            };
+
             List<Person> people = new List<Person>();
             people.Add(moqPersonOne);
+            people.Add(moqPersonTwo);
 
             var moqDataService = new Mock<IDataService>();
             moqDataService.Setup(s => s.Persons).Returns(people.AsQueryable());
@@ -305,6 +319,7 @@ namespace Services.UnitTest
             service.UpdateDetails(new Person()
             {
                 Id = 1,
+                UserId = 6,
                 Email = "unused@email.com",
                 FirstName = "Cathy",
                 LastName = "Jones"
@@ -319,6 +334,42 @@ namespace Services.UnitTest
             VolunteerService service = new VolunteerService(moqDataService.Object);
 
             service.UpdateDetails(null);
+        }
+
+        [TestMethod]
+        public void UpdateDetails_DoesNotClearFirstOrLastNameIfBlank()
+        {
+            var moqPersonOne = new Person
+            {
+                Id = 1,
+                UserId = 6,
+                FirstName = "Cathy",
+                LastName = "Jones",
+                Email = "cathy.jones@email.com",
+                PhoneNumber = "555-222-9139"
+            };
+
+            var people = new List<Person> {moqPersonOne};
+
+            var moqDataService = new Mock<IDataService>();
+            moqDataService.Setup(s => s.Persons).Returns(people.AsQueryable());
+            moqDataService.Setup(s => s.UpdatePerson(It.IsAny<Person>())).Returns((Person p) => p);
+
+            var service = new VolunteerService(moqDataService.Object);
+
+            Person actual = service.UpdateDetails(new Person
+            {
+                Id = 1,
+                UserId = 6,
+                FirstName = null,
+                LastName = null,
+                Email = "cathy.jones@email.com",
+                PhoneNumber = "555-222-9139"
+            });
+
+            Assert.IsNotNull(actual);
+            Assert.IsFalse(string.IsNullOrEmpty(actual.FirstName), "Expected First Name not to be null or empty.");
+            Assert.IsFalse(string.IsNullOrEmpty(actual.LastName), "Expected Last Name not to be null or empty.");
         }
 
         [TestMethod]

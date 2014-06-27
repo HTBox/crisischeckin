@@ -91,9 +91,7 @@ namespace crisicheckinweb.Controllers
 
                     var userId = WebSecurity.GetUserId(model.UserName);
 
-                    Person newPerson = _volunteerSvc.Register(model.FirstName, model.LastName, model.Email, model.PhoneNumber, model.Cluster, userId);
-
-                    _volunteerSvc.UpdateDetails(newPerson);
+                    _volunteerSvc.Register(model.FirstName, model.LastName, model.Email, model.PhoneNumber, model.Cluster, userId);
 
                     return RedirectToAction("Index", "Home");
                 }
