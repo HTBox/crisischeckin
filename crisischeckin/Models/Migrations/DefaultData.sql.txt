@@ -1,16 +1,4 @@
-﻿INSERT INTO Cluster (Name) VALUES ('Agriculture Cluster');
-INSERT INTO Cluster (Name) VALUES ('Camp Coordination and Management Cluster');
-INSERT INTO Cluster (Name) VALUES ('Early Recovery Cluster');
-INSERT INTO Cluster (Name) VALUES ('Emergency Shelter Cluster');
-INSERT INTO Cluster (Name) VALUES ('Emergency Telecommunications Cluster');
-INSERT INTO Cluster (Name) VALUES ('Food Cluster');
-INSERT INTO Cluster (Name) VALUES ('Health Cluster');
-INSERT INTO Cluster (Name) VALUES ('Logistics Cluster');
-INSERT INTO Cluster (Name) VALUES ('Nutrition Cluster');
-INSERT INTO Cluster (Name) VALUES ('Protection Cluster');
-INSERT INTO Cluster (Name) VALUES ('Water and Sanitation Cluster');
-
-INSERT INTO Disaster (Name, IsActive) VALUES ('Narnia','1');
+﻿INSERT INTO Disaster (Name, IsActive) VALUES ('Narnia','1');
 INSERT INTO Disaster (Name, IsActive) VALUES ('Kalimdor','1');
 INSERT INTO Disaster (Name, IsActive) VALUES ('Beleriand ','1');
 
