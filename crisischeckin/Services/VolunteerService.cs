@@ -84,6 +84,7 @@ namespace Services
             var filteredCommitments = from c in ourService.Commitments.Include(c => c.Disaster)
                     where c.PersonId == personId &&
                     (c.Disaster.IsActive || showInactive)
+                    orderby c.StartDate
                     select c;
 
             return filteredCommitments;
