@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using System.Web.Security;
+using Common;
 using crisicheckinweb.ViewModels;
 using Models;
 using Services.Interfaces;
@@ -11,7 +13,6 @@ namespace crisicheckinweb.Controllers
 {
     public class HomeController : BaseController
     {
-
         private readonly IDisaster _disasterSvc;
         private readonly IVolunteerService _volunteerSvc;
         private readonly IWebSecurityWrapper _webSecurity;
@@ -25,27 +26,33 @@ namespace crisicheckinweb.Controllers
 
         // GET: /Home/
         public ActionResult Index()
-        {
+        {  
+            if (Roles.IsUserInRole(Constants.RoleAdmin))
+            {
+                return RedirectToAction("List", "Disaster");
+            }
             return View(GetDefaultViewModel());
         }
 
         [HttpPost]
         public ActionResult Assign(VolunteerViewModel model)
         {
-            if (!ModelState.IsValid) return View("Index", GetDefaultViewModel(model));
-                
+            if (!ModelState.IsValid)
+                return View("Index", GetDefaultViewModel(model));
+
             try
             {
-	            if (DateTime.Compare(DateTime.Today, model.SelectedStartDate) > 0)
-	            {
+                if (DateTime.Compare(DateTime.Today, model.SelectedStartDate) > 0)
+                {
                     throw new ArgumentException("Please enter a start date that is greater than today's date.");
                 }
 
                 var person = _volunteerSvc.FindByUserId(_webSecurity.CurrentUserId);
-				if (person == null)
-				{
-					throw new ArgumentException("The logged in user is either the administrator or does not have a valid account for joining a crisis.");
-				}
+                if (person == null)
+                {
+                    throw new ArgumentException(
+                        "The logged in user is either the administrator or does not have a valid account for joining a crisis.");
+                }
                 _disasterSvc.AssignToVolunteer(model.SelectedDisasterId,
                     person.Id, model.SelectedStartDate, model.SelectedEndDate);
 
