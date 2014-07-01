@@ -15,12 +15,13 @@
 }
 <div id="results"></div>
 
-
-
-<script type="text/javascript">
-(function ($) {
-    $(document).ready(function () {
-        $("#dp_startDate").datepicker().datepicker('setDate', new Date());
-    });
-})(jQuery);
-</script>
+@section scripts
+{
+    <script type="text/javascript">
+        (function ($) {
+            $(document).ready(function () {
+                $("#dp_startDate").datepicker().datepicker('setDate', new Date());
+            });
+        })(jQuery);
+    </script>
+}
