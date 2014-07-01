@@ -2,10 +2,10 @@
 @model crisicheckinweb.ViewModels.SendMessageToAllVolunteersByDisasterViewModel
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
-    ViewBag.Title = "SendMessageToAllVolunteersByDisaster";
+    ViewBag.Title = "Send Message To Volunteers By Disaster";
 }
 
-<h2>SendMessageToAllVolunteersByDisaster @Model.DisasterName</h2>
+<h2>Send Message To Volunteers: @Model.DisasterName</h2>
 @using (Html.BeginForm("SendMessageToVolunteersByDisaster", "Volunteer"))
 {
     @Html.ValidationSummary()
