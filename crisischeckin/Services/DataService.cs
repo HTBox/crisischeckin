@@ -1,13 +1,15 @@
 ﻿using System.Linq;
 using Models;
 using Services.Interfaces;
+using Services.Exceptions;
+using System;
 
 namespace Services
 {
     public class DataService : IDataService
     {
         // This class does not dispose of the context,
-        // because the Ninject librar takes care of that for us.
+        // because the Ninject library takes care of that for us.
 
         readonly CrisisCheckin context;
 
@@ -60,7 +62,10 @@ namespace Services
 
         public Person UpdatePerson(Person updatedPerson)
         {
-            var result = context.Persons.FirstOrDefault(a => a.Id == updatedPerson.Id);
+            var result = context.Persons.Find(updatedPerson.Id);
+
+            if (result == null)
+                throw new PersonNotFoundException();
 
             result.FirstName = updatedPerson.FirstName;
             result.LastName = updatedPerson.LastName;
@@ -80,7 +85,7 @@ namespace Services
 
         public void RemoveCommitmentById(int id)
         {
-            var commitment = context.Commitments.FirstOrDefault(c => c.Id == id);
+            var commitment = context.Commitments.Find(id);
             context.Commitments.Remove(commitment);
             context.SaveChanges();
         }
@@ -105,7 +110,12 @@ namespace Services
 
         public void RemoveClusterCoordinator(ClusterCoordinator clusterCoordinator)
         {
-            context.ClusterCoordinators.Remove(clusterCoordinator);
+            // attach the coordinator to delete to the context, if needed. Otherwise the remove/delete won't work
+            var coordinatorToDelete = context.ClusterCoordinators.Local.FirstOrDefault(cc => cc.Id == clusterCoordinator.Id);
+            if (coordinatorToDelete == null)
+                context.ClusterCoordinators.Attach(clusterCoordinator);
+
+            context.ClusterCoordinators.Remove(coordinatorToDelete);
             context.SaveChanges();
         }
 

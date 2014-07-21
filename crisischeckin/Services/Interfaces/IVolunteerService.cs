@@ -18,6 +18,7 @@ namespace Services.Interfaces
         IQueryable<Commitment> RetrieveCommitmentsForDisaster(Person person, Disaster disaster);
 
         Person FindByUserId(int userId);
+        Person GetPersonDetailsForChangeContactInfo(int userId);
 
 		bool UsernameAvailable(string userName);
         bool EmailAlreadyInUse(string email);

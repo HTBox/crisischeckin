@@ -142,7 +142,7 @@ namespace crisicheckinweb.Controllers
                 TempData["AdminContactError"] = "Administrator is not allowed to have contact details!";
                 return RedirectToAction("Index", "Home");
             }
-            var personToUpdate = _volunteerSvc.FindByUserId(WebSecurity.CurrentUserId);
+            var personToUpdate = _volunteerSvc.GetPersonDetailsForChangeContactInfo(WebSecurity.CurrentUserId);
             if (personToUpdate != null)
             {
                 ChangeContactInfoViewModel model = new ChangeContactInfoViewModel { Email = personToUpdate.Email, PhoneNumber = personToUpdate.PhoneNumber };
@@ -241,8 +241,6 @@ namespace crisicheckinweb.Controllers
             SetPasswordSuccess,
             RemoveLoginSuccess,
         }
-
-
 
         private static string ErrorCodeToString(MembershipCreateStatus createStatus)
         {

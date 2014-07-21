@@ -103,10 +103,28 @@ namespace Services
             return ourService.Persons.SingleOrDefault(p => p.UserId == userId);
         }
 
-	public bool UsernameAvailable(string userName)
-	{
-	    return ourService.Users.Count(p => p.UserName == userName) <= 0;
-	}
+        public Person GetPersonDetailsForChangeContactInfo(int userId)
+        {
+            var result = ourService.Persons.Where(p => p.UserId == userId).Select(per => new
+            {
+                Email = per.Email,
+                PhoneNumber = per.PhoneNumber
+            }).FirstOrDefault();
+
+            if (result == null)
+                throw new PersonNotFoundException();
+
+            return new Person
+            {
+                Email = result.Email,
+                PhoneNumber = result.PhoneNumber
+            };
+        }
+
+	    public bool UsernameAvailable(string userName)
+	    {
+	        return ourService.Users.Count(p => p.UserName == userName) <= 0;
+	    }
 
         public bool EmailAlreadyInUse(string email)
         {
