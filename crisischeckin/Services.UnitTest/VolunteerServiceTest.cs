@@ -806,6 +806,83 @@ namespace Services.UnitTest
 
             var results = underTest.RetrieveCommitmentsForDisaster(person, disaster);
             Assert.AreEqual(1, results.Count());
-        }    
+        }
+
+        [TestMethod]
+        public void GetPersonDetailsForChangeContactInfoReturnsExpectedData()
+        {
+            var personOne = new Person
+            {
+                Id = 1,
+                UserId = 6,
+                FirstName = "Cathy",
+                LastName = "Jones",
+                Email = "cathy.jones@email.com",
+                PhoneNumber = "555-222-9139",
+                ClusterId = 1
+            };
+
+            var personTwo = new Person
+            {
+                Id = 2,
+                UserId = 7,
+                FirstName = "Stan",
+                LastName = "Smith",
+                Email = "stan.smith@email.com",
+                PhoneNumber = "111-333-2222"
+            };
+
+            var dataService = new Mock<IDataService>();
+            var personList = new List<Person>
+            {
+                personOne,
+                personTwo
+            };
+            dataService.Setup(x => x.Persons).Returns(personList.AsQueryable());
+            var underTest = new VolunteerService(dataService.Object);
+
+            var result = underTest.GetPersonDetailsForChangeContactInfo(personTwo.UserId.GetValueOrDefault());
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(personTwo.Email, result.Email);
+            Assert.AreEqual(personTwo.PhoneNumber, result.PhoneNumber);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof (PersonNotFoundException))]
+        public void GetPersonDetailsForChangeContactInfoThrowsExpectedPersonNotFoundException()
+        {
+            var personOne = new Person
+            {
+                Id = 1,
+                UserId = 6,
+                FirstName = "Cathy",
+                LastName = "Jones",
+                Email = "cathy.jones@email.com",
+                PhoneNumber = "555-222-9139",
+                ClusterId = 1
+            };
+
+            var personTwo = new Person
+            {
+                Id = 2,
+                UserId = 7,
+                FirstName = "Stan",
+                LastName = "Smith",
+                Email = "stan.smith@email.com",
+                PhoneNumber = "111-333-2222"
+            };
+
+            var dataService = new Mock<IDataService>();
+            var personList = new List<Person>
+            {
+                personOne,
+                personTwo
+            };
+            dataService.Setup(x => x.Persons).Returns(personList.AsQueryable());
+            var underTest = new VolunteerService(dataService.Object);
+
+            var result = underTest.GetPersonDetailsForChangeContactInfo(8);
+        }
     }
 }

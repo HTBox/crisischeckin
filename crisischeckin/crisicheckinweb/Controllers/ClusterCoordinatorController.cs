@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 using System.Web.Routing;
 using crisicheckinweb.ViewModels;
@@ -40,14 +41,15 @@ namespace crisicheckinweb.Controllers
 
         DisasterClusterCoordinatorsViewModel GetDisasterClusterCoordinatorsViewModel(Disaster disaster)
         {
-            var clusterCoordinators = _clusterCoordinatorService.GetAllCoordinators(disaster.Id);
+            IList<Person> allPersonDataForDisplay;
+            var clusterCoordinators = _clusterCoordinatorService.GetAllCoordinatorsForDisplay(disaster.Id, out allPersonDataForDisplay);
+            var allClusters = _cluster.GetList().ToList();
             var disasterClusterCoordinatorsViewModel =
                 new DisasterClusterCoordinatorsViewModel
                 {
                     DisasterName = disaster.Name,
                     DisasterId = disaster.Id,
-                    Clusters = _cluster
-                        .GetList()
+                    Clusters = allClusters
                         .Select(c => new ClusterViewModel
                                      {
                                          Name = c.Name,
@@ -61,8 +63,8 @@ namespace crisicheckinweb.Controllers
                                              .ToList(),
                                      })
                         .ToList(),
-                    AvailableClusters = _cluster.GetList().ToList(),
-                    AvailablePeople = _dataService.Persons.ToList(),
+                    AvailableClusters = allClusters,
+                    AvailablePeople = allPersonDataForDisplay
                 };
             return disasterClusterCoordinatorsViewModel;
         }
@@ -74,14 +76,14 @@ namespace crisicheckinweb.Controllers
                 clusterCoordinator.SelectedClusterId,
                 clusterCoordinator.SelectedPersonId);
             int disasterId = clusterCoordinator.DisasterId;
-            var disasterClusterCoordinatorsViewModel = GetDisasterClusterCoordinatorsViewModel(_disaster.Get(disasterId));
+            var disasterClusterCoordinatorsViewModel = GetDisasterClusterCoordinatorsViewModel(new Disaster {Id = disasterId});
             return PartialView(disasterClusterCoordinatorsViewModel);
         }
 
         [HttpGet]
         public ActionResult ConfirmUnassignCoordinator(int id)
         {
-            var clusterCoordinator = _clusterCoordinatorService.GetCoordinator(id);
+            var clusterCoordinator = _clusterCoordinatorService.GetCoordinatorForUnassign(id);
             var vm = new UnassignClusterCoordinatorViewModel
                      {
                          DisasterId = clusterCoordinator.DisasterId,
@@ -95,7 +97,7 @@ namespace crisicheckinweb.Controllers
         [HttpPost]
         public ActionResult UnassignCoordinator(int id)
         {
-            var clusterCoordinator = _clusterCoordinatorService.GetCoordinator(id);
+            var clusterCoordinator = _clusterCoordinatorService.GetCoordinatorFullyLoaded(id);
             if (null == clusterCoordinator)
                 return RedirectToAction("Index", "Home");
             _clusterCoordinatorService.UnassignClusterCoordinator(clusterCoordinator);

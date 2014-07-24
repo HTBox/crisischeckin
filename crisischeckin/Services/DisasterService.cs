@@ -54,6 +54,11 @@ namespace Services
             return _dataService.Disasters.SingleOrDefault(d => d.Id.Equals(disasterId));
         }
 
+        public string GetName(int disasterId)
+        {
+            return _dataService.Disasters.Where(d => d.Id.Equals(disasterId)).Select(d => d.Name).FirstOrDefault();
+        }
+
         public void Create(Disaster disaster)
         {
             if (disaster == null) throw new ArgumentNullException("disaster");

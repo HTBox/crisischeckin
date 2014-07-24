@@ -9,5 +9,8 @@ namespace Services.Interfaces
         ClusterCoordinator AssignClusterCoordinator(int disasterId, int clusterId, int personId);
         void UnassignClusterCoordinator(ClusterCoordinator clusterCoordinator);
         ClusterCoordinator GetCoordinator(int id);
+        IEnumerable<ClusterCoordinator> GetAllCoordinatorsForDisplay(int disasterId, out IList<Person> allPersonsForDisplay);
+        ClusterCoordinator GetCoordinatorFullyLoaded(int id);
+        ClusterCoordinator GetCoordinatorForUnassign(int id);
     }
 }

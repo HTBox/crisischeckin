@@ -32,7 +32,6 @@ namespace crisicheckinweb.Controllers
         [HttpGet]
         public ActionResult CreateMessageToVolunteersByDisaster(int id)
         {
-            ViewBag.Clusters = _clusterSvc.GetList();
             var model = new SendMessageToAllVolunteersByDisasterViewModel { DisasterId = id };
             PopulateSendMessageViewModel(model);
             // Default subject to disaster name so they can type just a message if they want to.
@@ -42,8 +41,7 @@ namespace crisicheckinweb.Controllers
 
         private void PopulateSendMessageViewModel(SendMessageToAllVolunteersByDisasterViewModel model)
         {
-            var disaster = _disasterSvc.Get(model.DisasterId);
-            model.DisasterName = disaster.Name;
+            model.DisasterName = _disasterSvc.GetName(model.DisasterId);
             model.Clusters = _clusterSvc.GetList();
         }
 
