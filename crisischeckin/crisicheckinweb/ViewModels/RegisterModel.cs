@@ -11,12 +11,10 @@ namespace crisicheckinweb.ViewModels
     {
         [Required]
         [Display(Name = "First Name")]
-        [RegularExpression(@"^[a-zA-Z0-9äöüÄÖÜ]*$", ErrorMessage = "Invalid First Name")]
         public string FirstName { get; set; }
 
         [Required]
         [Display(Name = "Last Name")]
-        [RegularExpression(@"^[a-zA-Z0-9äöüÄÖÜ]*$", ErrorMessage = "Invalid Last Name")]
         public string LastName { get; set; }
 
         [Required]
