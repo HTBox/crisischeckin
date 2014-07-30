@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace CrisisCheckin.Core
+namespace CrisisCheckin.Shared
 {
 	public class Settings
 	{
@@ -10,6 +10,7 @@ namespace CrisisCheckin.Core
 		}
 
 		public string SignedInUsername { get; set; }
+		public string SignedInPassword { get; set; }
 
 		#if PORTABLE
 		public void Save() 

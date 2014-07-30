@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using System.Collections.Generic;
 
-namespace CrisisCheckin.Core
+namespace CrisisCheckin.Shared
 {
 	public class MockWebService : IWebService
 	{
