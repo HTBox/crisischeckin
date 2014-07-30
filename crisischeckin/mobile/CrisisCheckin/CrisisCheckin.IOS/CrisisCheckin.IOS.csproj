@@ -113,6 +113,7 @@
     <Compile Include="RegisterViewController.cs" />
     <Compile Include="CommitmentsViewController.cs" />
     <Compile Include="Utility.cs" />
+    <Compile Include="ProgressHud.cs" />
   </ItemGroup>
   <Import Project="..\CrisisCheckin.Shared\CrisisCheckin.Shared.projitems" Label="Shared" Condition="Exists('..\CrisisCheckin.Shared\CrisisCheckin.Shared.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />

@@ -65,7 +65,7 @@ namespace CrisisCheckin
 
 		async Task Refresh ()
 		{
-			//TODO: Show progress HUD
+			ProgressHud.Show ("Refreshing");
 
 			var sectionActive = Root [0];
 			var sectionInactive = Root [1];
@@ -85,8 +85,7 @@ namespace CrisisCheckin
 			if (!r.Succeeded) {
 				Utility.ShowError ("Request Failed", "Failed to Fetch Commitments for " + AppDelegate.Settings.SignedInUsername);
 
-				//TODO: Hide progress HUD
-
+				ProgressHud.Dismiss ();
 				return;
 			}
 
@@ -119,7 +118,7 @@ namespace CrisisCheckin
 				}
 			}
 
-			//TODO: Hide progress HUD
+			ProgressHud.Dismiss ();
 		}
 	}
 }

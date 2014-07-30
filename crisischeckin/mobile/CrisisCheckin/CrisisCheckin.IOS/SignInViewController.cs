@@ -34,7 +34,11 @@ namespace CrisisCheckin
 					password,
 					new StyledStringElement ("Sign In", async () => {
 
+						username.ResignFirstResponder (true);
+						password.ResignFirstResponder (true);
+
 						//TODO: Show progress HUD
+						ProgressHud.Show ("Signing In");
 
 						// You have to fetch values first from MonoTouch.Dialog elements
 						username.FetchValue ();
@@ -57,6 +61,7 @@ namespace CrisisCheckin
 						AppDelegate.Settings.SignedInPassword = password.Value;
 
 						//TODO: Hide progress hud
+						ProgressHud.Dismiss ();
 
 						// Navigate to commitments after successfuly login
 						commitmentsViewController = new CommitmentsViewController ();
