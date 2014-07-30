@@ -36,7 +36,5 @@
 	</array>
 	<key>CFBundleIdentifier</key>
 	<string>org.htbox.crisischeckin</string>
-	<key>UIMainStoryboardFile</key>
-	<string>MainPhone</string>
 </dict>
 </plist>
