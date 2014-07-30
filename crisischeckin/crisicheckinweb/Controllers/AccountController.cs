@@ -81,6 +81,9 @@ namespace crisicheckinweb.Controllers
                 // Attempt to register the user
                 try
                 {
+                    if (_volunteerSvc.EmailAlreadyInUse(model.Email))
+                        throw new PersonAlreadyExistsException();
+
                     WebSecurity.CreateUserAndAccount(model.UserName, model.Password);
                     WebSecurity.Login(model.UserName, model.Password);
 
@@ -88,9 +91,7 @@ namespace crisicheckinweb.Controllers
 
                     var userId = WebSecurity.GetUserId(model.UserName);
 
-                    Person newPerson = _volunteerSvc.Register(model.FirstName, model.LastName, model.Email, model.PhoneNumber, model.Cluster, userId);
-
-                    _volunteerSvc.UpdateDetails(newPerson);
+                    _volunteerSvc.Register(model.FirstName, model.LastName, model.Email, model.PhoneNumber, model.Cluster, userId);
 
                     return RedirectToAction("Index", "Home");
                 }
@@ -141,7 +142,7 @@ namespace crisicheckinweb.Controllers
                 TempData["AdminContactError"] = "Administrator is not allowed to have contact details!";
                 return RedirectToAction("Index", "Home");
             }
-            var personToUpdate = _volunteerSvc.FindByUserId(WebSecurity.CurrentUserId);
+            var personToUpdate = _volunteerSvc.GetPersonDetailsForChangeContactInfo(WebSecurity.CurrentUserId);
             if (personToUpdate != null)
             {
                 ChangeContactInfoViewModel model = new ChangeContactInfoViewModel { Email = personToUpdate.Email, PhoneNumber = personToUpdate.PhoneNumber };
@@ -156,16 +157,10 @@ namespace crisicheckinweb.Controllers
         {
             if (ModelState.IsValid)
             {
-                var personToUpdate = _volunteerSvc.FindByUserId(WebSecurity.CurrentUserId);
                 try
                 {
                     _volunteerSvc.UpdateDetails(new Person {
-                        Id = personToUpdate.Id,
-                        Cluster= personToUpdate.Cluster,
-                        ClusterId = personToUpdate.ClusterId,
-                        FirstName = personToUpdate.FirstName,
-                        LastName = personToUpdate.LastName,
-                        UserId = personToUpdate.UserId,
+                        UserId = WebSecurity.CurrentUserId,
                         Email =  model.Email,
                         PhoneNumber = model.PhoneNumber
                     });
@@ -246,8 +241,6 @@ namespace crisicheckinweb.Controllers
             SetPasswordSuccess,
             RemoveLoginSuccess,
         }
-
-
 
         private static string ErrorCodeToString(MembershipCreateStatus createStatus)
         {

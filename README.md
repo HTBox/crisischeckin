@@ -5,6 +5,14 @@ A system for automatically keeping track of who is responding to a particular em
 automatically creating a "contact list"/"phone book" of those that are there. 
 See presentation by Andrej Verity - http://www.youtube.com/watch?v=ypA9Iza5OFg
 
+If you're interested in helping us validate the application, please help us test it on our 
+staging site:  http://crisischeckin.azurewebsites.net
+
+The Administrator login (on the staging site) is:
+UID:  Administrator
+PW: P@$$w0rd
+
+
 simple requirements
 =============
 Focus on simplicity and ease of use.

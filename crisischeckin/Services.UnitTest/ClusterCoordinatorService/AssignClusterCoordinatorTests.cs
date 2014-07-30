@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Models;
 using Moq;
@@ -33,11 +34,29 @@ namespace Services.UnitTest.ClusterCoordinatorService
         [TestMethod]
         public void AssignClusterCoordinator_saves_a_new_ClusterCoordinatorRecord()
         {
-            _clusterCoordinatorService.AssignClusterCoordinator(_disaster.Id, _cluster.Id, _person.Id);
+            var clusterCoordinator = new ClusterCoordinator
+            {
+                Id = 1,
+                DisasterId = _disaster.Id,
+                ClusterId = _cluster.Id,
+                PersonId = _person.Id,
+                Person = _person,
+                Cluster =  _cluster,
+                Disaster = _disaster
+            };
+            var coordinatorList = new List<ClusterCoordinator>();
+            _dataService.Setup(x => x.ClusterCoordinators).Returns(coordinatorList.AsQueryable());
+            _dataService.Setup(x => x.AddClusterCoordinator(It.Is<ClusterCoordinator>(cc => cc.DisasterId == _disaster.Id &&
+                                                                                            cc.ClusterId == _cluster.Id &&
+                                                                                            cc.PersonId == _person.Id)))
+                .Callback(() => coordinatorList.Add(clusterCoordinator));
 
-            _dataService.Verify(x => x.AddClusterCoordinator(It.Is<ClusterCoordinator>(cc => cc.DisasterId == _disaster.Id &&
-                                                                                             cc.ClusterId == _cluster.Id &&
-                                                                                             cc.PersonId == _person.Id)));
+            _clusterCoordinatorService.AssignClusterCoordinator(clusterCoordinator.DisasterId, clusterCoordinator.ClusterId, clusterCoordinator.PersonId);
+
+            _dataService.Verify(x => x.AddClusterCoordinator(It.IsAny<ClusterCoordinator>()), Times.Once());
+            _dataService.Verify(x => x.AddClusterCoordinator(It.Is<ClusterCoordinator>(cc => cc.DisasterId == clusterCoordinator.DisasterId &&
+                                                                                             cc.ClusterId == clusterCoordinator.ClusterId &&
+                                                                                             cc.PersonId == clusterCoordinator.PersonId)));
         }
 
         [TestMethod]
@@ -63,15 +82,35 @@ namespace Services.UnitTest.ClusterCoordinatorService
         [TestMethod]
         public void AssignClusterCoordinator_appends_a_ClusterCoordinatorLogEntry()
         {
-            _clusterCoordinatorService.AssignClusterCoordinator(_disaster.Id, _cluster.Id, _person.Id);
+            var clusterCoordinator = new ClusterCoordinator
+            {
+                Id = 1,
+                DisasterId = _disaster.Id,
+                ClusterId = _cluster.Id,
+                PersonId = _person.Id,
+                Person = _person,
+                Cluster = _cluster,
+                Disaster = _disaster
+            };
+            var coordinatorList = new List<ClusterCoordinator>();
 
+            _dataService.Setup(x => x.ClusterCoordinators).Returns(coordinatorList.AsQueryable());
+            _dataService.Setup(
+                x => x.AddClusterCoordinator(It.Is<ClusterCoordinator>(cc => cc.DisasterId == _disaster.Id &&
+                                                                             cc.ClusterId == _cluster.Id &&
+                                                                             cc.PersonId == _person.Id)))
+                .Callback(() => coordinatorList.Add(clusterCoordinator));
+
+            _clusterCoordinatorService.AssignClusterCoordinator(clusterCoordinator.DisasterId, clusterCoordinator.ClusterId, clusterCoordinator.PersonId);
+
+            _dataService.Verify(x => x.AddClusterCoordinator(It.IsAny<ClusterCoordinator>()), Times.Once());
             _dataService.Verify(x => x.AppendClusterCoordinatorLogEntry(
-                It.Is<ClusterCoordinatorLogEntry>(cc => cc.DisasterId == _disaster.Id &&
-                                                        cc.DisasterName == _disaster.Name &&
-                                                        cc.ClusterId == _cluster.Id &&
-                                                        cc.ClusterName == _cluster.Name &&
-                                                        cc.PersonId == _person.Id &&
-                                                        cc.PersonName == _person.FullName &&
+                It.Is<ClusterCoordinatorLogEntry>(cc => cc.DisasterId == clusterCoordinator.DisasterId &&
+                                                        cc.DisasterName == clusterCoordinator.Disaster.Name &&
+                                                        cc.ClusterId == clusterCoordinator.ClusterId &&
+                                                        cc.ClusterName == clusterCoordinator.Cluster.Name &&
+                                                        cc.PersonId == clusterCoordinator.PersonId &&
+                                                        cc.PersonName == clusterCoordinator.Person.FullName &&
                                                         cc.Event == ClusterCoordinatorEvents.Assigned)));
         }
 
@@ -91,6 +130,9 @@ namespace Services.UnitTest.ClusterCoordinatorService
                             DisasterId = _disaster.Id,
                             ClusterId = _cluster.Id,
                             PersonId = _person.Id,
+                            Person = _person,
+                            Disaster = _disaster,
+                            Cluster = _cluster
                         }
                     }));
 

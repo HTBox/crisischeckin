@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Data.Entity;
 using Models;
 using Services.Interfaces;
 
@@ -8,37 +9,77 @@ namespace Services
 {
     public class ClusterCoordinatorService : IClusterCoordinatorService
     {
-        readonly IDataService dataService;
+        private readonly IDataService _dataService;
 
         public ClusterCoordinatorService(IDataService dataService)
         {
-            this.dataService = dataService;
+            this._dataService = dataService;
         }
 
         public ClusterCoordinator AssignClusterCoordinator(int disasterId, int clusterId, int personId)
         {
             if (clusterId == 0 || personId == 0)
                 return null;
-            var existingCoordinator = FindExistingCoordinator(disasterId, clusterId, personId);
-            if (null != existingCoordinator)
-                return existingCoordinator;
-            var newCoordinator = AddClusterCoordinator(disasterId, clusterId, personId);
-            AppendLogEntry(disasterId, clusterId, personId);
-            return newCoordinator;
+
+            var doesCoordinatorExist = DoesCoordinatorExist(disasterId, clusterId, personId);
+            if (!doesCoordinatorExist)
+                AddClusterCoordinator(disasterId, clusterId, personId);
+           
+            var result = _dataService.ClusterCoordinators.Include(x => x.Person).Include(x => x.Disaster).Include(x => x.Cluster)
+                .Where(x => x.DisasterId == disasterId
+                            && x.ClusterId == clusterId
+                            && x.PersonId == personId)
+                .Select(x => new
+                        {
+                            Id = x.Id,
+                            PersonId = x.Person.Id,
+                            DisasterId = x.Disaster.Id,
+                            ClusterId = x.Cluster.Id,
+                            FirstName = x.Person.FirstName,
+                            LastName = x.Person.LastName,
+                            ClusterName = x.Cluster.Name,
+                            DisasterName = x.Disaster.Name
+                        }).First();
+
+            var coordinator = new ClusterCoordinator
+            {
+                Id = result.Id,
+                PersonId = result.PersonId,
+                DisasterId = result.DisasterId,
+                ClusterId = result.ClusterId,
+                Person = new Person
+                {
+                    Id = result.PersonId,
+                    FirstName = result.FirstName,
+                    LastName = result.LastName
+                },
+                Cluster = new Cluster
+                {
+                    Id = result.ClusterId,
+                    Name = result.ClusterName
+                },
+                Disaster = new Disaster
+                {
+                    Id = result.DisasterId,
+                    Name = result.DisasterName
+                }
+            };
+            if (!doesCoordinatorExist) // if the coordinator didn't originally exist when we started (so it was added), we want to add the log entry.
+                AppendLogEntry(coordinator);
+            return coordinator;
         }
 
-        ClusterCoordinator FindExistingCoordinator(int disasterId, int clusterId, int personId)
+        private bool DoesCoordinatorExist(int disasterId, int clusterId, int personId)
         {
-            var existingCoordinator = dataService.ClusterCoordinators.FirstOrDefault(
+            return _dataService.ClusterCoordinators.Any(
                 x => x.DisasterId == disasterId
-                     && x.ClusterId == clusterId
-                     && x.PersonId == personId);
-            return existingCoordinator;
+                && x.ClusterId == clusterId
+                && x.PersonId == personId);
         }
 
         ClusterCoordinator AddClusterCoordinator(int disasterId, int clusterId, int personId)
         {
-            return dataService.AddClusterCoordinator(new ClusterCoordinator
+            return _dataService.AddClusterCoordinator(new ClusterCoordinator
                                                      {
                                                          DisasterId = disasterId,
                                                          ClusterId = clusterId,
@@ -46,47 +87,135 @@ namespace Services
                                                      });
         }
 
-        void AppendLogEntry(int disasterId, int clusterId, int personId)
+        private void AppendLogEntry(ClusterCoordinator coordinator)
         {
             var clusterCoordinatorLogEntry = new ClusterCoordinatorLogEntry
                                              {
                                                  Event = ClusterCoordinatorEvents.Assigned,
                                                  TimeStampUtc = DateTime.UtcNow,
-                                                 ClusterId = clusterId,
-                                                 ClusterName = dataService.Clusters.Single(x => x.Id == clusterId).Name,
-                                                 DisasterId = disasterId,
-                                                 DisasterName = dataService.Disasters.Single(x => x.Id == disasterId).Name,
-                                                 PersonId = personId,
-                                                 PersonName = dataService.Persons.Single(x => x.Id == personId).FullName,
+                                                 ClusterId = coordinator.ClusterId,
+                                                 ClusterName = coordinator.Cluster.Name,
+                                                 DisasterId = coordinator.DisasterId,
+                                                 DisasterName = coordinator.Disaster.Name,
+                                                 PersonId = coordinator.PersonId,
+                                                 PersonName = coordinator.Person.FullName,
                                              };
-            dataService.AppendClusterCoordinatorLogEntry(clusterCoordinatorLogEntry);
+            _dataService.AppendClusterCoordinatorLogEntry(clusterCoordinatorLogEntry);
         }
 
         public void UnassignClusterCoordinator(ClusterCoordinator clusterCoordinator)
-        {
-            dataService.RemoveClusterCoordinator(clusterCoordinator);
+        {           
             var clusterCoordinatorLogEntry = new ClusterCoordinatorLogEntry
                                              {
                                                  Event = ClusterCoordinatorEvents.Unassigned,
                                                  TimeStampUtc = DateTime.UtcNow,
                                                  ClusterId = clusterCoordinator.ClusterId,
-                                                 ClusterName = dataService.Clusters.Single(x => x.Id == clusterCoordinator.ClusterId).Name,
+                                                 ClusterName = clusterCoordinator.Cluster.Name,
                                                  DisasterId = clusterCoordinator.DisasterId,
-                                                 DisasterName = dataService.Disasters.Single(x => x.Id == clusterCoordinator.DisasterId).Name,
+                                                 DisasterName = clusterCoordinator.Disaster.Name,
                                                  PersonId = clusterCoordinator.PersonId,
-                                                 PersonName = dataService.Persons.Single(x => x.Id == clusterCoordinator.PersonId).FullName,
+                                                 PersonName = clusterCoordinator.Person.FullName
                                              };
-            dataService.AppendClusterCoordinatorLogEntry(clusterCoordinatorLogEntry);
+            _dataService.RemoveClusterCoordinator(clusterCoordinator);
+            _dataService.AppendClusterCoordinatorLogEntry(clusterCoordinatorLogEntry);
         }
 
         public ClusterCoordinator GetCoordinator(int id)
         {
-            return dataService.ClusterCoordinators.SingleOrDefault(x => x.Id == id);
+            return _dataService.ClusterCoordinators.SingleOrDefault(x => x.Id == id);
+        }
+
+        public ClusterCoordinator GetCoordinatorFullyLoaded(int id)
+        {
+            return _dataService.ClusterCoordinators.Include(x => x.Person).Include(x => x.Disaster).Include(x => x.Cluster)
+                .SingleOrDefault(x => x.Id == id);
+        }
+
+        public ClusterCoordinator GetCoordinatorForUnassign(int id)
+        {
+            var result = (from c in _dataService.ClusterCoordinators
+                          join p in _dataService.Persons
+                            on c.PersonId equals p.Id
+                          join cl in _dataService.Clusters
+                            on c.ClusterId equals cl.Id
+                          where c.Id == id
+                          select new
+                          {
+                              Id = c.Id,
+                              PersonId = c.PersonId,
+                              DisasterId = c.DisasterId,
+                              ClusterId = c.ClusterId,
+                              FirstName = p.FirstName,
+                              LastName = p.LastName,
+                              ClusterName = cl.Name
+                          }).Single();
+
+            return new ClusterCoordinator
+            {
+                Id = result.Id,
+                PersonId = result.PersonId,
+                DisasterId = result.DisasterId,
+                ClusterId = result.ClusterId,
+                Person = new Person
+                {
+                    Id = result.PersonId,
+                    FirstName = result.FirstName,
+                    LastName = result.LastName
+                },
+                Cluster = new Cluster
+                {
+                    Id = result.ClusterId,
+                    Name = result.ClusterName
+                },
+                Disaster = new Disaster
+                {
+                    Id = result.DisasterId
+                }
+            };
         }
 
         public IEnumerable<ClusterCoordinator> GetAllCoordinators(int disasterId)
         {
-            return dataService.ClusterCoordinators.Where(x => x.DisasterId == disasterId).ToList();
+            return _dataService.ClusterCoordinators.Where(x => x.DisasterId == disasterId).ToList();
+        }
+
+        public IEnumerable<ClusterCoordinator> GetAllCoordinatorsForDisplay(int disasterId, out IList<Person> allPersonsForDisplay)
+        {
+            var result = (from x in _dataService.ClusterCoordinators
+                          where x.DisasterId == disasterId
+                          select new
+                          {
+                              Id = x.Id,
+                              PersonId = x.PersonId,
+                              ClusterId = x.ClusterId
+                          }).ToList();
+
+            var persons = GetAllPersonDataForDisplay();
+            allPersonsForDisplay = persons;
+
+            return result.Select(x => new ClusterCoordinator
+                {
+                    Id = x.Id,
+                    ClusterId = x.ClusterId,
+                    PersonId = x.PersonId,
+                    Person = persons.FirstOrDefault(per => x.PersonId == per.Id)
+                }).ToList();
+        }
+
+        private IList<Person> GetAllPersonDataForDisplay()
+        {
+            var result = _dataService.Persons.Select(p => new
+                {
+                    Id = p.Id,
+                    FirstName = p.FirstName,
+                    LastName = p.LastName
+                }).ToList();
+            return result.Select(p => new Person
+                {
+                    Id = p.Id,
+                    FirstName = p.FirstName,
+                    LastName = p.LastName
+                }).ToList();
         }
     }
 }

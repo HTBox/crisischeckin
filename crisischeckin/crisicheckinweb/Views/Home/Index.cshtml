@@ -61,21 +61,23 @@
     <label>End Date:</label>
     @Html.TextBoxFor(m => m.SelectedEndDate, new { id="dp_endDate" })
     
-    <input id="GoButton" type="submit" value="Volunteer"/>
-    
+    <input id="GoButton" type="submit" value="Volunteer"/>    
 }
 
-<script type="text/javascript">
-(function ($) {
-    $(document).ready(function () {
-        $("#dp_startDate").datepicker({ minDate: 'today', onSelect: updateEndDate }).datepicker('setDate',
-            '@(Model.SelectedStartDate == default(DateTime) ? DateTime.Now : Model.SelectedStartDate)');
-        $("#dp_endDate").datepicker({ minDate: 'today' }).datepicker('setDate',
-            '@(Model.SelectedEndDate == default(DateTime) ? DateTime.Now : Model.SelectedEndDate)');
-    });
+@section scripts
+{
+    <script type="text/javascript">
+        (function ($) {
+            $(document).ready(function () {
+                $("#dp_startDate").datepicker({ minDate: 'today', onSelect: updateEndDate }).datepicker('setDate',
+                    '@(Model.SelectedStartDate == default(DateTime) ? DateTime.Now : Model.SelectedStartDate)');
+                $("#dp_endDate").datepicker({ minDate: 'today' }).datepicker('setDate',
+                    '@(Model.SelectedEndDate == default(DateTime) ? DateTime.Now : Model.SelectedEndDate)');
+            });
 
-    function updateEndDate(dateText) {
-        $('#dp_endDate').datepicker('option', 'minDate', dateText);
-    }
-})(jQuery);
-</script>
+            function updateEndDate(dateText) {
+                $('#dp_endDate').datepicker('option', 'minDate', dateText);
+            }
+        })(jQuery);
+    </script>
+}

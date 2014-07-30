@@ -49,7 +49,7 @@ namespace Services
         {
             if (updatedPerson == null) throw new ArgumentNullException("updatedPerson");
 
-            var foundPerson = ourService.Persons.SingleOrDefault(p => p.Id == updatedPerson.Id);
+            var foundPerson = ourService.Persons.SingleOrDefault(p => p.UserId == updatedPerson.UserId);
 
             if (foundPerson != null)
             {
@@ -62,9 +62,19 @@ namespace Services
                     {
                         throw new PersonEmailAlreadyInUseException();
                     }
+                    foundPerson.Email = updatedPerson.Email;
                 }
-
-                return ourService.UpdatePerson(updatedPerson);
+                // update the found person with any appropriate changes
+                if (!string.IsNullOrEmpty(updatedPerson.FirstName))
+                {
+                    foundPerson.FirstName = updatedPerson.FirstName;
+                }               
+                if (!string.IsNullOrEmpty(updatedPerson.LastName))
+                {
+                    foundPerson.LastName = updatedPerson.LastName;
+                }
+                foundPerson.PhoneNumber = updatedPerson.PhoneNumber;
+                return ourService.UpdatePerson(foundPerson);
             }
             throw new PersonNotFoundException();
         }
@@ -74,6 +84,7 @@ namespace Services
             var filteredCommitments = from c in ourService.Commitments.Include(c => c.Disaster)
                     where c.PersonId == personId &&
                     (c.Disaster.IsActive || showInactive)
+                    orderby c.StartDate
                     select c;
 
             return filteredCommitments;
@@ -92,9 +103,33 @@ namespace Services
             return ourService.Persons.SingleOrDefault(p => p.UserId == userId);
         }
 
-		public bool UsernameAvailable(string userName)
-		{
-		    return ourService.Users.Count(p => p.UserName == userName) <= 0;
-		}
+        public Person GetPersonDetailsForChangeContactInfo(int userId)
+        {
+            var result = ourService.Persons.Where(p => p.UserId == userId).Select(per => new
+            {
+                Email = per.Email,
+                PhoneNumber = per.PhoneNumber
+            }).FirstOrDefault();
+
+            if (result == null)
+                throw new PersonNotFoundException();
+
+            return new Person
+            {
+                Email = result.Email,
+                PhoneNumber = result.PhoneNumber
+            };
+        }
+
+	    public bool UsernameAvailable(string userName)
+	    {
+	        return ourService.Users.Count(p => p.UserName == userName) <= 0;
+	    }
+
+        public bool EmailAlreadyInUse(string email)
+        {
+            if (ourService.Persons.Any(p => p.Email == email)) return true;
+            return false;
+        }
     }
 }

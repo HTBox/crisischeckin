@@ -4,10 +4,9 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Models;
 using Moq;
-using Services;
 using Services.Interfaces;
 
-namespace WebProjectTests.ServiceTests
+namespace Services.UnitTest
 {
     [TestClass]
     public class AdminServiceTests
@@ -238,6 +237,65 @@ namespace WebProjectTests.ServiceTests
             var actual = underTest.GetVolunteersForDate(42, DateTime.Today);
 
             Assert.AreEqual(1, actual.Count());
+        }
+
+        [TestMethod]
+        public void GetVolunteersForDisasterFilteredByDateReturnsExpectedRecord()
+        {
+            var personWithDifferentCommitmentDateRange = personWithNoCommitments;
+            const int personWithDifferentCommitmentDateRangeId = personWithNoCommitmentsID;
+
+            initializeDisasterCollection(disasterWithCommitments);
+            initializeVolunteerCollection(personWithCommitments, personWithDifferentCommitmentDateRange);
+
+            var secondCommitmentOutOfDateRange = new Commitment
+            {
+                DisasterId = disasterWithVolunteersID,
+                Id = 102,
+                PersonId = personWithDifferentCommitmentDateRangeId,
+                StartDate = new DateTime(2013, 9, 15),
+                EndDate = new DateTime(2013, 9, 20)
+            };
+            initializeCommitmentCollection(commitment, secondCommitmentOutOfDateRange);
+
+            var systemUnderTest = new AdminService(mockService.Object);
+
+            var result = systemUnderTest.GetVolunteersForDisaster(disasterWithCommitments.Id, new DateTime(2013, 8, 12));
+
+            var actual = result as IList<Person> ?? result.ToList();
+            Assert.AreEqual(1, actual.Count());
+            Assert.AreEqual(actual.First().Id, personWithCommitmentsID);
+        }
+
+        [TestMethod]
+        public void GetVolunteersForDisasterUnfilteredByDateReturnsExpectedRecords()
+        {
+            var personWithDifferentCommitmentDateRange = personWithNoCommitments;
+            const int personWithDifferentCommitmentDateRangeId = personWithNoCommitmentsID;
+
+            initializeDisasterCollection(disasterWithCommitments);
+            initializeVolunteerCollection(personWithCommitments, personWithDifferentCommitmentDateRange);
+
+            var secondCommitment = new Commitment
+            {
+                DisasterId = disasterWithVolunteersID,
+                Id = 102,
+                PersonId = personWithDifferentCommitmentDateRangeId,
+                StartDate = new DateTime(2013, 9, 15),
+                EndDate = new DateTime(2013, 9, 20)
+            };
+            initializeCommitmentCollection(commitment, secondCommitment);
+
+            var systemUnderTest = new AdminService(mockService.Object);
+
+            var result = systemUnderTest.GetVolunteersForDisaster(disasterWithCommitments.Id, null);
+
+            var actual = result as IList<Person> ?? result.ToList();
+            Assert.AreEqual(2, actual.Count());
+            Assert.IsTrue(actual.FirstOrDefault(p => p.Id == personWithCommitments.Id) != null, 
+                "Could not find first expected Person.");
+            Assert.IsTrue(actual.FirstOrDefault(p => p.Id == personWithDifferentCommitmentDateRange.Id) != null,
+                "Could not find second expected Person.");
         }
 
         private void initializeDisasterCollection(params Disaster[] disasters)

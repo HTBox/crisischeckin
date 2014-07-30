@@ -19,8 +19,8 @@ namespace Services.UnitTest.ClusterCoordinatorService
         [TestInitialize]
         public void Init()
         {
-            _clusterCoordinator = new ClusterCoordinator()
-                                  {
+            _clusterCoordinator = new ClusterCoordinator
+            {
                                       ClusterId = 9,
                                       DisasterId = 12,
                                       PersonId = 15,
@@ -28,6 +28,9 @@ namespace Services.UnitTest.ClusterCoordinatorService
             _disaster = new Disaster {Id = _clusterCoordinator.DisasterId, IsActive = true, Name = "Sharknado"};
             _cluster = new Cluster {Id = _clusterCoordinator.ClusterId, Name = "Red Zone"};
             _person = new Person {Id = _clusterCoordinator.PersonId, FirstName = "John", LastName = "Doe"};
+            _clusterCoordinator.Person = _person;
+            _clusterCoordinator.Disaster = _disaster;
+            _clusterCoordinator.Cluster = _cluster;
 
             _dataService = new Mock<IDataService>();
             _dataService.Setup(x => x.Disasters).Returns(new EnumerableQuery<Disaster>(new[] {_disaster}));

@@ -9,5 +9,6 @@
 
         public virtual Person Person { get; set; }
         public virtual Cluster Cluster { get; set; }
+        public virtual Disaster Disaster { get; set; }
     }
 }

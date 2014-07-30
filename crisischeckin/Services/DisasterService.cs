@@ -24,13 +24,13 @@ namespace Services
             if (DateTime.Compare(endDate, startDate) < 0)
                 throw new ArgumentException("endDate cannot be earlier than startDate");
 
-            // check if the start and end date falls within an existing commitment
-            // disregard any disasters that are inactive
-            Expression<Func<Commitment, bool>> dateInRange = c =>
-                (DateTime.Compare(c.StartDate, startDate) <= 0 && DateTime.Compare(c.EndDate, startDate) >= 0) ||
-                (DateTime.Compare(c.StartDate, endDate) <= 0 && DateTime.Compare(c.EndDate, endDate) >= 0);
+			// check if the start and end date falls within an existing commitment
+			// disregard any disasters that are inactive
+			Expression<Func<Commitment, bool>> dateInRange = c =>
+				(DateTime.Compare(c.StartDate, endDate) <= 0) &&
+				(DateTime.Compare(c.EndDate, startDate) >= 0);
 
-            var hasExistingCommitment = (from c in _dataService.Commitments
+			var hasExistingCommitment = (from c in _dataService.Commitments
                 join d in _dataService.Disasters on c.DisasterId equals d.Id 
                 where d.IsActive && c.PersonId == personId
                 select c).Any(dateInRange);
@@ -52,6 +52,11 @@ namespace Services
         public Disaster Get(int disasterId)
         {
             return _dataService.Disasters.SingleOrDefault(d => d.Id.Equals(disasterId));
+        }
+
+        public string GetName(int disasterId)
+        {
+            return _dataService.Disasters.Where(d => d.Id.Equals(disasterId)).Select(d => d.Name).FirstOrDefault();
         }
 
         public void Create(Disaster disaster)

@@ -16,5 +16,6 @@ namespace Services.Interfaces
         void Update(int disasterId, string disasterName, bool isActive);
         IEnumerable<Disaster> GetActiveList();
         IEnumerable<Disaster> GetList();
+        string GetName(int disasterId);
     }
 }
