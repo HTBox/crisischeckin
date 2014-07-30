@@ -1,7 +1,7 @@
 ﻿using System;
 using Android.App;
 using Android.Runtime;
-using CrisisCheckin.Core;
+using CrisisCheckin.Shared;
 
 namespace CrisisCheckin
 {

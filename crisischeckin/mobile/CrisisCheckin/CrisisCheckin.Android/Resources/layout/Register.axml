@@ -10,7 +10,7 @@
         android:id="@+id/editTextFirstName"
         android:hint="FirstName" />
     <EditText
-        android:inputType="phone"
+        android:inputType="textPersonName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/editTextLastName"

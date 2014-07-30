@@ -10,7 +10,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using CrisisCheckin.Core;
+using CrisisCheckin.Shared;
 using System.Threading.Tasks;
 
 namespace CrisisCheckin.Android
@@ -68,7 +68,8 @@ namespace CrisisCheckin.Android
 			buttonVolunteer.Visibility = ViewStates.Gone;
 
 			var r = await webService.GetCommitmentsAsync (new CommitmentsRequest {
-				Username = App.Settings.SignedInUsername
+				Username = App.Settings.SignedInUsername,
+				Password = App.Settings.SignedInPassword
 			});
 
 			if (!r.Succeeded) {

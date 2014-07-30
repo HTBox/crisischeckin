@@ -10,7 +10,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using CrisisCheckin.Core;
+using CrisisCheckin.Shared;
 
 namespace CrisisCheckin.Android
 {
@@ -40,7 +40,8 @@ namespace CrisisCheckin.Android
 			buttonSignIn.Click += async delegate {
 			
 				var r = await webService.SignInAsync(new SignInRequest { 
-					Username = editTextUsername.Text
+					Username = editTextUsername.Text,
+					Password = editTextPassword.Text
 				});
 
 				if (!r.Succeeded) {
