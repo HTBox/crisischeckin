@@ -4,7 +4,7 @@ using System.Linq;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 
-namespace CrisisCheckin.IOS
+namespace CrisisCheckin
 {
 	public class Application
 	{

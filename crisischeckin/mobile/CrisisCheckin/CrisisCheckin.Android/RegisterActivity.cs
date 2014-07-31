@@ -11,7 +11,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using System.Threading.Tasks;
-using CrisisCheckin.Core;
+using CrisisCheckin.Shared;
 
 namespace CrisisCheckin.Android
 {

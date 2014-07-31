@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace CrisisCheckin.Core
+namespace CrisisCheckin.Shared
 {
 	#region Request and Response objects
 	public class RegisterRequest : ServiceRequest
@@ -29,6 +29,7 @@ namespace CrisisCheckin.Core
 		public override string ServiceMethodUrl { get {	return "signin"; } }
 
 		public string Username { get;set; }
+		public string Password { get;set; }
 	}
 	public class SignInResponse : ServiceResponse<bool>
 	{
@@ -57,6 +58,8 @@ namespace CrisisCheckin.Core
 		public override string ServiceMethodUrl { get {	return "checkin"; } }
 
 		public string Username { get;set; }
+		public string Password { get;set; }
+
 		public int DisasterId { get;set; }
 		public double Latitude { get;set; }
 		public double Longitude { get;set; }
@@ -70,6 +73,7 @@ namespace CrisisCheckin.Core
 		public override string ServiceMethodUrl { get {	return "checkout"; } }
 
 		public string Username { get;set; }
+		public string Password { get;set; }
 	}
 	public class CheckOutResponse : ServiceResponse<bool>
 	{
@@ -91,6 +95,8 @@ namespace CrisisCheckin.Core
 		public override string ServiceMethodUrl { get {	return "volunteer"; } }
 
 		public string Username { get;set; }
+		public string Password { get;set; }
+
 		public int DisasterId { get;set; }
 		public DateTime StartDate { get;set; }
 		public DateTime EndDate { get;set; }
@@ -104,6 +110,7 @@ namespace CrisisCheckin.Core
 		public override string ServiceMethodUrl { get {	return "commitments"; } }
 
 		public string Username { get;set; }
+		public string Password { get;set; }
 	}
 	public class CommitmentsResponse : ServiceResponse<IEnumerable<Commitment>>
 	{
@@ -143,6 +150,8 @@ namespace CrisisCheckin.Core
 		public DateTime StartDate { get;set; }
 		public DateTime EndDate { get;set; }
 		public bool IsActive { get;set; }
+
+		public Disaster Disaster { get;set; }
 	}
 	#endregion
 

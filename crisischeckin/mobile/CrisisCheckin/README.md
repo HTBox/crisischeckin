@@ -20,6 +20,7 @@ Since this is a free, open source, community effort, we are striving to keep the
  - **No MVVM, MVC, etc frameworks** - While these are nice, they go against our size limitation of the Starter edition, and they also raise the learning curve for contributing
  - **No PCL's :(** - This is unfortunate, but as part of the decision to minimize app size, NOT using PCL's gains us the advantage of having System.Json, System.Net.Http, and a few other core libraries at our disposal, without counting them towards our app size limit!
  - **iOS Layouts** - Avoid XIB's they add size bloat - Try to use MonoTouch.Dialog when possible to minimize the amount of layout code needed
+ - **Android Ice Cream Sandwich (4.0.3)+** - As of July, 86% of devices run 4.0.3 or higher.  Targeting this version allows us to not depend on Android Support Libraries (which would put us over the starter edition limit), and decreases complexity in app development.
 
 ### Application flow
 The typical application flow goes something like this:

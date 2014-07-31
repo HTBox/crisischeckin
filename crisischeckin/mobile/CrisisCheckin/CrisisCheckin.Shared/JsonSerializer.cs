@@ -2,7 +2,7 @@
 using System.Text;
 using System.IO;
 
-namespace CrisisCheckin.Core
+namespace CrisisCheckin.Shared
 {
 	public class JsonSerializer
 	{

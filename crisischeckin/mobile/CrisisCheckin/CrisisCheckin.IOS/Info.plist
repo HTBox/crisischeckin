@@ -3,9 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDisplayName</key>
-	<string>CrisisCheckin.IOS</string>
-	<key>CFBundleIdentifier</key>
-	<string>com.your-company.CrisisCheckin.IOS</string>
+	<string>Crisis Checkin</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
@@ -36,5 +34,7 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>CFBundleIdentifier</key>
+	<string>org.htbox.crisischeckin</string>
 </dict>
 </plist>
