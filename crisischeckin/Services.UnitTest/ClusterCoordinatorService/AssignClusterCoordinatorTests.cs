@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Models;
 using Moq;
 using Services.Interfaces;
 
 namespace Services.UnitTest.ClusterCoordinatorService
 {
-    [TestClass]
+    [TestFixture]
     public class AssignClusterCoordinatorTests
     {
         Cluster _cluster;
@@ -16,7 +16,7 @@ namespace Services.UnitTest.ClusterCoordinatorService
         Disaster _disaster;
         Person _person;
 
-        [TestInitialize]
+        [SetUp]
         public void Init()
         {
             _disaster = new Disaster {Id = 0, IsActive = true, Name = "Sharknado"};
@@ -31,7 +31,7 @@ namespace Services.UnitTest.ClusterCoordinatorService
             _clusterCoordinatorService = new Services.ClusterCoordinatorService(_dataService.Object);
         }
 
-        [TestMethod]
+        [Test]
         public void AssignClusterCoordinator_saves_a_new_ClusterCoordinatorRecord()
         {
             var clusterCoordinator = new ClusterCoordinator
@@ -59,7 +59,7 @@ namespace Services.UnitTest.ClusterCoordinatorService
                                                                                              cc.PersonId == clusterCoordinator.PersonId)));
         }
 
-        [TestMethod]
+        [Test]
         public void AssignClusterCoordinator_with_no_cluster_id_does_nothing()
         {
             var result = _clusterCoordinatorService.AssignClusterCoordinator(_disaster.Id, 0, _person.Id);
@@ -69,7 +69,7 @@ namespace Services.UnitTest.ClusterCoordinatorService
             Assert.IsNull(result);
         }
 
-        [TestMethod]
+        [Test]
         public void AssignClusterCoordinator_with_no_person_id_does_nothing()
         {
             var result = _clusterCoordinatorService.AssignClusterCoordinator(_disaster.Id, _cluster.Id, 0);
@@ -79,7 +79,7 @@ namespace Services.UnitTest.ClusterCoordinatorService
             Assert.IsNull(result);
         }
 
-        [TestMethod]
+        [Test]
         public void AssignClusterCoordinator_appends_a_ClusterCoordinatorLogEntry()
         {
             var clusterCoordinator = new ClusterCoordinator
@@ -114,7 +114,7 @@ namespace Services.UnitTest.ClusterCoordinatorService
                                                         cc.Event == ClusterCoordinatorEvents.Assigned)));
         }
 
-        [TestMethod]
+        [Test]
         public void AssignClusterCoordinator_does_not_add_duplicates()
         {
             const int existingClusterCoordinatorId = 8929;

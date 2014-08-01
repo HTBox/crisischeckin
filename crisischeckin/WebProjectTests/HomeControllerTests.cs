@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic; 
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Moq;
 using Services.Interfaces;
 using crisicheckinweb.Controllers;
@@ -12,10 +12,10 @@ using crisicheckinweb.Wrappers;
 
 namespace WebProjectTests
 {
-    [TestClass]
+    [TestFixture]
     public class HomeControllerTests
     {
-        [TestMethod]
+        [Test]
         public void Assign_BadStartDate_ReturnsIndexView()
         {
             // Arrange
@@ -38,7 +38,7 @@ namespace WebProjectTests
             Assert.IsTrue(view.ViewData.ModelState.Count >= 1);
         }
 
-        [TestMethod]
+        [Test]
         public void Assign_BadDateRange_ReturnsIndexView()
         {
             // Arrange
@@ -67,7 +67,7 @@ namespace WebProjectTests
             Assert.IsTrue(view.ViewData.ModelState.Count >= 1);
         }
 
-        [TestMethod]
+        [Test]
         public void Assign_ValidDateRange_RedirectsToHome()
         {
             // Arrange
@@ -86,7 +86,7 @@ namespace WebProjectTests
             Assert.IsTrue(result.Url.ToLower().Contains("home"));
         }
 
-        [TestMethod]
+        [Test]
         public void RemoveCommitmentById_NotYourCommitment_ReturnsIndexView()
         {
             // Arrange
@@ -106,7 +106,7 @@ namespace WebProjectTests
             Assert.IsTrue(view.ViewData.ModelState.Count >= 1);
         }
 
-        [TestMethod]
+        [Test]
         public void RemoveCommitmentById_Valid_RedirectsToHome()
         {
             // Arrange
