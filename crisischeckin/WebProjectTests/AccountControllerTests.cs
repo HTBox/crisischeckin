@@ -1,5 +1,5 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Moq;
 using Services.Interfaces;
 using crisicheckinweb.Controllers;
@@ -11,12 +11,12 @@ using System.Diagnostics;
 
 namespace WebProjectTests
 {
-    [TestClass]
+    [TestFixture]
     public class AccountControllerTests
     {
         //TODO: httpContext needs to be mocked in order to test the accountController
         /*
-        [TestMethod]
+        [Test]
         public void Assign_ValidData_ReturnsContactInfoChangedView()
         {
             
@@ -40,7 +40,7 @@ namespace WebProjectTests
             Assert.IsTrue(view.ViewName.Equals("ContactInfoChanged"));
         }
 
-        [TestMethod]
+        [Test]
         public void Assign_DuplicateEmailAddress_ReturnsChangeContactInfoView()
         {
             // Arrange

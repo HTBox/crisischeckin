@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Moq;
 using Services.Interfaces;
 
 namespace Services.UnitTest
 {
-    [TestClass]
+    [TestFixture]
     public class MessageCoordinatorTest
     {
-        [TestMethod]
+        [Test]
         public void CoordinatorShouldRunMessageRecipientsToSingleSender()
         {
             var fakeSender = new Mock<IMessageSender>();
@@ -21,7 +21,7 @@ namespace Services.UnitTest
             VerifyMessageSentToRecipientsThroughSenders(testData.Message, testData.Recipients, fakeSender);
         }
  
-        [TestMethod]
+        [Test]
         public void CoordinatorShouldRunMessageRecipientsToAllInjectedSenders()
         {
             var fakeSender = new Mock<IMessageSender>();
@@ -33,7 +33,7 @@ namespace Services.UnitTest
             VerifyMessageSentToRecipientsThroughSenders(testData.Message, testData.Recipients, fakeSender);
         }
 
-        [TestMethod]
+        [Test]
         public void CoordinatorShouldHandleFailureGracefully()
         {
             var fakeSender = new Mock<IMessageSender>();

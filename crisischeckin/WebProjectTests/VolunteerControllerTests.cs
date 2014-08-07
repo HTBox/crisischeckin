@@ -2,7 +2,7 @@
 using System.Linq;
 using crisicheckinweb.Controllers;
 using crisicheckinweb.ViewModels;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Models;
 using Moq;
 using Services.Interfaces;
@@ -10,7 +10,7 @@ using System;
 
 namespace WebProjectTests
 {
-    [TestClass]
+    [TestFixture]
     public class VolunteerControllerTests
     {
         private Mock<IDisaster> _disasterSvc;
@@ -18,7 +18,7 @@ namespace WebProjectTests
         private Mock<IAdmin> _adminSvc;
         private Mock<IMessageService> _messageSvc;
 
-        [TestInitialize]
+        [SetUp]
         public void TestInit()
         {
             _disasterSvc = new Mock<IDisaster>();
@@ -32,7 +32,7 @@ namespace WebProjectTests
             return new VolunteerController(_disasterSvc.Object, _clusterSvc.Object, _adminSvc.Object, _messageSvc.Object);
         }
 
-        [TestMethod]
+        [Test]
         public void Lookup_UnfilteredVolunteers_For_Disaster_Returns_AllVolunteers_ForTheDisaster()
         {
             //Arrange
@@ -57,7 +57,7 @@ namespace WebProjectTests
             CollectionAssert.AreEquivalent(allVolunteers.ToArray(), model.ToArray());
         }
 
-        [TestMethod]
+        [Test]
         public void Lookup_FilteredVolunteers_For_Disaster_Returns_Volunteers_ForTheDisaster_FilteredByDate()
         {
             //Arrange

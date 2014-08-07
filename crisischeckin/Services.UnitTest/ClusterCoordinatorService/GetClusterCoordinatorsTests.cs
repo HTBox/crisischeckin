@@ -1,12 +1,12 @@
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Models;
 using Moq;
 using Services.Interfaces;
 
 namespace Services.UnitTest.ClusterCoordinatorService
 {
-    [TestClass]
+    [TestFixture]
     public class GetClusterCoordinatorsTests
     {
         Services.ClusterCoordinatorService _clusterCoordinatorService;
@@ -14,7 +14,7 @@ namespace Services.UnitTest.ClusterCoordinatorService
         int _disasterId;
         int _notDisasterId;
 
-        [TestInitialize]
+        [SetUp]
         public void Init()
         {
             _disasterId = 4;
@@ -24,7 +24,7 @@ namespace Services.UnitTest.ClusterCoordinatorService
             _clusterCoordinatorService = new Services.ClusterCoordinatorService(_dataService.Object);
         }
 
-        [TestMethod]
+        [Test]
         public void GetClusterCoordinators_return_only_the_ClusterCoordinators_for_the_specified_disaster()
         {
             var coordinators = new EnumerableQuery<ClusterCoordinator>(new[]
