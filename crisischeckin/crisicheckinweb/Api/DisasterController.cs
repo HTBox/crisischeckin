@@ -7,7 +7,7 @@ using System.Web.Http;
 
 namespace crisicheckinweb.Api
 {
-    public class DisasterController : ApiController
+    public class DisasterController : BaseController
     {
     }
 }
