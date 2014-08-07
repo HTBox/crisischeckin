@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="AdminService.cs" />
     <Compile Include="Api\ApiService.cs" />
+    <Compile Include="Api\Dtos\DtoFactory.cs" />
     <Compile Include="Api\Dtos\Dtos.cs" />
     <Compile Include="Api\Requests\ClustersRequest.cs" />
     <Compile Include="Api\Requests\ServiceRequest.cs" />
