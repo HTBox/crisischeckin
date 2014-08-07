@@ -16,7 +16,9 @@ namespace crisicheckinweb.Api
         {
             get { return _apiService; }
         }
-        
+
+        public BaseController() { }
+
         public BaseController(IApiService apiService)
         {
             _apiService = apiService;

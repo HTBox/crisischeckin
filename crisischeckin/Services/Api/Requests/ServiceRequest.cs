@@ -1,4 +1,4 @@
-﻿S
+﻿
 namespace Services.Api.Requests
 {
     public abstract class ServiceRequest
