@@ -1,7 +1,6 @@
 ﻿using Services.Interfaces;
-using Services.Api.Requests;
-using Services.Api.Responses;
 using Services.Api.Dtos;
+using System.Linq;
 
 namespace Services.Api
 {
@@ -18,7 +17,5 @@ namespace Services.Api
         {
             _dataService = dataService;
         }
-
-
     }
 }
