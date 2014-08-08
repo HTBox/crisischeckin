@@ -54,7 +54,7 @@ namespace Services.UnitTest
         }
 
         [TestMethod]
-        [ExpectedException(typeof (ArgumentException))]
+        [ExpectedException(typeof(ArgumentException))]
         public void AssignToVolunteer_StartDateIsWithinExistingCommitment()
         {
             var commitments = new List<Commitment>
@@ -66,7 +66,7 @@ namespace Services.UnitTest
                     DisasterId = 2
                 }
             };
-            var disasters = new List<Disaster> {new Disaster {Id = 2, IsActive = true}};
+            var disasters = new List<Disaster> { new Disaster { Id = 2, IsActive = true } };
 
             _mockDataService.Setup(s => s.Commitments).Returns(commitments.AsQueryable());
             _mockDataService.Setup(s => s.Disasters).Returns(disasters.AsQueryable());
@@ -87,7 +87,7 @@ namespace Services.UnitTest
                     DisasterId = 2
                 }
             };
-            var disasters = new List<Disaster> {new Disaster {Id = 2, IsActive = true}};
+            var disasters = new List<Disaster> { new Disaster { Id = 2, IsActive = true } };
 
             _mockDataService.Setup(s => s.Commitments).Returns(commitments.AsQueryable());
             _mockDataService.Setup(s => s.Disasters).Returns(disasters.AsQueryable());
@@ -95,11 +95,11 @@ namespace Services.UnitTest
             _disasterService.AssignToVolunteer(0, 0, new DateTime(2013, 6, 5), new DateTime(2013, 6, 12));
         }
 
-		[TestMethod]
-		[ExpectedException(typeof(ArgumentException))]
-		public void AssignToVolunteer_StartAndEndDateSpanExistingCommitment()
-		{
-			var commitments = new List<Commitment>
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void AssignToVolunteer_StartAndEndDateSpanExistingCommitment()
+        {
+            var commitments = new List<Commitment>
 			{
 				new Commitment
 				{
@@ -108,19 +108,19 @@ namespace Services.UnitTest
 					DisasterId = 2
 				}
 			};
-			var disasters = new List<Disaster> { new Disaster { Id = 2, IsActive = true } };
+            var disasters = new List<Disaster> { new Disaster { Id = 2, IsActive = true } };
 
-			_mockDataService.Setup(s => s.Commitments).Returns(commitments.AsQueryable());
-			_mockDataService.Setup(s => s.Disasters).Returns(disasters.AsQueryable());
+            _mockDataService.Setup(s => s.Commitments).Returns(commitments.AsQueryable());
+            _mockDataService.Setup(s => s.Disasters).Returns(disasters.AsQueryable());
 
-			_disasterService.AssignToVolunteer(0, 0, new DateTime(2013, 5, 6), new DateTime(2013, 5, 9));
-		}
+            _disasterService.AssignToVolunteer(0, 0, new DateTime(2013, 5, 6), new DateTime(2013, 5, 9));
+        }
 
-		[TestMethod]
-		[ExpectedException(typeof(ArgumentException))]
-		public void AssignToVolunteer_StartAndEndDateAreWithinExistingCommitment()
-		{
-			var commitments = new List<Commitment>
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void AssignToVolunteer_StartAndEndDateAreWithinExistingCommitment()
+        {
+            var commitments = new List<Commitment>
 			{
 				new Commitment
 				{
@@ -129,22 +129,22 @@ namespace Services.UnitTest
 					DisasterId = 2
 				}
 			};
-			var disasters = new List<Disaster> { new Disaster { Id = 2, IsActive = true } };
+            var disasters = new List<Disaster> { new Disaster { Id = 2, IsActive = true } };
 
-			_mockDataService.Setup(s => s.Commitments).Returns(commitments.AsQueryable());
-			_mockDataService.Setup(s => s.Disasters).Returns(disasters.AsQueryable());
+            _mockDataService.Setup(s => s.Commitments).Returns(commitments.AsQueryable());
+            _mockDataService.Setup(s => s.Disasters).Returns(disasters.AsQueryable());
 
-			_disasterService.AssignToVolunteer(0, 0, new DateTime(2013, 5, 7), new DateTime(2013, 5, 7));
-		}
+            _disasterService.AssignToVolunteer(0, 0, new DateTime(2013, 5, 7), new DateTime(2013, 5, 7));
+        }
 
-		[TestMethod]
-		public void AssignToVolunteer_StartAndEndDateBeforeExistingCommitment()
-		{
-			Commitment createdCommitment = null;
-			_mockDataService.Setup(s => s.AddCommitment(It.IsAny<Commitment>()))
-				.Callback<Commitment>(commitment => createdCommitment = commitment);
+        [TestMethod]
+        public void AssignToVolunteer_StartAndEndDateBeforeExistingCommitment()
+        {
+            Commitment createdCommitment = null;
+            _mockDataService.Setup(s => s.AddCommitment(It.IsAny<Commitment>()))
+                .Callback<Commitment>(commitment => createdCommitment = commitment);
 
-			var commitments = new List<Commitment>
+            var commitments = new List<Commitment>
 			{
 				new Commitment
 				{
@@ -153,28 +153,28 @@ namespace Services.UnitTest
 					DisasterId = 2
 				}
 			};
-			var disasters = new List<Disaster> { new Disaster { Id = 2, IsActive = true } };
+            var disasters = new List<Disaster> { new Disaster { Id = 2, IsActive = true } };
 
-			_mockDataService.Setup(s => s.Commitments).Returns(commitments.AsQueryable());
-			_mockDataService.Setup(s => s.Disasters).Returns(disasters.AsQueryable());
+            _mockDataService.Setup(s => s.Commitments).Returns(commitments.AsQueryable());
+            _mockDataService.Setup(s => s.Disasters).Returns(disasters.AsQueryable());
 
-			var startDate = new DateTime(2013, 5, 7);
-			var endDate = new DateTime(2013, 5, 7);
-			_disasterService.AssignToVolunteer(0, 0, startDate, endDate);
+            var startDate = new DateTime(2013, 5, 7);
+            var endDate = new DateTime(2013, 5, 7);
+            _disasterService.AssignToVolunteer(0, 0, startDate, endDate);
 
-			Assert.IsNotNull(createdCommitment);
-			Assert.AreEqual(startDate, createdCommitment.StartDate);
-			Assert.AreEqual(endDate, createdCommitment.EndDate);
-		}
+            Assert.IsNotNull(createdCommitment);
+            Assert.AreEqual(startDate, createdCommitment.StartDate);
+            Assert.AreEqual(endDate, createdCommitment.EndDate);
+        }
 
-		[TestMethod]
-		public void AssignToVolunteer_StartAndEndDateAfterExistingCommitment()
-		{
-			Commitment createdCommitment = null;
-			_mockDataService.Setup(s => s.AddCommitment(It.IsAny<Commitment>()))
-				.Callback<Commitment>(commitment => createdCommitment = commitment);
+        [TestMethod]
+        public void AssignToVolunteer_StartAndEndDateAfterExistingCommitment()
+        {
+            Commitment createdCommitment = null;
+            _mockDataService.Setup(s => s.AddCommitment(It.IsAny<Commitment>()))
+                .Callback<Commitment>(commitment => createdCommitment = commitment);
 
-			var commitments = new List<Commitment>
+            var commitments = new List<Commitment>
 			{
 				new Commitment
 				{
@@ -183,29 +183,29 @@ namespace Services.UnitTest
 					DisasterId = 2
 				}
 			};
-			var disasters = new List<Disaster> { new Disaster { Id = 2, IsActive = true } };
+            var disasters = new List<Disaster> { new Disaster { Id = 2, IsActive = true } };
 
-			_mockDataService.Setup(s => s.Commitments).Returns(commitments.AsQueryable());
-			_mockDataService.Setup(s => s.Disasters).Returns(disasters.AsQueryable());
+            _mockDataService.Setup(s => s.Commitments).Returns(commitments.AsQueryable());
+            _mockDataService.Setup(s => s.Disasters).Returns(disasters.AsQueryable());
 
-			var startDate = new DateTime(2013, 5, 7);
-			var endDate = new DateTime(2013, 5, 7);
-			_disasterService.AssignToVolunteer(0, 0, startDate, endDate);
+            var startDate = new DateTime(2013, 5, 7);
+            var endDate = new DateTime(2013, 5, 7);
+            _disasterService.AssignToVolunteer(0, 0, startDate, endDate);
 
-			Assert.IsNotNull(createdCommitment);
-			Assert.AreEqual(startDate, createdCommitment.StartDate);
-			Assert.AreEqual(endDate, createdCommitment.EndDate);
-		}
+            Assert.IsNotNull(createdCommitment);
+            Assert.AreEqual(startDate, createdCommitment.StartDate);
+            Assert.AreEqual(endDate, createdCommitment.EndDate);
+        }
 
-		[TestMethod]
-		[ExpectedException(typeof(ArgumentException))]
-		public void AssignToVolunteer_StartDateSameAsExistingCommitmentEndDate()
-		{
-			Commitment createdCommitment = null;
-			_mockDataService.Setup(s => s.AddCommitment(It.IsAny<Commitment>()))
-				.Callback<Commitment>(commitment => createdCommitment = commitment);
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void AssignToVolunteer_StartDateSameAsExistingCommitmentEndDate()
+        {
+            Commitment createdCommitment = null;
+            _mockDataService.Setup(s => s.AddCommitment(It.IsAny<Commitment>()))
+                .Callback<Commitment>(commitment => createdCommitment = commitment);
 
-			var commitments = new List<Commitment>
+            var commitments = new List<Commitment>
 			{
 				new Commitment
 				{
@@ -214,23 +214,23 @@ namespace Services.UnitTest
 					DisasterId = 2
 				}
 			};
-			var disasters = new List<Disaster> { new Disaster { Id = 2, IsActive = true } };
+            var disasters = new List<Disaster> { new Disaster { Id = 2, IsActive = true } };
 
-			_mockDataService.Setup(s => s.Commitments).Returns(commitments.AsQueryable());
-			_mockDataService.Setup(s => s.Disasters).Returns(disasters.AsQueryable());
+            _mockDataService.Setup(s => s.Commitments).Returns(commitments.AsQueryable());
+            _mockDataService.Setup(s => s.Disasters).Returns(disasters.AsQueryable());
 
-			_disasterService.AssignToVolunteer(0, 0, new DateTime(2013, 5, 10), new DateTime(2013, 5, 10));
-		}
+            _disasterService.AssignToVolunteer(0, 0, new DateTime(2013, 5, 10), new DateTime(2013, 5, 10));
+        }
 
-		[TestMethod]
-		[ExpectedException(typeof(ArgumentException))]
-		public void AssignToVolunteer_EndDateSameAsExistingCommitmentStartDate()
-		{
-			Commitment createdCommitment = null;
-			_mockDataService.Setup(s => s.AddCommitment(It.IsAny<Commitment>()))
-				.Callback<Commitment>(commitment => createdCommitment = commitment);
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void AssignToVolunteer_EndDateSameAsExistingCommitmentStartDate()
+        {
+            Commitment createdCommitment = null;
+            _mockDataService.Setup(s => s.AddCommitment(It.IsAny<Commitment>()))
+                .Callback<Commitment>(commitment => createdCommitment = commitment);
 
-			var commitments = new List<Commitment>
+            var commitments = new List<Commitment>
 			{
 				new Commitment
 				{
@@ -239,15 +239,15 @@ namespace Services.UnitTest
 					DisasterId = 2
 				}
 			};
-			var disasters = new List<Disaster> { new Disaster { Id = 2, IsActive = true } };
+            var disasters = new List<Disaster> { new Disaster { Id = 2, IsActive = true } };
 
-			_mockDataService.Setup(s => s.Commitments).Returns(commitments.AsQueryable());
-			_mockDataService.Setup(s => s.Disasters).Returns(disasters.AsQueryable());
+            _mockDataService.Setup(s => s.Commitments).Returns(commitments.AsQueryable());
+            _mockDataService.Setup(s => s.Disasters).Returns(disasters.AsQueryable());
 
-			_disasterService.AssignToVolunteer(0, 0, new DateTime(2013, 5, 6), new DateTime(2013, 5, 6));
-		}
+            _disasterService.AssignToVolunteer(0, 0, new DateTime(2013, 5, 6), new DateTime(2013, 5, 6));
+        }
 
-		[TestMethod]
+        [TestMethod]
         public void AssignToVolunteer_Valid()
         {
             Commitment createdCommitment = null;
@@ -294,7 +294,7 @@ namespace Services.UnitTest
             _mockDataService.Setup(s => s.AddCommitment(It.IsAny<Commitment>()))
                 .Callback<Commitment>(commitment => createdCommitment = commitment);
 
-            _disasterService.AssignToVolunteer(disasterId, personId, startDate, endDate);            
+            _disasterService.AssignToVolunteer(disasterId, personId, startDate, endDate);
             Assert.IsNotNull(createdCommitment);
             Assert.AreEqual(createdCommitment.PersonId, personId);
             Assert.AreEqual(createdCommitment.DisasterId, disasterId);
@@ -308,8 +308,8 @@ namespace Services.UnitTest
             // arrange
             var commitmentId = int.MinValue;
             var removeCommitmentByIdMethodCalled = false;
-            _mockDataService.Setup(m => m.RemoveCommitmentById(It.IsAny<int>())).Callback(() => removeCommitmentByIdMethodCalled = true );
-                  
+            _mockDataService.Setup(m => m.RemoveCommitmentById(It.IsAny<int>())).Callback(() => removeCommitmentByIdMethodCalled = true);
+
             // act
             _disasterService.RemoveCommitmentById(commitmentId);
 
@@ -321,7 +321,7 @@ namespace Services.UnitTest
         public void CreateDisaster_Valid()
         {
             // arrange
-            var disaster = new Disaster {Name = "name", IsActive = true};
+            var disaster = new Disaster { Name = "name", IsActive = true };
             Disaster createdDisaster = null;
             _mockDataService.Setup(m => m.AddDisaster(disaster)).Callback<Disaster>(d => createdDisaster = d);
 
@@ -332,6 +332,27 @@ namespace Services.UnitTest
             Assert.AreEqual(disaster.Name, createdDisaster.Name);
             Assert.AreEqual(disaster.IsActive, createdDisaster.IsActive);
             _mockDataService.Verify(m => m.AddDisaster(disaster));
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(Services.Exceptions.DisasterAlreadyExistsException))]
+        public void UpdateDisaster_SameName_ThrowDisasterAlreadyExistsException()
+        {
+            // arrange
+            var dataList = new List<Disaster>{
+                new Disaster {Id= 1, Name = "name", IsActive = true },
+                new Disaster {Id = 2, Name = "name2", IsActive = true }
+            }.AsQueryable();
+
+            _mockDataService.Setup(m => m.Disasters).Returns(dataList);
+
+            var duplicateDisaster = new Disaster { Id = 2, Name = "name2", IsActive = true };
+
+            //Action
+            _disasterService.Create(duplicateDisaster);
+
+            //Assert
+            //Exception should be thrown
         }
 
         [TestMethod]
@@ -353,7 +374,7 @@ namespace Services.UnitTest
         {
             // arrange
             InitializeDisasterCollection(_activeDisaster, _inactiveDisaster);
-            
+
             // act
             var result = _disasterService.GetList();
 
