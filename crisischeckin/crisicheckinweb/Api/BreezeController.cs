@@ -39,7 +39,65 @@ namespace crisicheckinweb.Api
         [HttpGet]
         public Person Person()
         {
-            return Db.Persons.Include(p => p.Commitments).Include("Commitments.Disaster").First(); // TODO: Use the authenticated user to get the real user record.
+            //return Db.Persons.Include(p => p.Commitments).Include("Commitments.Disaster").Single(p => p.UserId == WebSecurity.CurrentUserId);
+            return Db.Persons.Include(p => p.Commitments).Include("Commitments.Disaster").First(); // TODO - deal with user authentication
+        }
+
+        /// <summary>
+        /// Gets the entire collection of clusters
+        /// </summary>
+        [HttpGet]
+        public IQueryable<Cluster> Clusters()
+        {
+            return Db.Clusters;
+        }
+
+        /// <summary>
+        /// Gets the entire collection of disasters
+        /// </summary>
+        [HttpGet]
+        public IQueryable<Disaster> Disasters()
+        {
+            return Db.Disasters;
+        }
+
+        /// <summary>
+        /// Creates a commitment between a person and a disaster for the given start/end dates
+        /// </summary>
+        /// <param name="personId">ID of the person volunteering</param>
+        /// <param name="disasterId">disaster ID</param>
+        /// <param name="startDate">start of the commitment</param>
+        /// <param name="endDate">end of the commitment</param>
+        /// <returns>True if succeeded, false otherwise</returns>
+        [HttpPost]
+        public bool Volunteer(int personId, int disasterId, DateTime startDate, DateTime endDate)
+        {
+            try
+            {
+                Commitment commitment = new Commitment()
+                {
+                    PersonId = personId, // TODO - figure out personId from logged-in user
+                    DisasterId = disasterId,
+                    StartDate = startDate,
+                    EndDate = endDate
+                };
+                _contextProvider.CreateEntityInfo(new Commitment(), Breeze.ContextProvider.EntityState.Added);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Returns all commitments for the given person
+        /// </summary>
+        /// <param name="personId">ID of the person for which to return commitments</param>
+        [HttpGet]
+        public IQueryable<Commitment> Commitments(int personId)
+        {
+            return Db.Commitments.Where(c => c.PersonId == personId); // TODO - figure out personId from logged-in user
         }
 
         [HttpPost]
