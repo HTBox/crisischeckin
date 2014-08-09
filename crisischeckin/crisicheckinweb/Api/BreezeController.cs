@@ -74,6 +74,7 @@ namespace crisicheckinweb.Api
         {
             try
             {
+                // TODO - should we allow more than one commitment per person per disaster?
                 Commitment commitment = new Commitment()
                 {
                     PersonId = personId, // TODO - figure out personId from logged-in user
@@ -99,6 +100,45 @@ namespace crisicheckinweb.Api
         {
             return Db.Commitments.Where(c => c.PersonId == personId); // TODO - figure out personId from logged-in user
         }
+
+        /// <summary>
+        /// Checks the user in to the given disaster
+        /// </summary>
+        /// <param name="personId">ID of the person to check in</param>
+        /// <param name="disasterId">ID of the disaster to which the person is committed</param>
+        /// <returns>True if check in succeeded; false otherwise</returns>
+        [HttpPost]
+        public bool CheckIn(int personId, int disasterId)
+        {
+            // TODO - according to Jon's gist, this should also fail if user is already checked in
+            //     to ANY commitment, not just the one associated with disasterId
+
+            IEnumerable<Commitment> activeCommitments = Db.Commitments
+                .Where(c => c.PersonId == personId)
+                .Where(c => c.DisasterId == disasterId);
+            if (activeCommitments.Count() != 1) { return false; }
+            Commitment commitment = activeCommitments.First();
+            if (commitment.PersonIsCheckedIn)
+            {
+                return false; // already checked in
+            }
+            else
+            {
+                return commitment.PersonIsCheckedIn = true;
+            }
+        }
+
+        //[HttpPost]
+        //public bool CheckOut(int personId)
+        //{
+        //    // TODO - get the disaster id
+
+        //    IEnumerable<Commitment> activeCommitments = Db.Commitments
+        //       .Where(c => c.PersonId == personId)
+        //       .Where(c => c.DisasterId == disasterId);
+        //    if (activeCommitments.Count() != 1) { return false; }
+        //    Commitment commitment = activeCommitments.First();
+        //}
 
         [HttpPost]
         public SaveResult SaveChanges(JObject saveBundle)
