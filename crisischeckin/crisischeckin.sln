@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "crisicheckinweb", "crisicheckinweb\crisicheckinweb.csproj", "{212DEAC4-D307-4480-94CE-2951E22B13F8}"
 EndProject
@@ -21,6 +21,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{85D45B1B-D669-4370-8D5C-60D2350C5544}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcceptanceTests", "AcceptanceTests\AcceptanceTests.csproj", "{12248512-C6DE-4B1B-8560-D8A09911A300}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mobile", "mobile\CrisisCheckin.Mobile\Mobile.csproj", "{81FCB0A8-8838-4EB3-B32D-54945BF322B0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -56,6 +58,10 @@ Global
 		{12248512-C6DE-4B1B-8560-D8A09911A300}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{12248512-C6DE-4B1B-8560-D8A09911A300}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{12248512-C6DE-4B1B-8560-D8A09911A300}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81FCB0A8-8838-4EB3-B32D-54945BF322B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81FCB0A8-8838-4EB3-B32D-54945BF322B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81FCB0A8-8838-4EB3-B32D-54945BF322B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81FCB0A8-8838-4EB3-B32D-54945BF322B0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

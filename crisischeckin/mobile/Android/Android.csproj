@@ -78,7 +78,7 @@
     <Content Include="Properties\AndroidManifest.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Htbox.CrisisCheckin\Htbox.CrisisCheckin.csproj">
+    <ProjectReference Include="..\CrisisCheckin.Mobile\Mobile.csproj">
       <Name>Htbox.CrisisCheckin</Name>
       <Project>{81FCB0A8-8838-4EB3-B32D-54945BF322B0}</Project>
     </ProjectReference>
