@@ -34,7 +34,7 @@ namespace crisicheckinweb.Controllers
             {
                 return View("Create", _disasterSvc.Get(disasterId));
             }
-            return View("Create", new Disaster {IsActive = true});
+            return View("Create", new Disaster { IsActive = true });
         }
 
         [HttpPost]
@@ -56,7 +56,15 @@ namespace crisicheckinweb.Controllers
                 }
                 else
                 {
-                    _disasterSvc.Update(disaster.Id, disaster.Name, disaster.IsActive);
+                    try
+                    {
+                        _disasterSvc.Update(disaster.Id, disaster.Name, disaster.IsActive);
+                    }
+                    catch (DisasterAlreadyExistsException)
+                    {
+                        ModelState.AddModelError("Name", "A Disaster already exists with that Name!");
+                        return View("Create", disaster);
+                    }
                 }
 
                 return Redirect("/Disaster/List");
@@ -83,7 +91,7 @@ namespace crisicheckinweb.Controllers
                     {
                         ModelState.AddModelError("Name", "A Disaster already exists with that Name!");
                         return View("Create", disaster);
-                    }   
+                    }
                 }
                 else
                 {

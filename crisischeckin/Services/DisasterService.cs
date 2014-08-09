@@ -77,6 +77,9 @@ namespace Services
 
         public void Update(int disasterId, string disasterName, bool isActive)
         {
+
+            if (_dataService.Disasters.Any(d => d.Name == disasterName)) throw new DisasterAlreadyExistsException();
+
             var origDisaster = _dataService.Disasters.SingleOrDefault(d => d.Id.Equals(disasterId));
 
             if (origDisaster == null) return;
