@@ -102,43 +102,56 @@ namespace crisicheckinweb.Api
         }
 
         /// <summary>
-        /// Checks the user in to the given disaster
+        /// Checks the user in to the given commitment
         /// </summary>
-        /// <param name="personId">ID of the person to check in</param>
-        /// <param name="disasterId">ID of the disaster to which the person is committed</param>
+        /// <param name="commitmentId">ID of the commitment for which to check in user</param>
         /// <returns>True if check in succeeded; false otherwise</returns>
         [HttpPost]
-        public bool CheckIn(int personId, int disasterId)
+        public bool CheckIn(int commitmentId)
         {
-            // TODO - according to Jon's gist, this should also fail if user is already checked in
-            //     to ANY commitment, not just the one associated with disasterId
-
-            IEnumerable<Commitment> activeCommitments = Db.Commitments
-                .Where(c => c.PersonId == personId)
-                .Where(c => c.DisasterId == disasterId);
-            if (activeCommitments.Count() != 1) { return false; }
-            Commitment commitment = activeCommitments.First();
-            if (commitment.PersonIsCheckedIn)
+            try
             {
-                return false; // already checked in
+                Commitment commitment = Db.Commitments.Single(c => c.Id == commitmentId);
+                if (commitment.PersonIsCheckedIn)
+                {
+                    return false; // already checked in
+                }
+                else
+                {
+                    return commitment.PersonIsCheckedIn = true;
+                }
             }
-            else
+            catch
             {
-                return commitment.PersonIsCheckedIn = true;
+                return false;
             }
         }
 
-        //[HttpPost]
-        //public bool CheckOut(int personId)
-        //{
-        //    // TODO - get the disaster id
-
-        //    IEnumerable<Commitment> activeCommitments = Db.Commitments
-        //       .Where(c => c.PersonId == personId)
-        //       .Where(c => c.DisasterId == disasterId);
-        //    if (activeCommitments.Count() != 1) { return false; }
-        //    Commitment commitment = activeCommitments.First();
-        //}
+        /// <summary>
+        /// Checks the user out of the given commitment
+        /// </summary>
+        /// <param name="commitmentId">ID of the commitment for which to check out user</param>
+        /// <returns>True if check out succeeded; false otherwise</returns>
+        [HttpPost]
+        public bool CheckOut(int commitmentId)
+        {
+            try
+            {
+                Commitment commitment = Db.Commitments.Single(c => c.Id == commitmentId);
+                if (!commitment.PersonIsCheckedIn)
+                {
+                    return false; // user wasn't checked in
+                }
+                else
+                {
+                    return !(commitment.PersonIsCheckedIn = false);
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
 
         [HttpPost]
         public SaveResult SaveChanges(JObject saveBundle)
