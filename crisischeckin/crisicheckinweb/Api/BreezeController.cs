@@ -68,27 +68,18 @@ namespace crisicheckinweb.Api
         /// <param name="disasterId">disaster ID</param>
         /// <param name="startDate">start of the commitment</param>
         /// <param name="endDate">end of the commitment</param>
-        /// <returns>True if succeeded, false otherwise</returns>
         [HttpPost]
-        public bool Volunteer(int personId, int disasterId, DateTime startDate, DateTime endDate)
+        public void Volunteer(int personId, int disasterId, DateTime startDate, DateTime endDate)
         {
-            try
+            Commitment commitment = new Commitment()
             {
-                // TODO - should we allow more than one commitment per person per disaster?
-                Commitment commitment = new Commitment()
-                {
-                    PersonId = personId, // TODO - figure out personId from logged-in user
-                    DisasterId = disasterId,
-                    StartDate = startDate,
-                    EndDate = endDate
-                };
-                _contextProvider.CreateEntityInfo(new Commitment(), Breeze.ContextProvider.EntityState.Added);
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
+                PersonId = personId, // TODO - figure out personId from logged-in user
+                DisasterId = disasterId,
+                StartDate = startDate,
+                EndDate = endDate
+            };
+            _contextProvider.CreateEntityInfo(new Commitment(), Breeze.ContextProvider.EntityState.Added);
+            Db.SaveChanges();
         }
 
         /// <summary>
@@ -98,59 +89,31 @@ namespace crisicheckinweb.Api
         [HttpGet]
         public IQueryable<Commitment> Commitments(int personId)
         {
-            return Db.Commitments.Where(c => c.PersonId == personId); // TODO - figure out personId from logged-in user
+            return Db.Commitments.Where(c => c.PersonId == personId);
         }
 
         /// <summary>
         /// Checks the user in to the given commitment
         /// </summary>
         /// <param name="commitmentId">ID of the commitment for which to check in user</param>
-        /// <returns>True if check in succeeded; false otherwise</returns>
         [HttpPost]
-        public bool CheckIn(int commitmentId)
+        public void CheckIn(int commitmentId)
         {
-            try
-            {
-                Commitment commitment = Db.Commitments.Single(c => c.Id == commitmentId);
-                if (commitment.PersonIsCheckedIn)
-                {
-                    return false; // already checked in
-                }
-                else
-                {
-                    return commitment.PersonIsCheckedIn = true;
-                }
-            }
-            catch
-            {
-                return false;
-            }
+            Commitment commitment = Db.Commitments.Single(c => c.Id == commitmentId);
+            commitment.PersonIsCheckedIn = true;
+            Db.SaveChanges();
         }
 
         /// <summary>
         /// Checks the user out of the given commitment
         /// </summary>
         /// <param name="commitmentId">ID of the commitment for which to check out user</param>
-        /// <returns>True if check out succeeded; false otherwise</returns>
         [HttpPost]
-        public bool CheckOut(int commitmentId)
+        public void CheckOut(int commitmentId)
         {
-            try
-            {
-                Commitment commitment = Db.Commitments.Single(c => c.Id == commitmentId);
-                if (!commitment.PersonIsCheckedIn)
-                {
-                    return false; // user wasn't checked in
-                }
-                else
-                {
-                    return !(commitment.PersonIsCheckedIn = false);
-                }
-            }
-            catch
-            {
-                return false;
-            }
+            Commitment commitment = Db.Commitments.Single(c => c.Id == commitmentId);
+            commitment.PersonIsCheckedIn = false;
+            Db.SaveChanges();
         }
 
         [HttpPost]
