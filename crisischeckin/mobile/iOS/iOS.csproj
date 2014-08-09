@@ -88,12 +88,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Htbox.CrisisCheckin\Htbox.CrisisCheckin.csproj">
-      <Name>Htbox.CrisisCheckin</Name>
-      <Project>{81FCB0A8-8838-4EB3-B32D-54945BF322B0}</Project>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

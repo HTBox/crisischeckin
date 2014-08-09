@@ -77,12 +77,6 @@
   <ItemGroup>
     <Content Include="Properties\AndroidManifest.xml" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\CrisisCheckin.Mobile\Mobile.csproj">
-      <Name>Htbox.CrisisCheckin</Name>
-      <Project>{81FCB0A8-8838-4EB3-B32D-54945BF322B0}</Project>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\..\packages\Xamarin.Forms.1.0.6186\build\portable-win+net45+wp80+MonoAndroid10+MonoTouch10\Xamarin.Forms.targets" Condition="Exists('..\..\packages\Xamarin.Forms.1.0.6186\build\portable-win+net45+wp80+MonoAndroid10+MonoTouch10\Xamarin.Forms.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
@@ -98,4 +92,10 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <ItemGroup>
+    <ProjectReference Include="..\MobileCore\MobileCore.csproj">
+      <Project>{81FCB0A8-8838-4EB3-B32D-54945BF322B0}</Project>
+      <Name>MobileCore</Name>
+    </ProjectReference>
+  </ItemGroup>
 </Project>
