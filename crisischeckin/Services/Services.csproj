@@ -48,6 +48,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdminService.cs" />
+    <Compile Include="Api\ApiService.cs" />
+    <Compile Include="Api\Dtos\DtoFactory.cs" />
+    <Compile Include="Api\Dtos\Dtos.cs" />
+    <Compile Include="Api\Responses\ClustersResponse.cs" />
+    <Compile Include="Api\Responses\ServiceResponse.cs" />
     <Compile Include="ClusterCoordinatorService.cs" />
     <Compile Include="ClusterService.cs" />
     <Compile Include="DataService.cs" />
@@ -61,6 +66,7 @@
     <Compile Include="Interfaces\IMessageService.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Interfaces\IApiService.cs" />
     <Compile Include="MessageCoordinator.cs" />
     <Compile Include="MessageRecipient.cs" />
     <Compile Include="MessageService.cs" />

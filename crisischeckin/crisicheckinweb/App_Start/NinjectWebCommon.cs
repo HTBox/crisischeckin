@@ -1,4 +1,5 @@
 using System.Net.Mail;
+using System.Web.Http;
 using Models;
 
 [assembly: WebActivator.PreApplicationStartMethod(typeof(crisicheckinweb.App_Start.NinjectWebCommon), "Start")]
@@ -14,6 +15,8 @@ namespace crisicheckinweb.App_Start
     using Ninject.Web.Common;
     using Services;
     using Services.Interfaces;
+    using Services.Api;
+    using WebApiContrib.IoC.Ninject;
 
     public static class NinjectWebCommon
     {
@@ -47,6 +50,8 @@ namespace crisicheckinweb.App_Start
             kernel.Bind<Func<IKernel>>().ToMethod(ctx => () => new Bootstrapper().Kernel);
             kernel.Bind<IHttpModule>().To<HttpApplicationInitializationHttpModule>();
 
+            GlobalConfiguration.Configuration.DependencyResolver = new NinjectResolver(kernel);
+
             RegisterServices(kernel);
             return kernel;
         }
@@ -68,6 +73,7 @@ namespace crisicheckinweb.App_Start
             kernel.Bind<IMessageSender>().To<SmtpMessageSender>().InRequestScope();
             kernel.Bind<IMessageCoordinator>().To<MessageCoordinator>().InRequestScope();
             kernel.Bind<IClusterCoordinatorService>().To<ClusterCoordinatorService>().InRequestScope();
+            kernel.Bind<IApiService>().To<ApiService>().InRequestScope();
             kernel.Bind<Func<SmtpClient>>().ToMethod(c => () => new SmtpClient()).InRequestScope();
 #if DEBUG
             kernel.Bind<IMessageSender>().To<DebugMessageSender>();
