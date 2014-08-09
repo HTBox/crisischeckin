@@ -114,3 +114,4 @@ UpgradeLog*.XML
 
 #Xamarin
 *.userpref
+*.userprefs
