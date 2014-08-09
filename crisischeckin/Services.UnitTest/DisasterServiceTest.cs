@@ -100,14 +100,14 @@ namespace Services.UnitTest
         public void AssignToVolunteer_StartAndEndDateSpanExistingCommitment()
         {
             var commitments = new List<Commitment>
-			{
-				new Commitment
-				{
-					StartDate = new DateTime(2013, 5, 7),
-					EndDate = new DateTime(2013, 5, 8),
-					DisasterId = 2
-				}
-			};
+            {
+                new Commitment
+                {
+                    StartDate = new DateTime(2013, 5, 7),
+                    EndDate = new DateTime(2013, 5, 8),
+                    DisasterId = 2
+                }
+            };
             var disasters = new List<Disaster> { new Disaster { Id = 2, IsActive = true } };
 
             _mockDataService.Setup(s => s.Commitments).Returns(commitments.AsQueryable());
@@ -121,14 +121,14 @@ namespace Services.UnitTest
         public void AssignToVolunteer_StartAndEndDateAreWithinExistingCommitment()
         {
             var commitments = new List<Commitment>
-			{
-				new Commitment
-				{
-					StartDate = new DateTime(2013, 5, 6),
-					EndDate = new DateTime(2013, 5, 8),
-					DisasterId = 2
-				}
-			};
+            {
+                new Commitment
+                {
+                    StartDate = new DateTime(2013, 5, 6),
+                    EndDate = new DateTime(2013, 5, 8),
+                    DisasterId = 2
+                }
+            };
             var disasters = new List<Disaster> { new Disaster { Id = 2, IsActive = true } };
 
             _mockDataService.Setup(s => s.Commitments).Returns(commitments.AsQueryable());
@@ -145,14 +145,14 @@ namespace Services.UnitTest
                 .Callback<Commitment>(commitment => createdCommitment = commitment);
 
             var commitments = new List<Commitment>
-			{
-				new Commitment
-				{
-					StartDate = new DateTime(2013, 5, 8),
-					EndDate = new DateTime(2013, 5, 8),
-					DisasterId = 2
-				}
-			};
+            {
+                new Commitment
+                {
+                    StartDate = new DateTime(2013, 5, 8),
+                    EndDate = new DateTime(2013, 5, 8),
+                    DisasterId = 2
+                }
+            };
             var disasters = new List<Disaster> { new Disaster { Id = 2, IsActive = true } };
 
             _mockDataService.Setup(s => s.Commitments).Returns(commitments.AsQueryable());
@@ -175,14 +175,14 @@ namespace Services.UnitTest
                 .Callback<Commitment>(commitment => createdCommitment = commitment);
 
             var commitments = new List<Commitment>
-			{
-				new Commitment
-				{
-					StartDate = new DateTime(2013, 5, 6),
-					EndDate = new DateTime(2013, 5, 6),
-					DisasterId = 2
-				}
-			};
+            {
+                new Commitment
+                {
+                    StartDate = new DateTime(2013, 5, 6),
+                    EndDate = new DateTime(2013, 5, 6),
+                    DisasterId = 2
+                }
+            };
             var disasters = new List<Disaster> { new Disaster { Id = 2, IsActive = true } };
 
             _mockDataService.Setup(s => s.Commitments).Returns(commitments.AsQueryable());
@@ -206,14 +206,14 @@ namespace Services.UnitTest
                 .Callback<Commitment>(commitment => createdCommitment = commitment);
 
             var commitments = new List<Commitment>
-			{
-				new Commitment
-				{
-					StartDate = new DateTime(2013, 5, 6),
-					EndDate = new DateTime(2013, 5, 10),
-					DisasterId = 2
-				}
-			};
+            {
+                new Commitment
+                {
+                    StartDate = new DateTime(2013, 5, 6),
+                    EndDate = new DateTime(2013, 5, 10),
+                    DisasterId = 2
+                }
+            };
             var disasters = new List<Disaster> { new Disaster { Id = 2, IsActive = true } };
 
             _mockDataService.Setup(s => s.Commitments).Returns(commitments.AsQueryable());
@@ -231,14 +231,14 @@ namespace Services.UnitTest
                 .Callback<Commitment>(commitment => createdCommitment = commitment);
 
             var commitments = new List<Commitment>
-			{
-				new Commitment
-				{
-					StartDate = new DateTime(2013, 5, 6),
-					EndDate = new DateTime(2013, 5, 10),
-					DisasterId = 2
-				}
-			};
+            {
+                new Commitment
+                {
+                    StartDate = new DateTime(2013, 5, 6),
+                    EndDate = new DateTime(2013, 5, 10),
+                    DisasterId = 2
+                }
+            };
             var disasters = new List<Disaster> { new Disaster { Id = 2, IsActive = true } };
 
             _mockDataService.Setup(s => s.Commitments).Returns(commitments.AsQueryable());

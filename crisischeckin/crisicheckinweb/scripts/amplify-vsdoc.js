@@ -1,3 +1,12 @@
+/*!
+ * Amplify 1.1.2
+ *
+ * Copyright 2011 - 2013 appendTo LLC. (http://appendto.com/team)
+ * Dual licensed under the MIT or GPL licenses.
+ * http://appendto.com/open-source-licenses
+ *
+ * http://amplifyjs.com
+ */
 /// >> amplify.request
 
 var amplify = {
@@ -97,6 +106,7 @@ amplify.subscribe = function( topic, callback ) {
 amplify.unsubscribe = function( topic, callback ) {
 	/// <summary>Remove a subscription.</summary>
 	/// <param name="topic" type="String">The topic being unsubscribed from.</param>
+	/// <param name="context" type="Object" optional="true">If provided, only unsubscribes subscriptions that were bound with this context.</param>
 	/// <param name="callback" type="Function">The callback that was originally subscribed.</param>
 };
 

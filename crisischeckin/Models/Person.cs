@@ -1,4 +1,5 @@
-﻿namespace Models
+﻿using System.Collections.Generic;
+namespace Models
 {
     public class Person
     {
@@ -13,5 +14,6 @@
         public string FullName { get { return LastName + ", " + FirstName; } }
 
         public virtual Cluster Cluster { get; set; }
+        public virtual ICollection<Commitment> Commitments { get; set; }
     }
 }
