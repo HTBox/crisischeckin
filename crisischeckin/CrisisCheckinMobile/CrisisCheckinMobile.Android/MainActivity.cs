@@ -12,7 +12,11 @@ using Xamarin.Forms.Platform.Android;
 
 namespace CrisisCheckinMobile.Droid
 {
-    [Activity(Label = "CrisisCheckinMobile", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
+    [Activity(
+        Label = "CrisisCheckinMobile",
+        MainLauncher = true,
+        LaunchMode = LaunchMode.SingleTop,
+        ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     [IntentFilter( // custom URI format: crisischeckin://CrisisCheckinMobile.Android
         new[] { Intent.ActionMain },
         Categories = new[] { Intent.CategoryLauncher },
@@ -27,6 +31,14 @@ namespace CrisisCheckinMobile.Droid
             Xamarin.Forms.Forms.Init(this, bundle);
 
             SetPage(App.GetMainPage());
+        }
+
+        protected override void OnNewIntent(Intent intent)
+        {
+            base.OnNewIntent(intent);
+
+            var disasterId = intent.Data.GetQueryParameter("disaster");
+            // TODO - do something with this disaster ID
         }
     }
 }
