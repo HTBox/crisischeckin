@@ -4,12 +4,12 @@ using System;
 using System.IO;
 using Xamarin.Forms;
 
-[assembly: Dependency (typeof (SaveAndLoad))]
+[assembly: Dependency (typeof (SaveAndLoad_Droid))]
 namespace CrisisCheckinMobile.Droid
 {
-	public class SaveAndLoad : ISaveAndLoad
+	public class SaveAndLoad_Droid : ISaveAndLoad
 	{
-		public SaveAndLoad() {}
+		public SaveAndLoad_Droid() {}
 
 		public void SaveText(string filename, string text)
 		{
