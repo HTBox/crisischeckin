@@ -11,8 +11,12 @@ namespace crisicheckinweb
     {
         public static void Initialize()
         {
-            //Database.SetInitializer<CrisisCheckin>(
-            //    new MigrateDatabaseToLatestVersion<CrisisCheckin, Models.Migrations.Configuration>());
+            Database.SetInitializer<CrisisCheckin>(new MigrateDatabaseToLatestVersion<CrisisCheckin, Models.Migrations.Configuration>());
+
+            using (var db = new CrisisCheckin()) {
+                db.Database.Initialize(false);
+                Models.Migrations.Configuration.SeedIfNotEmpty(db);
+            }
         }
     }
 }

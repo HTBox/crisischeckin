@@ -1,8 +1,8 @@
-﻿using System;
+﻿using crisicheckinweb.Api;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Models;
-using crisicheckinweb.Api;
 using Services;
+using System.Linq;
 
 namespace AcceptanceTests.ClusterCoordinatorFeature
 {
@@ -26,8 +26,8 @@ namespace AcceptanceTests.ClusterCoordinatorFeature
         {
             var db = new CrisisCheckin();
 
-            var controller = new BreezeController(db);
-            Assert.AreEqual(_person.PhoneNumber, controller.Person().PhoneNumber);
+            var controller = new EntitiesController(db);
+            Assert.AreEqual(_person.PhoneNumber, controller.Persons().First().PhoneNumber);
         }
     }
 }

@@ -3,7 +3,10 @@ namespace Models.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class PersonCommitments : DbMigration
+    /// <summary>
+    /// An initial migration consisting solely of data in the .edmx file.
+    /// </summary>
+    public partial class Initial : DbMigration
     {
         public override void Up()
         {

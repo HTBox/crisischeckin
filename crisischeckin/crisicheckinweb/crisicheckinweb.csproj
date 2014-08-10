@@ -191,7 +191,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api\BaseApiController.cs" />
-    <Compile Include="Api\BreezeController.cs" />
+    <Compile Include="Api\EntitiesController.cs" />
     <Compile Include="Api\ClustersController.cs" />
     <Compile Include="Api\DisasterController.cs" />
     <Compile Include="App_Start\BreezeWebApiConfig.cs" />

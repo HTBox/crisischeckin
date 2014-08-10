@@ -35,12 +35,24 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Breeze.Sharp">
+      <HintPath>..\packages\Breeze.Sharp.0.6.0.2\lib\portable-net45+wp80+win\Breeze.Sharp.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Data.Edm.Portable">
+      <HintPath>..\packages\Breeze.Sharp.0.6.0.2\lib\portable-net45+wp80+win\Microsoft.Data.Edm.Portable.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Data.OData.Portable">
+      <HintPath>..\packages\Breeze.Sharp.0.6.0.2\lib\portable-net45+wp80+win\Microsoft.Data.OData.Portable.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Data.Services.Client.Portable">
+      <HintPath>..\packages\Breeze.Sharp.0.6.0.2\lib\portable-net45+wp80+win\Microsoft.Data.Services.Client.Portable.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -52,6 +64,9 @@
     <Reference Include="System.Net.Http.Formatting, Version=5.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.1.0\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Spatial.Portable">
+      <HintPath>..\packages\Breeze.Sharp.0.6.0.2\lib\portable-net45+wp80+win\System.Spatial.Portable.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Http, Version=5.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -73,6 +88,7 @@
   <ItemGroup>
     <Compile Include="ClusterCoordinatorFeature\DataAccessHelper.cs" />
     <Compile Include="ClusterCoordinatorFeature\Can_access_person.cs" />
+    <Compile Include="Mobile\ClientModel.cs" />
     <Compile Include="With_an_empty_database_environment.cs" />
     <Compile Include="ClusterCoordinatorFeature\A_person_can_be_assigned_as_a_cluster_coordinator_for_a_disaster.cs" />
     <Compile Include="ClusterCoordinatorFeature\A_person_can_be_unassigned_as_a_cluster_coordinator_for_a_disaster.cs" />
@@ -87,6 +103,10 @@
     <ProjectReference Include="..\crisicheckinweb\crisicheckinweb.csproj">
       <Project>{212deac4-d307-4480-94ce-2951e22b13f8}</Project>
       <Name>crisicheckinweb</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CrisisCheckinMobile\CrisisCheckinMobile\CrisisCheckinMobile.csproj">
+      <Project>{37dd4f16-62b1-4770-adaa-2ea781d401ba}</Project>
+      <Name>CrisisCheckinMobile</Name>
     </ProjectReference>
     <ProjectReference Include="..\Models\Models.csproj">
       <Project>{3FD36CF5-7D79-4505-A0BB-12E35A613D88}</Project>

@@ -55,21 +55,9 @@
     <Compile Include="Commitment.cs" />
     <Compile Include="CrisisCheckin.cs" />
     <Compile Include="Disaster.cs" />
-    <Compile Include="Migrations\201308111603396_InitalDBCreation.cs" />
-    <Compile Include="Migrations\201308111603396_InitalDBCreation.Designer.cs">
-      <DependentUpon>201308111603396_InitalDBCreation.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201308111819397_AddClusters.cs" />
-    <Compile Include="Migrations\201308111819397_AddClusters.Designer.cs">
-      <DependentUpon>201308111819397_AddClusters.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201401260810326_ClusterCoordinator.cs" />
-    <Compile Include="Migrations\201401260810326_ClusterCoordinator.Designer.cs">
-      <DependentUpon>201401260810326_ClusterCoordinator.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201408091919213_PersonCommitments.cs" />
-    <Compile Include="Migrations\201408091919213_PersonCommitments.Designer.cs">
-      <DependentUpon>201408091919213_PersonCommitments.cs</DependentUpon>
+    <Compile Include="Migrations\201408101741031_Initial.cs" />
+    <Compile Include="Migrations\201408101741031_Initial.Designer.cs">
+      <DependentUpon>201408101741031_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Person.cs" />
@@ -89,21 +77,12 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201308111603396_InitalDBCreation.resx">
-      <DependentUpon>201308111603396_InitalDBCreation.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201308111819397_AddClusters.resx">
-      <DependentUpon>201308111819397_AddClusters.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201401260810326_ClusterCoordinator.resx">
-      <DependentUpon>201401260810326_ClusterCoordinator.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201408091919213_PersonCommitments.resx">
-      <DependentUpon>201408091919213_PersonCommitments.cs</DependentUpon>
-    </EmbeddedResource>
+    <Content Include="Migrations\DefaultData.sql.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Migrations\DefaultData.sql.txt" />
+    <EmbeddedResource Include="Migrations\201408101741031_Initial.resx">
+      <DependentUpon>201408101741031_Initial.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

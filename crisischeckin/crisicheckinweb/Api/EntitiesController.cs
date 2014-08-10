@@ -16,13 +16,13 @@ namespace crisicheckinweb.Api
     /// Provides entity view models to the web application.
     /// </summary>
     [BreezeController]
-    public class BreezeController : ApiController
+    public class EntitiesController : ApiController
     {
         readonly CrisisCheckinContextProvider _contextProvider;
 
         CrisisCheckin Db { get { return _contextProvider.Context; } }
 
-        public BreezeController(CrisisCheckin db)
+        public EntitiesController(CrisisCheckin db)
         {
              _contextProvider = new CrisisCheckinContextProvider(db);
         }
@@ -37,10 +37,9 @@ namespace crisicheckinweb.Api
         /// Gets the basic info for the logged in user.
         /// </summary>
         [HttpGet]
-        public Person Person()
+        public IQueryable<Person> Persons()
         {
-            //return Db.Persons.Include(p => p.Commitments).Include("Commitments.Disaster").Single(p => p.UserId == WebSecurity.CurrentUserId);
-            return Db.Persons.Include(p => p.Commitments).Include("Commitments.Disaster").First(); // TODO - deal with user authentication
+            return Db.Persons.Include(p => p.Commitments).Include("Commitments.Disaster"); // TODO - deal with user authentication: add Where(p => p.UserId == WebSecurity.CurrentUserId);
         }
 
         /// <summary>
