@@ -1,8 +1,8 @@
-﻿using System;
+﻿using CrisisCheckinMobile.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
 using Xamarin.Forms;
 
 namespace CrisisCheckinMobile
@@ -21,18 +21,19 @@ namespace CrisisCheckinMobile
 
         public static Page GetMainPage()
         {
-            NavigationPage mainPage;
-            if (string.IsNullOrWhiteSpace(AuthToken)) {
-                mainPage = new NavigationPage(new LoginPage());
-            } else {
-                mainPage = new NavigationPage(new DisasterListPage());
-            }
+            //NavigationPage mainPage;
+            //if (string.IsNullOrWhiteSpace(AuthToken)) {
+            //    mainPage = new NavigationPage(new LoginPage());
+            //} else {
+            //    mainPage = new NavigationPage(new DisasterListPage());
+            //}
 
-            if (Commitment != null) {
-                mainPage.Navigation.PushAsync(new CommitmentPage());
-            }
+            //if (Commitment != null) {
+            //    mainPage.Navigation.PushAsync(new CommitmentPage());
+            //}
 
-            return mainPage;
+            //return mainPage;
+            return null;
         }
 
 
