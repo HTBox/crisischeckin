@@ -4,20 +4,18 @@ using Xamarin.Forms;
 
 namespace CrisisCheckinMobile.SaveLoad
 {
-	public class Serialize
+	public static class Serialize
 	{
-		public Serialize() { }
-
-		public void SaveObject(string filename, Object obj)
+		public static void SaveObject<T>(string filename, T obj)
 		{
 			string text = JsonConvert.SerializeObject(obj);
 			DependencyService.Get<ISaveAndLoad>().SaveText(filename, text);
 		}
 
-		public Object LoadObject(string filename)
+		public static T LoadObject<T>(string filename)
 		{
 			string text = DependencyService.Get<ISaveAndLoad>().LoadText(filename);
-			return JsonConvert.DeserializeObject<Object>(text);
+			return JsonConvert.DeserializeObject<T>(text);
 		}
 	}
 }
