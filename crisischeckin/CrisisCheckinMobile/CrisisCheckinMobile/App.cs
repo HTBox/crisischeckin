@@ -9,9 +9,6 @@ namespace CrisisCheckinMobile
 {
     public class App
     {
-//		var tabbedPage = new TabbedPage {
-//			BackgroundColor = Color.FromHex ("4f2c1d"),
-
 		public static string AuthToken { get; set; }
 		public static Committment Committment { get; set; }
 		public static string BackIcon = "";
@@ -32,7 +29,7 @@ namespace CrisisCheckinMobile
 			}
 
 			if (Committment != null) {
-				mainPage.Navigation.PushAsync (new DisasterCommittmentPage ());
+				mainPage.Navigation.PushAsync (new DisasterCommittmentPage (Committment));
 			}
 
 			return mainPage;
@@ -42,7 +39,4 @@ namespace CrisisCheckinMobile
 
     }
 
-	public class Committment
-	{
-	}
 }
