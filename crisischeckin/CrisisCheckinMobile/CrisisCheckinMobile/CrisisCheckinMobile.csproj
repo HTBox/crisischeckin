@@ -34,14 +34,21 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ClientModel.cs" />
+    <Compile Include="CommitmentPage.cs" />
+    <Compile Include="Models\Cluster.cs" />
+    <Compile Include="Models\ClusterCoordinator.cs" />
+    <Compile Include="Models\ClusterCoordinatorEvents.cs" />
+    <Compile Include="Models\ClusterCoordinatorLog.cs" />
+    <Compile Include="Models\Commitment.cs" />
+    <Compile Include="Models\Disaster.cs" />
+    <Compile Include="Models\Person.cs" />
+    <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SaveLoad\Serialize.cs" />
     <Compile Include="SaveLoad\ISaveAndLoad.cs" />
     <Compile Include="LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="DisasterCommittmentPage.xaml.cs">
-      <DependentUpon>DisasterCommittmentPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="DisasterListPage.xaml.cs">
       <DependentUpon>DisasterListPage.xaml</DependentUpon>
@@ -88,9 +95,6 @@
   -->
   <ItemGroup>
     <EmbeddedResource Include="LoginPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DisasterCommittmentPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="DisasterListPage.xaml">
