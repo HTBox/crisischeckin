@@ -9,7 +9,6 @@
     <RootNamespace>CrisisCheckinMobile.iOS</RootNamespace>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
     <NuGetPackageImportStamp>61840eb3</NuGetPackageImportStamp>
-    <AssemblyName>FormsTemplateiOS</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
     <DebugSymbols>true</DebugSymbols>
