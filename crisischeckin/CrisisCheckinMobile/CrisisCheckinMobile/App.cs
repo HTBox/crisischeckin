@@ -1,4 +1,5 @@
-﻿using CrisisCheckinMobile.Models;
+﻿using Breeze.Sharp;
+using CrisisCheckinMobile.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,8 +20,12 @@ namespace CrisisCheckinMobile
         public static readonly Color LowLightColor = Color.FromHex("ceb888");
         public static readonly Color TextColor = Color.White;
 
+        public static readonly ClientModel ClientModel = new ClientModel(new EntityManager("http://localhost:2077/Breeze/Entities"));
+
         public static Page GetMainPage()
         {
+            return new CommitmentPage(ClientModel.Person.Commitments[0]);
+
             //NavigationPage mainPage;
             //if (string.IsNullOrWhiteSpace(AuthToken)) {
             //    mainPage = new NavigationPage(new LoginPage());
@@ -33,7 +38,6 @@ namespace CrisisCheckinMobile
             //}
 
             //return mainPage;
-            return null;
         }
 
 

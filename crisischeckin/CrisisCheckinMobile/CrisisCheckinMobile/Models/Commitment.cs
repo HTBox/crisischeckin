@@ -11,8 +11,19 @@ namespace CrisisCheckinMobile.Models
         public DateTime EndDate { get { return GetValue<DateTime>(); } set { SetValue(value); } }
         public int DisasterId { get { return GetValue<int>(); } set { SetValue(value); } }
         public bool PersonIsCheckedIn { get { return GetValue<bool>(); } set { SetValue(value); } }
+        public CommitmentStatus Status { get { return GetValue<CommitmentStatus>(); } set { SetValue(value); } }
 
         public Disaster Disaster { get { return GetValue<Disaster>(); } set { SetValue(value); } }
         public Person Person { get { return GetValue<Person>(); } set { SetValue(value); } }
+    }
+
+    public enum CommitmentStatus
+    {
+        None,
+        Planned,
+        Out,
+        Here,
+        Unavailable,
+        Finished
     }
 }

@@ -6,6 +6,7 @@ using CrisisCheckinMobile;
 
 namespace AcceptanceTests.Mobile
 {
+    // This test requires that the IIS server be running.
     [TestClass]
     public class ClientModelTest : With_an_empty_database_environment
     {
@@ -16,7 +17,7 @@ namespace AcceptanceTests.Mobile
 
             Breeze.Sharp.Configuration.Instance.ProbeAssemblies(typeof(ClientModel).Assembly);
             var model = new ClientModel(entityManager);
-            await model.RefreshPersonsAsync();
+            await model.RefreshAsync();
             Assert.IsNotNull(model.Person.Commitments[0].Disaster);
         }
     }

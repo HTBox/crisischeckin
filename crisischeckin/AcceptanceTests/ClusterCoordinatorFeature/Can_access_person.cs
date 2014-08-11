@@ -27,7 +27,7 @@ namespace AcceptanceTests.ClusterCoordinatorFeature
             var db = new CrisisCheckin();
 
             var controller = new EntitiesController(db);
-            Assert.AreEqual(_person.PhoneNumber, controller.Persons().First().PhoneNumber);
+            Assert.AreEqual(_person.PhoneNumber, controller.Persons().OrderByDescending(p => p.Id).First().PhoneNumber);
         }
     }
 }
