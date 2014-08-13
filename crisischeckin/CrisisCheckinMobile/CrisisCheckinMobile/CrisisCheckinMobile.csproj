@@ -48,21 +48,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SaveLoad\Serialize.cs" />
     <Compile Include="SaveLoad\ISaveAndLoad.cs" />
-    <Compile Include="LoginPage.xaml.cs">
-      <DependentUpon>LoginPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="DisasterListPage.xaml.cs">
-      <DependentUpon>DisasterListPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ReportTroublePage.xaml.cs">
-      <DependentUpon>ReportTroublePage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="SettingsPage.xaml.cs">
-      <DependentUpon>SettingsPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="App.cs" />
-    <Compile Include="SaveLoad\Serialize.cs" />
-    <Compile Include="SaveLoad\ISaveAndLoad.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Breeze.Sharp">
