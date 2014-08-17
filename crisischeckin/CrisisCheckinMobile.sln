@@ -105,9 +105,9 @@ Global
 		{02D9ED13-7563-4B38-9907-116213D3E961}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
 		{02D9ED13-7563-4B38-9907-116213D3E961}.Debug|iPhoneSimulator.Build.0 = Debug|iPhoneSimulator
 		{02D9ED13-7563-4B38-9907-116213D3E961}.Debug|iPhoneSimulator.Deploy.0 = Debug|iPhoneSimulator
-		{02D9ED13-7563-4B38-9907-116213D3E961}.Debug|Mixed Platforms.ActiveCfg = Debug|iPhone
-		{02D9ED13-7563-4B38-9907-116213D3E961}.Debug|Mixed Platforms.Build.0 = Debug|iPhone
-		{02D9ED13-7563-4B38-9907-116213D3E961}.Debug|Mixed Platforms.Deploy.0 = Debug|iPhone
+		{02D9ED13-7563-4B38-9907-116213D3E961}.Debug|Mixed Platforms.ActiveCfg = Debug|iPhoneSimulator
+		{02D9ED13-7563-4B38-9907-116213D3E961}.Debug|Mixed Platforms.Build.0 = Debug|iPhoneSimulator
+		{02D9ED13-7563-4B38-9907-116213D3E961}.Debug|Mixed Platforms.Deploy.0 = Debug|iPhoneSimulator
 		{02D9ED13-7563-4B38-9907-116213D3E961}.Debug|x86.ActiveCfg = Debug|iPhone
 		{02D9ED13-7563-4B38-9907-116213D3E961}.Release|Any CPU.ActiveCfg = Release|iPhone
 		{02D9ED13-7563-4B38-9907-116213D3E961}.Release|ARM.ActiveCfg = Release|iPhone
