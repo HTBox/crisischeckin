@@ -236,6 +236,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Content Include="App_Data\dummyfile.txt" />
     <Content Include="Content\body.css" />
     <Content Include="Content\body.min.css">
       <DependentUpon>body.css</DependentUpon>
