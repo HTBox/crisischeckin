@@ -29,7 +29,9 @@ namespace crisicheckinweb.ViewModels
         [Required]
         [StringLength(30, ErrorMessage = "The {0} must be between {2} and {1} characters long.", MinimumLength = 3)]
         [Display(Name = "User name")]
-        public string UserName { get; set; }
+        private string userName;
+        public string UserName { get { return userName; } set { userName = value.Trim(); } }
+      
 
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be between {2} and {1} characters long.", MinimumLength = 6)]
