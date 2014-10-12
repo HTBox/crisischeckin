@@ -10,5 +10,9 @@
         public const string DefaultAdministratorUserName = "Administrator";
         public const string DefaultAdministratorPassword = "P@$$w0rd";
 
+        // For automated tests
+        public const string DefaultTestUserName = "TestUser";
+        public const string DefaultTestUserPassword = "test";
+
     }
 }

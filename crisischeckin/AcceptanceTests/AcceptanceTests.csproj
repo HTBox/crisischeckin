@@ -60,6 +60,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Net.Http.Formatting, Version=5.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -89,7 +90,7 @@
   <ItemGroup>
     <Compile Include="ClusterCoordinatorFeature\DataAccessHelper.cs" />
     <Compile Include="ClusterCoordinatorFeature\Can_access_person.cs" />
-    <Compile Include="Mobile\ClientModel.cs" />
+    <Compile Include="Mobile\ClientModelTests.cs" />
     <Compile Include="With_an_empty_database_environment.cs" />
     <Compile Include="ClusterCoordinatorFeature\A_person_can_be_assigned_as_a_cluster_coordinator_for_a_disaster.cs" />
     <Compile Include="ClusterCoordinatorFeature\A_person_can_be_unassigned_as_a_cluster_coordinator_for_a_disaster.cs" />
@@ -101,6 +102,10 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{85d45b1b-d669-4370-8d5c-60d2350c5544}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\crisicheckinweb\crisicheckinweb.csproj">
       <Project>{212deac4-d307-4480-94ce-2951e22b13f8}</Project>
       <Name>crisicheckinweb</Name>

@@ -9,22 +9,25 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
+using crisicheckinweb.Filters;
+using WebMatrix.WebData;
 
 namespace crisicheckinweb.Api
 {
     /// <summary>
     /// Provides entity view models to the web application.
     /// </summary>
+    [CrisisCheckInApiAuthorize]
     [BreezeController]
     public class EntitiesController : ApiController
     {
         readonly CrisisCheckinContextProvider _contextProvider;
 
-        CrisisCheckin Db { get { return _contextProvider.Context; } }
+        CrisisCheckin Context { get { return _contextProvider.Context; } }
 
-        public EntitiesController(CrisisCheckin db)
+        public EntitiesController(CrisisCheckin ctx)
         {
-             _contextProvider = new CrisisCheckinContextProvider(db);
+             _contextProvider = new CrisisCheckinContextProvider(ctx);
         }
 
         [HttpGet]
@@ -39,7 +42,8 @@ namespace crisicheckinweb.Api
         [HttpGet]
         public IQueryable<Person> Persons()
         {
-            return Db.Persons.Include(p => p.Commitments).Include("Commitments.Disaster"); // TODO - deal with user authentication: add Where(p => p.UserId == WebSecurity.CurrentUserId);
+            return Context.Persons.Include(p => p.Commitments).Include("Commitments.Disaster")
+                .Where(p => p.UserId == WebSecurity.CurrentUserId);
         }
 
         /// <summary>
@@ -48,7 +52,7 @@ namespace crisicheckinweb.Api
         [HttpGet]
         public IQueryable<Cluster> Clusters()
         {
-            return Db.Clusters;
+            return Context.Clusters;
         }
 
         /// <summary>
@@ -57,7 +61,7 @@ namespace crisicheckinweb.Api
         [HttpGet]
         public IQueryable<Disaster> Disasters()
         {
-            return Db.Disasters;
+            return Context.Disasters;
         }
 
         /// <summary>
@@ -78,7 +82,7 @@ namespace crisicheckinweb.Api
                 EndDate = endDate
             };
             _contextProvider.CreateEntityInfo(new Commitment(), Breeze.ContextProvider.EntityState.Added);
-            Db.SaveChanges();
+            Context.SaveChanges();
         }
 
         /// <summary>
@@ -88,7 +92,7 @@ namespace crisicheckinweb.Api
         [HttpGet]
         public IQueryable<Commitment> Commitments(int personId)
         {
-            return Db.Commitments.Where(c => c.PersonId == personId);
+            return Context.Commitments.Where(c => c.PersonId == personId);
         }
 
         /// <summary>
@@ -98,9 +102,9 @@ namespace crisicheckinweb.Api
         [HttpPost]
         public void CheckIn(int commitmentId)
         {
-            Commitment commitment = Db.Commitments.Single(c => c.Id == commitmentId);
+            Commitment commitment = Context.Commitments.Single(c => c.Id == commitmentId);
             commitment.PersonIsCheckedIn = true;
-            Db.SaveChanges();
+            Context.SaveChanges();
         }
 
         /// <summary>
@@ -110,9 +114,9 @@ namespace crisicheckinweb.Api
         [HttpPost]
         public void CheckOut(int commitmentId)
         {
-            Commitment commitment = Db.Commitments.Single(c => c.Id == commitmentId);
+            Commitment commitment = Context.Commitments.Single(c => c.Id == commitmentId);
             commitment.PersonIsCheckedIn = false;
-            Db.SaveChanges();
+            Context.SaveChanges();
         }
 
         [HttpPost]
@@ -121,18 +125,18 @@ namespace crisicheckinweb.Api
             return _contextProvider.SaveChanges(saveBundle);
         }
 
-        class CrisisCheckinContextProvider : EFContextProvider<CrisisCheckin>
+        public class CrisisCheckinContextProvider : EFContextProvider<CrisisCheckin>
         {
-            readonly CrisisCheckin _db;
+            readonly CrisisCheckin _context;
 
-            public CrisisCheckinContextProvider(CrisisCheckin db)
+            public CrisisCheckinContextProvider(CrisisCheckin ctx)
             {
-                _db = db;
+                _context = ctx;
             }
 
             protected override CrisisCheckin CreateContext()
             {
-                return _db;
+                return _context;
             }
 
             // TODO: override BeforeSaveEntities and/or BeforeSaveEntity to validate saves

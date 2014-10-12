@@ -41,7 +41,10 @@ namespace crisicheckinweb
                         }
                     }
 
-                    WebSecurity.InitializeDatabaseConnection("CrisisCheckin", "User", "Id", "UserName", autoCreateTables: true);
+                    if (!WebSecurity.Initialized)
+                    {
+                        WebSecurity.InitializeDatabaseConnection("CrisisCheckin", "User", "Id", "UserName", autoCreateTables: true);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -70,6 +73,18 @@ namespace crisicheckinweb
                 !Roles.IsUserInRole(Constants.DefaultAdministratorUserName, Constants.RoleAdmin))
             {
                Roles.AddUserToRole(Constants.DefaultAdministratorUserName, Constants.RoleAdmin); 
+            }
+
+            // Set up automated test user login
+            if (!WebSecurity.UserExists(Constants.DefaultTestUserName))
+            {
+                WebSecurity.CreateUserAndAccount(Constants.DefaultTestUserName, Constants.DefaultTestUserPassword, null, false);
+            }
+
+            if (WebSecurity.UserExists(Constants.DefaultTestUserName) &&
+                !Roles.IsUserInRole(Constants.DefaultTestUserName, Constants.RoleVolunteer))
+            {
+                Roles.AddUserToRole(Constants.DefaultTestUserName, Constants.RoleVolunteer);
             }
         }
     }

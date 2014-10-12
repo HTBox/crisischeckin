@@ -190,10 +190,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Api\BaseApiController.cs" />
     <Compile Include="Api\EntitiesController.cs" />
-    <Compile Include="Api\ClustersController.cs" />
-    <Compile Include="Api\DisasterController.cs" />
     <Compile Include="App_Start\BreezeWebApiConfig.cs" />
     <Compile Include="App_Start\DbConfig.cs" />
     <Compile Include="App_Start\NinjectWebCommon.cs" />
@@ -203,6 +200,7 @@
     <Compile Include="Controllers\ClusterCoordinatorController.cs" />
     <Compile Include="Controllers\DisasterController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Filters\CrisisCheckInApiAuthorizeAttribute.cs" />
     <Compile Include="Helpers\ElmahHandleErrorAttribute.cs" />
     <Compile Include="Helpers\MenuExtensions.cs" />
     <Compile Include="NavigationRoutes\INavigationRouteFilter.cs" />

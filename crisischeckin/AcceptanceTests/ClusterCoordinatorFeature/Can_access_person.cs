@@ -20,14 +20,5 @@ namespace AcceptanceTests.ClusterCoordinatorFeature
             _dataAccessHelper = new DataAccessHelper(_dataService);
             _person = _dataAccessHelper.Create_a_volunteer();
         }
-
-        [TestMethod]
-        public void Get_person()
-        {
-            var db = new CrisisCheckin();
-
-            var controller = new EntitiesController(db);
-            Assert.AreEqual(_person.PhoneNumber, controller.Persons().OrderByDescending(p => p.Id).First().PhoneNumber);
-        }
     }
 }
