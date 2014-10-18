@@ -18,6 +18,8 @@ namespace crisicheckinweb
                     db.Database.Initialize(false);
                     Models.Migrations.Configuration.SeedIfNotEmpty(db);
                 }
+
+                Models.Migrations.Configuration.SeedIfNotEmpty(db);
             }
         }
     }

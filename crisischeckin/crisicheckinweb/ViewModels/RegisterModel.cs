@@ -48,6 +48,11 @@ namespace crisicheckinweb.ViewModels
         [Display(Name = "Cluster")]
         public int Cluster { get; set; }
 
+        [Required]
+        [Display(Name = "Volunteer Type")]
+        public bool VolunteerType { get; set; }
+
         public IEnumerable<Cluster> Clusters { get; set; }
+        public IEnumerable<VolunteerType> VolunteerTypes { get; set; }
     }
 }
