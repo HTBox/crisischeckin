@@ -90,7 +90,6 @@
   <ItemGroup>
     <Compile Include="ClusterCoordinatorFeature\DataAccessHelper.cs" />
     <Compile Include="ClusterCoordinatorFeature\Can_access_person.cs" />
-    <Compile Include="Mobile\ClientModelTests.cs" />
     <Compile Include="With_an_empty_database_environment.cs" />
     <Compile Include="ClusterCoordinatorFeature\A_person_can_be_assigned_as_a_cluster_coordinator_for_a_disaster.cs" />
     <Compile Include="ClusterCoordinatorFeature\A_person_can_be_unassigned_as_a_cluster_coordinator_for_a_disaster.cs" />
@@ -109,10 +108,6 @@
     <ProjectReference Include="..\crisicheckinweb\crisicheckinweb.csproj">
       <Project>{212deac4-d307-4480-94ce-2951e22b13f8}</Project>
       <Name>crisicheckinweb</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CrisisCheckinMobile\CrisisCheckinMobile\CrisisCheckinMobile.csproj">
-      <Project>{37dd4f16-62b1-4770-adaa-2ea781d401ba}</Project>
-      <Name>CrisisCheckinMobile</Name>
     </ProjectReference>
     <ProjectReference Include="..\Models\Models.csproj">
       <Project>{3FD36CF5-7D79-4505-A0BB-12E35A613D88}</Project>
