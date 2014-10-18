@@ -3,11 +3,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{12248512-C6DE-4B1B-8560-D8A09911A300}</ProjectGuid>
+    <ProjectGuid>{C843D8F7-517E-4161-AF35-CE470DFCD372}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AcceptanceTests</RootNamespace>
-    <AssemblyName>AcceptanceTests</AssemblyName>
+    <RootNamespace>AcceptanceTests.Mobile</RootNamespace>
+    <AssemblyName>AcceptanceTests.Mobile</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -38,13 +38,6 @@
     <Reference Include="Breeze.Sharp">
       <HintPath>..\packages\Breeze.Sharp.0.6.0.2\lib\portable-net45+wp80+win\Breeze.Sharp.dll</HintPath>
     </Reference>
-    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="EntityFramework.SqlServer">
-      <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Data.Edm.Portable">
       <HintPath>..\packages\Breeze.Sharp.0.6.0.2\lib\portable-net45+wp80+win\Microsoft.Data.Edm.Portable.dll</HintPath>
     </Reference>
@@ -56,10 +49,9 @@
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Net.Http.Formatting, Version=5.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -73,7 +65,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.1.0\lib\net45\System.Web.Http.dll</HintPath>
     </Reference>
-    <Reference Include="System.Web.Http.SelfHost, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -88,34 +79,21 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="ClusterCoordinatorFeature\DataAccessHelper.cs" />
-    <Compile Include="ClusterCoordinatorFeature\Can_access_person.cs" />
-    <Compile Include="With_an_empty_database_environment.cs" />
-    <Compile Include="ClusterCoordinatorFeature\A_person_can_be_assigned_as_a_cluster_coordinator_for_a_disaster.cs" />
-    <Compile Include="ClusterCoordinatorFeature\A_person_can_be_unassigned_as_a_cluster_coordinator_for_a_disaster.cs" />
+    <Compile Include="Mobile\ClientModelTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj">
       <Project>{85d45b1b-d669-4370-8d5c-60d2350c5544}</Project>
       <Name>Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\crisicheckinweb\crisicheckinweb.csproj">
-      <Project>{212deac4-d307-4480-94ce-2951e22b13f8}</Project>
-      <Name>crisicheckinweb</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Models\Models.csproj">
-      <Project>{3FD36CF5-7D79-4505-A0BB-12E35A613D88}</Project>
-      <Name>Models</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Services\Services.csproj">
-      <Project>{D7A71984-2CC2-4DA7-9346-D697FDBF15B4}</Project>
-      <Name>Services</Name>
+    <ProjectReference Include="..\CrisisCheckinMobile\CrisisCheckinMobile\CrisisCheckinMobile.csproj">
+      <Project>{37dd4f16-62b1-4770-adaa-2ea781d401ba}</Project>
+      <Name>CrisisCheckinMobile</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

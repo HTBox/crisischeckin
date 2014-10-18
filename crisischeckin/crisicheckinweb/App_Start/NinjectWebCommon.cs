@@ -1,5 +1,6 @@
 using System.Net.Mail;
 using System.Web.Http;
+using Services;
 using Models;
 
 [assembly: WebActivator.PreApplicationStartMethod(typeof(crisicheckinweb.App_Start.NinjectWebCommon), "Start")]
@@ -67,6 +68,7 @@ namespace crisicheckinweb.App_Start
             kernel.Bind<IDataService>().To<DataService>().InRequestScope();
             kernel.Bind<IAdmin>().To<AdminService>().InRequestScope();
             kernel.Bind<ICluster>().To<ClusterService>().InRequestScope();
+            kernel.Bind<IVolunteerTypes>().To<VolunteerTypesService>().InRequestScope();
             kernel.Bind<CrisisCheckin>().ToSelf().InRequestScope();
             kernel.Bind<IWebSecurityWrapper>().To<WebSecurityWrapper>().InRequestScope();
             kernel.Bind<IMessageService>().To<MessageService>().InRequestScope();

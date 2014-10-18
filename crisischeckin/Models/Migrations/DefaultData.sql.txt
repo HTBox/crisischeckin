@@ -53,3 +53,6 @@ INSERT INTO Commitment (PersonId, StartDate, EndDate, DisasterId)
   VALUES (@personId, (SELECT DATEADD(dd, 3, DATEDIFF(dd, 0, GETDATE()))), (SELECT DATEADD(dd, 5, DATEDIFF(dd, 0, GETDATE()))), @disaster1)
 INSERT INTO Commitment (PersonId, StartDate, EndDate, DisasterId) 
   VALUES (@personId, (SELECT DATEADD(dd, 8, DATEDIFF(dd, 0, GETDATE()))), (SELECT DATEADD(dd, 10, DATEDIFF(dd, 0, GETDATE()))), @disaster3)
+
+INSERT INTO VolunteerType (Name)
+  VALUES (N'Local'), (N'Remote')

@@ -17,7 +17,15 @@ namespace AcceptanceTests.ClusterCoordinatorFeature
         public Person Create_a_volunteer()
         {
             var volunteerService = new VolunteerService(_dataService);
-            return volunteerService.Register("Sally", "Struthers", "sally@struthers.com", "890-1230-4567", GetRandomClusterId(), 100);
+            return volunteerService.Register(
+                firstName: "Sally", 
+                lastName: "Struthers", 
+                email: "sally@struthers.com",
+                phoneNumber: "890-1230-4567",
+                clusterId: GetRandomClusterId(),
+                volunteerTypeId: GetRandomVolunteerTypeId(),
+                userId: 100
+            );
         }
 
         public Disaster Create_a_disaster()
@@ -34,6 +42,15 @@ namespace AcceptanceTests.ClusterCoordinatorFeature
         public int GetRandomClusterId()
         {
             return _dataService.Clusters.ToList().OrderBy(x => Guid.NewGuid().ToString()).First().Id;
+        }
+
+        public int GetRandomVolunteerTypeId()
+        {
+            return _dataService
+                .VolunteerTypes
+                .ToList()
+                .OrderBy(x => Guid.NewGuid().ToString())
+                .First().Id;
         }
     }
 }

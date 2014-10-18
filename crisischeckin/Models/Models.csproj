@@ -49,9 +49,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Migrations\201410181827528_Add VolunteerTypes Table.cs" />
-    <Compile Include="Migrations\201410181827528_Add VolunteerTypes Table.Designer.cs">
-      <DependentUpon>201410181827528_Add VolunteerTypes Table.cs</DependentUpon>
+    <Compile Include="Migrations\201410181849331_Add VolunteerTypes table.cs" />
+    <Compile Include="Migrations\201410181849331_Add VolunteerTypes table.Designer.cs">
+      <DependentUpon>201410181849331_Add VolunteerTypes table.cs</DependentUpon>
     </Compile>
     <Compile Include="VolunteerType.cs" />
     <Compile Include="ClusterCoordinator.cs" />
@@ -95,8 +95,8 @@
     <EmbeddedResource Include="Migrations\201408102352228_AddCommitmentStatus.resx">
       <DependentUpon>201408102352228_AddCommitmentStatus.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201410181827528_Add VolunteerTypes Table.resx">
-      <DependentUpon>201410181827528_Add VolunteerTypes Table.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201410181849331_Add VolunteerTypes table.resx">
+      <DependentUpon>201410181849331_Add VolunteerTypes table.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

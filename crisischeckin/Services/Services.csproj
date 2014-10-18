@@ -56,6 +56,7 @@
     <Compile Include="Api\Responses\ClustersResponse.cs" />
     <Compile Include="Api\Responses\ServiceResponse.cs" />
     <Compile Include="ClusterCoordinatorService.cs" />
+    <Compile Include="VolunteerTypesService.cs" />
     <Compile Include="ClusterService.cs" />
     <Compile Include="DataService.cs" />
     <Compile Include="DebugMessageSender.cs" />
@@ -63,6 +64,7 @@
     <Compile Include="Exceptions\DisasterAlreadyExistsException.cs" />
     <Compile Include="Exceptions\PersonAlreadyExistsException.cs" />
     <Compile Include="Exceptions\PersonNotFoundException.cs" />
+    <Compile Include="Interfaces\IVolunteerTypes.cs" />
     <Compile Include="Interfaces\IMessageCoordinator.cs" />
     <Compile Include="Interfaces\IMessageSender.cs" />
     <Compile Include="Interfaces\IMessageService.cs">

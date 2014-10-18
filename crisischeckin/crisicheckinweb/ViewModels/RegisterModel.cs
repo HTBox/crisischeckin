@@ -50,7 +50,7 @@ namespace crisicheckinweb.ViewModels
 
         [Required]
         [Display(Name = "Volunteer Type")]
-        public bool VolunteerType { get; set; }
+        public int VolunteerType { get; set; }
 
         public IEnumerable<Cluster> Clusters { get; set; }
         public IEnumerable<VolunteerType> VolunteerTypes { get; set; }

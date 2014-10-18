@@ -13,10 +13,16 @@ namespace crisicheckinweb.Controllers
     {
         private readonly IVolunteerService _volunteerSvc;
         private readonly ICluster _clusterSvc;
-        public AccountController(IVolunteerService volunteerSvc, ICluster clusterSvc)
-        {
-            _clusterSvc = clusterSvc;
+        private readonly IVolunteerTypes _volunteerTypesSvc;
+
+        public AccountController(
+            IVolunteerService volunteerSvc, 
+            ICluster clusterSvc, 
+            IVolunteerTypes volunteerTypesSvc
+        ) {
             _volunteerSvc = volunteerSvc;
+            _clusterSvc = clusterSvc;
+            _volunteerTypesSvc = volunteerTypesSvc;
         }
 
         //
@@ -64,7 +70,10 @@ namespace crisicheckinweb.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
-            var model = new RegisterModel { Clusters = _clusterSvc.GetList() };
+            var model = new RegisterModel {
+                Clusters = _clusterSvc.GetList(),
+                VolunteerTypes = _volunteerTypesSvc.GetList()
+            };
             return View(model);
         }
 
@@ -91,7 +100,15 @@ namespace crisicheckinweb.Controllers
 
                     var userId = WebSecurity.GetUserId(model.UserName);
 
-                    _volunteerSvc.Register(model.FirstName, model.LastName, model.Email, model.PhoneNumber, model.Cluster, userId);
+                    _volunteerSvc.Register(
+                        firstName: model.FirstName,
+                        lastName: model.LastName,
+                        email: model.Email,
+                        phoneNumber: model.PhoneNumber, 
+                        clusterId: model.Cluster, 
+                        volunteerTypeId: model.VolunteerType,
+                        userId: userId
+                    );
 
                     return RedirectToAction("Index", "Home");
                 }
@@ -107,6 +124,7 @@ namespace crisicheckinweb.Controllers
 
             // If we got this far, something failed, redisplay form
             model.Clusters = _clusterSvc.GetList();
+            model.VolunteerTypes = _volunteerTypesSvc.GetList();
             return View(model);
         }
 

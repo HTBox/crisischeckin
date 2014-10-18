@@ -7,18 +7,18 @@ namespace Models.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.1-30610")]
-    public sealed partial class AddVolunteerTypesTable : IMigrationMetadata
+    public sealed partial class AddVolunteerTypestable : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AddVolunteerTypesTable));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(AddVolunteerTypestable));
         
         string IMigrationMetadata.Id
         {
-            get { return "201410181827528_Add VolunteerTypes Table"; }
+            get { return "201410181849331_Add VolunteerTypes table"; }
         }
         
         string IMigrationMetadata.Source
         {
-            get { return null; }
+            get { return Resources.GetString("Source"); }
         }
         
         string IMigrationMetadata.Target
