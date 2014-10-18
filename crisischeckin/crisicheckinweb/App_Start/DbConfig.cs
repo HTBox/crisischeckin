@@ -16,8 +16,9 @@ namespace crisicheckinweb
                 if (!db.Database.CompatibleWithModel(false)) {
                     Database.SetInitializer<CrisisCheckin>(new MigrateDatabaseToLatestVersion<CrisisCheckin, Models.Migrations.Configuration>());
                     db.Database.Initialize(false);
-                    Models.Migrations.Configuration.SeedIfNotEmpty(db);
-                }
+                   
+                } 
+                Models.Migrations.Configuration.SeedIfNotEmpty(db);
             }
         }
     }

@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Net.Mail;
 using Services.Interfaces;
+using Models;
+using System.Net;
+using System.Configuration;
 
 namespace Services
 {
@@ -18,9 +21,13 @@ namespace Services
 
         public void SendMessage(Message message, IReadOnlyCollection<MessageRecipient> recipients)
         {
-            using (var smtpClient = _smtpClientFactory())
+
+            using (var smtpClient = new SmtpClient(Convert.ToString(ConfigurationSettings.AppSettings["smtpClient"]), Convert.ToInt32(ConfigurationSettings.AppSettings["smtpClientPort"])))
             {
-                var fromAddress = CreateAddress(_smtpSettings.SenderName, _smtpSettings.SenderEmail);
+                smtpClient.Credentials = new NetworkCredential(Convert.ToString(ConfigurationSettings.AppSettings["smtpUserName"]), Convert.ToString(ConfigurationSettings.AppSettings["smtpPwd"]));
+                smtpClient.EnableSsl = Convert.ToBoolean(ConfigurationSettings.AppSettings["smtpSSLRequired"]);
+                var fromAddress = CreateAddress(string.Concat(message.Subject, " - Coordinator"), "no-reply@CrisisCheckin.com");
+
                 foreach (var recipient in recipients)
                 {
                     var recipientAddr = CreateAddress(recipient.Name, recipient.EmailAddress);
