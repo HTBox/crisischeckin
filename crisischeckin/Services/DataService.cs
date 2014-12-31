@@ -96,6 +96,21 @@ namespace Services
             context.SaveChanges();
         }
 
+        public Disaster UpdateDisaster(Disaster updatedDisaster)
+        {
+            var result = context.Disasters.Find(updatedDisaster.Id);
+
+            if (result == null)
+                throw new DisasterNotFoundException();
+
+            result.Name = updatedDisaster.Name;
+            result.IsActive = updatedDisaster.IsActive;
+
+            context.SaveChanges();
+
+            return result;
+        }
+
         public void SubmitChanges()
         {
             context.SaveChanges();

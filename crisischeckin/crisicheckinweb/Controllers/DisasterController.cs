@@ -58,7 +58,7 @@ namespace crisicheckinweb.Controllers
                 {
                     try
                     {
-                        _disasterSvc.Update(disaster.Id, disaster.Name, disaster.IsActive);
+                        _disasterSvc.Update(disaster);
                     }
                     catch (DisasterAlreadyExistsException)
                     {
@@ -95,7 +95,7 @@ namespace crisicheckinweb.Controllers
                 }
                 else
                 {
-                    _disasterSvc.Update(disaster.Id, disaster.Name, disaster.IsActive);
+                    _disasterSvc.Update(disaster);
                 }
 
                 return Redirect("/Disaster/List");

@@ -20,6 +20,7 @@ namespace Services.Interfaces
         void AddCommitment(Commitment newCommitment);
         void RemoveCommitmentById(int id);
         void AddDisaster(Disaster newDisaster);
+        Disaster UpdateDisaster(Disaster updatedDisaster);
         void SubmitChanges();
         ClusterCoordinator AddClusterCoordinator(ClusterCoordinator clusterCoordinator);
         void AppendClusterCoordinatorLogEntry(ClusterCoordinatorLogEntry clusterCoordinatorLogEntry);
