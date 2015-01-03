@@ -336,7 +336,7 @@ namespace Services.UnitTest
 
         [TestMethod]
         [ExpectedException(typeof(Services.Exceptions.DisasterAlreadyExistsException))]
-        public void UpdateDisaster_SameName_ThrowDisasterAlreadyExistsException()
+        public void CreateDisaster_SameName_ThrowDisasterAlreadyExistsException()
         {
             // arrange
             var dataList = new List<Disaster>{
@@ -428,7 +428,79 @@ namespace Services.UnitTest
             Assert.AreEqual(null, result);
         }
 
+        [TestMethod]
+        public void UpdateDisaster_Valid()
+        {
+            // arrange
+            var dataList = new List<Disaster>{
+                new Disaster {Id= 1, Name = "name", IsActive = true },
+                new Disaster {Id = 2, Name = "name2", IsActive = true }
+            }.AsQueryable();
 
+            _mockDataService.Setup(m => m.Disasters).Returns(dataList);
+
+            Disaster updatedDisasterResult = null;
+            _mockDataService.Setup(m => m.UpdateDisaster(It.IsAny<Disaster>())).Callback<Disaster>(d => updatedDisasterResult = d);
+
+            var updatedDisaster = new Disaster { Id = 1, Name = "name", IsActive = false };
+
+            // act
+            _disasterService.Update(updatedDisaster);
+
+            // assert
+            Assert.AreEqual(updatedDisaster.Name, updatedDisasterResult.Name);
+            Assert.AreEqual(updatedDisaster.IsActive, updatedDisasterResult.IsActive);
+            _mockDataService.Verify(m => m.UpdateDisaster(updatedDisaster));
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(Services.Exceptions.DisasterAlreadyExistsException))]
+        public void UpdateDisaster_SameName_ThrowsDisasterAlreadyExistsException()
+        {
+            // arrange
+            var dataList = new List<Disaster>{
+                new Disaster {Id= 1, Name = "name", IsActive = true },
+                new Disaster {Id = 2, Name = "name2", IsActive = true }
+            }.AsQueryable();
+
+            _mockDataService.Setup(m => m.Disasters).Returns(dataList);
+
+            Disaster updatedDisasterResult = null;
+            _mockDataService.Setup(m => m.UpdateDisaster(It.IsAny<Disaster>())).Callback<Disaster>(d => updatedDisasterResult = d);
+
+            var updatedDisaster = new Disaster { Id = 2, Name = "name", IsActive = true };
+
+            // act
+            _disasterService.Update(updatedDisaster);
+
+            // assert
+            // Should throw a DisasterAlreadyExistsException
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(Services.Exceptions.DisasterNotFoundException))]
+        public void UpdateDisaster_InvalidId_ThrowsDisasterNotFoundException()
+        {
+            // arrange
+            var dataList = new List<Disaster>{
+                new Disaster {Id= 1, Name = "name", IsActive = true },
+                new Disaster {Id = 2, Name = "name2", IsActive = true }
+            }.AsQueryable();
+
+            _mockDataService.Setup(m => m.Disasters).Returns(dataList);
+
+            Disaster updatedDisasterResult = null;
+            _mockDataService.Setup(m => m.UpdateDisaster(It.IsAny<Disaster>())).Callback<Disaster>(d => updatedDisasterResult = d);
+
+            var updatedDisaster = new Disaster { Id = 5, Name = "name", IsActive = true };
+
+            // act
+            _disasterService.Update(updatedDisaster);
+
+            // assert
+            // Should throw a DisasterNotFoundException
+        }
+        
         private void InitializeDisasterCollection(params Disaster[] disasters)
         {
             _mockDataService.Setup(ds => ds.Disasters).Returns(disasters.AsQueryable());

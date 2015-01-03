@@ -10,16 +10,16 @@
     <fieldset>
         <legend>Create / Edit Disaster</legend>
         @Html.ValidationSummary()
-        <ol>
+        <ul>
             <li>
                 @Html.LabelFor(m => m.Name)
                 @Html.TextBoxFor(m => m.Name)
             </li>
             <li>
-                Is Currently Active?
+                @Html.LabelFor(m => m.IsActive)
                 @Html.CheckBoxFor(m => m.IsActive)
             </li>
-        </ol>
-        <input type="submit" value="Create" class="btn btn-success" />
+        </ul>
+        <input type="submit" value="@(Model.Id > 0 ? "Update" : "Create")" class="btn btn-success" />
     </fieldset>
 }

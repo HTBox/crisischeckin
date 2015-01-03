@@ -13,7 +13,7 @@ namespace Services.Interfaces
         void RemoveCommitmentById(int commitmentId);
         Disaster Get(int disasterId);
         void Create(Disaster disaster);
-        void Update(int disasterId, string disasterName, bool isActive);
+        Disaster Update(Disaster updatedDisaster);
         IEnumerable<Disaster> GetActiveList();
         IEnumerable<Disaster> GetList();
         string GetName(int disasterId);

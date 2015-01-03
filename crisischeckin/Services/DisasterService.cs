@@ -75,18 +75,18 @@ namespace Services
             _dataService.RemoveCommitmentById(commitmentId);
         }
 
-        public void Update(int disasterId, string disasterName, bool isActive)
+        public Disaster Update(Disaster updatedDisaster)
         {
 
-            if (_dataService.Disasters.Any(d => d.Name == disasterName)) throw new DisasterAlreadyExistsException();
+            if (_dataService.Disasters.Count(d => d.Id == updatedDisaster.Id) == 0)
+                throw new DisasterNotFoundException();
 
-            var origDisaster = _dataService.Disasters.SingleOrDefault(d => d.Id.Equals(disasterId));
+            if (_dataService.Disasters.Any(d => d.Name == updatedDisaster.Name && d.Id != updatedDisaster.Id)) 
+                throw new DisasterAlreadyExistsException();
 
-            if (origDisaster == null) return;
-            origDisaster.Name = disasterName;
-            origDisaster.IsActive = isActive;
+            var result = _dataService.UpdateDisaster(updatedDisaster);
 
-            _dataService.SubmitChanges();
+            return result;
         }
 
         public IEnumerable<Disaster> GetActiveList()
