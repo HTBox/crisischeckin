@@ -29,24 +29,41 @@ namespace Services
             return people.ToList();
         }
 
-        public IEnumerable<Person> GetVolunteersForDate(Disaster disaster, DateTime date)
+        public IEnumerable<Person> GetVolunteersForDate(Disaster disaster, DateTime date, bool clusterCoordinatorsOnly)
         {
             if (disaster == null)
                 throw new ArgumentNullException("disaster", "disaster cannot be null");
 
-            return GetVolunteersForDate(disaster.Id, date);
+            return GetVolunteersForDate(disaster.Id, date, clusterCoordinatorsOnly);
         }
 
-        public IEnumerable<Person> GetVolunteersForDate(int disasterId, DateTime date)
+        public IEnumerable<Person> GetVolunteersForDate(int disasterId, DateTime date, bool clusterCoordinatorsOnly)
         {
             if (disasterId <= 0)
                 throw new ArgumentException("disasterId is invalid.", "disasterId");
 
-            var people = GetVolunteersForDateQueryable(disasterId, date);
+            var people = clusterCoordinatorsOnly
+                ? GetClusterCoordinatorsForDateQueryable(disasterId, date)
+                : GetVolunteersForDateQueryable(disasterId, date);
 
             if (people == null)
                 throw new NullReferenceException(string.Format("Attempt to get volunteers for disaster ID {0} returned null.", disasterId));
             return people.ToList();
+        }
+
+        private IQueryable<Person> GetClusterCoordinatorsForDateQueryable(int disasterId, DateTime date)
+        {
+            if (disasterId <= 0)
+                throw new ArgumentException("disasterId must be greater than zero", "disasterId");
+
+            var people = from cc in dataService.ClusterCoordinators
+                         where cc.DisasterId == disasterId
+                         join c in dataService.Commitments on cc.PersonId equals c.PersonId
+                         where c.DisasterId == disasterId
+                         where date >= c.StartDate && date <= c.EndDate
+                         select cc.Person;
+
+            return people.Distinct();
         }
 
         private IQueryable<Person> GetVolunteersForDateQueryable(int disasterId, DateTime date)
@@ -69,7 +86,7 @@ namespace Services
             IEnumerable<Person> people;
             if (commitmentDate.HasValue)
             {
-                people = GetVolunteersForDate(disasterId, commitmentDate.Value);
+                people = GetVolunteersForDate(disasterId, commitmentDate.Value, clusterCoordinatorsOnly: false);
             }
             else
             {

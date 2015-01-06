@@ -198,7 +198,7 @@ namespace Services.UnitTest
 
             var underTest = new AdminService(mockService.Object);
 
-            var result = underTest.GetVolunteersForDate(disasterWithCommitments, new DateTime(2013, 08, 12));
+            var result = underTest.GetVolunteersForDate(disasterWithCommitments, new DateTime(2013, 08, 12), clusterCoordinatorsOnly: false);
 
             Assert.AreEqual(1, result.Count());
         }
@@ -212,7 +212,7 @@ namespace Services.UnitTest
 
             var underTest = new AdminService(mockService.Object);
 
-            var result = underTest.GetVolunteersForDate(disasterWithCommitments, new DateTime(2013, 08, 5));
+            var result = underTest.GetVolunteersForDate(disasterWithCommitments, new DateTime(2013, 08, 5), clusterCoordinatorsOnly: false);
 
             Assert.AreEqual(0, result.Count());
         }
@@ -234,7 +234,7 @@ namespace Services.UnitTest
 
             var underTest = new AdminService(mockData.Object);
 
-            var actual = underTest.GetVolunteersForDate(42, DateTime.Today);
+            var actual = underTest.GetVolunteersForDate(42, DateTime.Today, clusterCoordinatorsOnly: false);
 
             Assert.AreEqual(1, actual.Count());
         }
