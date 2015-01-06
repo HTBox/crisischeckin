@@ -7,21 +7,11 @@
 
 <h2>Volunteer Home</h2>
 
-<!--
-<style>
-    table, th, tr, td
-    {
-        padding: 10px;
-        border:1px solid green;
-    }
-
-</style>
-     -->
-
 @using (Html.BeginForm("Assign", "Home")) {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary()
-    
+
+
     <table class="table">
         <tr>
             <th>Volunteer for Disaster</th>
@@ -39,37 +29,43 @@
 }
 
 <br />
-
-<h3>My Commitments</h3>
-<table class="table table-bordered">
-    <tr>
-        <th>Disaster Name</th>
-        <th>Start Date</th>
-        <th>End Date</th>
-        <th>Active</th>
-        @if (Model.MyCommitments.Any())
-        {
-            <th>&nbsp;</th>
-        }
-    </tr>
-    @foreach (var comm in Model.MyCommitments)
+    @if (!Model.MyCommitments.Any())
     {
-        <tr>
-            <td>@comm.Disaster.Name</td>
-            <td>@comm.StartDate.ToShortDateString()</td>
-            <td>@comm.EndDate.ToShortDateString()</td>
-            <td>@(comm.Disaster.IsActive ? "Yes" : "No") </td>
-            <td>
-                @using (Html.BeginForm("RemoveCommitment", "Home", FormMethod.Post, new { @class = "navbar-form" }))
-                {
-                    @Html.AntiForgeryToken()
-                    @Html.HiddenFor(m => m.RemoveCommitmentId, new { @Value = comm.Id })
-                    <button class="btn btn-danger btn-sm" type="submit"><i class="glyphicon glyphicon-remove"></i> Remove</button>
-                }
-            </td>
-        </tr>
+        <h3>Thank you for volunteering. Please select a disaster and a date range that you are able to volunteer for.</h3>
     }
-</table>
+    else
+    {
+        <h3>My Commitments</h3>
+        <table class="table table-bordered">
+            <tr>
+                <th>Disaster Name</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Active</th>
+                @if (Model.MyCommitments.Any())
+                {
+                    <th>&nbsp;</th>
+                }
+            </tr>
+            @foreach (var comm in Model.MyCommitments)
+            {
+                <tr>
+                    <td>@comm.Disaster.Name</td>
+                    <td>@comm.StartDate.ToShortDateString()</td>
+                    <td>@comm.EndDate.ToShortDateString()</td>
+                    <td>@(comm.Disaster.IsActive ? "Yes" : "No") </td>
+                    <td>
+                        @using (Html.BeginForm("RemoveCommitment", "Home", FormMethod.Post, new { @class = "navbar-form" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.HiddenFor(m => m.RemoveCommitmentId, new { @Value = comm.Id })
+                            <button class="btn btn-danger btn-sm" type="submit"><i class="glyphicon glyphicon-remove"></i> Remove</button>
+                        }
+                    </td>
+                </tr>
+            }
+        </table>
+    }
 @section scripts
 {
     <script type="text/javascript">
