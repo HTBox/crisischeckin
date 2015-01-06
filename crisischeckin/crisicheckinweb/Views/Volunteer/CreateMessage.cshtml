@@ -32,5 +32,37 @@
         @Html.HiddenFor(m => m.DisasterId)
 
         <input type="submit" value="Send" class="btn btn-success" />
+        <span id="warningMessage"></span>
     </fieldset>
+
+}
+
+@section scripts
+{
+    <script type="text/javascript">
+        (function ($) {
+            $('#Message').bind('keyup', function () {
+                ValidateMessageLength();
+            })
+
+            ValidateMessageLength();
+
+        })(jQuery);
+
+        function ValidateMessageLength() {
+
+            var messageLength = $('#Message').val().length;
+            if (messageLength > 600) {
+                $('#warningMessage').text(
+                    'The message can only be 640 characters long. It is currently ' + messageLength);
+                if (messageLength > 640) {
+                    $('#warningMessage').css("color", "red");
+                } else {
+                    $('#warningMessage').css("color", "black");
+                }
+            } else {
+                $('#warningMessage').text('');
+            }
+        }
+    </script>
 }
