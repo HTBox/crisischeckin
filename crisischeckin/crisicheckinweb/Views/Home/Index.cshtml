@@ -4,7 +4,12 @@
     Layout = "~/Views/Shared/_VolunteerLayout.cshtml";
 }
 
+<style>
+    .contact{ font-weight: bold }
+</style>
+
 <h2>Volunteer Home</h2>
+
 
 @using (Html.BeginForm("Assign", "Home"))
 {
@@ -35,13 +40,14 @@
 }
 else
 {
-    <h3>My Commitments</h3>
-    <table class="table table-bordered">
-        <tr>
+    <h3>My @Model.Person.Cluster.Name Commitments</h3>
+    <table class="table table-striped table-bordered">
+        <tr class="info">
             <th>Disaster Name</th>
             <th>Start Date</th>
             <th>End Date</th>
             <th>Active</th>
+            <th>Cluster Coordinators</th>
             @if (Model.MyCommitments.Any())
             {
                 <th>&nbsp;</th>
@@ -54,7 +60,15 @@ else
                 <td>@comm.StartDate.ToShortDateString()</td>
                 <td>@comm.EndDate.ToShortDateString()</td>
                 <td>@(comm.Disaster.IsActive ? "Yes" : "No") </td>
-
+                <td>
+                    @foreach (var clusterCoordinator in Model.ClusterCoordinators.Where(cc => cc.DisasterId == comm.DisasterId))
+                    {
+                        <div class="contact" data-placement="left" data-toggle="tooltip"
+                             title="Phone - @(clusterCoordinator.Person.PhoneNumber) | Email - @(clusterCoordinator.Person.Email)">
+                            @(clusterCoordinator.Person.LastName + ", " + clusterCoordinator.Person.FirstName)
+                        </div>
+                    }
+                </td>
                 @using (Html.BeginForm("RemoveCommitment", "Home", FormMethod.Post, new { @class = "navbar-form" }))
                 {
                     @Html.AntiForgeryToken()
@@ -76,6 +90,8 @@ else
                     '@(Model.SelectedStartDate == default(DateTime) ? DateTime.Now : Model.SelectedStartDate)');
                 $("#dp_endDate").datepicker({ minDate: 'today' }).datepicker('setDate',
                     '@(Model.SelectedEndDate == default(DateTime) ? DateTime.Now : Model.SelectedEndDate)');
+
+                $('.contact').tooltip();
             });
 
             function updateEndDate(dateText) {

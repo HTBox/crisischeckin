@@ -11,17 +11,26 @@ using crisicheckinweb.Wrappers;
 
 namespace crisicheckinweb.Controllers
 {
+    using Services;
+
     public class HomeController : BaseController
     {
         private readonly IDisaster _disasterSvc;
         private readonly IVolunteerService _volunteerSvc;
         private readonly IWebSecurityWrapper _webSecurity;
+        private readonly IClusterCoordinatorService _clusterCoordinatorService;
 
-        public HomeController(IDisaster disasterSvc, IVolunteerService volunteerSvc, IWebSecurityWrapper webSecurity)
+        public HomeController(
+            IDisaster disasterSvc, 
+            IVolunteerService volunteerSvc, 
+            IWebSecurityWrapper webSecurity, 
+            IClusterCoordinatorService clusterCoordinatorService
+            )
         {
             _disasterSvc = disasterSvc;
             _volunteerSvc = volunteerSvc;
             _webSecurity = webSecurity;
+            _clusterCoordinatorService = clusterCoordinatorService;
         }
 
         // GET: /Home/
@@ -77,12 +86,17 @@ namespace crisicheckinweb.Controllers
             var commitments = (person != null) ?
                 _volunteerSvc.RetrieveCommitments(person.Id, true) :
                 new List<Commitment>().AsEnumerable();
+            
+            var clusterCoordinators = _clusterCoordinatorService.GetAllCoordinatorsForCluster(1).ToList();
 
             var model = new VolunteerViewModel
             {
                 Disasters = _disasterSvc.GetActiveList(),
-                MyCommitments = commitments
+                MyCommitments = commitments,
+                Person = person,
+                ClusterCoordinators = clusterCoordinators
             };
+
             if (viewModel != null)
             {
                 model.SelectedDisasterId = viewModel.SelectedDisasterId;
@@ -104,7 +118,7 @@ namespace crisicheckinweb.Controllers
                 var person = _volunteerSvc.FindByUserId(_webSecurity.CurrentUserId);
                 var commitments = _volunteerSvc.RetrieveCommitments(person.Id, true).AsEnumerable();
 
-                if (commitments.Where(c => c.Id == model.RemoveCommitmentId).FirstOrDefault() == null)
+                if (commitments.FirstOrDefault(c => c.Id == model.RemoveCommitmentId) == null)
                 {
                     throw new ArgumentException("Commitment supplied is not yours.");
                 }
