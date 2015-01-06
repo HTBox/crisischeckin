@@ -23,7 +23,6 @@ namespace AcceptanceTests.ClusterCoordinatorFeature
                 email: "sally@struthers.com",
                 phoneNumber: "890-1230-4567",
                 clusterId: GetRandomClusterId(),
-                volunteerTypeId: GetRandomVolunteerTypeId(),
                 userId: 100
             );
         }

@@ -19,7 +19,7 @@ namespace Services
             _dataService = service;
         }
 
-        public void AssignToVolunteer(int disasterId, int personId, DateTime startDate, DateTime endDate)
+        public void AssignToVolunteer(int disasterId, int personId, DateTime startDate, DateTime endDate, int volunteerType)
         {
             if (DateTime.Compare(endDate, startDate) < 0)
                 throw new ArgumentException("endDate cannot be earlier than startDate");
@@ -45,7 +45,8 @@ namespace Services
                 PersonId = personId,
                 DisasterId = disasterId,
                 StartDate = startDate,
-                EndDate = endDate
+                EndDate = endDate,
+                VolunteerTypeId = volunteerType
             });
         }
 

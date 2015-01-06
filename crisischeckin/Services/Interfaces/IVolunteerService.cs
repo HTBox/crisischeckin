@@ -15,7 +15,6 @@ namespace Services.Interfaces
             string email, 
             string phoneNumber, 
             int clusterId, 
-            int volunteerTypeId, 
             int userId
         );
 

@@ -23,7 +23,6 @@ namespace Services.UnitTest
                 email: "email",
                 phoneNumber: "555-333-1111",
                 clusterId: 1,
-                volunteerTypeId: 1,
                 userId: 1
             );
         }
@@ -40,7 +39,6 @@ namespace Services.UnitTest
                 email: "email",
                 phoneNumber: "555-333-1111",
                 clusterId: 1,
-                volunteerTypeId: 1,
                 userId: 2
             );
         }
@@ -57,7 +55,6 @@ namespace Services.UnitTest
                 email: "",
                 phoneNumber: "555-333-1111",
                 clusterId: 1,
-                volunteerTypeId: 1,
                 userId: 3
             );
         }
@@ -74,7 +71,6 @@ namespace Services.UnitTest
                 email: "email",
                 phoneNumber: "",
                 clusterId: 1,
-                volunteerTypeId: 1,
                 userId: 3
             );
         }
@@ -91,7 +87,6 @@ namespace Services.UnitTest
                 email: "email",
                 phoneNumber: "555-333-1111",
                 clusterId: 0,
-                volunteerTypeId: 1,
                 userId: 4
             );
         }
@@ -109,7 +104,6 @@ namespace Services.UnitTest
                 LastName = "Jones",
                 Email = "bob.jones@email.com",
                 PhoneNumber = "555-222-9139",
-                VolunteerTypeId = 1,
                 ClusterId = 1
             };
 
@@ -123,7 +117,6 @@ namespace Services.UnitTest
                 email: "bob.jones@email.com", 
                 phoneNumber: "555-222-9139", 
                 clusterId: 1,
-                volunteerTypeId: 1,
                 userId: 5
             );
 
@@ -133,7 +126,6 @@ namespace Services.UnitTest
             Assert.AreEqual("bob.jones@email.com", actual.Email);
             Assert.AreEqual("555-222-9139", actual.PhoneNumber);
             Assert.AreEqual(1, actual.ClusterId);
-            Assert.AreEqual(1, actual.VolunteerTypeId);
         }
 
         [TestMethod]
@@ -164,7 +156,6 @@ namespace Services.UnitTest
                 email: "cathy.jones@email.com", 
                 phoneNumber: "555-222-9139 ext 33",
                 clusterId: 1,
-                volunteerTypeId: 1,
                 userId: 6
             );
 
@@ -173,7 +164,6 @@ namespace Services.UnitTest
             Assert.AreEqual("cathy.jones@email.com", actual.Email);
             Assert.AreEqual("555-222-9139 ext 33", actual.PhoneNumber);
             Assert.AreEqual(1, actual.ClusterId);
-            Assert.AreEqual(1, actual.VolunteerTypeId);
         }
 
 		[TestMethod]

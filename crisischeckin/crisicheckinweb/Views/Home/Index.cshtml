@@ -24,6 +24,7 @@
         <th>Start Date</th>
         <th>End Date</th>
         <th>Active</th>
+        <th>Location</th>
         @if (Model.MyCommitments.Any())
         { 
             <th>&nbsp;</th>
@@ -35,6 +36,7 @@
         <td>@comm.StartDate.ToShortDateString()</td>
         <td>@comm.EndDate.ToShortDateString()</td>
         <td>@(comm.Disaster.IsActive ? "Yes" : "No") </td>
+        <td>@comm.VolunteerType.Name</td>
         <td>
             @using (Html.BeginForm("RemoveCommitment", "Home", FormMethod.Post, new { @class = "navbar-form" }))
             {
@@ -65,8 +67,7 @@
         @Html.DropDownListFor(
         m => m.VolunteerType,
         selectList: new SelectList(Model.VolunteerTypes, "Id", "Name", Model.VolunteerType),
-        optionLabel: "-- Choose One --",
-        htmlAttributes: new { @class = "form-control" })
+        optionLabel: "-- Choose One --")
 
     <input id="GoButton" type="submit" value="Volunteer"/>    
 }

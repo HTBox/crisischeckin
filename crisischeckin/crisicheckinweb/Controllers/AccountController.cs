@@ -71,8 +71,7 @@ namespace crisicheckinweb.Controllers
         public ActionResult Register()
         {
             var model = new RegisterModel {
-                Clusters = _clusterSvc.GetList(),
-                VolunteerTypes = _volunteerTypesSvc.GetList()
+                Clusters = _clusterSvc.GetList()
             };
             return View(model);
         }
@@ -106,7 +105,6 @@ namespace crisicheckinweb.Controllers
                         email: model.Email,
                         phoneNumber: model.PhoneNumber, 
                         clusterId: model.Cluster, 
-                        volunteerTypeId: model.VolunteerType,
                         userId: userId
                     );
 
@@ -124,7 +122,6 @@ namespace crisicheckinweb.Controllers
 
             // If we got this far, something failed, redisplay form
             model.Clusters = _clusterSvc.GetList();
-            model.VolunteerTypes = _volunteerTypesSvc.GetList();
             return View(model);
         }
 

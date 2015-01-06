@@ -9,7 +9,7 @@ namespace Services.Interfaces
 {
     public interface IDisaster
     {
-        void AssignToVolunteer(int disasterId, int personId, DateTime startDate, DateTime endDate);
+        void AssignToVolunteer(int disasterId, int personId, DateTime startDate, DateTime endDate, int volunteerType);
         void RemoveCommitmentById(int commitmentId);
         Disaster Get(int disasterId);
         void Create(Disaster disaster);

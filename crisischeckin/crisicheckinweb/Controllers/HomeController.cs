@@ -16,12 +16,14 @@ namespace crisicheckinweb.Controllers
         private readonly IDisaster _disasterSvc;
         private readonly IVolunteerService _volunteerSvc;
         private readonly IWebSecurityWrapper _webSecurity;
+        private readonly IVolunteerTypes _volunteerTypes;
 
-        public HomeController(IDisaster disasterSvc, IVolunteerService volunteerSvc, IWebSecurityWrapper webSecurity)
+        public HomeController(IDisaster disasterSvc, IVolunteerService volunteerSvc, IWebSecurityWrapper webSecurity, IVolunteerTypes volunteerTypes)
         {
             _disasterSvc = disasterSvc;
             _volunteerSvc = volunteerSvc;
             _webSecurity = webSecurity;
+            _volunteerTypes = volunteerTypes;
         }
 
         // GET: /Home/
@@ -54,7 +56,7 @@ namespace crisicheckinweb.Controllers
                         "The logged in user is either the administrator or does not have a valid account for joining a crisis.");
                 }
                 _disasterSvc.AssignToVolunteer(model.SelectedDisasterId,
-                    person.Id, model.SelectedStartDate, model.SelectedEndDate);
+                    person.Id, model.SelectedStartDate, model.SelectedEndDate, model.VolunteerType);
 
                 return Redirect("/Home");
             }
@@ -81,7 +83,8 @@ namespace crisicheckinweb.Controllers
             var model = new VolunteerViewModel
             {
                 Disasters = _disasterSvc.GetActiveList(),
-                MyCommitments = commitments
+                MyCommitments = commitments,
+                VolunteerTypes = _volunteerTypes.GetList()
             };
             if (viewModel != null)
             {

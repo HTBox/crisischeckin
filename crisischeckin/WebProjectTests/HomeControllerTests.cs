@@ -22,8 +22,9 @@ namespace WebProjectTests
             var disaster = new Mock<IDisaster>();
             var volunteer = new Mock<IVolunteerService>();
             var webSecurity = new Mock<IWebSecurityWrapper>();
+            var volType = new Mock<IVolunteerTypes>();
 
-            var controller = new HomeController(disaster.Object, volunteer.Object, webSecurity.Object);
+            var controller = new HomeController(disaster.Object, volunteer.Object, webSecurity.Object, volType.Object);
 
             volunteer.Setup(x => x.FindByUserId(It.IsAny<int>())).Returns(new Person());
             webSecurity.SetupGet(x => x.CurrentUserId).Returns(10);
@@ -45,14 +46,16 @@ namespace WebProjectTests
             var disaster = new Mock<IDisaster>();
             var volunteer = new Mock<IVolunteerService>();
             var webSecurity = new Mock<IWebSecurityWrapper>();
+            var volType = new Mock<IVolunteerTypes>();
 
-            var controller = new HomeController(disaster.Object, volunteer.Object, webSecurity.Object);
+            var controller = new HomeController(disaster.Object, volunteer.Object, webSecurity.Object, volType.Object);
 
             disaster.Setup(x => x.AssignToVolunteer(
                 It.IsAny<int>(),
                 It.IsAny<int>(),
                 It.IsAny<DateTime>(),
-                It.IsAny<DateTime>())).Throws(new ArgumentException(""));
+                It.IsAny<DateTime>(), 
+                It.IsAny<int>())).Throws(new ArgumentException(""));
 
             volunteer.Setup(x => x.FindByUserId(It.IsAny<int>())).Returns(new Person());
             webSecurity.SetupGet(x => x.CurrentUserId).Returns(10);
@@ -74,8 +77,10 @@ namespace WebProjectTests
             var disaster = new Mock<IDisaster>();
             var volunteer = new Mock<IVolunteerService>();
             var webSecurity = new Mock<IWebSecurityWrapper>();
+            var volType = new Mock<IVolunteerTypes>();
+
             volunteer.Setup(service => service.FindByUserId(It.IsAny<int>())).Returns(new Person());
-            var controller = new HomeController(disaster.Object, volunteer.Object, webSecurity.Object);
+            var controller = new HomeController(disaster.Object, volunteer.Object, webSecurity.Object, volType.Object);
 
             // Act
             var viewModel = new VolunteerViewModel { SelectedStartDate = DateTime.Today.AddDays(1) };
@@ -93,8 +98,10 @@ namespace WebProjectTests
             var disaster = new Mock<IDisaster>();
             var volunteer = new Mock<IVolunteerService>();
             var webSecurity = new Mock<IWebSecurityWrapper>();
+            var volType = new Mock<IVolunteerTypes>();
+
             volunteer.Setup(service => service.FindByUserId(It.IsAny<int>())).Returns(new Person());
-            var controller = new HomeController(disaster.Object, volunteer.Object, webSecurity.Object);
+            var controller = new HomeController(disaster.Object, volunteer.Object, webSecurity.Object, volType.Object);
 
             // Act
             var viewModel = new VolunteerViewModel { RemoveCommitmentId = int.MinValue };
@@ -115,9 +122,11 @@ namespace WebProjectTests
             var disaster = new Mock<IDisaster>();
             var volunteer = new Mock<IVolunteerService>();
             var webSecurity = new Mock<IWebSecurityWrapper>();
+            var volType = new Mock<IVolunteerTypes>();
+
             volunteer.Setup(service => service.FindByUserId(It.IsAny<int>())).Returns(new Person() { Id = 13 });
             volunteer.Setup(service => service.RetrieveCommitments(13, true)).Returns(commitments.AsQueryable());
-            var controller = new HomeController(disaster.Object, volunteer.Object, webSecurity.Object);
+            var controller = new HomeController(disaster.Object, volunteer.Object, webSecurity.Object, volType.Object);
 
             // Act
             var viewModel = new VolunteerViewModel { RemoveCommitmentId = 7 };
