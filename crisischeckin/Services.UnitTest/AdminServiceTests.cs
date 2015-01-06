@@ -198,7 +198,38 @@ namespace Services.UnitTest
 
             var underTest = new AdminService(mockService.Object);
 
-            var result = underTest.GetVolunteersForDate(disasterWithCommitments, new DateTime(2013, 08, 12));
+            var result = underTest.GetVolunteersForDate(disasterWithCommitments, new DateTime(2013, 08, 12), clusterCoordinatorsOnly: false);
+
+            Assert.AreEqual(1, result.Count());
+        }
+
+        [TestMethod]
+        public void GetVolunteersByDate_FiltersToOnlyClusterCoordinators()
+        {
+            var otherCommitment = new Commitment
+            {
+                DisasterId = disasterWithCommitments.Id,
+                PersonId = personWithNoCommitmentsID,
+                Id = 102,
+                StartDate = new DateTime(2013, 8, 10),
+                EndDate = new DateTime(2013, 8, 15)
+            };
+
+            var clusterCoordinator = new ClusterCoordinator
+            {
+                Id = 1001,
+                DisasterId = disasterWithCommitments.Id,
+                PersonId = personWithCommitmentsID,
+            };
+
+            initializeDisasterCollection(disasterWithCommitments);
+            initializeVolunteerCollection(personWithCommitments, personWithNoCommitments);
+            initializeCommitmentCollection(commitment, otherCommitment);
+            mockService.Setup(ds => ds.ClusterCoordinators).Returns(new[] { clusterCoordinator }.AsQueryable());
+
+            var underTest = new AdminService(mockService.Object);
+
+            var result = underTest.GetVolunteersForDate(disasterWithCommitments, new DateTime(2013, 08, 12), clusterCoordinatorsOnly: true);
 
             Assert.AreEqual(1, result.Count());
         }
@@ -212,7 +243,7 @@ namespace Services.UnitTest
 
             var underTest = new AdminService(mockService.Object);
 
-            var result = underTest.GetVolunteersForDate(disasterWithCommitments, new DateTime(2013, 08, 5));
+            var result = underTest.GetVolunteersForDate(disasterWithCommitments, new DateTime(2013, 08, 5), clusterCoordinatorsOnly: false);
 
             Assert.AreEqual(0, result.Count());
         }
@@ -234,7 +265,7 @@ namespace Services.UnitTest
 
             var underTest = new AdminService(mockData.Object);
 
-            var actual = underTest.GetVolunteersForDate(42, DateTime.Today);
+            var actual = underTest.GetVolunteersForDate(42, DateTime.Today, clusterCoordinatorsOnly: false);
 
             Assert.AreEqual(1, actual.Count());
         }

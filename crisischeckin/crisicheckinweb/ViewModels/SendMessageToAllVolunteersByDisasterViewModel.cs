@@ -21,6 +21,8 @@ namespace crisicheckinweb.ViewModels
         public string Subject { get; set; }
         [Required, StringLength(TextMessageLength*4)]
         public string Message { get; set; }
+        [Display(Name="Cluster coordinators only")]
+        public bool ClusterCoordinatorsOnly { get; set; }
 
         public IEnumerable<Cluster> Clusters { get; set; }
     }
