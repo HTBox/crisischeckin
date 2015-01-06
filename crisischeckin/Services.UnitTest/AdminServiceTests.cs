@@ -204,6 +204,37 @@ namespace Services.UnitTest
         }
 
         [TestMethod]
+        public void GetVolunteersByDate_FiltersToOnlyClusterCoordinators()
+        {
+            var otherCommitment = new Commitment
+            {
+                DisasterId = disasterWithCommitments.Id,
+                PersonId = personWithNoCommitmentsID,
+                Id = 102,
+                StartDate = new DateTime(2013, 8, 10),
+                EndDate = new DateTime(2013, 8, 15)
+            };
+
+            var clusterCoordinator = new ClusterCoordinator
+            {
+                Id = 1001,
+                DisasterId = disasterWithCommitments.Id,
+                PersonId = personWithCommitmentsID,
+            };
+
+            initializeDisasterCollection(disasterWithCommitments);
+            initializeVolunteerCollection(personWithCommitments, personWithNoCommitments);
+            initializeCommitmentCollection(commitment, otherCommitment);
+            mockService.Setup(ds => ds.ClusterCoordinators).Returns(new[] { clusterCoordinator }.AsQueryable());
+
+            var underTest = new AdminService(mockService.Object);
+
+            var result = underTest.GetVolunteersForDate(disasterWithCommitments, new DateTime(2013, 08, 12), clusterCoordinatorsOnly: true);
+
+            Assert.AreEqual(1, result.Count());
+        }
+
+        [TestMethod]
         public void WhenOneVolunteerHasRegisteredReturnNoRecordsInRange()
         {
             initializeDisasterCollection(disasterWithCommitments);
