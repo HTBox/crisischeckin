@@ -17,7 +17,7 @@ namespace Services.UnitTest
             var volunteers = new List<Person>();
             volunteers.Add(new Person { Id = 1, Email = "email-1", FirstName = "first", LastName = "last" });
             volunteers.Add(new Person { Id = 2, Email = "email-2", FirstName = "first", LastName = "last" });
-            mockAdminSvc.Setup(x => x.GetVolunteersForDate(It.IsAny<int>(), DateTime.Today)).Returns(volunteers);
+            mockAdminSvc.Setup(x => x.GetVolunteersForDate(It.IsAny<int>(), DateTime.Today, false)).Returns(volunteers);
             var mockMessageCoordinator = new Mock<IMessageCoordinator>();
 
             var expectedMessage = new Message("body", "subject");
