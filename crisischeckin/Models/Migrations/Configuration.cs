@@ -15,6 +15,17 @@ namespace Models.Migrations
 
         public static void SeedIfNotEmpty(CrisisCheckin context) // Not overriding DbMigrationsConfiguration<T>.Seed, since it doesn't seem to always get called when it should.
         {
+            // Since the previous migrations, we've added the 
+            // Volunteer type table:
+            if (!context.VolunteerTypes.Any())
+            {
+                context.VolunteerTypes.AddOrUpdate(
+                    v => v.Name,
+                    new VolunteerType { Name = "On Site" },
+                    new VolunteerType { Name = "Remote" }
+                );
+            }
+
             // We want to call this method even when the database
             // updates aren't necessary. That's because VS 2013 
             // tooling automatically creates the DB when the app
