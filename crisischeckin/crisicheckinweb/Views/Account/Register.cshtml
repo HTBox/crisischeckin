@@ -58,15 +58,6 @@
     </div>
 
     <div class="form-group">
-      @Html.LabelFor(m => m.VolunteerType)
-      @Html.DropDownListFor(
-        m => m.VolunteerType, 
-        selectList:     new SelectList(Model.VolunteerTypes, "Id", "Name", Model.VolunteerType),
-        optionLabel:    "-- Choose One --",
-        htmlAttributes: new { @class = "form-control" })
-    </div>
-
-    <div class="form-group">
       <input type="submit" value="Create new account" class="btn btn-success" />
     </div>
   }

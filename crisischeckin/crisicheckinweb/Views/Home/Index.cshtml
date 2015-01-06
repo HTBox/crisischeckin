@@ -60,7 +60,14 @@
     
     <label>End Date:</label>
     @Html.TextBoxFor(m => m.SelectedEndDate, new { id="dp_endDate" })
-    
+
+        @Html.LabelFor(m => m.VolunteerType)
+        @Html.DropDownListFor(
+        m => m.VolunteerType,
+        selectList: new SelectList(Model.VolunteerTypes, "Id", "Name", Model.VolunteerType),
+        optionLabel: "-- Choose One --",
+        htmlAttributes: new { @class = "form-control" })
+
     <input id="GoButton" type="submit" value="Volunteer"/>    
 }
 
