@@ -1,5 +1,4 @@
-﻿
-@model crisicheckinweb.ViewModels.VolunteerViewModel
+﻿@model crisicheckinweb.ViewModels.VolunteerViewModel
 @{
     ViewBag.Title = "Volunteer Home";
     Layout = "~/Views/Shared/_VolunteerLayout.cshtml";
@@ -7,7 +6,8 @@
 
 <h2>Volunteer Home</h2>
 
-@using (Html.BeginForm("Assign", "Home")) {
+@using (Html.BeginForm("Assign", "Home"))
+{
     @Html.AntiForgeryToken()
     @Html.ValidationSummary()
 
@@ -20,52 +20,53 @@
             <th></th>
         </tr>
         <tr>
-            <td>@Html.DropDownListFor(m => m.SelectedDisasterId, new SelectList(Model.Disasters, "Id", "Name", Model.SelectedDisasterId), "-- Choose One --")</td>
-            <td>@Html.TextBoxFor(m => m.SelectedStartDate, new { id = "dp_startDate" })</td>
-            <td>@Html.TextBoxFor(m => m.SelectedEndDate, new { id = "dp_endDate" })</td>
-            <td><input id="GoButton" type="submit" value="Volunteer" /></td>
+            <td>@Html.DropDownListFor(m => m.SelectedDisasterId, new SelectList(Model.Disasters, "Id", "Name", Model.SelectedDisasterId), "-- Choose One --", new { @class = "form-control" })</td>
+            <td>@Html.TextBoxFor(m => m.SelectedStartDate, new { id = "dp_startDate", @class = "form-control" })</td>
+            <td>@Html.TextBoxFor(m => m.SelectedEndDate, new { id = "dp_endDate", @class = "form-control" })</td>
+            <td><input class="btn btn-primary" id="GoButton" type="submit" value="Volunteer" /></td>
         </tr>
-    </table>   
+    </table>
 }
 
 <br />
-    @if (!Model.MyCommitments.Any())
-    {
-        <h3>Thank you for volunteering. Please select a disaster and a date range that you are able to volunteer for.</h3>
-    }
-    else
-    {
-        <h3>My Commitments</h3>
-        <table class="table table-bordered">
+@if (!Model.MyCommitments.Any())
+{
+    <h3>Thank you for volunteering. Please select a disaster and a date range that you are able to volunteer for.</h3>
+}
+else
+{
+    <h3>My Commitments</h3>
+    <table class="table table-bordered">
+        <tr>
+            <th>Disaster Name</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Active</th>
+            @if (Model.MyCommitments.Any())
+            {
+                <th>&nbsp;</th>
+            }
+        </tr>
+        @foreach (var comm in Model.MyCommitments)
+        {
             <tr>
-                <th>Disaster Name</th>
-                <th>Start Date</th>
-                <th>End Date</th>
-                <th>Active</th>
-                @if (Model.MyCommitments.Any())
+                <td>@comm.Disaster.Name</td>
+                <td>@comm.StartDate.ToShortDateString()</td>
+                <td>@comm.EndDate.ToShortDateString()</td>
+                <td>@(comm.Disaster.IsActive ? "Yes" : "No") </td>
+
+                @using (Html.BeginForm("RemoveCommitment", "Home", FormMethod.Post, new { @class = "navbar-form" }))
                 {
-                    <th>&nbsp;</th>
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(m => m.RemoveCommitmentId, new { @Value = comm.Id })
+                    <td>
+                        <button class="btn btn-danger btn-xs" type="submit"><i class="glyphicon glyphicon-remove"></i> Remove</button>
+                    </td>
                 }
             </tr>
-            @foreach (var comm in Model.MyCommitments)
-            {
-                <tr>
-                    <td>@comm.Disaster.Name</td>
-                    <td>@comm.StartDate.ToShortDateString()</td>
-                    <td>@comm.EndDate.ToShortDateString()</td>
-                    <td>@(comm.Disaster.IsActive ? "Yes" : "No") </td>
-                    <td>
-                        @using (Html.BeginForm("RemoveCommitment", "Home", FormMethod.Post, new { @class = "navbar-form" }))
-                        {
-                            @Html.AntiForgeryToken()
-                            @Html.HiddenFor(m => m.RemoveCommitmentId, new { @Value = comm.Id })
-                            <button class="btn btn-danger btn-sm" type="submit"><i class="glyphicon glyphicon-remove"></i> Remove</button>
-                        }
-                    </td>
-                </tr>
-            }
-        </table>
-    }
+        }
+    </table>
+}
 @section scripts
 {
     <script type="text/javascript">
