@@ -64,7 +64,7 @@
                 {
                     @Html.AntiForgeryToken()
                     @Html.HiddenFor(m => m.RemoveCommitmentId, new { @Value = comm.Id })
-                    <button type="submit"><i class="glyphicon glyphicon-remove"></i> Remove</button>
+                    <button class="btn btn-danger btn-sm" type="submit"><i class="glyphicon glyphicon-remove"></i> Remove</button>
                 }
             </td>
         </tr>
