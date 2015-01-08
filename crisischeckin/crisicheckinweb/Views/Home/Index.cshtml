@@ -5,7 +5,9 @@
 }
 
 <style>
-    .contact{ font-weight: bold }
+    .contact {
+        font-weight: bold;
+    }
 </style>
 
 <h2>Volunteer Home</h2>
@@ -28,9 +30,17 @@
             <td>@Html.DropDownListFor(m => m.SelectedDisasterId, new SelectList(Model.Disasters, "Id", "Name", Model.SelectedDisasterId), "-- Choose One --", new { @class = "form-control" })</td>
             <td>@Html.TextBoxFor(m => m.SelectedStartDate, new { id = "dp_startDate", @class = "form-control" })</td>
             <td>@Html.TextBoxFor(m => m.SelectedEndDate, new { id = "dp_endDate", @class = "form-control" })</td>
-            <td><input class="btn btn-primary" id="GoButton" type="submit" value="Volunteer" /></td>
-        </tr>
-    </table>
+            <td>
+                @Html.LabelFor(m => m.VolunteerType)
+                @Html.DropDownListFor(
+                    m => m.VolunteerType,
+                    selectList: new SelectList(Model.VolunteerTypes, "Id", "Name", Model.VolunteerType),
+                    optionLabel: "-- Choose One --",
+                    htmlAttributes: new { @class = "form-control" })
+            </td>
+        <td><input class="btn btn-primary" id="GoButton" type="submit" value="Volunteer" /></td>
+    </tr>
+</table>
 }
 
 <br />
