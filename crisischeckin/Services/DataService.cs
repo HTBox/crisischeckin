@@ -12,10 +12,12 @@ namespace Services
         // because the Ninject library takes care of that for us.
 
         readonly CrisisCheckin context;
+        readonly CrisisCheckinMembership membership_context;
 
-        public DataService(CrisisCheckin ctx)
+        public DataService(CrisisCheckin ctx, CrisisCheckinMembership mctx)
         {
             context = ctx;
+            membership_context = mctx;
         }
 
         public IQueryable<Cluster> Clusters
@@ -45,7 +47,7 @@ namespace Services
 
         public IQueryable<User> Users
         {
-            get { return context.Users; }
+            get { return membership_context.Users; }
         }
 
         public IQueryable<ClusterCoordinatorLogEntry> ClusterCoordinatorLogEntries

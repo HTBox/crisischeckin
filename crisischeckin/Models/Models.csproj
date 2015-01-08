@@ -55,13 +55,9 @@
     <Compile Include="Commitment.cs" />
     <Compile Include="CrisisCheckin.cs" />
     <Compile Include="Disaster.cs" />
-    <Compile Include="Migrations\201408101741031_Initial.cs" />
-    <Compile Include="Migrations\201408101741031_Initial.Designer.cs">
-      <DependentUpon>201408101741031_Initial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201408102352228_AddCommitmentStatus.cs" />
-    <Compile Include="Migrations\201408102352228_AddCommitmentStatus.Designer.cs">
-      <DependentUpon>201408102352228_AddCommitmentStatus.cs</DependentUpon>
+    <Compile Include="Migrations\201501062117225_Initial.cs" />
+    <Compile Include="Migrations\201501062117225_Initial.Designer.cs">
+      <DependentUpon>201501062117225_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Person.cs" />
@@ -84,11 +80,8 @@
     <Content Include="Migrations\DefaultData.sql.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201408101741031_Initial.resx">
-      <DependentUpon>201408101741031_Initial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201408102352228_AddCommitmentStatus.resx">
-      <DependentUpon>201408102352228_AddCommitmentStatus.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201501062117225_Initial.resx">
+      <DependentUpon>201501062117225_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

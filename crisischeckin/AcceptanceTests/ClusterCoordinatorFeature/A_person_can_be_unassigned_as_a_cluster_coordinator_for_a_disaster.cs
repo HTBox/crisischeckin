@@ -17,7 +17,7 @@ namespace AcceptanceTests.ClusterCoordinatorFeature
         [TestInitialize]
         public void Arrange()
         {
-            _dataService = new DataService(new CrisisCheckin());
+            _dataService = new DataService(new CrisisCheckin(), new CrisisCheckinMembership());
             _dataAccessHelper = new DataAccessHelper(_dataService);
             _clusterCoordinatorService = new ClusterCoordinatorService(_dataService);
             var disaster = _dataAccessHelper.Create_a_disaster();
