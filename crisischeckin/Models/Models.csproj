@@ -69,6 +69,7 @@
     <Compile Include="v2\PersonCluster.cs" />
     <Compile Include="v2\PersonPhone.cs" />
     <Compile Include="v2\PhoneType.cs" />
+    <Compile Include="VolunteerType.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
