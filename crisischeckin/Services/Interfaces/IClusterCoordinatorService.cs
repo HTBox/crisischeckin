@@ -10,6 +10,7 @@ namespace Services.Interfaces
         void UnassignClusterCoordinator(ClusterCoordinator clusterCoordinator);
         ClusterCoordinator GetCoordinator(int id);
         IEnumerable<ClusterCoordinator> GetAllCoordinatorsForDisplay(int disasterId, out IList<Person> allPersonsForDisplay);
+        IEnumerable<ClusterCoordinator> GetAllCoordinatorsForCluster(int clusterId);
         ClusterCoordinator GetCoordinatorFullyLoaded(int id);
         ClusterCoordinator GetCoordinatorForUnassign(int id);
     }

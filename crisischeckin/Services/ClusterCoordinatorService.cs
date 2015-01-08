@@ -179,6 +179,11 @@ namespace Services
             return _dataService.ClusterCoordinators.Where(x => x.DisasterId == disasterId).ToList();
         }
 
+        public IEnumerable<ClusterCoordinator> GetAllCoordinatorsForCluster(int clusterId)
+        {
+            return _dataService.ClusterCoordinators.Where(x => x.ClusterId == clusterId).ToList();
+        }
+
         public IEnumerable<ClusterCoordinator> GetAllCoordinatorsForDisplay(int disasterId, out IList<Person> allPersonsForDisplay)
         {
             var result = (from x in _dataService.ClusterCoordinators

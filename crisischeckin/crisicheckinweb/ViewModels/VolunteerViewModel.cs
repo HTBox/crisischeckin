@@ -15,5 +15,7 @@ namespace crisicheckinweb.ViewModels
         public int SelectedDisasterId { get; set; }
         public DateTime SelectedStartDate { get; set; }
         public DateTime SelectedEndDate { get; set; }
+        public Person Person { get; set; }
+        public IEnumerable<ClusterCoordinator> ClusterCoordinators { get; set; } 
     }
 }
