@@ -24,6 +24,7 @@
             <th>Volunteer for Disaster</th>
             <th>Start Date</th>
             <th>End Date</th>
+            <th>Location</th>
             <th></th>
         </tr>
         <tr>
@@ -57,6 +58,7 @@ else
             <th>Start Date</th>
             <th>End Date</th>
             <th>Active</th>
+            <th>Location</th>
             <th>Cluster Coordinators</th>
             @if (Model.MyCommitments.Any())
             {
@@ -70,6 +72,7 @@ else
                 <td>@comm.StartDate.ToShortDateString()</td>
                 <td>@comm.EndDate.ToShortDateString()</td>
                 <td>@(comm.Disaster.IsActive ? "Yes" : "No") </td>
+                <td>@comm.VolunteerType.Name</td>
                 <td>
                     @foreach (var clusterCoordinator in Model.ClusterCoordinators.Where(cc => cc.DisasterId == comm.DisasterId))
                     {
