@@ -51,17 +51,6 @@ namespace crisicheckinweb
 
         public static void SeedIfNotEmpty(CrisisCheckin context, CrisisCheckinMembership membership_context) // Not overriding DbMigrationsConfiguration<T>.Seed, since it doesn't seem to always get called when it should.
         {
-            // Since the previous version, we've added the 
-            // Volunteer type table:
-            if (!context.VolunteerTypes.Any())
-            {
-                context.VolunteerTypes.AddOrUpdate(
-                    v => v.Name,
-                    new VolunteerType { Name = "On Site" },
-                    new VolunteerType { Name = "Remote" }
-                );
-            }
-
             // We want to call this method even when the database
             // updates aren't necessary. That's because VS 2013 
             // tooling automatically creates the DB when the app
@@ -86,12 +75,14 @@ namespace crisicheckinweb
                 new Cluster { Name = "Water and Sanitation Cluster" }
                 );
 
+            var vtype = context.VolunteerTypes.First(vt => vt.Name == VolunteerType.VOLUNTEERTYPE_ONSITE);
+
             context.Persons.AddOrUpdate(
                 p => p.FirstName,
                 new Person {
                     FirstName = "Bob",
                     Commitments =
-                        new Commitment[] { new Commitment { StartDate = new DateTime(2014, 1, 1), EndDate = new DateTime(2014, 2, 1), Disaster = new Disaster { Name = "Hurricane", IsActive = true } } }
+                        new Commitment[] { new Commitment { StartDate = new DateTime(2014, 1, 1), EndDate = new DateTime(2014, 2, 1), Disaster = new Disaster { Name = "Hurricane", IsActive = true }, VolunteerType = vtype } }
                 });
 
             // Set up automated test user
@@ -108,7 +99,8 @@ namespace crisicheckinweb
                                 new Commitment 
                                 { 
                                     StartDate = new DateTime(DateTime.Now.Year, 1, 1), EndDate = new DateTime(DateTime.Now.Year, 2, 1), 
-                                    Disaster = new Disaster { Name = "Test Disaster", IsActive = true } 
+                                    Disaster = new Disaster { Name = "Test Disaster", IsActive = true },
+                                    VolunteerType = vtype
                                 } 
                             }
                     });
