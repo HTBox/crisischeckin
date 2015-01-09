@@ -21,6 +21,7 @@ namespace Models
         public DbSet<Disaster> Disasters { get; set; }
         public DbSet<Person> Persons { get; set; }
         public DbSet<Cluster> Clusters { get; set; }
+        public DbSet<VolunteerType> VolunteerTypes { get; set; }
         public DbSet<ClusterCoordinator> ClusterCoordinators { get; set; }
         public DbSet<ClusterCoordinatorLogEntry> ClusterCoordinatorLogEntries { get; set; }
      
