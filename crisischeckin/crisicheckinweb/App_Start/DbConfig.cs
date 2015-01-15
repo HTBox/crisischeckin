@@ -94,6 +94,7 @@ namespace crisicheckinweb
                         FirstName = "Test",
                         LastName = "User",
                         Email = "TestUser@htbox.org",
+                        Cluster = new Cluster { Name = "Agriculture Cluster" },
                         Commitments = new Commitment[] 
                             { 
                                 new Commitment 
