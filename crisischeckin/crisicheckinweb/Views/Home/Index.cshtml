@@ -32,7 +32,6 @@
             <td>@Html.TextBoxFor(m => m.SelectedStartDate, new { id = "dp_startDate", @class = "form-control" })</td>
             <td>@Html.TextBoxFor(m => m.SelectedEndDate, new { id = "dp_endDate", @class = "form-control" })</td>
             <td>
-                @Html.LabelFor(m => m.VolunteerType)
                 @Html.DropDownListFor(
                     m => m.VolunteerType,
                     selectList: new SelectList(Model.VolunteerTypes, "Id", "Name", Model.VolunteerType),
