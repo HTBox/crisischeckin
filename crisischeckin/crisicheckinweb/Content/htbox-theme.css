@@ -82,3 +82,9 @@
   color: #ccc;
   background-color: #080808;
 }
+
+
+.table > tbody > tr.ht-header > th{
+  background-color: #dd505a;
+}
+
