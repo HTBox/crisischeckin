@@ -7,19 +7,18 @@
 @using (Html.BeginForm("Create", "Disaster"))
 {
     @Html.HiddenFor(m => m.Id)
-    <fieldset>
-        <legend>Create / Edit Disaster</legend>
-        @Html.ValidationSummary()
-        <ul>
-            <li>
-                @Html.LabelFor(m => m.Name)
-                @Html.TextBoxFor(m => m.Name)
-            </li>
-            <li>
-                @Html.LabelFor(m => m.IsActive)
-                @Html.CheckBoxFor(m => m.IsActive)
-            </li>
-        </ul>
+    <h3>Create / Edit Disaster</h3>
+    @Html.ValidationSummary()
+    <div class="col-sm-3">
+        <div class="form-group">
+            @Html.LabelFor(m => m.Name, "Disaster Name")
+            @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+        </div>
+        <div>
+            @Html.CheckBoxFor(m => m.IsActive)
+            @Html.LabelFor(m => m.IsActive, "Currently active")
+        </div>
         <input type="submit" value="@(Model.Id > 0 ? "Update" : "Create")" class="btn btn-success" />
-    </fieldset>
+    </div>
+
 }
