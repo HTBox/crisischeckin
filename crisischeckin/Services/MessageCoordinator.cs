@@ -24,7 +24,7 @@ namespace Services
                 catch (Exception e)
                 {
                     //TODO: Add logging implementation--awaiting decision from Bill
-                    throw e;
+                    ////throw e;
                 }
             }
         }
