@@ -17,23 +17,29 @@ namespace crisicheckinweb
         public static void InitializeCrisisCheckinAndMembershipData()
         {
             var migrateOnStartup = false;
-            if (!bool.TryParse(ConfigurationManager.AppSettings["MigrateDbToLatestOnStartup"], out migrateOnStartup)) {
+            if (!bool.TryParse(ConfigurationManager.AppSettings["MigrateDbToLatestOnStartup"], out migrateOnStartup))
+            {
                 migrateOnStartup = false;
             }
 
-            if (migrateOnStartup) {
+            if (migrateOnStartup)
+            {
                 Database.SetInitializer<CrisisCheckin>(new MigrateDatabaseToLatestVersion<CrisisCheckin, Models.Migrations.CrisisCheckinConfiguration>());
-            } else {
+            }
+            else
+            {
                 Database.SetInitializer<CrisisCheckin>(null);
             }
 
             //Users are created via membership so never ever do initialization
             Database.SetInitializer<CrisisCheckinMembership>(null);
 
-            using (var db = new CrisisCheckin()) {
+            using (var db = new CrisisCheckin())
+            {
                 db.Database.CreateIfNotExists();
 
-                if (migrateOnStartup) {
+                if (migrateOnStartup)
+                {
                     var configuration = new CrisisCheckinConfiguration();
 
                     var migrator = new DbMigrator(configuration);
@@ -43,7 +49,8 @@ namespace crisicheckinweb
                 AuthConfig.Register();
                 AuthConfig.VerifyRolesAndDefaultAdminAccount();
 
-                using (var mdb = new CrisisCheckinMembership()) {
+                using (var mdb = new CrisisCheckinMembership())
+                {
                     SeedIfNotEmpty(db, mdb);
                 }
             }
@@ -74,12 +81,13 @@ namespace crisicheckinweb
                 new Cluster { Name = "Protection Cluster" },
                 new Cluster { Name = "Water and Sanitation Cluster" }
                 );
-
+            context.SaveChanges();
             var vtype = context.VolunteerTypes.First(vt => vt.Name == VolunteerType.VOLUNTEERTYPE_ONSITE);
 
             context.Persons.AddOrUpdate(
                 p => p.FirstName,
-                new Person {
+                new Person
+                {
                     FirstName = "Bob",
                     Commitments =
                         new Commitment[] { new Commitment { StartDate = new DateTime(2014, 1, 1), EndDate = new DateTime(2014, 2, 1), Disaster = new Disaster { Name = "Hurricane", IsActive = true }, VolunteerType = vtype } }
@@ -87,14 +95,17 @@ namespace crisicheckinweb
 
             // Set up automated test user
             var testUser = membership_context.Users.FirstOrDefault(u => u.UserName == Constants.DefaultTestUserName);
-            if (testUser != null) {
-                if (context.Persons.FirstOrDefault(p => p.UserId == testUser.Id) == null) {
-                    context.Persons.Add(new Person {
+            if (testUser != null)
+            {
+                if (context.Persons.FirstOrDefault(p => p.UserId == testUser.Id) == null)
+                {
+                    context.Persons.Add(new Person
+                    {
                         UserId = testUser.Id,
                         FirstName = "Test",
                         LastName = "User",
                         Email = "TestUser@htbox.org",
-                        Cluster = new Cluster { Name = "Agriculture Cluster" },
+                        Cluster = context.Clusters.FirstOrDefault(cluster => cluster.Name == "Agriculture Cluster"),
                         Commitments = new Commitment[] 
                             { 
                                 new Commitment 
