@@ -6,7 +6,7 @@ automatically creating a "contact list"/"phone book" of those that are there.
 See presentation by Andrej Verity - http://www.youtube.com/watch?v=ypA9Iza5OFg
 
 If you're interested in helping us validate the application, please help us test it on our 
-staging site:  http://crisischeckin.azurewebsites.net
+staging site:  http://crisischeckin-d.azurewebsites.net
 
 The Administrator login (on the staging site) is:
 UID:  Administrator
