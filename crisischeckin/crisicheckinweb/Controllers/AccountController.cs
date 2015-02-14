@@ -6,6 +6,7 @@ using Models;
 using Services.Exceptions;
 using Services.Interfaces;
 using WebMatrix.WebData;
+using crisicheckinweb.Wrappers;
 
 namespace crisicheckinweb.Controllers
 {
@@ -13,9 +14,12 @@ namespace crisicheckinweb.Controllers
     {
         private readonly IVolunteerService _volunteerSvc;
         private readonly ICluster _clusterSvc;
-        public AccountController(IVolunteerService volunteerSvc, ICluster clusterSvc)
+        private readonly IWebSecurityWrapper _webSecurityWrapper;
+
+        public AccountController(IVolunteerService volunteerSvc, ICluster clusterSvc, IWebSecurityWrapper webSecurityWrapper)
         {
             _clusterSvc = clusterSvc;
+            _webSecurityWrapper = webSecurityWrapper;
             _volunteerSvc = volunteerSvc;
         }
 
@@ -35,9 +39,9 @@ namespace crisicheckinweb.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(LoginModel model, string returnUrl)
         {
-            if (ModelState.IsValid && WebSecurity.Login(model.UserName, model.Password, persistCookie: model.RememberMe))
+            if (ModelState.IsValid && _webSecurityWrapper.Login(model.UserName, model.Password, model.RememberMe))
             {
-                if (Roles.IsUserInRole(model.UserName, Constants.RoleAdmin))
+                if (_webSecurityWrapper.IsUserInRole(model.UserName, Constants.RoleAdmin))
                 {
                     return RedirectToAction("List", "Disaster");
                 }
@@ -160,7 +164,7 @@ namespace crisicheckinweb.Controllers
                 try
                 {
                     _volunteerSvc.UpdateDetails(new Person {
-                        UserId = WebSecurity.CurrentUserId,
+                        UserId = _webSecurityWrapper.CurrentUserId,
                         Email =  model.Email,
                         PhoneNumber = model.PhoneNumber
                     });

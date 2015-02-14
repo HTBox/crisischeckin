@@ -11,8 +11,6 @@ using crisicheckinweb.Wrappers;
 
 namespace crisicheckinweb.Controllers
 {
-    using Services;
-
     public class HomeController : BaseController
     {
         private readonly IDisaster _disasterSvc;

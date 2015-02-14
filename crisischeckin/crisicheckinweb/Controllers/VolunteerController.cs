@@ -1,12 +1,11 @@
-﻿using Services.Interfaces;
+﻿using Services;
+using Services.Interfaces;
 using System;
 using System.Web.Mvc;
 using crisicheckinweb.ViewModels;
 
 namespace crisicheckinweb.Controllers
 {
-    using Services;
-
     public class VolunteerController : BaseController
     {
         private readonly IDisaster _disasterSvc;

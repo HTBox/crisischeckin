@@ -1,6 +1,7 @@
 using System.Net.Mail;
 using System.Web.Http;
 using Models;
+using Services;
 
 [assembly: WebActivator.PreApplicationStartMethod(typeof(crisicheckinweb.App_Start.NinjectWebCommon), "Start")]
 [assembly: WebActivator.ApplicationShutdownMethodAttribute(typeof(crisicheckinweb.App_Start.NinjectWebCommon), "Stop")]
@@ -13,7 +14,6 @@ namespace crisicheckinweb.App_Start
     using Microsoft.Web.Infrastructure.DynamicModuleHelper;
     using Ninject;
     using Ninject.Web.Common;
-    using Services;
     using Services.Interfaces;
     using Services.Api;
     using WebApiContrib.IoC.Ninject;
