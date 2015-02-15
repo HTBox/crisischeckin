@@ -1,8 +1,9 @@
 ﻿using System.Web.Mvc;
+using crisicheckinweb.Infrastructure.Attributes;
 
 namespace crisicheckinweb.Controllers
 {
-    [Authorize]
+    [Authorize, ExpireContent]
     public class BaseController : Controller
     {
     }
