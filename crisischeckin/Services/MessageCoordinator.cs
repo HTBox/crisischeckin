@@ -17,14 +17,7 @@ namespace Services
         {
             foreach (var messageSender in _messageSenders)
             {
-                try
-                {
-                    messageSender.SendMessage(message, recipients);
-                }
-                catch (Exception)
-                {
-                    //TODO: Add logging implementation--awaiting decision from Bill
-                }
+                messageSender.SendMessage(message, recipients);
             }
         }
     }

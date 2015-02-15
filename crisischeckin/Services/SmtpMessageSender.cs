@@ -22,10 +22,12 @@ namespace Services
         public void SendMessage(Message message, IReadOnlyCollection<MessageRecipient> recipients)
         {
 
-            using (var smtpClient = new SmtpClient(Convert.ToString(ConfigurationSettings.AppSettings["smtpClient"]), Convert.ToInt32(ConfigurationSettings.AppSettings["smtpClientPort"])))
+            using (var smtpClient = new SmtpClient())
             {
-                smtpClient.Credentials = new NetworkCredential(Convert.ToString(ConfigurationSettings.AppSettings["smtpUserName"]), Convert.ToString(ConfigurationSettings.AppSettings["smtpPwd"]));
-                smtpClient.EnableSsl = Convert.ToBoolean(ConfigurationSettings.AppSettings["smtpSSLRequired"]);
+#if DEBUG
+                // Emails go to "C:\Users\[USER]\AppData\Roaming" if not Rlease mode
+                smtpClient.PickupDirectoryLocation = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+#endif
                 var fromAddress = CreateAddress(string.Concat(message.Subject, " - Coordinator"), "no-reply@CrisisCheckin.com");
 
                 foreach (var recipient in recipients)

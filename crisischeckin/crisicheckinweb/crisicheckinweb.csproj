@@ -319,6 +319,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Content\bootstrap.css.map" />
+    <None Include="Properties\PublishProfiles\LocalRelease.pubxml" />
     <None Include="scripts\amplify-vsdoc.js" />
     <Content Include="scripts\amplify.js" />
     <Content Include="scripts\amplify.min.js" />
