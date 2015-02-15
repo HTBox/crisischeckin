@@ -22,12 +22,8 @@ namespace Services
         public void SendMessage(Message message, IReadOnlyCollection<MessageRecipient> recipients)
         {
 
-            using (var smtpClient = new SmtpClient())
+            using (var smtpClient = _smtpClientFactory())
             {
-#if DEBUG
-                // Emails go to "C:\Users\[USER]\AppData\Roaming" if not Rlease mode
-                smtpClient.PickupDirectoryLocation = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-#endif
                 var fromAddress = CreateAddress(string.Concat(message.Subject, " - Coordinator"), "no-reply@CrisisCheckin.com");
 
                 foreach (var recipient in recipients)
