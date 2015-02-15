@@ -1,9 +1,7 @@
 ﻿using Models;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
+using crisicheckinweb.Infrastructure.Attributes;
 
 namespace crisicheckinweb.ViewModels
 {
@@ -34,8 +32,8 @@ namespace crisicheckinweb.ViewModels
       
 
         [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be between {2} and {1} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
+        [BasicPassword]
         [Display(Name = "Password")]
         public string Password { get; set; }
 

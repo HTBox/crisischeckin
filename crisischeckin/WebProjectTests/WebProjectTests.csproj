@@ -55,6 +55,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Net.Http" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.0\lib\net45\System.Web.Helpers.dll</HintPath>
@@ -96,10 +97,16 @@
     <Compile Include="AccountControllerTests.cs" />
     <Compile Include="DisasterControllerTests.cs" />
     <Compile Include="HomeControllerTests.cs" />
+    <Compile Include="Infrastructure\Attributes\BasicPasswordAttributeTests.cs" />
+    <Compile Include="Mother.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VolunteerControllerTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{85D45B1B-D669-4370-8D5C-60D2350C5544}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\crisicheckinweb\crisicheckinweb.csproj">
       <Project>{212deac4-d307-4480-94ce-2951e22b13f8}</Project>
       <Name>crisicheckinweb</Name>
