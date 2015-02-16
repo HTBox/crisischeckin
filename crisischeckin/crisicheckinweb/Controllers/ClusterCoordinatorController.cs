@@ -8,7 +8,7 @@ using Services.Interfaces;
 
 namespace crisicheckinweb.Controllers
 {
-    public class ClusterCoordinatorController : Controller
+    public class ClusterCoordinatorController : BaseController
     {
         readonly ICluster _cluster;
         readonly IClusterCoordinatorService _clusterCoordinatorService;
