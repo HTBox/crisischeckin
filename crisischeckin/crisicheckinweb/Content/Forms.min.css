@@ -31,3 +31,9 @@
     color: #fff;
     padding-top: 10px;
 }
+
+.required label:after {
+    content: "*";
+    padding-left: 5px;
+    color: #C33A3A;
+}
