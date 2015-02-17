@@ -15,7 +15,7 @@
             var width500Attributes = new { htmlAttributes = new { style = "width: 500px;" } };
         }
 
-        <p>@Html.LabelFor(m => m.Subject, width250Attributes)</p>
+        <p class="required">@Html.LabelFor(m => m.Subject, width250Attributes)</p>
         <p>@Html.EditorFor(m => m.Subject, width500Attributes)</p>
 
         <p>@Html.LabelFor(m => m.ClusterId, width250Attributes)</p>
@@ -26,7 +26,7 @@
             @Html.CheckBoxFor(m => m.ClusterCoordinatorsOnly)
         </p>
 
-        <p>@Html.LabelFor(m => m.Message, width250Attributes)</p>
+        <p class="required">@Html.LabelFor(m => m.Message, width250Attributes)</p>
         <p>@Html.TextAreaFor(m => m.Message, 25, 76, null)</p>
 
         @Html.HiddenFor(m => m.DisasterId)

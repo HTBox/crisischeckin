@@ -13,42 +13,42 @@
       @Html.ValidationSummary()
     </div>
 
-    <div class="form-group">
+    <div class="form-group required">
       @Html.LabelFor(m => m.FirstName)
       @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
     </div>
 
-    <div class="form-group">
+    <div class="form-group required">
       @Html.LabelFor(m => m.LastName)
       @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
     </div>
 
-    <div class="form-group">
+    <div class="form-group required">
       @Html.LabelFor(m => m.PhoneNumber)
       @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control" })
     </div>
 
-    <div class="form-group">
+    <div class="form-group required">
       @Html.LabelFor(m => m.Email)
       @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
     </div>
 
-    <div class="form-group">
+    <div class="form-group required">
       @Html.LabelFor(m => m.UserName)
       @Html.TextBoxFor(m => m.UserName, new { id = "txt_userName", @class = "form-control" })
     </div>
 
-    <div class="form-group">
+    <div class="form-group required">
         @Html.LabelFor(m => m.Password)
         @Html.PasswordFor(m => m.Password, new { @class = "form-control"})
     </div>
 
-    <div class="form-group">
+    <div class="form-group required">
       @Html.LabelFor(m => m.ConfirmPassword)
       @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
     </div>
 
-    <div class="form-group">
+    <div class="form-group required">
       @Html.LabelFor(m => m.Cluster)
       @Html.DropDownListFor(m => m.Cluster, new SelectList(Model.Clusters, "Id", "Name", Model.Cluster), "-- Choose One --", new { @class = "form-control" })
     </div>
