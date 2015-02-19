@@ -87,8 +87,10 @@ namespace crisicheckinweb.Controllers
             var commitments = (person != null) ?
                 _volunteerSvc.RetrieveCommitments(person.Id, true) :
                 new List<Commitment>().AsEnumerable();
-            
-            var clusterCoordinators = _clusterCoordinatorService.GetAllCoordinatorsForCluster(1).ToList();
+
+            var clusterCoordinators = (person != null && person.ClusterId.HasValue) ?
+                _clusterCoordinatorService.GetAllCoordinatorsForCluster(person.ClusterId.Value).ToList() :
+                new List<ClusterCoordinator>().AsEnumerable();
 
             var model = new VolunteerViewModel
             {
