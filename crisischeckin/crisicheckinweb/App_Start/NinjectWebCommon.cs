@@ -75,7 +75,15 @@ namespace crisicheckinweb.App_Start
             kernel.Bind<IMessageCoordinator>().To<MessageCoordinator>().InRequestScope();
             kernel.Bind<IClusterCoordinatorService>().To<ClusterCoordinatorService>().InRequestScope();
             kernel.Bind<IApiService>().To<ApiService>().InRequestScope();
-            kernel.Bind<Func<SmtpClient>>().ToMethod(c => () => new SmtpClient()).InRequestScope();
+            kernel.Bind<Func<SmtpClient>>()
+                .ToMethod(c => () => new SmtpClient
+                {
+#if DEBUG
+                    // Emails go to "C:\Users\[USER]\AppData\Roaming" if not Release mode
+                    PickupDirectoryLocation = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
+#endif
+                })
+                .InRequestScope();
 #if DEBUG
             kernel.Bind<IMessageSender>().To<DebugMessageSender>();
 #else
