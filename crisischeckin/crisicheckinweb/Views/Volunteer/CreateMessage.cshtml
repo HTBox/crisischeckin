@@ -5,37 +5,37 @@
     ViewBag.Title = "Send Message To Volunteers By Disaster";
 }
 
-<h2>Send Message To Volunteers: @Model.DisasterName</h2>
+<div class="col-lg-6 col-sm-12 col-xs-12 col-md-6">
 @using (Html.BeginForm("SendMessageToVolunteersByDisaster", "Volunteer"))
 {
+    @Html.HiddenFor(m => m.DisasterId)
+
+    <h3>Send Message To Volunteers: @Model.DisasterName</h3>
     @Html.ValidationSummary()
-    <fieldset class="col-lg-11">
-        @{
-            var width250Attributes = new { htmlAttributes = new { style = "width: 250px;" } };
-            var width500Attributes = new { htmlAttributes = new { style = "width: 500px;" } };
-        }
 
-        <p class="required">@Html.LabelFor(m => m.Subject, width250Attributes)</p>
-        <p>@Html.EditorFor(m => m.Subject, width500Attributes)</p>
+    <div class="form-group required">
+        @Html.LabelFor(m => m.Subject)
+        @Html.TextBoxFor(m => m.Subject, new {@class = "form-control"})
+    </div>
+    <div class="form-group required">
+        @Html.LabelFor(m => m.ClusterId)
+        @Html.DropDownListFor(m => m.ClusterId, new SelectList(Model.Clusters, "Id", "Name", Model.ClusterId), "All Clusters", new {@class = "form-control"})
+    </div>
+    <div class="form-group">
+        @Html.CheckBoxFor(m => m.ClusterCoordinatorsOnly)
+        @Html.LabelFor(m => m.ClusterCoordinatorsOnly)
+    </div>
+    <div class="form-group required">
+        @Html.LabelFor(m => m.Message)
+        @Html.TextAreaFor(m => m.Message, 25, 76, new {@class = "form-control"})
+    </div>
 
-        <p>@Html.LabelFor(m => m.ClusterId, width250Attributes)</p>
-        <p>@Html.DropDownListFor(m => m.ClusterId, new SelectList(Model.Clusters, "Id", "Name", Model.ClusterId), "All Clusters", width500Attributes)</p>
-
-        <p>
-            @Html.LabelFor(m => m.ClusterCoordinatorsOnly, width250Attributes)
-            @Html.CheckBoxFor(m => m.ClusterCoordinatorsOnly)
-        </p>
-
-        <p class="required">@Html.LabelFor(m => m.Message, width250Attributes)</p>
-        <p>@Html.TextAreaFor(m => m.Message, 25, 76, null)</p>
-
-        @Html.HiddenFor(m => m.DisasterId)
-
+    <div class="form-group">
         <input type="submit" value="Send" class="btn btn-success" />
         <span id="warningMessage"></span>
-    </fieldset>
-
-}
+    </div>
+    }
+</div>
 
 @section scripts
 {
