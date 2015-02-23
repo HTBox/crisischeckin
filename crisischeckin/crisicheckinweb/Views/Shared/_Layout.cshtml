@@ -45,7 +45,7 @@
         @RenderBody()
     </div>
     
-    <script src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-2.1.1.min.js"></script>
+    <script src="//ajax.aspnetcdn.com/ajax/jquery/jquery-2.1.1.min.js"></script>
     <script>
         // Fallback to loading jQuery from a local path if the CDN is unavailable
         (window.jQuery || document.write('<script src="/scripts/jquery-2.1.1.min.js"><\/script>'));
@@ -53,6 +53,8 @@
 
     <script type="text/javascript" src="~/scripts/jquery.unobtrusive-ajax.min.js"></script>
     <script type="text/javascript" src="~/scripts/jquery-ui-1.10.4.min.js"></script>
+    <script type="text/javascript" src="~/scripts/bootstrap.min.js"></script>
+
     @RenderSection("scripts", false)
 </body>
 </html>
