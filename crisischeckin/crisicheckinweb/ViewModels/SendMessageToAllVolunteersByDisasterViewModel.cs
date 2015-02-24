@@ -23,6 +23,8 @@ namespace crisicheckinweb.ViewModels
         public string Message { get; set; }
         [Display(Name="Cluster coordinators only")]
         public bool ClusterCoordinatorsOnly { get; set; }
+        [Display(Name = "Send to checked-in volunteers only")]
+        public bool CheckedInOnly { get; set; }
 
         public IEnumerable<Cluster> Clusters { get; set; }
     }

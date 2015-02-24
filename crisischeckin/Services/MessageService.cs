@@ -17,7 +17,7 @@ namespace Services
 
         public void SendMessageToDisasterVolunteers(RecipientCriterion recipientCriterion, Message message)
         {
-            var volunteers = _adminSvc.GetVolunteersForDate(recipientCriterion.DisasterId, DateTime.Today, recipientCriterion.ClusterCoordinatorsOnly);
+            var volunteers = _adminSvc.GetVolunteersForDate(recipientCriterion.DisasterId, DateTime.Today, recipientCriterion.ClusterCoordinatorsOnly, recipientCriterion.CheckedInOnly);
 
             var messageRecipients = new List<MessageRecipient>();
             foreach (var volunteer in volunteers)

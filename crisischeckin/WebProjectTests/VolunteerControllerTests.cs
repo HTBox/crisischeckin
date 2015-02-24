@@ -40,7 +40,7 @@ namespace WebProjectTests
             var disaster = new Disaster();
             _disasterSvc.Setup(x => x.Get(disasterId)).Returns(disaster);
             var allVolunteers = new List<Person>();
-            _adminSvc.Setup(x => x.GetVolunteersForDisaster(disaster.Id, null)).Returns(allVolunteers);
+            _adminSvc.Setup(x => x.GetVolunteersForDisaster(disaster.Id, null, false)).Returns(allVolunteers);
 
             var controller = CreateVolunteerController();
             //Act
@@ -66,7 +66,7 @@ namespace WebProjectTests
             var disaster = new Disaster();
             _disasterSvc.Setup(x => x.Get(disasterId)).Returns(disaster);
             var filteredVolunteers = new List<Person>();
-            _adminSvc.Setup(x => x.GetVolunteersForDisaster(disaster.Id, filteredDateTime)).Returns(filteredVolunteers);
+            _adminSvc.Setup(x => x.GetVolunteersForDisaster(disaster.Id, filteredDateTime, false)).Returns(filteredVolunteers);
 
             var controller = CreateVolunteerController();
             //Act

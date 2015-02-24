@@ -16,8 +16,10 @@ namespace Services.UnitTest
 
         private const int personWithCommitmentsID = 11;
         private const int personWithNoCommitmentsID = 12;
+        private const int checkedInPersonID = 13;
 
         private const int commitmentId = 101;
+        private const int checkedInCommitmentId = 102;
 
         private readonly Disaster disasterWithCommitments = new Disaster
         {
@@ -40,6 +42,15 @@ namespace Services.UnitTest
             Email = "unused@nothere.com"
         };
 
+        private readonly Person checkedInPerson = new Person
+        {
+            Id = checkedInPersonID,
+            FirstName = "John",
+            LastName = "Doe",
+            PhoneNumber = "(111) 555-9999",
+            Email = "john@nothere.com"
+        };
+
         private readonly Person personWithNoCommitments = new Person
         {
             Id = personWithNoCommitmentsID,
@@ -54,6 +65,17 @@ namespace Services.UnitTest
                                 DisasterId = disasterWithVolunteersID,
                                 Id = commitmentId,
                                 PersonId = personWithCommitmentsID,
+                                PersonIsCheckedIn = false,
+                                StartDate = new DateTime(2013, 8, 10),
+                                EndDate = new DateTime(2013, 8, 15)
+                            };
+
+        private readonly Commitment checkedInCommitment = new Commitment
+                            {
+                                DisasterId = disasterWithVolunteersID,
+                                Id = checkedInCommitmentId,
+                                PersonId = checkedInPersonID,
+                                PersonIsCheckedIn = true,
                                 StartDate = new DateTime(2013, 8, 10),
                                 EndDate = new DateTime(2013, 8, 15)
                             };
@@ -190,6 +212,20 @@ namespace Services.UnitTest
         }
 
         [TestMethod]
+        public void GetVolunteersFiltersCorrectlyWhenRequestingCheckedInOnly()
+        {
+            initializeDisasterCollection(disasterWithCommitments);
+            initializeVolunteerCollection(personWithCommitments, checkedInPerson);
+            initializeCommitmentCollection(commitment, checkedInCommitment);
+
+            var underTest = new AdminService(mockService.Object);
+
+            var result = underTest.GetVolunteers(disasterWithCommitments, checkedInOnly:true);
+
+            Assert.AreEqual(1, result.Count());
+        }
+
+        [TestMethod]
         public void WhenOneVolunteerHasRegisteredReturnOneRecordInRange()
         {
             initializeDisasterCollection(disasterWithCommitments);
@@ -201,6 +237,21 @@ namespace Services.UnitTest
             var result = underTest.GetVolunteersForDate(disasterWithCommitments, new DateTime(2013, 08, 12), clusterCoordinatorsOnly: false);
 
             Assert.AreEqual(1, result.Count());
+        }
+
+
+        [TestMethod]
+        public void WhenOneVolunteerHasRegisteredButIsNotCheckedInReturnNoRecord()
+        {
+            initializeDisasterCollection(disasterWithCommitments);
+            initializeVolunteerCollection(personWithCommitments);
+            initializeCommitmentCollection(commitment);
+
+            var underTest = new AdminService(mockService.Object);
+
+            var result = underTest.GetVolunteersForDate(disasterWithCommitments, new DateTime(2013, 08, 12), clusterCoordinatorsOnly: false, checkedInOnly: true);
+
+            Assert.AreEqual(0, result.Count());
         }
 
         [TestMethod]
@@ -230,6 +281,38 @@ namespace Services.UnitTest
             var underTest = new AdminService(mockService.Object);
 
             var result = underTest.GetVolunteersForDate(disasterWithCommitments, new DateTime(2013, 08, 12), clusterCoordinatorsOnly: true);
+
+            Assert.AreEqual(1, result.Count());
+        }
+
+
+        [TestMethod]
+        public void GetVolunteersByDate_FiltersToOnlyCheckedInClusterCoordinators()
+        {
+            var checkedInNonCoordinatorCommitment = new Commitment
+            {
+                DisasterId = disasterWithCommitments.Id,
+                PersonId = personWithNoCommitmentsID,
+                Id = 102,
+                StartDate = new DateTime(2013, 8, 10),
+                EndDate = new DateTime(2013, 8, 15)
+            };
+
+            var clusterCoordinator = new ClusterCoordinator
+            {
+                Id = 1001,
+                DisasterId = disasterWithCommitments.Id,
+                PersonId = checkedInPersonID,
+            };
+
+            initializeDisasterCollection(disasterWithCommitments);
+            initializeVolunteerCollection(personWithCommitments, checkedInPerson, personWithNoCommitments);
+            initializeCommitmentCollection(commitment, checkedInCommitment, checkedInNonCoordinatorCommitment);
+            mockService.Setup(ds => ds.ClusterCoordinators).Returns(new[] { clusterCoordinator }.AsQueryable());
+
+            var underTest = new AdminService(mockService.Object);
+
+            var result = underTest.GetVolunteersForDate(disasterWithCommitments, new DateTime(2013, 08, 12), clusterCoordinatorsOnly: true, checkedInOnly: true);
 
             Assert.AreEqual(1, result.Count());
         }
