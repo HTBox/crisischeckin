@@ -25,6 +25,10 @@
         @Html.CheckBoxFor(m => m.ClusterCoordinatorsOnly)
         @Html.LabelFor(m => m.ClusterCoordinatorsOnly)
     </div>
+    <div class="form-group">
+        @Html.CheckBoxFor(m => m.CheckedInOnly)
+        @Html.LabelFor(m => m.CheckedInOnly)
+    </div>
     <div class="form-group required">
         @Html.LabelFor(m => m.Message)
         @Html.TextAreaFor(m => m.Message, 25, 76, new {@class = "form-control"})
