@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Web;
+using System.ComponentModel.DataAnnotations;
 using Models;
 
 namespace crisicheckinweb.ViewModels
 {
-    public class VolunteerViewModel
+    public class VolunteerViewModel : IValidatableObject
     {
         public IEnumerable<Disaster> Disasters { get; set; }
         public IEnumerable<Commitment> MyCommitments { get; set; }
@@ -23,6 +22,19 @@ namespace crisicheckinweb.ViewModels
         public int VolunteerType { get; set; }
         public IEnumerable<VolunteerType> VolunteerTypes { get; set; }
         public Person Person { get; set; }
-        public IEnumerable<ClusterCoordinator> ClusterCoordinators { get; set; } 
+        public IEnumerable<ClusterCoordinator> ClusterCoordinators { get; set; }
+
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (DateTime.Compare(DateTime.Today, SelectedStartDate) > 0)
+            {
+                yield return new ValidationResult("Please enter a start date that is greater than or equal to today's date.", new [] { "SelectedStartDate" });
+            }
+            if (DateTime.Compare(SelectedStartDate, SelectedEndDate) > 0)
+            {
+                yield return new ValidationResult("Please enter a end date that is greater than or equal to the start date.", new [] { "SelectedEndDate" });
+            }
+        }
     }
 }
