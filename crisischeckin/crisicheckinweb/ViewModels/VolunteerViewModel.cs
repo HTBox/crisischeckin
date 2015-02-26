@@ -31,10 +31,6 @@ namespace crisicheckinweb.ViewModels
             {
                 yield return new ValidationResult("Please enter a start date that is greater than or equal to today's date.", new [] { "SelectedStartDate" });
             }
-            if (DateTime.Compare(SelectedStartDate, SelectedEndDate) > 0)
-            {
-                yield return new ValidationResult("Please enter a end date that is greater than or equal to the start date.", new [] { "SelectedEndDate" });
-            }
         }
     }
 }
