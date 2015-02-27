@@ -22,7 +22,13 @@ namespace Services
         public void AssignToVolunteer(int disasterId, int personId, DateTime startDate, DateTime endDate, int volunteerType)
         {
             if (DateTime.Compare(endDate, startDate) < 0)
-                throw new ArgumentException("endDate cannot be earlier than startDate");
+            {
+                throw new ArgumentException("Please enter a end date that is greater than or equal to the start date.");
+            }
+            if (DateTime.Compare(DateTime.Today, startDate) > 0)
+            {
+                throw new ArgumentException("Please enter a start date that is greater than or equal to today's date.");
+            }
 
 			// check if the start and end date falls within an existing commitment
 			// disregard any disasters that are inactive

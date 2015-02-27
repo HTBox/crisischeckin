@@ -6,7 +6,7 @@ using Models;
 
 namespace crisicheckinweb.ViewModels
 {
-    public class VolunteerViewModel : IValidatableObject
+    public class VolunteerViewModel
     {
         public IEnumerable<Disaster> Disasters { get; set; }
         public IEnumerable<Commitment> MyCommitments { get; set; }
@@ -23,14 +23,5 @@ namespace crisicheckinweb.ViewModels
         public IEnumerable<VolunteerType> VolunteerTypes { get; set; }
         public Person Person { get; set; }
         public IEnumerable<ClusterCoordinator> ClusterCoordinators { get; set; }
-
-
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
-        {
-            if (DateTime.Compare(DateTime.Today, SelectedStartDate) > 0)
-            {
-                yield return new ValidationResult("Please enter a start date that is greater than or equal to today's date.", new [] { "SelectedStartDate" });
-            }
-        }
     }
 }
