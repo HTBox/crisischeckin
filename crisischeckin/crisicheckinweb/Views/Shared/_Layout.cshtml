@@ -1,4 +1,5 @@
-﻿@{
+﻿@using System.Web.Optimization
+@{
     Layout = null;
 }
 <!DOCTYPE html>
@@ -8,11 +9,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Crisis Checkin</title>
-    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
-    <link href="~/Content/themes/base/jquery.ui.all.css" rel="stylesheet" />
-    <link href="~/Content/body.min.css" rel="stylesheet" />
-    <link href="~/Content/Forms.min.css" rel="stylesheet" />
-    <link href="~/Content/htbox-theme.css" rel="stylesheet" />
+    @Styles.Render("~/Content/css")
 
     @RenderSection("styles", false)
 
@@ -44,17 +41,8 @@
 
         @RenderBody()
     </div>
-    
-    <script src="//ajax.aspnetcdn.com/ajax/jquery/jquery-2.1.1.min.js"></script>
-    <script>
-        // Fallback to loading jQuery from a local path if the CDN is unavailable
-        (window.jQuery || document.write('<script src="/scripts/jquery-2.1.1.min.js"><\/script>'));
-    </script>
 
-    <script type="text/javascript" src="~/scripts/jquery.unobtrusive-ajax.min.js"></script>
-    <script type="text/javascript" src="~/scripts/jquery-ui-1.10.4.min.js"></script>
-    <script type="text/javascript" src="~/scripts/bootstrap.min.js"></script>
-
+    @Scripts.Render("~/bundles/libs")
     @RenderSection("scripts", false)
 </body>
 </html>
