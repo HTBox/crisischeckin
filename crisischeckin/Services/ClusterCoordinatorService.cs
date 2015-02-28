@@ -195,7 +195,7 @@ namespace Services
                               ClusterId = x.ClusterId
                           }).ToList();
 
-            var persons = GetAllPersonDataForDisplay();
+            var persons = GetAllPersonDataForDisasterForDisplay(disasterId);
             allPersonsForDisplay = persons;
 
             return result.Select(x => new ClusterCoordinator
@@ -207,19 +207,25 @@ namespace Services
                 }).ToList();
         }
 
-        private IList<Person> GetAllPersonDataForDisplay()
+        private IList<Person> GetAllPersonDataForDisasterForDisplay(int disasterId)
         {
-            var result = _dataService.Persons.Select(p => new
-                {
-                    Id = p.Id,
-                    FirstName = p.FirstName,
-                    LastName = p.LastName
-                }).ToList();
+            var result = (from p in _dataService.Persons
+                          join cm in _dataService.Commitments
+                           on p.Id equals cm.PersonId
+                          where cm.DisasterId == disasterId
+                          select new
+                            {
+                                Id = p.Id,
+                                FirstName = p.FirstName,
+                                LastName = p.LastName,
+                                ClusterId = p.ClusterId
+                            }).ToList();
             return result.Select(p => new Person
                 {
                     Id = p.Id,
                     FirstName = p.FirstName,
-                    LastName = p.LastName
+                    LastName = p.LastName,
+                    ClusterId = p.ClusterId
                 }).ToList();
         }
     }
