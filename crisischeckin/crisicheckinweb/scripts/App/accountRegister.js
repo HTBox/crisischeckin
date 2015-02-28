@@ -10,7 +10,7 @@
   });
 
   function checkUsernameExists(userName, parent) {
-    if (userName == "") {
+    if (!userName || userName.trim().length < 3) {
       $(parent).removeClass("success").removeClass("failure");
       if ($(parent).next().hasClass("feedbackHelper")) $(parent).next().remove();
       return;

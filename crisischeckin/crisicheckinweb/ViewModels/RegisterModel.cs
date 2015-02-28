@@ -7,6 +7,8 @@ namespace crisicheckinweb.ViewModels
 {
     public class RegisterModel
     {
+        private string _userName;
+
         [Required]
         [Display(Name = "First Name")]
         public string FirstName { get; set; }
@@ -27,9 +29,7 @@ namespace crisicheckinweb.ViewModels
         [Required]
         [StringLength(30, ErrorMessage = "The {0} must be between {2} and {1} characters long.", MinimumLength = 3)]
         [Display(Name = "User name")]
-        private string userName;
-        public string UserName { get { return userName; } set { userName = value.Trim(); } }
-      
+        public string UserName { get { return _userName; } set { _userName = value.Trim(); } }
 
         [Required]
         [DataType(DataType.Password)]
