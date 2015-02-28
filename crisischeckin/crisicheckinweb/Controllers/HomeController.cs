@@ -52,11 +52,6 @@ namespace crisicheckinweb.Controllers
 
             try
             {
-                if (DateTime.Compare(DateTime.Today, model.SelectedStartDate) > 0)
-                {
-                    throw new ArgumentException("Please enter a start date that is greater than today's date.");
-                }
-
                 var person = _volunteerSvc.FindByUserId(_webSecurity.CurrentUserId);
                 if (person == null)
                 {

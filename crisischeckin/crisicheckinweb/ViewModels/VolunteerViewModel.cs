@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Web;
+using System.ComponentModel.DataAnnotations;
 using Models;
 
 namespace crisicheckinweb.ViewModels
@@ -23,6 +22,6 @@ namespace crisicheckinweb.ViewModels
         public int VolunteerType { get; set; }
         public IEnumerable<VolunteerType> VolunteerTypes { get; set; }
         public Person Person { get; set; }
-        public IEnumerable<ClusterCoordinator> ClusterCoordinators { get; set; } 
+        public IEnumerable<ClusterCoordinator> ClusterCoordinators { get; set; }
     }
 }
