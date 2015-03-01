@@ -197,6 +197,7 @@
       <DependentUpon>DefaultErrorMessages.resx</DependentUpon>
     </Compile>
     <Compile Include="App_Start\BreezeWebApiConfig.cs" />
+    <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\DbConfig.cs" />
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -242,20 +243,13 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Content Include="App_Data\dummyfile.txt" />
-    <Content Include="Content\body.css" />
-    <Content Include="Content\body.min.css">
-      <DependentUpon>body.css</DependentUpon>
-    </Content>
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\fonts\glyphiconshalflings-regular.svg" />
-    <Content Include="Content\Forms.min.css">
-      <DependentUpon>Forms.css</DependentUpon>
-    </Content>
-    <Content Include="Content\Forms.css" />
     <Content Include="Content\htbox-theme.css" />
+    <Content Include="Content\site.css" />
     <Content Include="Content\themes\base\images\animated-overlay.gif" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
