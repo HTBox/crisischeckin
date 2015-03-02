@@ -211,6 +211,7 @@
     <Compile Include="Helpers\MenuExtensions.cs" />
     <Compile Include="Infrastructure\Attributes\BasicPasswordAttribute.cs" />
     <Compile Include="Infrastructure\Attributes\ExpireContentAttribute.cs" />
+    <Compile Include="Infrastructure\PasswordComplexity.cs" />
     <Compile Include="NavigationRoutes\INavigationRouteFilter.cs" />
     <Compile Include="NavigationRoutes\NamedRoute.cs" />
     <Compile Include="NavigationRoutes\NavigationExtensions.cs" />

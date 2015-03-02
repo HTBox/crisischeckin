@@ -1,5 +1,6 @@
 ﻿using System.Web.Mvc;
 using System.Web.Security;
+using crisicheckinweb.Infrastructure;
 using Common;
 using crisicheckinweb.ViewModels;
 using Models;
@@ -7,6 +8,7 @@ using Services.Exceptions;
 using Services.Interfaces;
 using WebMatrix.WebData;
 using crisicheckinweb.Wrappers;
+using Resources;
 
 namespace crisicheckinweb.Controllers
 {
@@ -88,16 +90,21 @@ namespace crisicheckinweb.Controllers
                     if (_volunteerSvc.EmailAlreadyInUse(model.Email))
                         throw new PersonAlreadyExistsException();
 
-                    WebSecurity.CreateUserAndAccount(model.UserName, model.Password);
-                    WebSecurity.Login(model.UserName, model.Password);
+                    string errorMessage;
+                    if (PasswordComplexity.IsValid(model.Password, model.UserName, out errorMessage))
+                    {
+                        WebSecurity.CreateUserAndAccount(model.UserName, model.Password);
+                        WebSecurity.Login(model.UserName, model.Password);
 
-                    Roles.AddUserToRole(model.UserName, "Volunteer");
+                        Roles.AddUserToRole(model.UserName, "Volunteer");
 
-                    var userId = WebSecurity.GetUserId(model.UserName);
+                        var userId = WebSecurity.GetUserId(model.UserName);
 
-                    _volunteerSvc.Register(model.FirstName, model.LastName, model.Email, model.PhoneNumber, model.Cluster, userId);
+                        _volunteerSvc.Register(model.FirstName, model.LastName, model.Email, model.PhoneNumber, model.Cluster, userId);
 
-                    return RedirectToAction("Index", "Home");
+                        return RedirectToAction("Index", "Home");
+                    }
+                    ModelState.AddModelError("Password", errorMessage ?? DefaultErrorMessages.InvalidPasswordFormat);
                 }
                 catch (PersonAlreadyExistsException)
                 {
@@ -126,10 +133,18 @@ namespace crisicheckinweb.Controllers
             {
                 if (Membership.ValidateUser(User.Identity.Name, model.OldPassword))
                 {
-                    WebSecurity.ChangePassword(User.Identity.Name, model.OldPassword, model.NewPassword);
-                    return RedirectToAction("PasswordChanged");
+                    string errorMessage;
+                    if (PasswordComplexity.IsValid(model.NewPassword, User.Identity.Name, out errorMessage))
+                    {
+                        WebSecurity.ChangePassword(User.Identity.Name, model.OldPassword, model.NewPassword);
+                        return RedirectToAction("PasswordChanged");
+                    }
+                    ModelState.AddModelError("NewPassword", errorMessage ?? DefaultErrorMessages.InvalidPasswordFormat);
                 }
-                ModelState.AddModelError("OldPassword", "Old password is not correct.");
+                else
+                {
+                    ModelState.AddModelError("OldPassword", "Old password is not correct.");
+                }
             }
             return View("ChangePassword", DetermineLayout(), null);
         }
