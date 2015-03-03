@@ -61,6 +61,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid password. Your password cannot be equal to your username..
+        /// </summary>
+        public static string InvalidPasswordEqualToUserName {
+            get {
+                return ResourceManager.GetString("InvalidPasswordEqualToUserName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please enter a password that is 6-20 characters long..
         /// </summary>
         public static string InvalidPasswordFormat {

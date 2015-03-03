@@ -27,7 +27,13 @@ namespace WebProjectTests
             var controller = new HomeController(disaster.Object, volunteer.Object, webSecurity.Object, clusterCoordinator.Object, volType.Object);
 
             volunteer.Setup(x => x.FindByUserId(It.IsAny<int>())).Returns(new Person());
-            webSecurity.SetupGet(x => x.CurrentUserId).Returns(10);
+
+            disaster.Setup(x => x.AssignToVolunteer(
+                It.IsAny<int>(),
+                It.IsAny<int>(),
+                It.IsAny<DateTime>(),
+                It.IsAny<DateTime>(),
+                It.IsAny<int>())).Throws(new ArgumentException(""));
 
             // Act
             var viewModel = new VolunteerViewModel { SelectedStartDate = DateTime.Today.AddDays(-1) };
