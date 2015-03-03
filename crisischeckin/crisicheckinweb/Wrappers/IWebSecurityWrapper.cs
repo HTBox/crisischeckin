@@ -4,9 +4,11 @@
     {
         int CurrentUserId { get; }
 
+        string CurrentUserName { get; }
+
         int GetUserId(string userName);
 
-        string CreateUserAndAccount(string userName, string password);
+        int CreateUser(string userName, string password, string[] roleNames);
 
         bool ChangePassword(string userName, string currentPassword, string newPassword);
 
@@ -15,6 +17,8 @@
         void Logout();
 
         bool ValidateUser(string userName, string password);
+
+        bool IsUserInRole(string roleName);
 
         bool IsUserInRole(string userName, string roleName);
 
