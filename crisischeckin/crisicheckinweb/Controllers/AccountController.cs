@@ -1,6 +1,7 @@
 ﻿using System.Web.Mvc;
 using System.Web.Security;
 using crisicheckinweb.Infrastructure;
+using crisicheckinweb.Infrastructure.Attributes;
 using Common;
 using crisicheckinweb.ViewModels;
 using Models;
@@ -208,7 +209,7 @@ namespace crisicheckinweb.Controllers
 
         //
         // GET: /Account/UpgradeVolunteerToAdministrator
-        [Authorize(Roles = Constants.RoleAdmin)]
+        [AccessDeniedAuthorize(Roles = Constants.RoleAdmin, AccessDeniedViewName = "~/Home/AccessDenied")]
         public ActionResult UpgradeVolunteerToAdministrator()
         {
             // Display list of active users so admin can select user to upgrade
@@ -219,12 +220,9 @@ namespace crisicheckinweb.Controllers
         // POST: /Account/Register
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = Constants.RoleAdmin)]
+        [AccessDeniedAuthorize(Roles = Constants.RoleAdmin, AccessDeniedViewName = "~/Home/AccessDenied")]
         public ActionResult UpgradeVolunteerToAdministrator(UpgradeVolunteerRoleViewModel model)
         {
-            // Get username by selected uerId.
-            //var user = 
-
             if (ModelState.IsValid)
             {
                 Roles.AddUserToRole(model.UserId, Constants.RoleAdmin);

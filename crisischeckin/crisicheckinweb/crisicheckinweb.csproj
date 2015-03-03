@@ -209,6 +209,7 @@
     <Compile Include="Filters\CrisisCheckInApiAuthorizeAttribute.cs" />
     <Compile Include="Helpers\ElmahHandleErrorAttribute.cs" />
     <Compile Include="Helpers\MenuExtensions.cs" />
+    <Compile Include="Infrastructure\Attributes\AccessDeniedAuthorizeAttribute.cs" />
     <Compile Include="Infrastructure\Attributes\BasicPasswordAttribute.cs" />
     <Compile Include="Infrastructure\Attributes\ExpireContentAttribute.cs" />
     <Compile Include="Infrastructure\PasswordComplexity.cs" />
@@ -389,6 +390,7 @@
     <Content Include="Views\ClusterCoordinator\Index.cshtml" />
     <Content Include="Views\ClusterCoordinator\AssignCoordinator.cshtml" />
     <Content Include="Views\ClusterCoordinator\ConfirmUnassignCoordinator.cshtml" />
+    <Content Include="Views\Home\AccessDenied.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="App_GlobalResources\DefaultErrorMessages.resx">
