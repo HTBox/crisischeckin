@@ -4,13 +4,11 @@ using Breeze.WebApi2;
 using Models;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Web;
 using System.Web.Http;
 using crisicheckinweb.Filters;
-using WebMatrix.WebData;
+using crisicheckinweb.Wrappers;
 
 namespace crisicheckinweb.Api
 {
@@ -21,13 +19,15 @@ namespace crisicheckinweb.Api
     [BreezeController]
     public class EntitiesController : ApiController
     {
-        readonly CrisisCheckinContextProvider _contextProvider;
+        private readonly CrisisCheckinContextProvider _contextProvider;
+        private readonly IWebSecurityWrapper _webSecurity;
 
         CrisisCheckin Context { get { return _contextProvider.Context; } }
 
-        public EntitiesController(CrisisCheckin ctx)
+        public EntitiesController(CrisisCheckin ctx, IWebSecurityWrapper webSecurity)
         {
-             _contextProvider = new CrisisCheckinContextProvider(ctx);
+            _contextProvider = new CrisisCheckinContextProvider(ctx);
+            _webSecurity = webSecurity;
         }
 
         [HttpGet]
@@ -43,7 +43,7 @@ namespace crisicheckinweb.Api
         public IQueryable<Person> Persons()
         {
             return Context.Persons.Include(p => p.Commitments).Include("Commitments.Disaster")
-                .Where(p => p.UserId == WebSecurity.CurrentUserId);
+                .Where(p => p.UserId == _webSecurity.CurrentUserId);
         }
 
         /// <summary>
