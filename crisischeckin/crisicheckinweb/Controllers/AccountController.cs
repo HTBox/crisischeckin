@@ -1,5 +1,4 @@
 ﻿using System.Web.Mvc;
-using System.Web.Security;
 using crisicheckinweb.Infrastructure;
 using Common;
 using crisicheckinweb.ViewModels;
@@ -92,12 +91,10 @@ namespace crisicheckinweb.Controllers
                     string errorMessage;
                     if (PasswordComplexity.IsValid(model.Password, model.UserName, out errorMessage))
                     {
-                        _webSecurity.CreateUserAndAccount(model.UserName, model.Password);
-                        _webSecurity.Login(model.UserName, model.Password);
-
-                        _webSecurity.AddUserToRole(model.UserName, "Volunteer");
-
-                        var userId = _webSecurity.GetUserId(model.UserName);
+                        var userId = _webSecurity.CreateUser(
+                            model.UserName,
+                            model.Password,
+                            new[] { Constants.RoleVolunteer });
 
                         _volunteerSvc.Register(model.FirstName, model.LastName, model.Email, model.PhoneNumber, model.Cluster, userId);
 
@@ -107,11 +104,11 @@ namespace crisicheckinweb.Controllers
                 }
                 catch (PersonAlreadyExistsException)
                 {
-                    ModelState.AddModelError("", "Email is already in use!");
+                    ModelState.AddModelError("Email", "Email is already in use!");
                 }
-                catch (MembershipCreateUserException e)
+                catch (UserCreationException e)
                 {
-                    ModelState.AddModelError("", ErrorCodeToString(e.StatusCode));
+                    ModelState.AddModelError("", e.Message);
                 }
             }
 
@@ -130,12 +127,12 @@ namespace crisicheckinweb.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (_webSecurity.ValidateUser(User.Identity.Name, model.OldPassword))
+                if (_webSecurity.ValidateUser(_webSecurity.CurrentUserName, model.OldPassword))
                 {
                     string errorMessage;
-                    if (PasswordComplexity.IsValid(model.NewPassword, User.Identity.Name, out errorMessage))
+                    if (PasswordComplexity.IsValid(model.NewPassword, _webSecurity.CurrentUserName, out errorMessage))
                     {
-                        _webSecurity.ChangePassword(User.Identity.Name, model.OldPassword, model.NewPassword);
+                        _webSecurity.ChangePassword(_webSecurity.CurrentUserName, model.OldPassword, model.NewPassword);
                         return RedirectToAction("PasswordChanged");
                     }
                     ModelState.AddModelError("NewPassword", errorMessage ?? DefaultErrorMessages.InvalidPasswordFormat);
@@ -247,7 +244,7 @@ namespace crisicheckinweb.Controllers
 
         private string DetermineLayout()
         {
-            if (!User.IsInRole(Constants.RoleAdmin))
+            if (!_webSecurity.IsUserInRole(Constants.RoleAdmin))
                 return "~/Views/Shared/_VolunteerLayout.cshtml";
             else
                 return "~/Views/Shared/_AdminLayout.cshtml";
@@ -260,44 +257,6 @@ namespace crisicheckinweb.Controllers
             RemoveLoginSuccess,
         }
 
-        private static string ErrorCodeToString(MembershipCreateStatus createStatus)
-        {
-            // See http://go.microsoft.com/fwlink/?LinkID=177550 for
-            // a full list of status codes.
-            switch (createStatus)
-            {
-                case MembershipCreateStatus.DuplicateUserName:
-                    return "User name already exists. Please enter a different user name.";
-
-                case MembershipCreateStatus.DuplicateEmail:
-                    return "A user name for that e-mail address already exists. Please enter a different e-mail address.";
-
-                case MembershipCreateStatus.InvalidPassword:
-                    return "The password provided is invalid. Please enter a valid password value.";
-
-                case MembershipCreateStatus.InvalidEmail:
-                    return "The e-mail address provided is invalid. Please check the value and try again.";
-
-                case MembershipCreateStatus.InvalidAnswer:
-                    return "The password retrieval answer provided is invalid. Please check the value and try again.";
-
-                case MembershipCreateStatus.InvalidQuestion:
-                    return "The password retrieval question provided is invalid. Please check the value and try again.";
-
-                case MembershipCreateStatus.InvalidUserName:
-                    return "The user name provided is invalid. Please check the value and try again.";
-
-                case MembershipCreateStatus.ProviderError:
-                    return "The authentication provider returned an error. Please verify your entry and try again. If the problem persists, please contact your system administrator.";
-
-                case MembershipCreateStatus.UserRejected:
-                    return "The user creation request has been canceled. Please verify your entry and try again. If the problem persists, please contact your system administrator.";
-
-                default:
-                    return "An unknown error occurred. Please verify your entry and try again. If the problem persists, please contact your system administrator.";
-            }
-        }
         #endregion
-
     }
 }
