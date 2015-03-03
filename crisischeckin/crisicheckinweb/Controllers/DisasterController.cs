@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Web.Mvc;
-using crisicheckinweb.Infrastructure.Attributes;
+using crisicheckinweb.Filters;
 using Models;
 using Services.Interfaces;
 using Services.Exceptions;

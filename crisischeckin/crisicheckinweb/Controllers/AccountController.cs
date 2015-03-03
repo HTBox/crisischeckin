@@ -1,7 +1,7 @@
 ﻿using System.Web.Mvc;
 using System.Web.Security;
+using crisicheckinweb.Filters;
 using crisicheckinweb.Infrastructure;
-using crisicheckinweb.Infrastructure.Attributes;
 using Common;
 using crisicheckinweb.ViewModels;
 using Models;

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Web.Mvc;
 
-namespace crisicheckinweb.Infrastructure.Attributes
+namespace crisicheckinweb.Filters
 {
     public class AccessDeniedAuthorizeAttribute : AuthorizeAttribute
     {
