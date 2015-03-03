@@ -33,10 +33,10 @@ namespace crisicheckinweb.Controllers
             _volunteerTypes = volunteerTypeService;
         }
 
-        // GET: /Home/
+        [HttpGet]
         public ActionResult Index()
         {
-            if (_webSecurity.IsUserInRole(User.Identity.Name, Constants.RoleAdmin))
+            if (_webSecurity.IsUserInRole(Constants.RoleAdmin))
             {
                 return RedirectToAction("List", "Disaster");
             }

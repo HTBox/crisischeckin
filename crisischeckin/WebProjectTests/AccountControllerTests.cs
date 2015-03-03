@@ -34,6 +34,7 @@ namespace WebProjectTests
             _volunteerService = new Mock<IVolunteerService>();
             _cluster = new Mock<ICluster>();
             _webSecurity = new Mock<IWebSecurityWrapper>();
+            _webSecurity.SetupGet(x => x.CurrentUserId).Returns(42);
 
             var reqContext = new RequestContext(_httpContext.Object, new RouteData());
 
@@ -67,7 +68,6 @@ namespace WebProjectTests
         {
             // Arrange
             _volunteerService.Setup(x => x.UpdateDetails(It.IsAny<Person>())).Throws<PersonEmailAlreadyInUseException>();
-
 
             // Act
             var model = new ChangeContactInfoViewModel { Email = "test@UsedDomain123141.com", PhoneNumber = "123456789" };

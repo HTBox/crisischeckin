@@ -10,6 +10,11 @@ namespace crisicheckinweb.Wrappers
             get { return WebSecurity.CurrentUserId; }
         }
 
+        public string CurrentUserName
+        {
+            get { return WebSecurity.CurrentUserName; }
+        }
+
         public int GetUserId(string userName)
         {
             return WebSecurity.GetUserId(userName);
@@ -38,6 +43,11 @@ namespace crisicheckinweb.Wrappers
         public bool ValidateUser(string userName, string password)
         {
             return Membership.ValidateUser(userName, password);
+        }
+
+        public bool IsUserInRole(string roleName)
+        {
+            return Roles.IsUserInRole(roleName);
         }
 
         public bool IsUserInRole(string userName, string roleName)

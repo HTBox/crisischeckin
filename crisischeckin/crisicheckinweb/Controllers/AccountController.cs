@@ -130,12 +130,12 @@ namespace crisicheckinweb.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (_webSecurity.ValidateUser(User.Identity.Name, model.OldPassword))
+                if (_webSecurity.ValidateUser(_webSecurity.CurrentUserName, model.OldPassword))
                 {
                     string errorMessage;
-                    if (PasswordComplexity.IsValid(model.NewPassword, User.Identity.Name, out errorMessage))
+                    if (PasswordComplexity.IsValid(model.NewPassword, _webSecurity.CurrentUserName, out errorMessage))
                     {
-                        _webSecurity.ChangePassword(User.Identity.Name, model.OldPassword, model.NewPassword);
+                        _webSecurity.ChangePassword(_webSecurity.CurrentUserName, model.OldPassword, model.NewPassword);
                         return RedirectToAction("PasswordChanged");
                     }
                     ModelState.AddModelError("NewPassword", errorMessage ?? DefaultErrorMessages.InvalidPasswordFormat);
@@ -247,7 +247,7 @@ namespace crisicheckinweb.Controllers
 
         private string DetermineLayout()
         {
-            if (!User.IsInRole(Constants.RoleAdmin))
+            if (!_webSecurity.IsUserInRole(Constants.RoleAdmin))
                 return "~/Views/Shared/_VolunteerLayout.cshtml";
             else
                 return "~/Views/Shared/_AdminLayout.cshtml";
