@@ -4,13 +4,13 @@ Getting started contributing
 These are the steps I followed to get crisischeckin up and running on my development machine. I was using Visual Studio 2013, but 2012 should work just as well.
 
 * Clone the repo to your local machine
-* Open the crisischeckin\crisischeckin.sln file in Visual Studio
+* Open the crisischeckin\CrisisCheckinWeb.sln file in Visual Studio
 * Right click on the solution item at the root of the solution explorer and choose "Manage NuGet packages for solution"
     * In the NuGet window, click on the "Restore" button at the top to install all the NuGet packages needed. This will also install Entity Framework cmdlets for PowerShell (package manager console) which you'll need for setting up the database
 * Close Visual Studio
-* Open the crisischeckin.sln file in Visual Studio again (this is to make sure the new cmdlets will be available in the package manager console)
+* Open the CrisisCheckinWeb.sln file in Visual Studio again (this is to make sure the new cmdlets will be available in the package manager console)
 * Run "Rebuild solution" from the Build menu (it should complete with no errors)
-* Open up the Package Manager Console (Tools -> Library Package Manager -> Package Manager Console)
+* Open up the Package Manager Console (Tools -> NuGet Package Manager -> Package Manager Console)
 * Run the command `Update-Database -ProjectName models -StartupProject crisicheckinweb`  in the package manager console window. This should apply the code-based migrations and complete with no errors (but I did get yellow warnings that don't seem to have caused any problems)
 * Run all the tests (Test -> Run -> All Tests), they should all pass without problems
 * Set the start up project to crisicheckinweb
