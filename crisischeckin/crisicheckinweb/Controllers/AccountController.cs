@@ -1,12 +1,10 @@
 ﻿using System.Web.Mvc;
-using System.Web.Security;
 using crisicheckinweb.Infrastructure;
 using Common;
 using crisicheckinweb.ViewModels;
 using Models;
 using Services.Exceptions;
 using Services.Interfaces;
-using WebMatrix.WebData;
 using crisicheckinweb.Wrappers;
 using Resources;
 
@@ -16,12 +14,12 @@ namespace crisicheckinweb.Controllers
     {
         private readonly IVolunteerService _volunteerSvc;
         private readonly ICluster _clusterSvc;
-        private readonly IWebSecurityWrapper _webSecurityWrapper;
+        private readonly IWebSecurityWrapper _webSecurity;
 
-        public AccountController(IVolunteerService volunteerSvc, ICluster clusterSvc, IWebSecurityWrapper webSecurityWrapper)
+        public AccountController(IVolunteerService volunteerSvc, ICluster clusterSvc, IWebSecurityWrapper webSecurity)
         {
             _clusterSvc = clusterSvc;
-            _webSecurityWrapper = webSecurityWrapper;
+            _webSecurity = webSecurity;
             _volunteerSvc = volunteerSvc;
         }
 
@@ -41,9 +39,9 @@ namespace crisicheckinweb.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(LoginModel model, string returnUrl)
         {
-            if (ModelState.IsValid && _webSecurityWrapper.Login(model.UserName, model.Password, model.RememberMe))
+            if (ModelState.IsValid && _webSecurity.Login(model.UserName, model.Password, model.RememberMe))
             {
-                if (_webSecurityWrapper.IsUserInRole(model.UserName, Constants.RoleAdmin))
+                if (_webSecurity.IsUserInRole(model.UserName, Constants.RoleAdmin))
                 {
                     return RedirectToAction("List", "Disaster");
                 }
@@ -60,7 +58,7 @@ namespace crisicheckinweb.Controllers
         // GET: /Account/LogOff
         public ActionResult LogOff()
         {
-            WebSecurity.Logout();
+            _webSecurity.Logout();
 
             return RedirectToAction("Login", "Account");
         }
@@ -93,12 +91,10 @@ namespace crisicheckinweb.Controllers
                     string errorMessage;
                     if (PasswordComplexity.IsValid(model.Password, model.UserName, out errorMessage))
                     {
-                        WebSecurity.CreateUserAndAccount(model.UserName, model.Password);
-                        WebSecurity.Login(model.UserName, model.Password);
-
-                        Roles.AddUserToRole(model.UserName, "Volunteer");
-
-                        var userId = WebSecurity.GetUserId(model.UserName);
+                        var userId = _webSecurity.CreateUser(
+                            model.UserName,
+                            model.Password,
+                            new[] { Constants.RoleVolunteer });
 
                         _volunteerSvc.Register(model.FirstName, model.LastName, model.Email, model.PhoneNumber, model.Cluster, userId);
 
@@ -108,11 +104,11 @@ namespace crisicheckinweb.Controllers
                 }
                 catch (PersonAlreadyExistsException)
                 {
-                    ModelState.AddModelError("", "Email is already in use!");
+                    ModelState.AddModelError("Email", "Email is already in use!");
                 }
-                catch (MembershipCreateUserException e)
+                catch (UserCreationException e)
                 {
-                    ModelState.AddModelError("", ErrorCodeToString(e.StatusCode));
+                    ModelState.AddModelError("", e.Message);
                 }
             }
 
@@ -131,12 +127,12 @@ namespace crisicheckinweb.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (Membership.ValidateUser(User.Identity.Name, model.OldPassword))
+                if (_webSecurity.ValidateUser(_webSecurity.CurrentUserName, model.OldPassword))
                 {
                     string errorMessage;
-                    if (PasswordComplexity.IsValid(model.NewPassword, User.Identity.Name, out errorMessage))
+                    if (PasswordComplexity.IsValid(model.NewPassword, _webSecurity.CurrentUserName, out errorMessage))
                     {
-                        WebSecurity.ChangePassword(User.Identity.Name, model.OldPassword, model.NewPassword);
+                        _webSecurity.ChangePassword(_webSecurity.CurrentUserName, model.OldPassword, model.NewPassword);
                         return RedirectToAction("PasswordChanged");
                     }
                     ModelState.AddModelError("NewPassword", errorMessage ?? DefaultErrorMessages.InvalidPasswordFormat);
@@ -156,12 +152,12 @@ namespace crisicheckinweb.Controllers
 
         public ActionResult ChangeContactInfo()
         {
-            if (WebSecurity.CurrentUserId == 1)
+            if (_webSecurity.CurrentUserId == 1)
             {
                 TempData["AdminContactError"] = "Administrator is not allowed to have contact details!";
                 return RedirectToAction("Index", "Home");
             }
-            var personToUpdate = _volunteerSvc.GetPersonDetailsForChangeContactInfo(WebSecurity.CurrentUserId);
+            var personToUpdate = _volunteerSvc.GetPersonDetailsForChangeContactInfo(_webSecurity.CurrentUserId);
             if (personToUpdate != null)
             {
                 ChangeContactInfoViewModel model = new ChangeContactInfoViewModel { Email = personToUpdate.Email, PhoneNumber = personToUpdate.PhoneNumber };
@@ -179,7 +175,7 @@ namespace crisicheckinweb.Controllers
                 try
                 {
                     _volunteerSvc.UpdateDetails(new Person {
-                        UserId = _webSecurityWrapper.CurrentUserId,
+                        UserId = _webSecurity.CurrentUserId,
                         Email =  model.Email,
                         PhoneNumber = model.PhoneNumber
                     });
@@ -227,7 +223,7 @@ namespace crisicheckinweb.Controllers
 
             if (ModelState.IsValid)
             {
-                Roles.AddUserToRole(model.UserId, Constants.RoleAdmin);
+                _webSecurity.AddUserToRole(model.UserId, Constants.RoleAdmin);
 
                 return RedirectToAction("Index", "Home");
             }
@@ -248,7 +244,7 @@ namespace crisicheckinweb.Controllers
 
         private string DetermineLayout()
         {
-            if (!User.IsInRole(Constants.RoleAdmin))
+            if (!_webSecurity.IsUserInRole(Constants.RoleAdmin))
                 return "~/Views/Shared/_VolunteerLayout.cshtml";
             else
                 return "~/Views/Shared/_AdminLayout.cshtml";
@@ -261,44 +257,6 @@ namespace crisicheckinweb.Controllers
             RemoveLoginSuccess,
         }
 
-        private static string ErrorCodeToString(MembershipCreateStatus createStatus)
-        {
-            // See http://go.microsoft.com/fwlink/?LinkID=177550 for
-            // a full list of status codes.
-            switch (createStatus)
-            {
-                case MembershipCreateStatus.DuplicateUserName:
-                    return "User name already exists. Please enter a different user name.";
-
-                case MembershipCreateStatus.DuplicateEmail:
-                    return "A user name for that e-mail address already exists. Please enter a different e-mail address.";
-
-                case MembershipCreateStatus.InvalidPassword:
-                    return "The password provided is invalid. Please enter a valid password value.";
-
-                case MembershipCreateStatus.InvalidEmail:
-                    return "The e-mail address provided is invalid. Please check the value and try again.";
-
-                case MembershipCreateStatus.InvalidAnswer:
-                    return "The password retrieval answer provided is invalid. Please check the value and try again.";
-
-                case MembershipCreateStatus.InvalidQuestion:
-                    return "The password retrieval question provided is invalid. Please check the value and try again.";
-
-                case MembershipCreateStatus.InvalidUserName:
-                    return "The user name provided is invalid. Please check the value and try again.";
-
-                case MembershipCreateStatus.ProviderError:
-                    return "The authentication provider returned an error. Please verify your entry and try again. If the problem persists, please contact your system administrator.";
-
-                case MembershipCreateStatus.UserRejected:
-                    return "The user creation request has been canceled. Please verify your entry and try again. If the problem persists, please contact your system administrator.";
-
-                default:
-                    return "An unknown error occurred. Please verify your entry and try again. If the problem persists, please contact your system administrator.";
-            }
-        }
         #endregion
-
     }
 }
