@@ -8,7 +8,7 @@
 
         int GetUserId(string userName);
 
-        string CreateUserAndAccount(string userName, string password);
+        int CreateUser(string userName, string password, string[] roleNames);
 
         bool ChangePassword(string userName, string currentPassword, string newPassword);
 

@@ -42,6 +42,114 @@ namespace WebProjectTests
             _controllerUnderTest.ControllerContext = new ControllerContext(reqContext, _controllerUnderTest);
         }
 
+        private RegisterModel CreateValidRegisterModel()
+        {
+            return new RegisterModel
+            {
+                FirstName = "first",
+                LastName = "last",
+                PhoneNumber = "1234",
+                UserName = "user",
+                Email = "user@email.com",
+                Password = "p@ssw0rd",
+                ConfirmPassword = "p@ssw0rd",
+                Cluster = 42
+            };
+        }
+
+        [TestMethod]
+        public void Register_DuplicateEmailAddress_ReturnsRegisterView_With_ModelState_Error()
+        {
+            // Arrange
+            _volunteerService.Setup(x => x.EmailAlreadyInUse("existing@email.com")).Returns(true);
+
+            // Act
+            var model = CreateValidRegisterModel();
+            model.Email = "existing@email.com";
+            Mother.ControllerHelpers.SetupControllerModelState(model, _controllerUnderTest);
+            var response = _controllerUnderTest.Register(model);
+
+            // Assert
+            var result = response as ViewResult;
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.ViewData.ModelState.ContainsKey("Email"));
+        }
+
+        [TestMethod]
+        public void Register_TooSimplePassword_ReturnsRegisterView_With_ModelState_Error()
+        {
+            // Arrange
+            _volunteerService.Setup(x => x.EmailAlreadyInUse(It.IsAny<string>())).Returns(false);
+
+            // Act
+            var model = CreateValidRegisterModel();
+            model.Password = model.ConfirmPassword = model.UserName;
+            Mother.ControllerHelpers.SetupControllerModelState(model, _controllerUnderTest);
+            var response = _controllerUnderTest.Register(model);
+
+            // Assert
+            var result = response as ViewResult;
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.ViewData.ModelState.ContainsKey("Password"));
+        }
+
+        [TestMethod]
+        public void Register_ErrorDuringUserCreation_ReturnsRegisterView_With_ModelState_Error()
+        {
+            // Arrange
+            _volunteerService.Setup(x => x.EmailAlreadyInUse(It.IsAny<string>())).Returns(false);
+            _webSecurity.Setup(x => x.CreateUser(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string[]>()))
+                .Throws(new UserCreationException("fake error"));
+
+            // Act
+            var model = CreateValidRegisterModel();
+            Mother.ControllerHelpers.SetupControllerModelState(model, _controllerUnderTest);
+            var response = _controllerUnderTest.Register(model);
+
+            // Assert
+            var result = response as ViewResult;
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.ViewData.ModelState.Count >= 1);
+
+            _volunteerService.Verify(x => x.Register(
+                It.IsAny<string>(),
+                It.IsAny<string>(),
+                It.IsAny<string>(),
+                It.IsAny<string>(),
+                It.IsAny<int>(),
+                It.IsAny<int>()), Times.Never);
+        }
+
+        [TestMethod]
+        public void Register_Successful_Creation_Redirects_To_Home()
+        {
+            // Arrange
+            const int newUserId = 1234;
+
+            _volunteerService.Setup(x => x.EmailAlreadyInUse(It.IsAny<string>())).Returns(false);
+            _webSecurity.Setup(x => x.CreateUser(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string[]>()))
+                .Returns(newUserId);
+
+            // Act
+            var model = CreateValidRegisterModel();
+            Mother.ControllerHelpers.SetupControllerModelState(model, _controllerUnderTest);
+            var response = _controllerUnderTest.Register(model);
+
+            // Assert
+            var result = response as RedirectToRouteResult;
+            Assert.AreEqual("Home", result.RouteValues["controller"]);
+            Assert.AreEqual("Index", result.RouteValues["action"]);
+
+            _volunteerService.Verify(x => x.Register(
+                model.FirstName,
+                model.LastName,
+                model.Email,
+                model.PhoneNumber,
+                model.Cluster,
+                newUserId));
+        }
+
+
         [TestMethod]
         public void ChangeContactInfo_Assign_ValidData_Redirects_To_ContactInfoChanged_View()
         {
