@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Web.Mvc;
+using crisicheckinweb.Filters;
 using Models;
 using Services.Interfaces;
 using Services.Exceptions;
 
 namespace crisicheckinweb.Controllers
 {
-    [Authorize(Roles = Common.Constants.RoleAdmin)]
+    [AccessDeniedAuthorize(Roles = Common.Constants.RoleAdmin, AccessDeniedViewName = "~/Home/AccessDenied")]
     public class DisasterController : BaseController
     {
         private readonly IDisaster _disasterSvc;

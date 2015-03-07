@@ -44,6 +44,11 @@ namespace crisicheckinweb.Controllers
             return View(GetDefaultViewModel());
         }
 
+        public ActionResult AccessDenied()
+        {
+            return View();
+        }
+
         [HttpPost]
         public ActionResult Assign(VolunteerViewModel model)
         {

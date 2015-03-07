@@ -206,6 +206,7 @@
     <Compile Include="Controllers\ClusterCoordinatorController.cs" />
     <Compile Include="Controllers\DisasterController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Filters\AccessDeniedAuthorizeAttribute.cs" />
     <Compile Include="Filters\CrisisCheckInApiAuthorizeAttribute.cs" />
     <Compile Include="Helpers\ElmahHandleErrorAttribute.cs" />
     <Compile Include="Helpers\MenuExtensions.cs" />
@@ -389,6 +390,7 @@
     <Content Include="Views\ClusterCoordinator\Index.cshtml" />
     <Content Include="Views\ClusterCoordinator\AssignCoordinator.cshtml" />
     <Content Include="Views\ClusterCoordinator\ConfirmUnassignCoordinator.cshtml" />
+    <Content Include="Views\Home\AccessDenied.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="App_GlobalResources\DefaultErrorMessages.resx">
