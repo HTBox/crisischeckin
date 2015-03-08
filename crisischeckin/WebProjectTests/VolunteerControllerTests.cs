@@ -13,6 +13,8 @@ namespace WebProjectTests
     [TestClass]
     public class VolunteerControllerTests
     {
+        private VolunteerController _controllerUnderTest;
+
         private Mock<IDisaster> _disasterSvc;
         private Mock<ICluster> _clusterSvc;
         private Mock<IAdmin> _adminSvc;
@@ -25,11 +27,8 @@ namespace WebProjectTests
             _clusterSvc = new Mock<ICluster>();
             _adminSvc = new Mock<IAdmin>();
             _messageSvc = new Mock<IMessageService>();
-        }
 
-        private VolunteerController CreateVolunteerController()
-        {
-            return new VolunteerController(_disasterSvc.Object, _clusterSvc.Object, _adminSvc.Object, _messageSvc.Object);
+            _controllerUnderTest = new VolunteerController(_disasterSvc.Object, _clusterSvc.Object, _adminSvc.Object, _messageSvc.Object);
         }
 
         [TestMethod]
@@ -42,10 +41,8 @@ namespace WebProjectTests
             var allVolunteers = new List<Person>();
             _adminSvc.Setup(x => x.GetVolunteersForDisaster(disaster.Id, null, false)).Returns(allVolunteers);
 
-            var controller = CreateVolunteerController();
             //Act
-
-            var response = controller.Filter(new ListByDisasterViewModel
+            var response = _controllerUnderTest.Filter(new ListByDisasterViewModel
             {
                 SelectedDisaster = disasterId, CommitmentDate = null
             });
@@ -68,10 +65,8 @@ namespace WebProjectTests
             var filteredVolunteers = new List<Person>();
             _adminSvc.Setup(x => x.GetVolunteersForDisaster(disaster.Id, filteredDateTime, false)).Returns(filteredVolunteers);
 
-            var controller = CreateVolunteerController();
             //Act
-
-            var response = controller.Filter(new ListByDisasterViewModel
+            var response = _controllerUnderTest.Filter(new ListByDisasterViewModel
             {
                 SelectedDisaster = disasterId, CommitmentDate = filteredDateTime
             });

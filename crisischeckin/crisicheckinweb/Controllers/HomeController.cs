@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using System.Web.Security;
 using Common;
 using crisicheckinweb.ViewModels;
 using Models;
@@ -20,9 +19,9 @@ namespace crisicheckinweb.Controllers
         private readonly IVolunteerTypeService _volunteerTypes;
 
         public HomeController(
-            IDisaster disasterSvc, 
-            IVolunteerService volunteerSvc, 
-            IWebSecurityWrapper webSecurity, 
+            IDisaster disasterSvc,
+            IVolunteerService volunteerSvc,
+            IWebSecurityWrapper webSecurity,
             IClusterCoordinatorService clusterCoordinatorService,
             IVolunteerTypeService volunteerTypeService
             )
@@ -34,10 +33,10 @@ namespace crisicheckinweb.Controllers
             _volunteerTypes = volunteerTypeService;
         }
 
-        // GET: /Home/
+        [HttpGet]
         public ActionResult Index()
-        {  
-            if (Roles.IsUserInRole(Constants.RoleAdmin))
+        {
+            if (_webSecurity.IsUserInRole(Constants.RoleAdmin))
             {
                 return RedirectToAction("List", "Disaster");
             }
