@@ -1,4 +1,5 @@
-﻿using Moq;
+﻿using System;
+using Moq;
 using Models;
 using crisicheckinweb.Controllers;
 using crisicheckinweb.ViewModels;
@@ -8,6 +9,8 @@ using System.Security.Principal;
 using System.Web;
 using System.Web.Routing;
 using System.Web.Mvc;
+using crisicheckinweb;
+using crisicheckinweb.Infrastructure;
 using Services.Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -23,6 +26,8 @@ namespace WebProjectTests
         private Mock<IWebSecurityWrapper> _webSecurity;
         private Mock<IPrincipal> _principal;
         private Mock<HttpContextBase> _httpContext;
+        private Mock<IPasswordResetSender> _passwordResetSender;
+        private RouteCollection _routeCollection;
 
         [TestInitialize]
         public void Setup()
@@ -35,11 +40,26 @@ namespace WebProjectTests
             _cluster = new Mock<ICluster>();
             _webSecurity = new Mock<IWebSecurityWrapper>();
             _webSecurity.SetupGet(x => x.CurrentUserId).Returns(42);
+            _passwordResetSender = new Mock<IPasswordResetSender>();
+
+            var request = new Mock<HttpRequestBase>();
+            request.SetupGet(x => x.Url).Returns(new Uri("http://localhost/"));
+            _httpContext.Setup(ctx => ctx.Request).Returns(request.Object);
+            _httpContext.SetupGet(x => x.Request).Returns(request.Object);
+
+            var response = new Mock<HttpResponseBase>();
+            response.Setup(x => x.ApplyAppPathModifier(It.IsAny<string>())).Returns<string>(x => x);
+            _httpContext.Setup(ctx => ctx.Response).Returns(response.Object);
+            _httpContext.SetupGet(x => x.Response).Returns(response.Object);
 
             var reqContext = new RequestContext(_httpContext.Object, new RouteData());
 
-            _controllerUnderTest = new AccountController(_volunteerService.Object, _cluster.Object, _webSecurity.Object);
+            _controllerUnderTest = new AccountController(_volunteerService.Object, _cluster.Object, _webSecurity.Object, _passwordResetSender.Object);
             _controllerUnderTest.ControllerContext = new ControllerContext(reqContext, _controllerUnderTest);
+
+            _routeCollection = new RouteCollection();
+            RouteConfig.RegisterRoutes(_routeCollection);
+            _controllerUnderTest.Url = new UrlHelper(reqContext, _routeCollection);
         }
 
         private RegisterModel CreateValidRegisterModel()
@@ -210,6 +230,108 @@ namespace WebProjectTests
 
             Assert.IsNotNull(result);
             Assert.IsTrue(result.ViewName.Equals("ChangeContactInfo"));
+            Assert.IsTrue(result.ViewData.ModelState.Count >= 1);
+        }
+
+        [TestMethod]
+        public void ForgotPassword_ValidUserName_SendsEmail_And_RedirectsTo_PasswordResetRequestedView()
+        {
+            // Arrange
+            const int existingUserId = 42;
+            const string existingUser = "existing-user";
+            const string token = "t-o-k-e-n";
+
+            _webSecurity.Setup(x => x.GetUserId(existingUser)).Returns(existingUserId);
+            _webSecurity.Setup(x => x.GeneratePasswordResetToken(existingUser)).Returns(token);
+
+            _routeCollection.MapRoute(
+                name: "PasswordReset",
+                url: "{controller}/{action}",
+                defaults: new { controller = "Account", action = "PasswordReset" }
+            );
+
+            // Act
+            var model = new ForgotPasswordViewModel
+            {
+                UserName = existingUser
+            };
+            Mother.ControllerHelpers.SetupControllerModelState(model, _controllerUnderTest);
+            var response = _controllerUnderTest.ForgotPassword(model);
+
+            // Assert
+            var result = response as RedirectToRouteResult;
+            Assert.AreEqual("PasswordResetRequested", result.RouteValues["action"]);
+
+            _passwordResetSender.Verify(x => x.SendEmail(existingUserId, It.IsAny<string>()));
+        }
+
+        [TestMethod]
+        public void ForgotPassword_InvalidUserName_DoesntSendEmail_But_RedirectsTo_PasswordResetRequestedView()
+        {
+            // Arrange
+            const string nonExistingUser = "non-existing-user";
+
+            _webSecurity.Setup(x => x.GetUserId(nonExistingUser)).Returns(-1);
+
+            // Act
+            var model = new ForgotPasswordViewModel
+            {
+                UserName = nonExistingUser
+            };
+            Mother.ControllerHelpers.SetupControllerModelState(model, _controllerUnderTest);
+            var response = _controllerUnderTest.ForgotPassword(model);
+
+            // Assert
+            var result = response as RedirectToRouteResult;
+            Assert.AreEqual("PasswordResetRequested", result.RouteValues["action"]);
+
+            _passwordResetSender.Verify(x => x.SendEmail(It.IsAny<int>(), It.IsAny<string>()), Times.Never);
+        }
+
+        [TestMethod]
+        public void ResetPassword_Succesful_ResetsPasswords_And_RedirectsTo_PasswordResetCompletedView()
+        {
+            // Arrange
+            const string token = "t-o-k-e-n";
+            const string password = "p@ssw0rd";
+            _webSecurity.Setup(x => x.ResetPassword(token, password)).Returns(true);
+
+            // Act
+            var model = new ResetPasswordViewModel
+            {
+                Token = token,
+                NewPassword = password,
+                ConfirmPassword = password
+            };
+            Mother.ControllerHelpers.SetupControllerModelState(model, _controllerUnderTest);
+            var response = _controllerUnderTest.ResetPassword(model);
+
+            // Assert
+            var result = response as RedirectToRouteResult;
+            Assert.AreEqual("PasswordResetCompleted", result.RouteValues["action"]);
+        }
+
+        [TestMethod]
+        public void ResetPassword_Failure_Returns_ResetPasswordView_With_ModelState_Error()
+        {
+            // Arrange
+            const string invalidToken = "i-n-v-a-l-i-d";
+            const string password = "p@ssw0rd";
+            _webSecurity.Setup(x => x.ResetPassword(invalidToken, password)).Returns(false);
+
+            // Act
+            var model = new ResetPasswordViewModel
+            {
+                Token = invalidToken,
+                NewPassword = password,
+                ConfirmPassword = password
+            };
+            Mother.ControllerHelpers.SetupControllerModelState(model, _controllerUnderTest);
+            var response = _controllerUnderTest.ResetPassword(model);
+
+            // Assert
+            var result = response as ViewResult;
+            Assert.IsNotNull(result);
             Assert.IsTrue(result.ViewData.ModelState.Count >= 1);
         }
     }

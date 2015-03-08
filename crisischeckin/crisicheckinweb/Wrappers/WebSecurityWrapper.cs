@@ -54,6 +54,16 @@ namespace crisicheckinweb.Wrappers
             return WebSecurity.ChangePassword(userName, currentPassword, newPassword);
         }
 
+        public string GeneratePasswordResetToken(string userName)
+        {
+            return WebSecurity.GeneratePasswordResetToken(userName);
+        }
+
+        public bool ResetPassword(string passwordResetToken, string newPassword)
+        {
+            return WebSecurity.ResetPassword(passwordResetToken, newPassword);
+        }
+
         public bool ValidateUser(string userName, string password)
         {
             return Membership.ValidateUser(userName, password);
