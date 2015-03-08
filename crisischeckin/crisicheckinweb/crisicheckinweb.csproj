@@ -337,6 +337,7 @@
     <Content Include="scripts\amplify\amplify.request.min.js" />
     <Content Include="scripts\amplify\amplify.store.js" />
     <Content Include="scripts\amplify\amplify.store.min.js" />
+    <Content Include="scripts\App\changePassword.js" />
     <Content Include="scripts\App\accountRegister.js" />
     <Content Include="scripts\App\amplify-setup.js" />
     <Content Include="scripts\App\config.js" />

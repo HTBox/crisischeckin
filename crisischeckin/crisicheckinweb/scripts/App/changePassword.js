@@ -1,47 +1,15 @@
 ﻿(function ($) {
   $(document).ready(function () {
-    $("#txt_userName").delay({
-      delay: 300,
-      event: 'keyup',
-      fn: function () {
-        checkUsernameExists($("#txt_userName").val(), $("#txt_userName"));
-      }
-    });
     $("#txt_password").delay({
         delay: 300,
         event: 'keyup',
         fn: function () {
-            checkPasswordValidity($("#txt_userName").val(), $("#txt_password").val(), $("#txt_password"));
+            checkPasswordValidity($("#txt_password").val(), $("#txt_password"));
         }
     });
   });
 
-  function checkUsernameExists(userName, parent) {
-    if (!userName || userName.trim().length < 3) {
-      if ($(parent).next().hasClass("feedbackHelper")) $(parent).next().remove();
-      return;
-    }
-    $.ajax({
-      url: "/Account/UsernameAvailable",
-      type: "POST",
-      data: { userName: userName },
-      success: function (e) {
-        if ($(parent).next().hasClass("feedbackHelper")) $(parent).next().remove();
-        var vals = { output: "", class: "" };
-        if (e == "False") {
-          vals.class = "failure";
-          vals.output = "Sorry, the username requested is not available.";
-        } else {
-          vals.class = "success";
-          vals.output = "The username requested is available.";
-        }
-        var feedBack = $('<div class=\"feedbackHelper ' + vals.class + '\">' + vals.output + '</div>');
-        $(parent).after(feedBack);
-      }
-    });
-  }
-
-  function checkPasswordValidity(userName, password, parent) {
+  function checkPasswordValidity(password, parent) {
     if (!password || password.trim().length < 1) {
       if ($(parent).next().hasClass("feedbackHelper")) $(parent).next().remove();
       return;
@@ -49,7 +17,7 @@
     $.ajax({
       url: "/Account/CheckPasswordValidity",
       type: "POST",
-      data: { userName: userName, password: password },
+      data: { password: password },
       success: function (validationResult) {
         if ($(parent).next().hasClass("feedbackHelper")) $(parent).next().remove();
         var vals = { output: "", class: "" };
