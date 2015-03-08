@@ -165,7 +165,11 @@ namespace crisicheckinweb.Controllers
         [AllowAnonymous]
         public ActionResult ResetPassword(string token)
         {
-            return View();
+            var model = new ResetPasswordViewModel
+            {
+                Token = token
+            };
+            return View(model);
         }
 
         [HttpPost]
