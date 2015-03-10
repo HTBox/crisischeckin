@@ -7,11 +7,13 @@ namespace crisicheckinweb
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                "~/Content/themes/base/jquery.ui.all.css",
                 "~/Content/bootstrap.css",
                 "~/Content/bootstrap-theme.css",
                 "~/Content/htbox-theme.css",
                 "~/Content/site.css"));
+
+            bundles.Add(new StyleBundle("~/Content/themes/base/jqueryui").Include(
+                "~/Content/themes/base/jquery.ui.all.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/libs").Include(
                 "~/Scripts/jquery-2.1.1.js",
