@@ -1,4 +1,6 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
+using System.Web.Routing;
 using crisicheckinweb.Filters;
 using crisicheckinweb.Infrastructure;
 using Common;
@@ -16,12 +18,14 @@ namespace crisicheckinweb.Controllers
         private readonly IVolunteerService _volunteerSvc;
         private readonly ICluster _clusterSvc;
         private readonly IWebSecurityWrapper _webSecurity;
+        private readonly IPasswordResetSender _passwordResetSender;
 
-        public AccountController(IVolunteerService volunteerSvc, ICluster clusterSvc, IWebSecurityWrapper webSecurity)
+        public AccountController(IVolunteerService volunteerSvc, ICluster clusterSvc, IWebSecurityWrapper webSecurity, IPasswordResetSender passwordResetSender)
         {
             _clusterSvc = clusterSvc;
             _webSecurity = webSecurity;
             _volunteerSvc = volunteerSvc;
+            _passwordResetSender = passwordResetSender;
         }
 
         //
@@ -117,6 +121,80 @@ namespace crisicheckinweb.Controllers
             model.Clusters = _clusterSvc.GetList();
             return View(model);
         }
+
+
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult ForgotPassword()
+        {
+            var model = new ForgotPasswordViewModel();
+            return View(model);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public ActionResult ForgotPassword(ForgotPasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                // Only send email when user actually exists. For security reasons
+                // don't show an error when the given user doesn't exist.
+                var userId = _webSecurity.GetUserId(model.UserName);
+                if (userId != -1)
+                {
+                    var token = _webSecurity.GeneratePasswordResetToken(model.UserName);
+                    // Generate the absolute Url for the password reset action.
+                    var routeValues = new RouteValueDictionary { { "token", token } };
+                    var passwordResetLink = Url.Action("ResetPassword", "Account", routeValues, Request.Url.Scheme);
+                    _passwordResetSender.SendEmail(userId, passwordResetLink);
+                }
+                return RedirectToAction("PasswordResetRequested");
+            }
+            return View(model);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult PasswordResetRequested()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult ResetPassword(string token)
+        {
+            var model = new ResetPasswordViewModel
+            {
+                Token = token
+            };
+            return View(model);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public ActionResult ResetPassword(ResetPasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                if (_webSecurity.ResetPassword(model.Token, model.NewPassword))
+                {
+                    return RedirectToAction("PasswordResetCompleted");
+                }
+                ModelState.AddModelError("", "An error occured while resetting your password.");
+            }
+            return View(model);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult PasswordResetCompleted()
+        {
+            return View();
+        }
+
 
         public ActionResult ChangePassword()
         {
