@@ -226,6 +226,7 @@
     <Compile Include="ViewModels\ClusterViewModel.cs" />
     <Compile Include="ViewModels\ConfirmUnassignClusterCoordinatorViewModel.cs" />
     <Compile Include="ViewModels\DisasterClusterCoordinatorsViewModel.cs" />
+    <Compile Include="ViewModels\DisasterViewModel.cs" />
     <Compile Include="ViewModels\ForgotPasswordViewModel.cs" />
     <Compile Include="ViewModels\ResetPasswordViewModel.cs" />
     <Compile Include="ViewModels\SendMessageToAllVolunteersByDisasterViewModel.cs" />

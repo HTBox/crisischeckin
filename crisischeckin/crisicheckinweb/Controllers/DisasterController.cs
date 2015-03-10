@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using System.Web.Mvc;
 using crisicheckinweb.Filters;
+using crisicheckinweb.ViewModels;
 using Models;
 using Services.Interfaces;
 using Services.Exceptions;
@@ -20,7 +22,8 @@ namespace crisicheckinweb.Controllers
         // GET: /Disaster/
         public ActionResult List()
         {
-            var viewData = _disasterSvc.GetList();
+            var viewData = _disasterSvc.GetList()
+                .Select(CreateViewModel);
 
             return View(viewData);
         }
@@ -33,78 +36,63 @@ namespace crisicheckinweb.Controllers
 
             if (validId && disasterId != -1)
             {
-                return View("Create", _disasterSvc.Get(disasterId));
+                var disaster = _disasterSvc.Get(disasterId);
+                return View("Create", CreateViewModel(disaster));
             }
-            return View("Create", new Disaster { IsActive = true });
+            return View("Create", new DisasterViewModel { IsActive = true });
         }
 
         [HttpPost]
-        public ActionResult Create(Disaster disaster)
+        public ActionResult Create(DisasterViewModel model)
         {
-            if (ModelState.IsValid && !String.IsNullOrWhiteSpace(disaster.Name))
+            if (ModelState.IsValid)
             {
-                if (disaster.Id == -1)
+                try
                 {
-                    try
+                    var disaster = new Disaster
+                    {
+                        Id = model.Id,
+                        Name = model.Name,
+                        IsActive = model.IsActive
+                    };
+
+                    if (model.Id == -1)
                     {
                         _disasterSvc.Create(disaster);
                     }
-                    catch (DisasterAlreadyExistsException)
-                    {
-                        ModelState.AddModelError("Name", "A Disaster already exists with that Name!");
-                        return View("Create", disaster);
-                    }
-                }
-                else
-                {
-                    try
+                    else
                     {
                         _disasterSvc.Update(disaster);
                     }
-                    catch (DisasterAlreadyExistsException)
-                    {
-                        ModelState.AddModelError("Name", "A Disaster already exists with that Name!");
-                        return View("Create", disaster);
-                    }
+                }
+                catch (DisasterAlreadyExistsException)
+                {
+                    ModelState.AddModelError("Name", "A Disaster already exists with that Name!");
+                    return View("Create", model);
                 }
 
                 return Redirect("/Disaster/List");
             }
-            ModelState.AddModelError("Name", "Disaster Name is required!");
-            return View("Create", disaster);
+            return View("Create", model);
         }
 
         //TODO: Need to set a schedule for removal.
         [HttpPost]
         [Obsolete("POST /Edit is deprecated. Use POST /Create instead")]
-        public ActionResult Edit(Disaster disaster)
+        public ActionResult Edit(DisasterViewModel model)
         {
             TempData["EditUrlDeprecatedWarning"] = "POST /Edit is deprecated. Use POST /Create instead";
-            if (ModelState.IsValid && !String.IsNullOrWhiteSpace(disaster.Name))
+            return Create(model);
+        }
+
+        private static DisasterViewModel CreateViewModel(Disaster disaster)
+        {
+            return new DisasterViewModel
             {
-                if (disaster.Id == -1)
-                {
-                    try
-                    {
-                        _disasterSvc.Create(disaster);
-                    }
-                    catch (DisasterAlreadyExistsException)
-                    {
-                        ModelState.AddModelError("Name", "A Disaster already exists with that Name!");
-                        return View("Create", disaster);
-                    }
-                }
-                else
-                {
-                    _disasterSvc.Update(disaster);
-                }
-
-                return Redirect("/Disaster/List");
-            }
-
-
-            ModelState.AddModelError("Name", "Disaster Name is required!");
-            return View("Create", disaster);
+                Id = disaster.Id,
+                Name = disaster.Name,
+                IsActive = disaster.IsActive
+            };
         }
 
 
