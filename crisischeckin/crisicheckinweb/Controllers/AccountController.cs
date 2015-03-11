@@ -196,6 +196,20 @@ namespace crisicheckinweb.Controllers
         }
 
 
+        [HttpPost]
+        [AllowAnonymous]
+        public string CheckPasswordValidity(string userName, string password)
+        {
+            string errorMessage;
+            if (String.IsNullOrWhiteSpace(userName))
+            {
+                userName = _webSecurity.CurrentUserName;
+            }
+            PasswordComplexity.IsValid(password, userName, out errorMessage);
+            return errorMessage;
+        }
+
+
         public ActionResult ChangePassword()
         {
             return View("ChangePassword", DetermineLayout(), null);
