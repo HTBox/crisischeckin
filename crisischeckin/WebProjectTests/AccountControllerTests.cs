@@ -11,6 +11,7 @@ using System.Web.Routing;
 using System.Web.Mvc;
 using crisicheckinweb;
 using crisicheckinweb.Infrastructure;
+using Common;
 using Services.Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -253,7 +254,42 @@ namespace WebProjectTests
             // Act
             var model = new ForgotPasswordViewModel
             {
-                UserName = existingUser
+                UserNameOrEmail = existingUser
+            };
+            Mother.ControllerHelpers.SetupControllerModelState(model, _controllerUnderTest);
+            var response = _controllerUnderTest.ForgotPassword(model);
+
+            // Assert
+            var result = response as RedirectToRouteResult;
+            Assert.AreEqual("PasswordResetRequested", result.RouteValues["action"]);
+
+            _passwordResetSender.Verify(x => x.SendEmail(existingUserId, It.IsAny<string>()));
+        }
+
+        [TestMethod]
+        public void ForgotPassword_ValidEmailInsteadOfUsername_SendsEmail_And_RedirectsTo_PasswordResetRequestedView()
+        {
+            // Arrange
+            const string usernameOrEmail = "existing.email@test.com";
+            const int existingUserId = 42;
+            const string existingUsername = "testuser";
+            const string token = "t-o-k-e-n";
+
+            _webSecurity.Setup(x => x.GetUserId(usernameOrEmail)).Returns(-1);
+            _volunteerService.Setup(x => x.FindUserByEmail(usernameOrEmail))
+                .Returns(new User { Id = existingUserId, UserName = existingUsername});
+            _webSecurity.Setup(x => x.GeneratePasswordResetToken(existingUsername)).Returns(token);
+
+            _routeCollection.MapRoute(
+                name: "PasswordReset",
+                url: "{controller}/{action}",
+                defaults: new { controller = "Account", action = "PasswordReset" }
+            );
+
+            // Act
+            var model = new ForgotPasswordViewModel
+            {
+                UserNameOrEmail = usernameOrEmail
             };
             Mother.ControllerHelpers.SetupControllerModelState(model, _controllerUnderTest);
             var response = _controllerUnderTest.ForgotPassword(model);
@@ -276,7 +312,7 @@ namespace WebProjectTests
             // Act
             var model = new ForgotPasswordViewModel
             {
-                UserName = nonExistingUser
+                UserNameOrEmail = nonExistingUser
             };
             Mother.ControllerHelpers.SetupControllerModelState(model, _controllerUnderTest);
             var response = _controllerUnderTest.ForgotPassword(model);
@@ -334,5 +370,178 @@ namespace WebProjectTests
             Assert.IsNotNull(result);
             Assert.IsTrue(result.ViewData.ModelState.Count >= 1);
         }
+
+        [TestMethod]
+        public void Login_ValidUsernameAndPassword_And_IsAdmin()
+        {
+            // Arrange
+            const string validUserName = "administrator";
+            const string validPassword = "p@ssw0rd";
+
+            _webSecurity.Setup(x => x.Login(validUserName, validPassword, It.IsAny<bool>()))
+                .Returns(true);
+            _webSecurity.Setup(x => x.IsUserInRole(validUserName, Constants.RoleAdmin))
+                .Returns(true);
+
+            // Act
+            var model = new LoginModel
+            {
+                UserNameOrEmail = validUserName,
+                Password = validPassword
+            };
+            Mother.ControllerHelpers.SetupControllerModelState(model, _controllerUnderTest);
+            var response = _controllerUnderTest.Login(model, "/return/url");
+
+            // Assert
+            var result = response as RedirectToRouteResult;
+            Assert.AreEqual("Disaster", result.RouteValues["controller"]);
+            Assert.AreEqual("List", result.RouteValues["action"]);
+        }
+
+        [TestMethod]
+        public void Login_ValidUsernameAndPassword_And_IsNoAdmin()
+        {
+            // Arrange
+            const string validUserName = "volunteer";
+            const string validPassword = "p@ssw0rd";
+
+            _webSecurity.Setup(x => x.Login(validUserName, validPassword, It.IsAny<bool>()))
+                .Returns(true);
+            _webSecurity.Setup(x => x.IsUserInRole(validUserName, Constants.RoleAdmin))
+                .Returns(false);
+
+            // Act
+            var model = new LoginModel
+            {
+                UserNameOrEmail = validUserName,
+                Password = validPassword
+            };
+            Mother.ControllerHelpers.SetupControllerModelState(model, _controllerUnderTest);
+            var response = _controllerUnderTest.Login(model, "/return/url");
+
+            // Assert
+            var result = response as RedirectResult;
+            Assert.AreEqual("/return/url", result.Url);
+        }
+
+        [TestMethod]
+        public void Login_ValidEmailAndPassword_And_IsAdmin()
+        {
+            // Arrange
+            const string validEmail = "administrator@email.com";
+            const string validUserName = "administrator";
+            const string validPassword = "p@ssw0rd";
+
+            _webSecurity.Setup(x => x.Login(validEmail, validPassword, It.IsAny<bool>()))
+                .Returns(false);
+            _volunteerService.Setup(x => x.FindUserByEmail(validEmail))
+                .Returns(new User { Id = 42, UserName = validUserName });
+            _webSecurity.Setup(x => x.Login(validUserName, validPassword, It.IsAny<bool>()))
+                .Returns(true);
+            _webSecurity.Setup(x => x.IsUserInRole(validUserName, Constants.RoleAdmin))
+                .Returns(true);
+
+            // Act
+            var model = new LoginModel
+            {
+                UserNameOrEmail = validUserName,
+                Password = validPassword
+            };
+            Mother.ControllerHelpers.SetupControllerModelState(model, _controllerUnderTest);
+            var response = _controllerUnderTest.Login(model, "/return/url");
+
+            // Assert
+            var result = response as RedirectToRouteResult;
+            Assert.AreEqual("Disaster", result.RouteValues["controller"]);
+            Assert.AreEqual("List", result.RouteValues["action"]);
+        }
+
+        [TestMethod]
+        public void Login_ValidEmailAndPassword_And_IsNoAdmin()
+        {
+            // Arrange
+            const string validEmail = "administrator@email.com";
+            const string validUserName = "administrator";
+            const string validPassword = "p@ssw0rd";
+
+            _webSecurity.Setup(x => x.Login(validEmail, validPassword, It.IsAny<bool>()))
+                .Returns(false);
+            _volunteerService.Setup(x => x.FindUserByEmail(validEmail))
+                .Returns(new User { Id = 42, UserName = validUserName });
+            _webSecurity.Setup(x => x.Login(validUserName, validPassword, It.IsAny<bool>()))
+                .Returns(true);
+            _webSecurity.Setup(x => x.IsUserInRole(validUserName, Constants.RoleAdmin))
+                .Returns(false);
+
+            // Act
+            var model = new LoginModel
+            {
+                UserNameOrEmail = validUserName,
+                Password = validPassword
+            };
+            Mother.ControllerHelpers.SetupControllerModelState(model, _controllerUnderTest);
+            var response = _controllerUnderTest.Login(model, "/return/url");
+
+            // Assert
+            var result = response as RedirectResult;
+            Assert.AreEqual("/return/url", result.Url);
+        }
+
+        [TestMethod]
+        public void Login_ValidEmailInvalidPassword_ReturnsLoginView_With_ModelState_Error()
+        {
+            // Arrange
+            const string validUsernameOrEmail = "existing@email.com";
+            const string existingUserName = "existing";
+            const string invalidPassword = "invalidPass";
+
+            _webSecurity.Setup(x => x.Login(validUsernameOrEmail, It.IsAny<string>(), It.IsAny<bool>()))
+                .Returns(false);
+            _volunteerService.Setup(x => x.FindUserByEmail(validUsernameOrEmail))
+                .Returns(new User { Id = 42, UserName = existingUserName });
+            _webSecurity.Setup(x => x.Login(existingUserName, invalidPassword, It.IsAny<bool>()))
+                .Returns(false);
+
+            // Act
+            var model = new LoginModel
+            {
+                UserNameOrEmail = validUsernameOrEmail,
+                Password = invalidPassword
+            };
+            Mother.ControllerHelpers.SetupControllerModelState(model, _controllerUnderTest);
+            var response = _controllerUnderTest.Login(model, "/return/url");
+
+            // Assert
+            var result = response as ViewResult;
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.ViewData.ModelState.Count >= 1);
+        }
+
+        [TestMethod]
+        public void Login_NonExistingUsernameAndEmail_ReturnsLoginView_With_ModelState_Error()
+        {
+            // Arrange
+            const string invalidUsernameOrEmail = "non-existing";
+
+            _webSecurity.Setup(x => x.Login(invalidUsernameOrEmail, It.IsAny<string>(), It.IsAny<bool>()))
+                .Returns(false);
+            _volunteerService.Setup(x => x.FindUserByEmail(invalidUsernameOrEmail))
+                .Returns((User)null);
+
+            // Act
+            var model = new LoginModel
+            {
+                UserNameOrEmail = invalidUsernameOrEmail,
+                Password = "p@ssw0rd"
+            };
+            Mother.ControllerHelpers.SetupControllerModelState(model, _controllerUnderTest);
+            var response = _controllerUnderTest.Login(model, "/return/url");
+
+            // Assert
+            var result = response as ViewResult;
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.ViewData.ModelState.Count >= 1);
+        }
+
     }
 }

@@ -44,17 +44,35 @@ namespace crisicheckinweb.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(LoginModel model, string returnUrl)
         {
-            if (ModelState.IsValid && _webSecurity.Login(model.UserName, model.Password, model.RememberMe))
+            if (ModelState.IsValid)
             {
-                if (_webSecurity.IsUserInRole(model.UserName, Constants.RoleAdmin))
+                // First assume the username was typed in.
+                if (_webSecurity.Login(model.UserNameOrEmail, model.Password, model.RememberMe))
                 {
-                    return RedirectToAction("List", "Disaster");
+                    if (_webSecurity.IsUserInRole(model.UserNameOrEmail, Constants.RoleAdmin))
+                    {
+                        return RedirectToAction("List", "Disaster");
+                    }
+                    return RedirectToLocal(returnUrl);
                 }
-                return RedirectToLocal(returnUrl);
+
+                // If login fails, assume the email was typed in instead.
+                var user = _volunteerSvc.FindUserByEmail(model.UserNameOrEmail);
+                if (user != null)
+                {
+                    if (_webSecurity.Login(user.UserName, model.Password, model.RememberMe))
+                    {
+                        if (_webSecurity.IsUserInRole(user.UserName, Constants.RoleAdmin))
+                        {
+                            return RedirectToAction("List", "Disaster");
+                        }
+                        return RedirectToLocal(returnUrl);
+                    }
+                }
             }
 
             // If we got this far, something failed, redisplay form
-            ModelState.AddModelError("", "The user name or password provided is incorrect.");
+            ModelState.AddModelError("", "The username/email or password provided is incorrect.");
             return View(model);
         }
 
@@ -138,12 +156,25 @@ namespace crisicheckinweb.Controllers
         {
             if (ModelState.IsValid)
             {
+                // First assume the username was typed in.
+                var userName = model.UserNameOrEmail;
+                var userId = _webSecurity.GetUserId(model.UserNameOrEmail);
+                if (userId == -1)
+                {
+                    // If the user was not found by name, assume his email was typed in.
+                    var user = _volunteerSvc.FindUserByEmail(model.UserNameOrEmail);
+                    if (user != null)
+                    {
+                        userName = user.UserName;
+                        userId = user.Id;
+                    }
+                }
+
                 // Only send email when user actually exists. For security reasons
                 // don't show an error when the given user doesn't exist.
-                var userId = _webSecurity.GetUserId(model.UserName);
                 if (userId != -1)
                 {
-                    var token = _webSecurity.GeneratePasswordResetToken(model.UserName);
+                    var token = _webSecurity.GeneratePasswordResetToken(userName);
                     // Generate the absolute Url for the password reset action.
                     var routeValues = new RouteValueDictionary { { "token", token } };
                     var passwordResetLink = Url.Action("ResetPassword", "Account", routeValues, Request.Url.Scheme);

@@ -131,5 +131,15 @@ namespace Services
             if (ourService.Persons.Any(p => p.Email == email)) return true;
             return false;
         }
+
+        public User FindUserByEmail(string email)
+        {
+            var userId = ourService.Persons
+                .Where(p => String.Compare(p.Email, email, StringComparison.OrdinalIgnoreCase) == 0)
+                .Select(p => p.UserId)
+                .FirstOrDefault();
+
+            return userId.HasValue ? ourService.Users.FirstOrDefault(u => u.Id == userId) : null;
+        }
     }
 }
