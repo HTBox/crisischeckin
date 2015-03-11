@@ -5,6 +5,7 @@ using Services.Interfaces;
 using crisicheckinweb.Controllers;
 using Models;
 using System.Web.Mvc;
+using crisicheckinweb.ViewModels;
 using Services.Exceptions;
 
 namespace WebProjectTests
@@ -30,7 +31,7 @@ namespace WebProjectTests
             // Arrange
 
             // Act
-            var viewModel = new Disaster { Id = -1, Name ="test", IsActive = false};
+            var viewModel = new DisasterViewModel { Id = -1, Name ="test", IsActive = false};
             var response = _controllerUnderTest.Create(viewModel);
 
             // Assert
@@ -44,7 +45,7 @@ namespace WebProjectTests
             // Arrange
 
             // Act
-            var viewModel = new Disaster { Id = 0, Name = "updated", IsActive = true };
+            var viewModel = new DisasterViewModel { Id = 0, Name = "updated", IsActive = true };
             var response = _controllerUnderTest.Create(viewModel);
 
             // Assert
@@ -61,7 +62,7 @@ namespace WebProjectTests
                 It.IsAny<Disaster>())).Throws(new DisasterAlreadyExistsException());
 
             // Act
-            var viewModel = new Disaster { Id = -1, Name = "test", IsActive = true };
+            var viewModel = new DisasterViewModel { Id = -1, Name = "test", IsActive = true };
             var response = _controllerUnderTest.Create(viewModel);
 
             // Assert

@@ -1,4 +1,4 @@
-@model Models.Disaster
+@model crisicheckinweb.ViewModels.DisasterViewModel
 @{
     ViewBag.Title = "Create / Edit Disaster";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
@@ -11,12 +11,12 @@
     @Html.ValidationSummary()
     <div class="col-sm-3">
         <div class="form-group">
-            @Html.LabelFor(m => m.Name, "Disaster Name")
+            @Html.LabelFor(m => m.Name)
             @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
         </div>
         <div>
             @Html.CheckBoxFor(m => m.IsActive)
-            @Html.LabelFor(m => m.IsActive, "Currently active")
+            @Html.LabelFor(m => m.IsActive)
         </div>
         <input type="submit" value="@(Model.Id > 0 ? "Update" : "Create")" class="btn btn-success" />
     </div>
