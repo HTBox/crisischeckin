@@ -187,7 +187,7 @@ namespace crisicheckinweb.Controllers
                         var body = String.Format(@"<p>Click on the following link to reset your password: <a href='{0}'>{0}</a></p>", passwordResetLink);
                         var message = new Message("CrisisCheckin - Password Reset", body);
 
-                        _messageService.SendMessage(volunteer, message);
+                        _messageService.SendMessage(message, volunteer);
                     }
                 }
                 return RedirectToAction("PasswordResetRequested");

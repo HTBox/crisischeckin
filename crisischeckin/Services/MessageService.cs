@@ -16,20 +16,20 @@ namespace Services
             _adminSvc = adminSvc;
         }
 
-        public void SendMessage(Person toVolunteer, Message message)
+        public void SendMessage(Message message, Person recipient, string senderDisplayName = null)
         {
             var messageRecipients = new List<MessageRecipient>
             {
                 new MessageRecipient
                 {
-                    EmailAddress = toVolunteer.Email,
-                    Name = string.Format("{0} {1}", toVolunteer.FirstName, toVolunteer.LastName)
+                    EmailAddress = recipient.Email,
+                    Name = string.Format("{0} {1}", recipient.FirstName, recipient.LastName)
                 }
             };
-            _msgCoordinatorSvc.SendMessage(message, messageRecipients);
+            _msgCoordinatorSvc.SendMessage(message, messageRecipients, senderDisplayName);
         }
 
-        public void SendMessageToDisasterVolunteers(RecipientCriterion recipientCriterion, Message message)
+        public void SendMessageToDisasterVolunteers(Message message, RecipientCriterion recipientCriterion, string senderDisplayName = null)
         {
             var volunteers = _adminSvc.GetVolunteersForDate(recipientCriterion.DisasterId, DateTime.Today, recipientCriterion.ClusterCoordinatorsOnly, recipientCriterion.CheckedInOnly);
 
@@ -43,7 +43,7 @@ namespace Services
                                       });
             }
 
-            _msgCoordinatorSvc.SendMessage(message, messageRecipients);
+            _msgCoordinatorSvc.SendMessage(message, messageRecipients, senderDisplayName);
         }
     }
 }

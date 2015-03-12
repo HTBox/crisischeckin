@@ -76,7 +76,7 @@ namespace crisicheckinweb.App_Start
             // kernel.Bind<IMessageSender>().To<DebugMessageSender>();
             kernel.Bind<IMessageSender>().To<SmtpMessageSender>().InRequestScope();
             kernel.Bind<MailAddress>()
-                .ToConstant(new MailAddress("noreply@crisischeckin.com", "CrisisCheckin"))
+                .ToConstant(new MailAddress("no-reply@crisischeckin.com", "CrisisCheckin"))
                 .WhenInjectedInto<SmtpMessageSender>();
             kernel.Bind<IMessageCoordinator>().To<MessageCoordinator>().InRequestScope();
             kernel.Bind<IClusterCoordinatorService>().To<ClusterCoordinatorService>().InRequestScope();

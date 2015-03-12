@@ -5,7 +5,7 @@ namespace Services.Interfaces
 {
     public interface IMessageService
     {
-        void SendMessage(Person toVolunteer, Message message);
-        void SendMessageToDisasterVolunteers(RecipientCriterion recipientCriterion, Message message);
+        void SendMessage(Message message, Person recipient, string senderDisplayName = null);
+        void SendMessageToDisasterVolunteers(Message message, RecipientCriterion recipientCriterion, string senderDisplayName = null);
     }
 }

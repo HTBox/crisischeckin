@@ -13,11 +13,11 @@ namespace Services
             _messageSenders = messageSenders;
         }
 
-        public void SendMessage(Message message, List<MessageRecipient> recipients)
+        public void SendMessage(Message message, List<MessageRecipient> recipients, string senderDisplayName = null)
         {
             foreach (var messageSender in _messageSenders)
             {
-                messageSender.SendMessage(message, recipients);
+                messageSender.SendMessage(message, recipients, senderDisplayName);
             }
         }
     }

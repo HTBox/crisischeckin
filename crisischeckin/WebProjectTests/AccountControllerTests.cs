@@ -269,7 +269,7 @@ namespace WebProjectTests
             var result = response as RedirectToRouteResult;
             Assert.AreEqual("PasswordResetRequested", result.RouteValues["action"]);
 
-            _messageService.Verify(x => x.SendMessage(person, It.IsAny<Message>()));
+            _messageService.Verify(x => x.SendMessage(It.IsAny<Message>(), person, It.IsAny<string>()));
         }
 
         [TestMethod]
@@ -309,7 +309,7 @@ namespace WebProjectTests
             var result = response as RedirectToRouteResult;
             Assert.AreEqual("PasswordResetRequested", result.RouteValues["action"]);
 
-            _messageService.Verify(x => x.SendMessage(person, It.IsAny<Message>()));
+            _messageService.Verify(x => x.SendMessage(It.IsAny<Message>(), person, It.IsAny<string>()));
         }
 
         [TestMethod]
@@ -332,7 +332,7 @@ namespace WebProjectTests
             var result = response as RedirectToRouteResult;
             Assert.AreEqual("PasswordResetRequested", result.RouteValues["action"]);
 
-            _messageService.Verify(x => x.SendMessage(It.IsAny<Person>(), It.IsAny<Message>()), Times.Never);
+            _messageService.Verify(x => x.SendMessage(It.IsAny<Message>(), It.IsAny<Person>(), It.IsAny<string>()), Times.Never);
         }
 
         [TestMethod]

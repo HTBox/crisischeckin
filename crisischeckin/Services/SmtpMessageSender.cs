@@ -16,14 +16,18 @@ namespace Services
             _senderAddress = senderAddress;
         }
 
-        public void SendMessage(Message message, IReadOnlyCollection<MessageRecipient> recipients)
+        public void SendMessage(Message message, IReadOnlyCollection<MessageRecipient> recipients, string senderDisplayName = null)
         {
             using (var smtpClient = _smtpClientFactory())
             {
+                var fromAddress = !String.IsNullOrWhiteSpace(senderDisplayName)
+                    ? new MailAddress(_senderAddress.Address, senderDisplayName)
+                    : _senderAddress;
+
                 foreach (var recipient in recipients)
                 {
                     var recipientAddress = new MailAddress(recipient.EmailAddress, recipient.Name);
-                    var mailMessage = new MailMessage(_senderAddress, recipientAddress)
+                    var mailMessage = new MailMessage(fromAddress, recipientAddress)
                     {
                         Subject = message.Subject,
                         IsBodyHtml = true,
