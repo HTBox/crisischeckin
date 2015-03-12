@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Models;
 using Services.Interfaces;
 
 namespace Services
@@ -13,6 +14,19 @@ namespace Services
         {
             _msgCoordinatorSvc = msgCoordinatorSvc;
             _adminSvc = adminSvc;
+        }
+
+        public void SendMessage(Person toVolunteer, Message message)
+        {
+            var messageRecipients = new List<MessageRecipient>
+            {
+                new MessageRecipient
+                {
+                    EmailAddress = toVolunteer.Email,
+                    Name = string.Format("{0} {1}", toVolunteer.FirstName, toVolunteer.LastName)
+                }
+            };
+            _msgCoordinatorSvc.SendMessage(message, messageRecipients);
         }
 
         public void SendMessageToDisasterVolunteers(RecipientCriterion recipientCriterion, Message message)

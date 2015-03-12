@@ -70,10 +70,14 @@ namespace crisicheckinweb.App_Start
             kernel.Bind<ICluster>().To<ClusterService>().InRequestScope();
             kernel.Bind<CrisisCheckin>().ToSelf().InRequestScope();
             kernel.Bind<IWebSecurityWrapper>().To<WebSecurityWrapper>().InRequestScope();
-            kernel.Bind<IPasswordResetSender>().To<PasswordResetSender>().InRequestScope();
             kernel.Bind<IVolunteerTypeService>().To<VolunteerTypesService>().InRequestScope();
             kernel.Bind<IMessageService>().To<MessageService>().InRequestScope();
+            // Is this still necessary?
+            // kernel.Bind<IMessageSender>().To<DebugMessageSender>();
             kernel.Bind<IMessageSender>().To<SmtpMessageSender>().InRequestScope();
+            kernel.Bind<MailAddress>()
+                .ToConstant(new MailAddress("noreply@crisischeckin.com", "CrisisCheckin"))
+                .WhenInjectedInto<SmtpMessageSender>();
             kernel.Bind<IMessageCoordinator>().To<MessageCoordinator>().InRequestScope();
             kernel.Bind<IClusterCoordinatorService>().To<ClusterCoordinatorService>().InRequestScope();
             kernel.Bind<IApiService>().To<ApiService>().InRequestScope();
@@ -86,17 +90,6 @@ namespace crisicheckinweb.App_Start
 #endif
                 })
                 .InRequestScope();
-#if DEBUG
-            kernel.Bind<IMessageSender>().To<DebugMessageSender>();
-#else
-            kernel.Bind<SmtpMessageSender.SmtpSettings>()
-                .ToConstant(new SmtpMessageSender.SmtpSettings
-                {
-                    SenderName = "Admin", // TODO: Figure out how to make this come from current user
-                    SenderEmail = "test@test.com"
-                })
-                .InRequestScope();
-#endif
         }
     }
 }
