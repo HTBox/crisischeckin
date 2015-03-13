@@ -14,6 +14,7 @@ using crisicheckinweb.Infrastructure;
 using Common;
 using Services.Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Services;
 
 namespace WebProjectTests
 {
@@ -27,7 +28,7 @@ namespace WebProjectTests
         private Mock<IWebSecurityWrapper> _webSecurity;
         private Mock<IPrincipal> _principal;
         private Mock<HttpContextBase> _httpContext;
-        private Mock<IPasswordResetSender> _passwordResetSender;
+        private Mock<IMessageService> _messageService;
         private RouteCollection _routeCollection;
 
         [TestInitialize]
@@ -41,7 +42,7 @@ namespace WebProjectTests
             _cluster = new Mock<ICluster>();
             _webSecurity = new Mock<IWebSecurityWrapper>();
             _webSecurity.SetupGet(x => x.CurrentUserId).Returns(42);
-            _passwordResetSender = new Mock<IPasswordResetSender>();
+            _messageService = new Mock<IMessageService>();
 
             var request = new Mock<HttpRequestBase>();
             request.SetupGet(x => x.Url).Returns(new Uri("http://localhost/"));
@@ -55,7 +56,7 @@ namespace WebProjectTests
 
             var reqContext = new RequestContext(_httpContext.Object, new RouteData());
 
-            _controllerUnderTest = new AccountController(_volunteerService.Object, _cluster.Object, _webSecurity.Object, _passwordResetSender.Object);
+            _controllerUnderTest = new AccountController(_volunteerService.Object, _cluster.Object, _webSecurity.Object, _messageService.Object);
             _controllerUnderTest.ControllerContext = new ControllerContext(reqContext, _controllerUnderTest);
 
             _routeCollection = new RouteCollection();
@@ -241,9 +242,14 @@ namespace WebProjectTests
             const int existingUserId = 42;
             const string existingUser = "existing-user";
             const string token = "t-o-k-e-n";
+            var person = new Person { Id = existingUserId };
 
-            _webSecurity.Setup(x => x.GetUserId(existingUser)).Returns(existingUserId);
-            _webSecurity.Setup(x => x.GeneratePasswordResetToken(existingUser)).Returns(token);
+            _webSecurity.Setup(x => x.GetUserId(existingUser))
+                .Returns(existingUserId);
+            _webSecurity.Setup(x => x.GeneratePasswordResetToken(existingUser))
+                .Returns(token);
+            _volunteerService.Setup(x => x.FindByUserId(existingUserId))
+                .Returns(person);
 
             _routeCollection.MapRoute(
                 name: "PasswordReset",
@@ -263,7 +269,7 @@ namespace WebProjectTests
             var result = response as RedirectToRouteResult;
             Assert.AreEqual("PasswordResetRequested", result.RouteValues["action"]);
 
-            _passwordResetSender.Verify(x => x.SendEmail(existingUserId, It.IsAny<string>()));
+            _messageService.Verify(x => x.SendMessage(It.IsAny<Message>(), person, It.IsAny<string>()));
         }
 
         [TestMethod]
@@ -274,11 +280,16 @@ namespace WebProjectTests
             const int existingUserId = 42;
             const string existingUsername = "testuser";
             const string token = "t-o-k-e-n";
+            var person = new Person {Id = existingUserId};
 
-            _webSecurity.Setup(x => x.GetUserId(usernameOrEmail)).Returns(-1);
+            _webSecurity.Setup(x => x.GetUserId(usernameOrEmail))
+                .Returns(-1);
             _volunteerService.Setup(x => x.FindUserByEmail(usernameOrEmail))
                 .Returns(new User { Id = existingUserId, UserName = existingUsername});
-            _webSecurity.Setup(x => x.GeneratePasswordResetToken(existingUsername)).Returns(token);
+            _webSecurity.Setup(x => x.GeneratePasswordResetToken(existingUsername))
+                .Returns(token);
+            _volunteerService.Setup(x => x.FindByUserId(existingUserId))
+                .Returns(person);
 
             _routeCollection.MapRoute(
                 name: "PasswordReset",
@@ -298,7 +309,7 @@ namespace WebProjectTests
             var result = response as RedirectToRouteResult;
             Assert.AreEqual("PasswordResetRequested", result.RouteValues["action"]);
 
-            _passwordResetSender.Verify(x => x.SendEmail(existingUserId, It.IsAny<string>()));
+            _messageService.Verify(x => x.SendMessage(It.IsAny<Message>(), person, It.IsAny<string>()));
         }
 
         [TestMethod]
@@ -321,7 +332,7 @@ namespace WebProjectTests
             var result = response as RedirectToRouteResult;
             Assert.AreEqual("PasswordResetRequested", result.RouteValues["action"]);
 
-            _passwordResetSender.Verify(x => x.SendEmail(It.IsAny<int>(), It.IsAny<string>()), Times.Never);
+            _messageService.Verify(x => x.SendMessage(It.IsAny<Message>(), It.IsAny<Person>(), It.IsAny<string>()), Times.Never);
         }
 
         [TestMethod]

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Mail;
 using System.Web.Mvc;
 using System.Web.Routing;
 using crisicheckinweb.Filters;
@@ -10,6 +11,7 @@ using Services.Exceptions;
 using Services.Interfaces;
 using crisicheckinweb.Wrappers;
 using Resources;
+using Services;
 
 namespace crisicheckinweb.Controllers
 {
@@ -18,14 +20,14 @@ namespace crisicheckinweb.Controllers
         private readonly IVolunteerService _volunteerSvc;
         private readonly ICluster _clusterSvc;
         private readonly IWebSecurityWrapper _webSecurity;
-        private readonly IPasswordResetSender _passwordResetSender;
+        private readonly IMessageService _messageService;
 
-        public AccountController(IVolunteerService volunteerSvc, ICluster clusterSvc, IWebSecurityWrapper webSecurity, IPasswordResetSender passwordResetSender)
+        public AccountController(IVolunteerService volunteerSvc, ICluster clusterSvc, IWebSecurityWrapper webSecurity, IMessageService messageService)
         {
             _clusterSvc = clusterSvc;
             _webSecurity = webSecurity;
             _volunteerSvc = volunteerSvc;
-            _passwordResetSender = passwordResetSender;
+            _messageService = messageService;
         }
 
         //
@@ -174,11 +176,19 @@ namespace crisicheckinweb.Controllers
                 // don't show an error when the given user doesn't exist.
                 if (userId != -1)
                 {
-                    var token = _webSecurity.GeneratePasswordResetToken(userName);
-                    // Generate the absolute Url for the password reset action.
-                    var routeValues = new RouteValueDictionary { { "token", token } };
-                    var passwordResetLink = Url.Action("ResetPassword", "Account", routeValues, Request.Url.Scheme);
-                    _passwordResetSender.SendEmail(userId, passwordResetLink);
+                    var volunteer = _volunteerSvc.FindByUserId(userId);
+                    if (volunteer != null)
+                    {
+                        var token = _webSecurity.GeneratePasswordResetToken(userName);
+                        // Generate the absolute Url for the password reset action.
+                        var routeValues = new RouteValueDictionary { { "token", token } };
+                        var passwordResetLink = Url.Action("ResetPassword", "Account", routeValues, Request.Url.Scheme);
+
+                        var body = String.Format(@"<p>Click on the following link to reset your password: <a href='{0}'>{0}</a></p>", passwordResetLink);
+                        var message = new Message("CrisisCheckin - Password Reset", body);
+
+                        _messageService.SendMessage(message, volunteer);
+                    }
                 }
                 return RedirectToAction("PasswordResetRequested");
             }

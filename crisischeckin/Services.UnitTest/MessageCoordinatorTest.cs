@@ -43,7 +43,7 @@ namespace Services.UnitTest
 
             InvokeSendMessageMethod(testData);
 
-            fakeSender2.Setup(s => s.SendMessage(testData.Message, testData.Recipients))
+            fakeSender2.Setup(s => s.SendMessage(testData.Message, testData.Recipients, It.IsAny<string>()))
                 .Throws<NullReferenceException>();
 
             VerifyMessageSentToRecipientsThroughSenders(testData.Message, testData.Recipients, fakeSender);
@@ -54,7 +54,7 @@ namespace Services.UnitTest
         {
             foreach (var fakeSender in fakeSenders)
             {
-                fakeSender.Verify(s => s.SendMessage(message, recipients),
+                fakeSender.Verify(s => s.SendMessage(message, recipients, It.IsAny<string>()),
                     Times.Once());
             }
         }
