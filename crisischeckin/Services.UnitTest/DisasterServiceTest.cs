@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Models;
 using Moq;
 using Services.Interfaces;
 
 namespace Services.UnitTest
 {
-    [TestClass]
+    [TestFixture]
     public class DisasterServiceTest
     {
 
@@ -29,14 +29,14 @@ namespace Services.UnitTest
         private Mock<IDataService> _mockDataService;
         private DisasterService _disasterService;
 
-        [TestInitialize]
+        [SetUp]
         public void CreateDependencies()
         {
             _mockDataService = new Mock<IDataService>();
             _disasterService = new DisasterService(_mockDataService.Object);
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Constructor_NullDataService()
         {
@@ -44,7 +44,7 @@ namespace Services.UnitTest
             new DisasterService(null);
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(ArgumentException))]
         public void AssignToVolunteer_BeginDateGreaterThanEndDate()
         {
@@ -53,7 +53,7 @@ namespace Services.UnitTest
             _disasterService.AssignToVolunteer(0, 0, startDate, endDate, 1);
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof (ArgumentException))]
         public void AssignToVolunteer_StartDateInThePast()
         {
@@ -62,7 +62,7 @@ namespace Services.UnitTest
             _disasterService.AssignToVolunteer(0, 0, startDate, endDate, 1);
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(ArgumentException))]
         public void AssignToVolunteer_StartDateIsWithinExistingCommitment()
         {
@@ -83,7 +83,7 @@ namespace Services.UnitTest
             _disasterService.AssignToVolunteer(0, 0, new DateTime(2013, 6, 11), new DateTime(2013, 6, 20), 1);
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(ArgumentException))]
         public void AssignToVolunteer_EndDateIsWithinExistingCommitment()
         {
@@ -104,7 +104,7 @@ namespace Services.UnitTest
             _disasterService.AssignToVolunteer(0, 0, new DateTime(2013, 6, 5), new DateTime(2013, 6, 12), 1);
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(ArgumentException))]
         public void AssignToVolunteer_StartAndEndDateSpanExistingCommitment()
         {
@@ -125,7 +125,7 @@ namespace Services.UnitTest
             _disasterService.AssignToVolunteer(0, 0, new DateTime(2013, 5, 6), new DateTime(2013, 5, 9), 1);
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(ArgumentException))]
         public void AssignToVolunteer_StartAndEndDateAreWithinExistingCommitment()
         {
@@ -146,7 +146,7 @@ namespace Services.UnitTest
             _disasterService.AssignToVolunteer(0, 0, new DateTime(2013, 5, 7), new DateTime(2013, 5, 7), 1);
         }
 
-        [TestMethod]
+        [Test]
         public void AssignToVolunteer_StartAndEndDateBeforeExistingCommitment()
         {
             Commitment createdCommitment = null;
@@ -178,7 +178,7 @@ namespace Services.UnitTest
             Assert.AreEqual(endDate, createdCommitment.EndDate);
         }
 
-        [TestMethod]
+        [Test]
         public void AssignToVolunteer_StartAndEndDateAfterExistingCommitment()
         {
             Commitment createdCommitment = null;
@@ -210,7 +210,7 @@ namespace Services.UnitTest
             Assert.AreEqual(endDate, createdCommitment.EndDate);
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(ArgumentException))]
         public void AssignToVolunteer_StartDateSameAsExistingCommitmentEndDate()
         {
@@ -235,7 +235,7 @@ namespace Services.UnitTest
             _disasterService.AssignToVolunteer(0, 0, new DateTime(2013, 5, 10), new DateTime(2013, 5, 10), 1);
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(ArgumentException))]
         public void AssignToVolunteer_EndDateSameAsExistingCommitmentStartDate()
         {
@@ -260,7 +260,7 @@ namespace Services.UnitTest
             _disasterService.AssignToVolunteer(0, 0, new DateTime(2013, 5, 6), new DateTime(2013, 5, 6), 1);
         }
 
-        [TestMethod]
+        [Test]
         public void AssignToVolunteer_Valid()
         {
             Commitment createdCommitment = null;
@@ -280,7 +280,7 @@ namespace Services.UnitTest
             Assert.AreEqual(createdCommitment.EndDate, endDate);
         }
 
-        [TestMethod]
+        [Test]
         public void AssignToVolunteer_ValidForMoreThanOneVolunteerPerDisaster()
         {
             var commitments = new List<Commitment>
@@ -315,7 +315,7 @@ namespace Services.UnitTest
             Assert.AreEqual(createdCommitment.EndDate, endDate);
         }
 
-        [TestMethod]
+        [Test]
         public void RemoveCommitmentById_Valid()
         {
             // arrange
@@ -330,7 +330,7 @@ namespace Services.UnitTest
             Assert.IsTrue(removeCommitmentByIdMethodCalled);
         }
 
-        [TestMethod]
+        [Test]
         public void CreateDisaster_Valid()
         {
             // arrange
@@ -347,7 +347,7 @@ namespace Services.UnitTest
             _mockDataService.Verify(m => m.AddDisaster(disaster));
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(Services.Exceptions.DisasterAlreadyExistsException))]
         public void CreateDisaster_SameName_ThrowDisasterAlreadyExistsException()
         {
@@ -368,21 +368,21 @@ namespace Services.UnitTest
             //Exception should be thrown
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void CreateDisaster_DisasterNull()
         {
             _disasterService.Create(null);
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void CreateDisaster_DisasterNameNull()
         {
             _disasterService.Create(new Disaster { IsActive = true, Name = "" });
         }
 
-        [TestMethod]
+        [Test]
         public void GetList_ReturnsAllValid()
         {
             // arrange
@@ -395,7 +395,7 @@ namespace Services.UnitTest
             Assert.AreEqual(2, result.Count());
         }
 
-        [TestMethod]
+        [Test]
         public void GetActiveList_ReturnsAllActiveValid()
         {
             // arrange
@@ -409,14 +409,14 @@ namespace Services.UnitTest
         }
 
         //with empty collections, return an empty list.
-        [TestMethod]
+        [Test]
         public void WhenNoDisastersReturnAnEmptyList()
         {
             var result = _disasterService.GetList();
             Assert.IsFalse(result.Any());
         }
 
-        [TestMethod]
+        [Test]
         public void GetByID_Valid()
         {
             // arrange
@@ -429,7 +429,7 @@ namespace Services.UnitTest
             Assert.AreEqual(_activeDisaster.Id, result.Id);
         }
 
-        [TestMethod]
+        [Test]
         public void GetByID_NotFound()
         {
             // arrange
@@ -441,7 +441,7 @@ namespace Services.UnitTest
             Assert.AreEqual(null, result);
         }
 
-        [TestMethod]
+        [Test]
         public void UpdateDisaster_Valid()
         {
             // arrange
@@ -466,7 +466,7 @@ namespace Services.UnitTest
             _mockDataService.Verify(m => m.UpdateDisaster(updatedDisaster));
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(Services.Exceptions.DisasterAlreadyExistsException))]
         public void UpdateDisaster_SameName_ThrowsDisasterAlreadyExistsException()
         {
@@ -490,7 +490,7 @@ namespace Services.UnitTest
             // Should throw a DisasterAlreadyExistsException
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(Services.Exceptions.DisasterNotFoundException))]
         public void UpdateDisaster_InvalidId_ThrowsDisasterNotFoundException()
         {
