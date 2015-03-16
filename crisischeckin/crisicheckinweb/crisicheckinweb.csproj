@@ -242,6 +242,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\UpgradeVolunteerRoleViewModel.cs" />
     <Compile Include="ViewModels\VolunteerViewModel.cs" />
+    <Compile Include="Wrappers\UserNotActivatedException.cs" />
     <Compile Include="Wrappers\WebSecurityWrapper.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -400,6 +401,8 @@
     <Content Include="Views\Account\PasswordResetRequested.cshtml" />
     <Content Include="Views\Account\ResetPassword.cshtml" />
     <Content Include="Views\Account\PasswordResetCompleted.cshtml" />
+    <Content Include="Views\Account\ConfirmAccount.cshtml" />
+    <Content Include="Views\Account\RegistrationSuccessful.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="App_GlobalResources\DefaultErrorMessages.resx">

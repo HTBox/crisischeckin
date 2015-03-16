@@ -23,7 +23,15 @@ namespace crisicheckinweb.Wrappers
 
         public bool Login(string userName, string password, bool persistCookie = false)
         {
-            return WebSecurity.Login(userName, password, persistCookie);
+            bool loggedIn = WebSecurity.Login(userName, password, persistCookie);
+            if (!loggedIn)
+            {
+                if (WebSecurity.UserExists(userName) && !WebSecurity.IsConfirmed(userName))
+                {
+                    throw new UserNotActivatedException();
+                }
+            }
+            return loggedIn;
         }
 
         public void Logout()
@@ -31,22 +39,30 @@ namespace crisicheckinweb.Wrappers
             WebSecurity.Logout();
         }
 
-        public int CreateUser(string userName, string password, string[] roleNames)
+        public string CreateUser(string userName, string password, string[] roleNames, out int userId)
         {
             try
             {
-                WebSecurity.CreateUserAndAccount(userName, password);
-                Login(userName, password);
+                var token = WebSecurity.CreateUserAndAccount(userName, password, requireConfirmationToken: true);
+
+                //Login(userName, password);
                 foreach (var roleName in roleNames)
                 {
                     AddUserToRole(userName, roleName);
                 }
-                return GetUserId(userName);
+                userId = GetUserId(userName);
+
+                return token;
             }
             catch (MembershipCreateUserException e)
             {
                 throw new UserCreationException(ErrorCodeToString(e.StatusCode));
             }
+        }
+
+        public bool ConfirmAccount(string token)
+        {
+            return WebSecurity.ConfirmAccount(token);
         }
 
         public bool ChangePassword(string userName, string currentPassword, string newPassword)

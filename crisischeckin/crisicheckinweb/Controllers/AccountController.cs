@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net.Mail;
 using System.Web.Mvc;
 using System.Web.Routing;
 using crisicheckinweb.Filters;
@@ -48,28 +47,36 @@ namespace crisicheckinweb.Controllers
         {
             if (ModelState.IsValid)
             {
-                // First assume the username was typed in.
-                if (_webSecurity.Login(model.UserNameOrEmail, model.Password, model.RememberMe))
+                try
                 {
-                    if (_webSecurity.IsUserInRole(model.UserNameOrEmail, Constants.RoleAdmin))
+                    // First assume the username was typed in.
+                    if (_webSecurity.Login(model.UserNameOrEmail, model.Password, model.RememberMe))
                     {
-                        return RedirectToAction("List", "Disaster");
-                    }
-                    return RedirectToLocal(returnUrl);
-                }
-
-                // If login fails, assume the email was typed in instead.
-                var user = _volunteerSvc.FindUserByEmail(model.UserNameOrEmail);
-                if (user != null)
-                {
-                    if (_webSecurity.Login(user.UserName, model.Password, model.RememberMe))
-                    {
-                        if (_webSecurity.IsUserInRole(user.UserName, Constants.RoleAdmin))
+                        if (_webSecurity.IsUserInRole(model.UserNameOrEmail, Constants.RoleAdmin))
                         {
                             return RedirectToAction("List", "Disaster");
                         }
                         return RedirectToLocal(returnUrl);
                     }
+
+                    // If login fails, assume the email was typed in instead.
+                    var user = _volunteerSvc.FindUserByEmail(model.UserNameOrEmail);
+                    if (user != null)
+                    {
+                        if (_webSecurity.Login(user.UserName, model.Password, model.RememberMe))
+                        {
+                            if (_webSecurity.IsUserInRole(user.UserName, Constants.RoleAdmin))
+                            {
+                                return RedirectToAction("List", "Disaster");
+                            }
+                            return RedirectToLocal(returnUrl);
+                        }
+                    }
+                }
+                catch (UserNotActivatedException)
+                {
+                    ModelState.AddModelError("", "Your account has to be confirmed by the link sent in the email before you can login.");
+                    return View(model);
                 }
             }
 
@@ -116,14 +123,22 @@ namespace crisicheckinweb.Controllers
                     string errorMessage;
                     if (PasswordComplexity.IsValid(model.Password, model.UserName, out errorMessage))
                     {
-                        var userId = _webSecurity.CreateUser(
-                            model.UserName,
-                            model.Password,
-                            new[] { Constants.RoleVolunteer });
+                        int userId;
+                        string token = _webSecurity.CreateUser(model.UserName, model.Password, new[] { Constants.RoleVolunteer }, out userId);
+                        var volunteer = _volunteerSvc.Register(model.FirstName, model.LastName, model.Email, model.PhoneNumber, model.Cluster, userId);
+                        if (volunteer != null)
+                        {
+                            // Generate the absolute Url for the account activation action.
+                            var routeValues = new RouteValueDictionary { { "token", token } };
+                            var accountActivationLink = Url.Action("ConfirmAccount", "Account", routeValues, Request.Url.Scheme);
 
-                        _volunteerSvc.Register(model.FirstName, model.LastName, model.Email, model.PhoneNumber, model.Cluster, userId);
+                            var body = String.Format(@"<p>Click on the following link to activate your account: <a href='{0}'>{0}</a></p>", accountActivationLink);
+                            var message = new Message("CrisisCheckin - Activate your account", body);
 
-                        return RedirectToAction("Index", "Home");
+                            _messageService.SendMessage(message, volunteer);
+                        }
+
+                        return RedirectToAction("RegistrationSuccessful", "Account");
                     }
                     ModelState.AddModelError("Password", errorMessage ?? DefaultErrorMessages.InvalidPasswordFormat);
                 }
@@ -142,6 +157,26 @@ namespace crisicheckinweb.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult RegistrationSuccessful()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult ConfirmAccount(string token)
+        {
+            if (!String.IsNullOrWhiteSpace(token))
+            {
+                if (_webSecurity.ConfirmAccount(token))
+                {
+                    return View();
+                }
+            }
+            return RedirectToAction("Index", "Home");
+        }
 
         [HttpGet]
         [AllowAnonymous]
