@@ -1,14 +1,14 @@
 ﻿using System;
 using crisicheckinweb.Infrastructure;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Resources;
 
 namespace WebProjectTests.Infrastructure
 {
-    [TestClass]
+    [TestFixture]
     public class PasswordComplexityTests
     {
-        [TestMethod]
+        [Test]
         public void ValidWhenPasswordIsEqualToUsername()
         {
             // Act
@@ -20,7 +20,7 @@ namespace WebProjectTests.Infrastructure
             Assert.IsNull(errorMessage);
         }
 
-        [TestMethod]
+        [Test]
         public void InvalidWhenPasswordIsEqualToUsername()
         {
             // Act
