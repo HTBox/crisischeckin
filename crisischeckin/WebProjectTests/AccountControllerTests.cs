@@ -10,7 +10,6 @@ using System.Web;
 using System.Web.Routing;
 using System.Web.Mvc;
 using crisicheckinweb;
-using crisicheckinweb.Infrastructure;
 using Common;
 using Services.Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -120,7 +119,8 @@ namespace WebProjectTests
         {
             // Arrange
             _volunteerService.Setup(x => x.EmailAlreadyInUse(It.IsAny<string>())).Returns(false);
-            _webSecurity.Setup(x => x.CreateUser(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string[]>()))
+            int userId;
+            _webSecurity.Setup(x => x.CreateUser(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string[]>(), out userId))
                 .Throws(new UserCreationException("fake error"));
 
             // Act
@@ -143,14 +143,19 @@ namespace WebProjectTests
         }
 
         [TestMethod]
-        public void Register_Successful_Creation_Redirects_To_Home()
+        public void Register_Successful_Creation_Redirects_To_RegistrationSuccessfulPage()
         {
             // Arrange
-            const int newUserId = 1234;
+            int newUserId = 1234;
+            const string confirmationToken = "t-o-k-e-n";
+            var volunteer = new Person();
 
-            _volunteerService.Setup(x => x.EmailAlreadyInUse(It.IsAny<string>())).Returns(false);
-            _webSecurity.Setup(x => x.CreateUser(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string[]>()))
-                .Returns(newUserId);
+            _volunteerService.Setup(x => x.EmailAlreadyInUse(It.IsAny<string>()))
+                .Returns(false);
+            _volunteerService.Setup(x => x.Register(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()))
+                .Returns(volunteer);
+            _webSecurity.Setup(x => x.CreateUser(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string[]>(), out newUserId))
+                .Returns(confirmationToken);
 
             // Act
             var model = CreateValidRegisterModel();
@@ -159,8 +164,8 @@ namespace WebProjectTests
 
             // Assert
             var result = response as RedirectToRouteResult;
-            Assert.AreEqual("Home", result.RouteValues["controller"]);
-            Assert.AreEqual("Index", result.RouteValues["action"]);
+            Assert.AreEqual("Account", result.RouteValues["controller"]);
+            Assert.AreEqual("RegistrationSuccessful", result.RouteValues["action"]);
 
             _volunteerService.Verify(x => x.Register(
                 model.FirstName,
@@ -169,6 +174,11 @@ namespace WebProjectTests
                 model.PhoneNumber,
                 model.Cluster,
                 newUserId));
+
+            _messageService.Verify(x => x.SendMessage(
+                It.IsAny<Message>(),
+                volunteer,
+                It.IsAny<string>()));
         }
 
 
@@ -552,6 +562,56 @@ namespace WebProjectTests
             var result = response as ViewResult;
             Assert.IsNotNull(result);
             Assert.IsTrue(result.ViewData.ModelState.Count >= 1);
+        }
+
+        [TestMethod]
+        public void ConfirmAccount_CorrectToken_Shows_SuccessfulMessage()
+        {
+            // Arrange
+            const string token = "t-o-k-e-n";
+
+            _webSecurity.Setup(x => x.ConfirmAccount(token))
+                .Returns(true);
+
+            // Act
+            var response = _controllerUnderTest.ConfirmAccount(token);
+
+            // Assert
+            var result = response as ViewResult;
+            Assert.IsNotNull(result);
+        }
+
+        [TestMethod]
+        public void ConfirmAccount_InvalidToken_RedirectsTo_Home()
+        {
+            // Arrange
+            const string token = "i-n-v-a-l-i-d";
+
+            _webSecurity.Setup(x => x.ConfirmAccount(token))
+                .Returns(false);
+
+            // Act
+            var response = _controllerUnderTest.ConfirmAccount(token);
+
+            // Assert
+            var result = response as RedirectToRouteResult;
+            Assert.AreEqual("Home", result.RouteValues["controller"]);
+            Assert.AreEqual("Index", result.RouteValues["action"]);
+        }
+
+        [TestMethod]
+        public void ConfirmAccount_EmptyToken_RedirectsTo_Home()
+        {
+            // Arrange
+
+            // Act
+            var token = String.Empty;
+            var response = _controllerUnderTest.ConfirmAccount(token);
+
+            // Assert
+            var result = response as RedirectToRouteResult;
+            Assert.AreEqual("Home", result.RouteValues["controller"]);
+            Assert.AreEqual("Index", result.RouteValues["action"]);
         }
 
     }
