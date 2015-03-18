@@ -2,17 +2,16 @@
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.IO;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Models;
 using Models.Migrations;
+using NUnit.Framework;
 
 namespace AcceptanceTests
 {
-    [TestClass]
     public class With_an_empty_database_environment
     {
 
-        [TestInitialize]
+        [TestFixtureSetUp]
         public void SetUp()
         {
             AppDomain.CurrentDomain.SetData("DataDirectory", Directory.GetCurrentDirectory());

@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Models;
 using Moq;
 using Services.Interfaces;
 
 namespace Services.UnitTest
 {
-    [TestClass]
+    [TestFixture]
     public class MessageServiceTests
     {
-        [TestMethod]
+        [Test]
         public void MessageService__Calls_MessageCoordinator_WithProperVolunteerList()
         {
             const string sender = "Sender Name";
