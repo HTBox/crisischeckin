@@ -12,12 +12,12 @@ using System.Web.Mvc;
 using crisicheckinweb;
 using Common;
 using Services.Exceptions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Services;
 
 namespace WebProjectTests
 {
-    [TestClass]
+    [TestFixture]
     public class AccountControllerTests
     {
         private AccountController _controllerUnderTest;
@@ -30,7 +30,7 @@ namespace WebProjectTests
         private Mock<IMessageService> _messageService;
         private RouteCollection _routeCollection;
 
-        [TestInitialize]
+        [SetUp]
         public void Setup()
         {
             _principal = new Mock<IPrincipal>();
@@ -78,7 +78,7 @@ namespace WebProjectTests
             };
         }
 
-        [TestMethod]
+        [Test]
         public void Register_DuplicateEmailAddress_ReturnsRegisterView_With_ModelState_Error()
         {
             // Arrange
@@ -96,7 +96,7 @@ namespace WebProjectTests
             Assert.IsTrue(result.ViewData.ModelState.ContainsKey("Email"));
         }
 
-        [TestMethod]
+        [Test]
         public void Register_TooSimplePassword_ReturnsRegisterView_With_ModelState_Error()
         {
             // Arrange
@@ -114,7 +114,7 @@ namespace WebProjectTests
             Assert.IsTrue(result.ViewData.ModelState.ContainsKey("Password"));
         }
 
-        [TestMethod]
+        [Test]
         public void Register_ErrorDuringUserCreation_ReturnsRegisterView_With_ModelState_Error()
         {
             // Arrange
@@ -142,7 +142,7 @@ namespace WebProjectTests
                 It.IsAny<int>()), Times.Never);
         }
 
-        [TestMethod]
+        [Test]
         public void Register_Successful_Creation_Redirects_To_RegistrationSuccessfulPage()
         {
             // Arrange
@@ -182,7 +182,7 @@ namespace WebProjectTests
         }
 
 
-        [TestMethod]
+        [Test]
         public void ChangeContactInfo_Assign_ValidData_Redirects_To_ContactInfoChanged_View()
         {
             // Arrange
@@ -203,7 +203,7 @@ namespace WebProjectTests
             Assert.AreEqual("ContactInfoChanged", action.ToString());
         }
 
-        [TestMethod]
+        [Test]
         public void ChangeContactInfo_DuplicateEmailAddress_ReturnsChangeContactInfoView_With_ModelState_Error()
         {
             // Arrange
@@ -225,7 +225,7 @@ namespace WebProjectTests
             Assert.IsTrue(result.ViewData.ModelState.Count >= 1);
         }
 
-        [TestMethod]
+        [Test]
         public void ChangeContactInfo_Invalid_ModelState_Directs_User_To_ChangeContactInfo_View()
         {
             // Arrange
@@ -245,7 +245,7 @@ namespace WebProjectTests
             Assert.IsTrue(result.ViewData.ModelState.Count >= 1);
         }
 
-        [TestMethod]
+        [Test]
         public void ForgotPassword_ValidUserName_SendsEmail_And_RedirectsTo_PasswordResetRequestedView()
         {
             // Arrange
@@ -282,7 +282,7 @@ namespace WebProjectTests
             _messageService.Verify(x => x.SendMessage(It.IsAny<Message>(), person, It.IsAny<string>()));
         }
 
-        [TestMethod]
+        [Test]
         public void ForgotPassword_ValidEmailInsteadOfUsername_SendsEmail_And_RedirectsTo_PasswordResetRequestedView()
         {
             // Arrange
@@ -322,7 +322,7 @@ namespace WebProjectTests
             _messageService.Verify(x => x.SendMessage(It.IsAny<Message>(), person, It.IsAny<string>()));
         }
 
-        [TestMethod]
+        [Test]
         public void ForgotPassword_InvalidUserName_DoesntSendEmail_But_RedirectsTo_PasswordResetRequestedView()
         {
             // Arrange
@@ -345,7 +345,7 @@ namespace WebProjectTests
             _messageService.Verify(x => x.SendMessage(It.IsAny<Message>(), It.IsAny<Person>(), It.IsAny<string>()), Times.Never);
         }
 
-        [TestMethod]
+        [Test]
         public void ResetPassword_Succesful_ResetsPasswords_And_RedirectsTo_PasswordResetCompletedView()
         {
             // Arrange
@@ -368,7 +368,7 @@ namespace WebProjectTests
             Assert.AreEqual("PasswordResetCompleted", result.RouteValues["action"]);
         }
 
-        [TestMethod]
+        [Test]
         public void ResetPassword_Failure_Returns_ResetPasswordView_With_ModelState_Error()
         {
             // Arrange
@@ -392,7 +392,7 @@ namespace WebProjectTests
             Assert.IsTrue(result.ViewData.ModelState.Count >= 1);
         }
 
-        [TestMethod]
+        [Test]
         public void Login_ValidUsernameAndPassword_And_IsAdmin()
         {
             // Arrange
@@ -419,7 +419,7 @@ namespace WebProjectTests
             Assert.AreEqual("List", result.RouteValues["action"]);
         }
 
-        [TestMethod]
+        [Test]
         public void Login_ValidUsernameAndPassword_And_IsNoAdmin()
         {
             // Arrange
@@ -445,7 +445,7 @@ namespace WebProjectTests
             Assert.AreEqual("/return/url", result.Url);
         }
 
-        [TestMethod]
+        [Test]
         public void Login_ValidEmailAndPassword_And_IsAdmin()
         {
             // Arrange
@@ -477,7 +477,7 @@ namespace WebProjectTests
             Assert.AreEqual("List", result.RouteValues["action"]);
         }
 
-        [TestMethod]
+        [Test]
         public void Login_ValidEmailAndPassword_And_IsNoAdmin()
         {
             // Arrange
@@ -508,7 +508,7 @@ namespace WebProjectTests
             Assert.AreEqual("/return/url", result.Url);
         }
 
-        [TestMethod]
+        [Test]
         public void Login_ValidEmailInvalidPassword_ReturnsLoginView_With_ModelState_Error()
         {
             // Arrange
@@ -538,7 +538,7 @@ namespace WebProjectTests
             Assert.IsTrue(result.ViewData.ModelState.Count >= 1);
         }
 
-        [TestMethod]
+        [Test]
         public void Login_NonExistingUsernameAndEmail_ReturnsLoginView_With_ModelState_Error()
         {
             // Arrange
@@ -564,7 +564,7 @@ namespace WebProjectTests
             Assert.IsTrue(result.ViewData.ModelState.Count >= 1);
         }
 
-        [TestMethod]
+        [Test]
         public void ConfirmAccount_CorrectToken_Shows_SuccessfulMessage()
         {
             // Arrange
@@ -581,7 +581,7 @@ namespace WebProjectTests
             Assert.IsNotNull(result);
         }
 
-        [TestMethod]
+        [Test]
         public void ConfirmAccount_InvalidToken_RedirectsTo_Home()
         {
             // Arrange
@@ -599,7 +599,7 @@ namespace WebProjectTests
             Assert.AreEqual("Index", result.RouteValues["action"]);
         }
 
-        [TestMethod]
+        [Test]
         public void ConfirmAccount_EmptyToken_RedirectsTo_Home()
         {
             // Arrange

@@ -1,9 +1,9 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using crisicheckinweb.Infrastructure.Attributes;
 
 namespace WebProjectTests.Infrastructure.Attributes
 {
-    [TestClass]
+    [TestFixture]
     public class BasicPasswordAttributeTests
     {
         private BasicPasswordAttribute Model;
@@ -16,37 +16,37 @@ namespace WebProjectTests.Infrastructure.Attributes
         /// <summary>
         /// Allows for the attribute to be placed on a form, but not enforcing entry.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void BlankPasswordValueIsOk()
         {
             Assert.IsTrue(Model.IsValid(string.Empty));
         }
 
-        [TestMethod]
+        [Test]
         public void RegularInputPasses()
         {
             Assert.IsTrue(Model.IsValid("P@55w0rd"));
         }
 
-        [TestMethod]
+        [Test]
         public void PasswordsWithOutsideCharactersPass()
         {
             Assert.IsTrue(Model.IsValid("PÆsswordb1"));
         }
 
-        [TestMethod]
+        [Test]
         public void GenericPasswordFails()
         {
             Assert.IsFalse(Model.IsValid("password"));
         }
 
-        [TestMethod]
+        [Test]
         public void ShortPasswordsFail()
         {
             Assert.IsFalse(Model.IsValid("short"));
         }
 
-        [TestMethod]
+        [Test]
         public void LongPasswordsFail()
         {
             Assert.IsFalse(Model.IsValid("ThisPasswordIsALittleLong"));

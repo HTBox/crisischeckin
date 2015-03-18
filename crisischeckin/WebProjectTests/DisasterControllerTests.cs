@@ -1,5 +1,5 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Moq;
 using Services.Interfaces;
 using crisicheckinweb.Controllers;
@@ -10,14 +10,14 @@ using Services.Exceptions;
 
 namespace WebProjectTests
 {
-    [TestClass]
+    [TestFixture]
     public class DisasterControllerTests
     {
         private DisasterController _controllerUnderTest;
 
         private Mock<IDisaster> _disaster;
 
-        [TestInitialize]
+        [SetUp]
         public void SetUp()
         {
             _disaster = new Mock<IDisaster>();
@@ -25,7 +25,7 @@ namespace WebProjectTests
             _controllerUnderTest = new DisasterController(_disaster.Object);
         }
 
-        [TestMethod]
+        [Test]
         public void Assign_ValidDataAdd_ReturnsListView()
         {
             // Arrange
@@ -39,7 +39,7 @@ namespace WebProjectTests
             Assert.IsTrue(result.Url.Equals("/Disaster/List"));
         }
 
-        [TestMethod]
+        [Test]
         public void Assign_ValidDataUpdate_ReturnsListView()
         {
             // Arrange
@@ -54,7 +54,7 @@ namespace WebProjectTests
             Assert.IsTrue(result.Url.Equals("/Disaster/List"));
         }
 
-        [TestMethod]
+        [Test]
         public void Assign_duplicateName_ReturnsCreateView()
         {
             // Arrange

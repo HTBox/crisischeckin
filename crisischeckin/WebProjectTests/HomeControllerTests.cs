@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic; 
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Moq;
 using Services.Interfaces;
 using crisicheckinweb.Controllers;
@@ -12,7 +12,7 @@ using crisicheckinweb.Wrappers;
 
 namespace WebProjectTests
 {
-    [TestClass]
+    [TestFixture]
     public class HomeControllerTests
     {
         private HomeController _controllerUnderTest;
@@ -23,7 +23,7 @@ namespace WebProjectTests
         private Mock<IClusterCoordinatorService> _clusterCoordinatorService;
         private Mock<IVolunteerTypeService> _volunteerTypeService;
 
-        [TestInitialize]
+        [SetUp]
         public void SetUp()
         {
             _disaster = new Mock<IDisaster>();
@@ -35,7 +35,7 @@ namespace WebProjectTests
             _controllerUnderTest = new HomeController(_disaster.Object, _volunteerService.Object, _webSecurity.Object, _clusterCoordinatorService.Object, _volunteerTypeService.Object);
         }
 
-        [TestMethod]
+        [Test]
         public void Assign_BadStartDate_ReturnsIndexView()
         {
             // Arrange
@@ -57,7 +57,7 @@ namespace WebProjectTests
             Assert.IsTrue(view.ViewData.ModelState.Count >= 1);
         }
 
-        [TestMethod]
+        [Test]
         public void Assign_BadDateRange_ReturnsIndexView()
         {
             // Arrange
@@ -81,7 +81,7 @@ namespace WebProjectTests
             Assert.IsTrue(view.ViewData.ModelState.Count >= 1);
         }
 
-        [TestMethod]
+        [Test]
         public void Assign_ValidDateRange_RedirectsToHome()
         {
             // Arrange
@@ -96,7 +96,7 @@ namespace WebProjectTests
             Assert.IsTrue(result.Url.ToLower().Contains("home"));
         }
 
-        [TestMethod]
+        [Test]
         public void RemoveCommitmentById_NotYourCommitment_ReturnsIndexView()
         {
             // Arrange
@@ -112,7 +112,7 @@ namespace WebProjectTests
             Assert.IsTrue(view.ViewData.ModelState.Count >= 1);
         }
 
-        [TestMethod]
+        [Test]
         public void RemoveCommitmentById_Valid_RedirectsToHome()
         {
             // Arrange
