@@ -148,7 +148,12 @@ namespace Services
                               FirstName = p.FirstName,
                               LastName = p.LastName,
                               ClusterName = cl.Name
-                          }).Single();
+                          }).FirstOrDefault();
+
+            if (result == null)
+            {
+                return null;
+            }
 
             return new ClusterCoordinator
             {
