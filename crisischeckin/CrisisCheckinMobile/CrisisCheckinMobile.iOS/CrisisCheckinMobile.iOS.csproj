@@ -29,7 +29,8 @@
     <MtouchArch>Default, ARMv7</MtouchArch>
     <MtouchSdkVersion>7.1</MtouchSdkVersion>
     <MtouchProfiling>False</MtouchProfiling>
-    <MtouchExtraArgs />
+    <MtouchExtraArgs>
+    </MtouchExtraArgs>
     <MtouchFastDev>False</MtouchFastDev>
     <MtouchEnableGenericValueTypeSharing>True</MtouchEnableGenericValueTypeSharing>
     <MtouchUseLlvm>False</MtouchUseLlvm>
@@ -59,7 +60,6 @@
     <ConsolePause>false</ConsolePause>
     <MtouchDebug>true</MtouchDebug>
     <CodesignKey>iPhone Developer</CodesignKey>
-    <AssemblyName>CrisisCheckinMobileiOS</AssemblyName>
     <IpaPackageName>
     </IpaPackageName>
     <MtouchI18n>
@@ -74,7 +74,6 @@
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
     <CodesignKey>iPhone Developer</CodesignKey>
-    <AssemblyName>CrisisCheckinMobileiOS</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Ad-Hoc|iPhone' ">
     <DebugType>none</DebugType>
@@ -85,7 +84,6 @@
     <ConsolePause>False</ConsolePause>
     <CodesignKey>iPhone Distribution</CodesignKey>
     <BuildIpa>True</BuildIpa>
-    <AssemblyName>CrisisCheckinMobileiOS</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AppStore|iPhone' ">
     <DebugType>none</DebugType>
@@ -95,7 +93,6 @@
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
     <CodesignKey>iPhone Distribution</CodesignKey>
-    <AssemblyName>CrisisCheckinMobileiOS</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
