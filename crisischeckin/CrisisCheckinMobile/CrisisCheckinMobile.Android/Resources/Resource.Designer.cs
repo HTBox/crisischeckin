@@ -82,11 +82,33 @@ namespace CrisisCheckinMobile.Droid
 			}
 		}
 		
+		public partial class Id
+		{
+			
+			// aapt resource value: 0x7f070000
+			public const int disasterName = 2131165184;
+			
+			// aapt resource value: 0x7f070001
+			public const int textTitle = 2131165185;
+			
+			static Id()
+			{
+				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
+			}
+			
+			private Id()
+			{
+			}
+		}
+		
 		public partial class Layout
 		{
 			
 			// aapt resource value: 0x7f030000
 			public const int commitment = 2130903040;
+			
+			// aapt resource value: 0x7f030001
+			public const int disasterlist = 2130903041;
 			
 			static Layout()
 			{
@@ -98,14 +120,33 @@ namespace CrisisCheckinMobile.Droid
 			}
 		}
 		
+		public partial class String
+		{
+			
+			// aapt resource value: 0x7f050000
+			public const int IAm = 2131034112;
+			
+			// aapt resource value: 0x7f050001
+			public const int app_name = 2131034113;
+			
+			static String()
+			{
+				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
+			}
+			
+			private String()
+			{
+			}
+		}
+		
 		public partial class Style
 		{
 			
-			// aapt resource value: 0x7f050001
-			public const int Theme_CrisisCheckInActionBar = 2131034113;
+			// aapt resource value: 0x7f060001
+			public const int Theme_CrisisCheckInActionBar = 2131099649;
 			
-			// aapt resource value: 0x7f050000
-			public const int Theme_CrisisCheckInMobile = 2131034112;
+			// aapt resource value: 0x7f060000
+			public const int Theme_CrisisCheckInMobile = 2131099648;
 			
 			static Style()
 			{

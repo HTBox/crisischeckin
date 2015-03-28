@@ -3,6 +3,7 @@
     <style name="Theme.CrisisCheckInMobile" parent="@android:style/Theme.Holo">
         <item name="android:actionBarStyle">@style/Theme.CrisisCheckInActionBar</item>
         <item name="android:windowBackground">@color/htBoxDarkBrown</item>
+        <item name="android:textColor">@color/htBoxTan</item>
     </style>
 
     <style name="Theme.CrisisCheckInActionBar" parent="@android:style/Widget.Holo.ActionBar.Solid">

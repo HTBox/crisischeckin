@@ -61,6 +61,7 @@
     <Compile Include="SaveAndLoad_Droid.cs" />
     <Compile Include="Activities\CommitmentActivity.cs" />
     <Compile Include="Activities\MainActivity.cs" />
+    <Compile Include="Activities\DisasterListActivity.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config">
@@ -72,8 +73,10 @@
   <ItemGroup>
     <AndroidResource Include="Resources\Drawable\Icon.png" />
     <AndroidResource Include="Resources\layout\commitment.axml" />
-    <AndroidResource Include="Resources\values\colors.xml" />
     <AndroidResource Include="Resources\values\styles.xml" />
+    <AndroidResource Include="Resources\layout\disasterlist.axml" />
+    <AndroidResource Include="Resources\values\colors.xml" />
+    <AndroidResource Include="Resources\values\strings.xml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Properties\AndroidManifest.xml" />

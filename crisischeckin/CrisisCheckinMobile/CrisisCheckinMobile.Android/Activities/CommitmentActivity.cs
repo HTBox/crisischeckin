@@ -28,8 +28,8 @@ namespace CrisisCheckinMobile.Droid
 //            var colorDrawable = new ColorDrawable(htboxRedColor);
 //            ActionBar.SetBackgroundDrawable(colorDrawable);
 
-            var layout = Resources.GetLayout(Resource.Layout.commitment);
-
+            //var layout = Resources.GetLayout(Resource.Layout.commitment);
+            SetContentView(Resource.Layout.commitment);
         }
 
         protected override void OnNewIntent(Intent intent)
