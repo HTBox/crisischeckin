@@ -1,114 +1,142 @@
 ﻿@model crisicheckinweb.ViewModels.VolunteerViewModel
 @{
-    ViewBag.Title = "Volunteer Home";
-    Layout = "~/Views/Shared/_VolunteerLayout.cshtml";
+  ViewBag.Title = "Volunteer Home";
+  Layout = "~/Views/Shared/_VolunteerLayout.cshtml";
 }
 
-<style>
-    .contact {
-        font-weight: bold;
-    }
-</style>
-
 <h2>Volunteer Home</h2>
+
+@{
+  var commitmentForToday = Model.MyCommitments.FirstOrDefault(x => x.StartDate <= DateTime.Today && DateTime.Today <= x.EndDate);
+  if (commitmentForToday != null)
+  {
+    using (Html.BeginForm("CheckinCheckout", "Home", FormMethod.Post, new { @class = "form-horizontal" }))
+    {
+      @Html.AntiForgeryToken()
+      @Html.Hidden("commitmentId", commitmentForToday.Id)
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Commitment for today</h3>
+        </div>
+        <div class="panel-body">
+          <dl class="dl-horizontal">
+            <dt>Disaster</dt>
+            <dd>@commitmentForToday.Disaster.Name</dd>
+            <dt>Location</dt>
+            <dd>@commitmentForToday.VolunteerType.Name</dd>
+            <dt>Cluster</dt>
+            <dd>@commitmentForToday.Person.Cluster.Name</dd>
+            <dt>Coordinators</dt>
+            <dd>
+              @foreach (var clusterCoordinator in Model.ClusterCoordinators.Where(cc => cc.DisasterId == commitmentForToday.DisasterId))
+              {
+                <span>@(clusterCoordinator.Person.LastName + ", " + clusterCoordinator.Person.FirstName) (Phone - @(clusterCoordinator.Person.PhoneNumber) | Email - @(clusterCoordinator.Person.Email))
+                </span><br />
+              }
+            </dd>
+
+          </dl>
+          @if (commitmentForToday.PersonIsCheckedIn)
+          {
+            <button class="btn btn-black" type="submit" name="action" value="checkout">Check-out</button>
+            <span> Thank you for your help today!</span>
+          }
+          else
+          {
+            <button class="btn btn-black" type="submit" name="action" value="checkin">Check-in</button>
+            <span> and start helping now!</span>
+          }
+        </div>
+      </div>
+    }
+  }
+}
 
 
 @using (Html.BeginForm("Assign", "Home"))
 {
-    @Html.AntiForgeryToken()
-    @Html.ValidationSummary()
+  @Html.AntiForgeryToken()
+  @Html.ValidationSummary()
 
 
-    <table class="table">
-        <tr>
-            <th>Volunteer for Disaster</th>
-            <th>Start Date</th>
-            <th>End Date</th>
-            <th>Location</th>
-            <th></th>
-        </tr>
-        <tr>
-            <td>@Html.DropDownListFor(m => m.SelectedDisasterId, new SelectList(Model.Disasters, "Id", "Name", Model.SelectedDisasterId), "-- Choose One --", new { @class = "form-control" })</td>
-            <td>@Html.TextBoxFor(m => m.SelectedStartDate, new { id = "dp_startDate", @class = "form-control" })</td>
-            <td>@Html.TextBoxFor(m => m.SelectedEndDate, new { id = "dp_endDate", @class = "form-control" })</td>
-            <td>
-                @Html.DropDownListFor(
+  <table class="table">
+    <tr>
+      <th>Volunteer for Disaster</th>
+      <th>Start Date</th>
+      <th>End Date</th>
+      <th>Location</th>
+      <th></th>
+    </tr>
+    <tr>
+      <td>@Html.DropDownListFor(m => m.SelectedDisasterId, new SelectList(Model.Disasters, "Id", "Name", Model.SelectedDisasterId), "-- Choose One --", new { @class = "form-control" })</td>
+      <td>@Html.TextBoxFor(m => m.SelectedStartDate, new { id = "dp_startDate", @class = "form-control" })</td>
+      <td>@Html.TextBoxFor(m => m.SelectedEndDate, new { id = "dp_endDate", @class = "form-control" })</td>
+      <td>
+        @Html.DropDownListFor(
                     m => m.VolunteerType,
                     selectList: new SelectList(Model.VolunteerTypes, "Id", "Name", Model.VolunteerType),
                     optionLabel: "-- Choose One --",
                     htmlAttributes: new { @class = "form-control" })
-            </td>
-        <td><input class="btn btn-black" id="GoButton" type="submit" value="Volunteer" /></td>
+      </td>
+      <td><input class="btn btn-black" id="GoButton" type="submit" value="Volunteer" /></td>
     </tr>
-</table>
+  </table>
 }
 
 <br />
 @if (!Model.MyCommitments.Any())
 {
-    <h3>Thank you for volunteering. Please select a disaster and a date range that you are able to volunteer for.</h3>
+  <h3>Thank you for volunteering. Please select a disaster and a date range that you are able to volunteer for.</h3>
 }
 else
 {
-    <h3>My @Model.Person.Cluster.Name Commitments</h3>
-    <table class="table table-striped table-bordered">
-        <tr class="ht-header">
-            <th>Disaster Name</th>
-            <th>Start Date</th>
-            <th>End Date</th>
-            <th>Active</th>
-            <th>Location</th>
-            <th>Cluster Coordinators</th>
-            @if (Model.MyCommitments.Any())
-            {
-                <th>&nbsp;</th>
-            }
-        </tr>
-        @foreach (var comm in Model.MyCommitments)
+  <h3>My @Model.Person.Cluster.Name Commitments</h3>
+  <table class="table table-striped table-bordered">
+    <tr class="ht-header">
+      <th>Disaster Name</th>
+      <th>Start Date</th>
+      <th>End Date</th>
+      <th>Location</th>
+      @if (Model.MyCommitments.Any())
+      {
+        <th>&nbsp;</th>
+      }
+    </tr>
+    @foreach (var comm in Model.MyCommitments)
+    {
+      <tr>
+        <td>@comm.Disaster.Name</td>
+        <td>@comm.StartDate.ToShortDateString()</td>
+        <td>@comm.EndDate.ToShortDateString()</td>
+        <td>@comm.VolunteerType.Name</td>
+        @using (Html.BeginForm("RemoveCommitment", "Home", FormMethod.Post, new { @class = "navbar-form" }))
         {
-            <tr>
-                <td>@comm.Disaster.Name</td>
-                <td>@comm.StartDate.ToShortDateString()</td>
-                <td>@comm.EndDate.ToShortDateString()</td>
-                <td>@(comm.Disaster.IsActive ? "Yes" : "No") </td>
-                <td>@comm.VolunteerType.Name</td>
-                <td>
-                    @foreach (var clusterCoordinator in Model.ClusterCoordinators.Where(cc => cc.DisasterId == comm.DisasterId))
-                    {
-                        <div class="contact" data-placement="left" data-toggle="tooltip"
-                             title="Phone - @(clusterCoordinator.Person.PhoneNumber) | Email - @(clusterCoordinator.Person.Email)">
-                            @(clusterCoordinator.Person.LastName + ", " + clusterCoordinator.Person.FirstName)
-                        </div>
-                    }
-                </td>
-                @using (Html.BeginForm("RemoveCommitment", "Home", FormMethod.Post, new { @class = "navbar-form" }))
-                {
-                    @Html.AntiForgeryToken()
-                    @Html.HiddenFor(m => m.RemoveCommitmentId, new { @Value = comm.Id })
-                    <td>
-                        <button class="btn btn-danger btn-xs" type="submit"><i class="glyphicon glyphicon-remove"></i> Remove</button>
-                    </td>
-                }
-            </tr>
+          @Html.AntiForgeryToken()
+          @Html.HiddenFor(m => m.RemoveCommitmentId, new { @Value = comm.Id })
+          <td>
+            <button class="btn btn-danger btn-xs" type="submit"><i class="glyphicon glyphicon-remove"></i> Remove</button>
+          </td>
         }
-    </table>
+      </tr>
+    }
+  </table>
 }
 @section scripts
 {
-    <script type="text/javascript">
-        (function ($) {
-            $(document).ready(function () {
-                $("#dp_startDate").datepicker({ minDate: 'today', onSelect: updateEndDate }).datepicker('setDate',
-                    '@(Model.SelectedStartDate == default(DateTime) ? DateTime.Now : Model.SelectedStartDate)');
-                $("#dp_endDate").datepicker({ minDate: 'today' }).datepicker('setDate',
-                    '@(Model.SelectedEndDate == default(DateTime) ? DateTime.Now : Model.SelectedEndDate)');
+  <script type="text/javascript">
+    (function ($) {
+      $(document).ready(function () {
+        $("#dp_startDate").datepicker({ minDate: 'today', onSelect: updateEndDate }).datepicker('setDate',
+            '@(Model.SelectedStartDate == default(DateTime) ? DateTime.Now : Model.SelectedStartDate)');
+        $("#dp_endDate").datepicker({ minDate: 'today' }).datepicker('setDate',
+            '@(Model.SelectedEndDate == default(DateTime) ? DateTime.Now : Model.SelectedEndDate)');
 
-                $('.contact').tooltip();
-            });
+        $('.contact').tooltip();
+      });
 
-            function updateEndDate(dateText) {
-                $('#dp_endDate').datepicker('option', 'minDate', dateText);
-            }
-        })(jQuery);
-    </script>
+      function updateEndDate(dateText) {
+        $('#dp_endDate').datepicker('option', 'minDate', dateText);
+      }
+    })(jQuery);
+  </script>
 }

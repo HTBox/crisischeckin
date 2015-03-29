@@ -20,5 +20,7 @@ namespace Services.Interfaces
 		bool UsernameAvailable(string userName);
         bool EmailAlreadyInUse(string email);
         User FindUserByEmail(string email);
+        void Checkin(Commitment commitment);
+        void Checkout(Commitment commitment);
     }
 }

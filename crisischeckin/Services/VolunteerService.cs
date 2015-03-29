@@ -98,6 +98,22 @@ namespace Services
             return RetrieveCommitments(person.Id, true).Where(c => c.DisasterId == disaster.Id);
         }
 
+        public void Checkin(Commitment commitment)
+        {
+            // TODO add date validation?
+            commitment.PersonIsCheckedIn = true;
+            ourService.UpdateCommitment(commitment);
+        }
+
+        public void Checkout(Commitment commitment)
+        {
+            // TODO add date validation?
+            commitment.PersonIsCheckedIn = false;
+            ourService.UpdateCommitment(commitment);
+        }
+
+
+
         public Person FindByUserId(int userId)
         {
             return ourService.Persons.SingleOrDefault(p => p.UserId == userId);

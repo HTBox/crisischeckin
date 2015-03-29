@@ -22,6 +22,7 @@ namespace Models
     {
         None,
         Planned,
+        Delayed,
         Out,
         Here,
         Unavailable,
