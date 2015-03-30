@@ -53,7 +53,8 @@ namespace crisicheckinweb.Controllers
                     .FirstOrDefault(x => x.Id == commitmentId);
                 if (commitment != null)
                 {
-                    _volunteerSvc.Checkin(commitment);
+                    commitment.PersonIsCheckedIn = true;
+                    _volunteerSvc.UpdateCommitment(commitment);
                 }
             }
 
@@ -70,7 +71,8 @@ namespace crisicheckinweb.Controllers
                     .FirstOrDefault(x => x.Id == commitmentId);
                 if (commitment != null)
                 {
-                    _volunteerSvc.Checkout(commitment);
+                    commitment.PersonIsCheckedIn = false;
+                    _volunteerSvc.UpdateCommitment(commitment);
                 }
             }
 

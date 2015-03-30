@@ -98,25 +98,13 @@ namespace Services
             return RetrieveCommitments(person.Id, true).Where(c => c.DisasterId == disaster.Id);
         }
 
-        public void Checkin(Commitment commitment)
+        public void UpdateCommitment(Commitment commitment)
         {
             if (commitment == null)
                 throw new ArgumentNullException("commitment", "Commitment cannot be null");
 
-            commitment.PersonIsCheckedIn = true;
             ourService.UpdateCommitment(commitment);
         }
-
-        public void Checkout(Commitment commitment)
-        {
-            if (commitment == null)
-                throw new ArgumentNullException("commitment", "Commitment cannot be null");
-
-            commitment.PersonIsCheckedIn = false;
-            ourService.UpdateCommitment(commitment);
-        }
-
-
 
         public Person FindByUserId(int userId)
         {

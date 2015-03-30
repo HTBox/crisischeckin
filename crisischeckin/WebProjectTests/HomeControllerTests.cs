@@ -145,7 +145,7 @@ namespace WebProjectTests
             var result = response as RedirectToRouteResult;
             Assert.AreEqual("Index", result.RouteValues["action"]);
 
-            _volunteerService.Verify(x => x.Checkin(It.IsAny<Commitment>()), Times.Never);
+            _volunteerService.Verify(x => x.UpdateCommitment(It.IsAny<Commitment>()), Times.Never);
         }
 
         [Test]
@@ -167,7 +167,7 @@ namespace WebProjectTests
             var result = response as RedirectToRouteResult;
             Assert.AreEqual("Index", result.RouteValues["action"]);
 
-            _volunteerService.Verify(x => x.Checkin(It.IsAny<Commitment>()), Times.Never);
+            _volunteerService.Verify(x => x.UpdateCommitment(It.IsAny<Commitment>()), Times.Never);
         }
 
         [Test]
@@ -191,7 +191,7 @@ namespace WebProjectTests
             var result = response as RedirectToRouteResult;
             Assert.AreEqual("Index", result.RouteValues["action"]);
 
-            _volunteerService.Verify(x => x.Checkin(It.IsAny<Commitment>()));
+            _volunteerService.Verify(x => x.UpdateCommitment(It.Is<Commitment>(c => c.PersonIsCheckedIn == false)));
         }
 
         [Test]
@@ -209,7 +209,7 @@ namespace WebProjectTests
             var result = response as RedirectToRouteResult;
             Assert.AreEqual("Index", result.RouteValues["action"]);
 
-            _volunteerService.Verify(x => x.Checkout(It.IsAny<Commitment>()), Times.Never);
+            _volunteerService.Verify(x => x.UpdateCommitment(It.IsAny<Commitment>()), Times.Never);
         }
 
         [Test]
@@ -231,7 +231,7 @@ namespace WebProjectTests
             var result = response as RedirectToRouteResult;
             Assert.AreEqual("Index", result.RouteValues["action"]);
 
-            _volunteerService.Verify(x => x.Checkout(It.IsAny<Commitment>()), Times.Never);
+            _volunteerService.Verify(x => x.UpdateCommitment(It.IsAny<Commitment>()), Times.Never);
         }
 
         [Test]
@@ -255,7 +255,7 @@ namespace WebProjectTests
             var result = response as RedirectToRouteResult;
             Assert.AreEqual("Index", result.RouteValues["action"]);
 
-            _volunteerService.Verify(x => x.Checkout(It.IsAny<Commitment>()));
+            _volunteerService.Verify(x => x.UpdateCommitment(It.Is<Commitment>(c => c.PersonIsCheckedIn == true)));
         }
     }
 }
