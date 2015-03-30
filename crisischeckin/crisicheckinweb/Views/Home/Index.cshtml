@@ -36,7 +36,7 @@
             using (Html.BeginForm("Checkout", "Home", FormMethod.Post, new { @class = "form-horizontal" }))
             {
               @Html.AntiForgeryToken()
-              @Html.Hidden("commitmentId", commitmentForToday.Id +1)
+              @Html.Hidden("commitmentId", commitmentForToday.Id)
               <button class="btn btn-black" type="submit">Check-out</button>
               <span> Thank you for your help today!</span>
             }
@@ -46,7 +46,7 @@
             using (Html.BeginForm("Checkin", "Home", FormMethod.Post, new { @class = "form-horizontal" }))
             {
               @Html.AntiForgeryToken()
-              @Html.Hidden("commitmentId", commitmentForToday.Id +1)
+              @Html.Hidden("commitmentId", commitmentForToday.Id)
               <button class="btn btn-black" type="submit">Check-in</button>
               <span> and start helping now!</span>
             }
