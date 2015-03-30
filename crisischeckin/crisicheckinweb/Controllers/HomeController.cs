@@ -44,7 +44,7 @@ namespace crisicheckinweb.Controllers
         }
 
         [HttpPost]
-        public ActionResult CheckinCheckout(int commitmentId, string action)
+        public ActionResult Checkin(int commitmentId)
         {
             var person = _volunteerSvc.FindByUserId(_webSecurity.CurrentUserId);
             if (person != null)
@@ -53,14 +53,24 @@ namespace crisicheckinweb.Controllers
                     .FirstOrDefault(x => x.Id == commitmentId);
                 if (commitment != null)
                 {
-                    if (action == "checkin")
-                    {
-                        _volunteerSvc.Checkin(commitment);
-                    }
-                    else if (action == "checkout")
-                    {
-                        _volunteerSvc.Checkout(commitment);
-                    }
+                    _volunteerSvc.Checkin(commitment);
+                }
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public ActionResult Checkout(int commitmentId)
+        {
+            var person = _volunteerSvc.FindByUserId(_webSecurity.CurrentUserId);
+            if (person != null)
+            {
+                var commitment = _volunteerSvc.RetrieveCommitments(person.Id, true)
+                    .FirstOrDefault(x => x.Id == commitmentId);
+                if (commitment != null)
+                {
+                    _volunteerSvc.Checkout(commitment);
                 }
             }
 

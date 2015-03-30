@@ -10,10 +10,6 @@
   var commitmentForToday = Model.MyCommitments.FirstOrDefault(x => x.StartDate <= DateTime.Today && DateTime.Today <= x.EndDate);
   if (commitmentForToday != null)
   {
-    using (Html.BeginForm("CheckinCheckout", "Home", FormMethod.Post, new { @class = "form-horizontal" }))
-    {
-      @Html.AntiForgeryToken()
-      @Html.Hidden("commitmentId", commitmentForToday.Id)
       <div class="panel panel-default">
         <div class="panel-heading">
           <h3 class="panel-title">Commitment for today</h3>
@@ -34,21 +30,29 @@
                 </span><br />
               }
             </dd>
-
           </dl>
           @if (commitmentForToday.PersonIsCheckedIn)
           {
-            <button class="btn btn-black" type="submit" name="action" value="checkout">Check-out</button>
-            <span> Thank you for your help today!</span>
+            using (Html.BeginForm("Checkout", "Home", FormMethod.Post, new { @class = "form-horizontal" }))
+            {
+              @Html.AntiForgeryToken()
+              @Html.Hidden("commitmentId", commitmentForToday.Id +1)
+              <button class="btn btn-black" type="submit">Check-out</button>
+              <span> Thank you for your help today!</span>
+            }
           }
           else
           {
-            <button class="btn btn-black" type="submit" name="action" value="checkin">Check-in</button>
-            <span> and start helping now!</span>
+            using (Html.BeginForm("Checkin", "Home", FormMethod.Post, new { @class = "form-horizontal" }))
+            {
+              @Html.AntiForgeryToken()
+              @Html.Hidden("commitmentId", commitmentForToday.Id +1)
+              <button class="btn btn-black" type="submit">Check-in</button>
+              <span> and start helping now!</span>
+            }
           }
         </div>
       </div>
-    }
   }
 }
 

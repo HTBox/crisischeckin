@@ -100,14 +100,18 @@ namespace Services
 
         public void Checkin(Commitment commitment)
         {
-            // TODO add date validation?
+            if (commitment == null)
+                throw new ArgumentNullException("commitment", "Commitment cannot be null");
+
             commitment.PersonIsCheckedIn = true;
             ourService.UpdateCommitment(commitment);
         }
 
         public void Checkout(Commitment commitment)
         {
-            // TODO add date validation?
+            if (commitment == null)
+                throw new ArgumentNullException("commitment", "Commitment cannot be null");
+
             commitment.PersonIsCheckedIn = false;
             ourService.UpdateCommitment(commitment);
         }

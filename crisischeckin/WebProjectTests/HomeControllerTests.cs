@@ -129,5 +129,133 @@ namespace WebProjectTests
             var result = response as RedirectResult;
             Assert.IsTrue(result.Url.ToLower().Contains("home"));
         }
+
+        [Test]
+        public void Checkin_InvalidUser_RedirectsToIndex()
+        {
+            // Arrange
+            const int commitmentId = 42;
+            _volunteerService.Setup(x => x.FindByUserId(It.IsAny<int>()))
+                .Returns((Person)null);
+
+            // Act
+            var response = _controllerUnderTest.Checkin(commitmentId);
+
+            // Assert
+            var result = response as RedirectToRouteResult;
+            Assert.AreEqual("Index", result.RouteValues["action"]);
+
+            _volunteerService.Verify(x => x.Checkin(It.IsAny<Commitment>()), Times.Never);
+        }
+
+        [Test]
+        public void Checkin_InvalidCommitment_RedirectsToIndex()
+        {
+            // Arrange
+            const int commitmentId = 42;
+            const int personId = 54;
+            Person person = new Person { Id = personId };
+            _volunteerService.Setup(x => x.FindByUserId(It.IsAny<int>()))
+                .Returns(person);
+            _volunteerService.Setup(x => x.RetrieveCommitments(personId, It.IsAny<bool>()))
+                .Returns(new List<Commitment>().AsQueryable());
+
+            // Act
+            var response = _controllerUnderTest.Checkin(commitmentId);
+
+            // Assert
+            var result = response as RedirectToRouteResult;
+            Assert.AreEqual("Index", result.RouteValues["action"]);
+
+            _volunteerService.Verify(x => x.Checkin(It.IsAny<Commitment>()), Times.Never);
+        }
+
+        [Test]
+        public void Checkin_ValidCommitment_CorrectlyCheckin_And_RedirectsToIndex()
+        {
+            // Arrange
+            const int commitmentId = 42;
+            const int personId = 54;
+            Person person = new Person { Id = personId };
+            Commitment commitment = new Commitment { Id = commitmentId };
+
+            _volunteerService.Setup(x => x.FindByUserId(It.IsAny<int>()))
+                .Returns(person);
+            _volunteerService.Setup(x => x.RetrieveCommitments(personId, It.IsAny<bool>()))
+                .Returns(new List<Commitment> { commitment }.AsQueryable());
+
+            // Act
+            var response = _controllerUnderTest.Checkin(commitmentId);
+
+            // Assert
+            var result = response as RedirectToRouteResult;
+            Assert.AreEqual("Index", result.RouteValues["action"]);
+
+            _volunteerService.Verify(x => x.Checkin(It.IsAny<Commitment>()));
+        }
+
+        [Test]
+        public void Checkout_InvalidUser_RedirectsToIndex()
+        {
+            // Arrange
+            const int commitmentId = 42;
+            _volunteerService.Setup(x => x.FindByUserId(It.IsAny<int>()))
+                .Returns((Person)null);
+
+            // Act
+            var response = _controllerUnderTest.Checkout(commitmentId);
+
+            // Assert
+            var result = response as RedirectToRouteResult;
+            Assert.AreEqual("Index", result.RouteValues["action"]);
+
+            _volunteerService.Verify(x => x.Checkout(It.IsAny<Commitment>()), Times.Never);
+        }
+
+        [Test]
+        public void Checkout_InvalidCommitment_RedirectsToIndex()
+        {
+            // Arrange
+            const int commitmentId = 42;
+            const int personId = 54;
+            Person person = new Person { Id = personId };
+            _volunteerService.Setup(x => x.FindByUserId(It.IsAny<int>()))
+                .Returns(person);
+            _volunteerService.Setup(x => x.RetrieveCommitments(personId, It.IsAny<bool>()))
+                .Returns(new List<Commitment>().AsQueryable());
+
+            // Act
+            var response = _controllerUnderTest.Checkout(commitmentId);
+
+            // Assert
+            var result = response as RedirectToRouteResult;
+            Assert.AreEqual("Index", result.RouteValues["action"]);
+
+            _volunteerService.Verify(x => x.Checkout(It.IsAny<Commitment>()), Times.Never);
+        }
+
+        [Test]
+        public void Checkout_ValidCommitment_CorrectlyCheckin_And_RedirectsToIndex()
+        {
+            // Arrange
+            const int commitmentId = 42;
+            const int personId = 54;
+            Person person = new Person { Id = personId };
+            Commitment commitment = new Commitment { Id = commitmentId };
+
+            _volunteerService.Setup(x => x.FindByUserId(It.IsAny<int>()))
+                .Returns(person);
+            _volunteerService.Setup(x => x.RetrieveCommitments(personId, It.IsAny<bool>()))
+                .Returns(new List<Commitment> { commitment }.AsQueryable());
+
+            // Act
+            var response = _controllerUnderTest.Checkout(commitmentId);
+
+            // Assert
+            var result = response as RedirectToRouteResult;
+            Assert.AreEqual("Index", result.RouteValues["action"]);
+
+            _volunteerService.Verify(x => x.Checkout(It.IsAny<Commitment>()));
+        }
     }
 }
