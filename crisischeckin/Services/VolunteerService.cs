@@ -98,6 +98,14 @@ namespace Services
             return RetrieveCommitments(person.Id, true).Where(c => c.DisasterId == disaster.Id);
         }
 
+        public void UpdateCommitment(Commitment commitment)
+        {
+            if (commitment == null)
+                throw new ArgumentNullException("commitment", "Commitment cannot be null");
+
+            ourService.UpdateCommitment(commitment);
+        }
+
         public Person FindByUserId(int userId)
         {
             return ourService.Persons.SingleOrDefault(p => p.UserId == userId);

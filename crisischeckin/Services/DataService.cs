@@ -95,6 +95,24 @@ namespace Services
             context.SaveChanges();
         }
 
+        public Commitment UpdateCommitment(Commitment updatedCommitment)
+        {
+            var result = context.Commitments.Find(updatedCommitment.Id);
+
+            if (result == null)
+                throw new CommitmentNotFoundException();
+
+            result.StartDate = updatedCommitment.StartDate;
+            result.EndDate = updatedCommitment.EndDate;
+            result.Status = updatedCommitment.Status;
+            result.PersonIsCheckedIn = updatedCommitment.PersonIsCheckedIn;
+            result.VolunteerType = updatedCommitment.VolunteerType;
+
+            context.SaveChanges();
+
+            return result;
+        }
+
         public void AddDisaster(Disaster newDisaster)
         {
             context.Disasters.Add(newDisaster);

@@ -43,6 +43,42 @@ namespace crisicheckinweb.Controllers
             return View(GetDefaultViewModel());
         }
 
+        [HttpPost]
+        public ActionResult Checkin(int commitmentId)
+        {
+            var person = _volunteerSvc.FindByUserId(_webSecurity.CurrentUserId);
+            if (person != null)
+            {
+                var commitment = _volunteerSvc.RetrieveCommitments(person.Id, true)
+                    .FirstOrDefault(x => x.Id == commitmentId);
+                if (commitment != null)
+                {
+                    commitment.PersonIsCheckedIn = true;
+                    _volunteerSvc.UpdateCommitment(commitment);
+                }
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public ActionResult Checkout(int commitmentId)
+        {
+            var person = _volunteerSvc.FindByUserId(_webSecurity.CurrentUserId);
+            if (person != null)
+            {
+                var commitment = _volunteerSvc.RetrieveCommitments(person.Id, true)
+                    .FirstOrDefault(x => x.Id == commitmentId);
+                if (commitment != null)
+                {
+                    commitment.PersonIsCheckedIn = false;
+                    _volunteerSvc.UpdateCommitment(commitment);
+                }
+            }
+
+            return RedirectToAction("Index");
+        }
+
         public ActionResult AccessDenied()
         {
             return View();

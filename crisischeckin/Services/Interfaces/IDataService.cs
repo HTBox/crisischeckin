@@ -26,5 +26,6 @@ namespace Services.Interfaces
         ClusterCoordinator AddClusterCoordinator(ClusterCoordinator clusterCoordinator);
         void AppendClusterCoordinatorLogEntry(ClusterCoordinatorLogEntry clusterCoordinatorLogEntry);
         void RemoveClusterCoordinator(ClusterCoordinator clusterCoordinator);
+        Commitment UpdateCommitment(Commitment updatedCommitment);
     }
 }
