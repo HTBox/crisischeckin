@@ -11,9 +11,11 @@ namespace crisicheckinweb.ViewModels
 
         [Required]
         [Display(Name = "First Name")]
+        [StringLength(30)]
         public string FirstName { get; set; }
 
         [Required]
+        [StringLength(30)]
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
 

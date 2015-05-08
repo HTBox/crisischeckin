@@ -10,7 +10,7 @@ namespace crisicheckinweb.ViewModels
         public int Id { get; set; }
 
         [Required]
-        [StringLength(100)]
+        [StringLength(50)]
         [DisplayName("Disaster name")]
         public string Name { get; set; }
 
