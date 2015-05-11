@@ -11,9 +11,11 @@ namespace crisicheckinweb.ViewModels
 
         [Required]
         [Display(Name = "First Name")]
+        [StringLength(30)]
         public string FirstName { get; set; }
 
         [Required]
+        [StringLength(30)]
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
@@ -29,7 +31,7 @@ namespace crisicheckinweb.ViewModels
         [Required]
         [StringLength(30, ErrorMessage = "The {0} must be between {2} and {1} characters long.", MinimumLength = 3)]
         [Display(Name = "User name")]
-        public string UserName { get { return _userName; } set { _userName = value.Trim(); } }
+        public string UserName { get { return _userName; } set { _userName = value != null ? value.Trim() : value; } }
 
         [Required]
         [DataType(DataType.Password)]

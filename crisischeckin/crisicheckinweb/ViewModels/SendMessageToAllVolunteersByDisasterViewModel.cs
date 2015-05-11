@@ -13,6 +13,8 @@ namespace crisicheckinweb.ViewModels
 
         [Required]
         public int DisasterId { get; set; }
+        [StringLength(50)]
+        [Display(Name = "Disaster")]
         public string DisasterName { get; set; }
         [Display(Name="Cluster")]
         public int? ClusterId { get; set; }

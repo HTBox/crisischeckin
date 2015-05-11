@@ -6,6 +6,7 @@ namespace crisicheckinweb.ViewModels
     {
         [Required]
         [Display(Name = "Username or Email")]
+        [StringLength(254)] //Email address max length
         public string UserNameOrEmail { get; set; }
 
         [Required]
