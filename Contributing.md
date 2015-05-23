@@ -45,6 +45,16 @@ After doing that, you should be able to run the Update-Database command again to
 
 You can also learn more on the wiki in the "Migrations" page on the wiki.
 
+Note for Visual Studio 2015 RC users
+====
+
+A bug in Visual Studio 2015 RC's handling of EF can cause the `Update-Datebase` command to fail.  The fix is very simple and it documented [here](https://github.com/aspnet/EntityFramework/issues/1950#issuecomment-99164398).
+
+1. Copy the contents of the `EntityFramework.psm1` file (don't save a new one).
+2. Open the `EntityFramework.psm1` in `...\crisischeckin\crisischeckin\packages\EntityFramework.6.1.1\tools` and replace the contents with the contents of the new file.
+3. Restart Visual Studio.
+4. Run the `Update-Database` command again.
+
 Jumping in
 ====
 
