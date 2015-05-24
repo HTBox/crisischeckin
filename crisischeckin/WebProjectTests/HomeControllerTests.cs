@@ -9,6 +9,7 @@ using Models;
 using System.Web.Mvc;
 using crisicheckinweb.ViewModels;
 using crisicheckinweb.Wrappers;
+using NUnit.Framework.Constraints;
 
 namespace WebProjectTests
 {
@@ -191,7 +192,7 @@ namespace WebProjectTests
             var result = response as RedirectToRouteResult;
             Assert.AreEqual("Index", result.RouteValues["action"]);
 
-            _volunteerService.Verify(x => x.UpdateCommitment(It.Is<Commitment>(c => c.PersonIsCheckedIn == false)));
+            _volunteerService.Verify(x => x.UpdateCommitment(It.Is<Commitment>(c => c.PersonIsCheckedIn == true)));
         }
 
         [Test]
@@ -255,7 +256,7 @@ namespace WebProjectTests
             var result = response as RedirectToRouteResult;
             Assert.AreEqual("Index", result.RouteValues["action"]);
 
-            _volunteerService.Verify(x => x.UpdateCommitment(It.Is<Commitment>(c => c.PersonIsCheckedIn == true)));
+            _volunteerService.Verify(x => x.UpdateCommitment(It.Is<Commitment>(c => c.PersonIsCheckedIn == false)));
         }
     }
 }
