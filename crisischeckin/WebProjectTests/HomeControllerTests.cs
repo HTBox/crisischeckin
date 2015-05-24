@@ -9,7 +9,6 @@ using Models;
 using System.Web.Mvc;
 using crisicheckinweb.ViewModels;
 using crisicheckinweb.Wrappers;
-using NUnit.Framework.Constraints;
 
 namespace WebProjectTests
 {
