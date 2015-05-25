@@ -7,32 +7,34 @@
 
 
 <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-  <h3>Log In</h3>
+    <div id="account-login-form">
+        <h3>Log In</h3>
 
-  @using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl }))
-  {
-    @Html.AntiForgeryToken()
-    @Html.ValidationSummary(true)
+        @using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
 
-    <div class="form-group required">
-      @Html.LabelFor(m => m.UserNameOrEmail)
-      @Html.TextBoxFor(m => m.UserNameOrEmail, new { @class = "form-control" })
-      @Html.ValidationMessageFor(m => m.UserNameOrEmail)
+            <div class="form-group required">
+                @Html.LabelFor(m => m.UserNameOrEmail)
+                @Html.TextBoxFor(m => m.UserNameOrEmail, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.UserNameOrEmail)
+            </div>
+            <div class="form-group required">
+                @Html.LabelFor(m => m.Password) (@Html.ActionLink("forgot password", "ForgotPassword"))
+                @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Password)
+            </div>
+            <div class="form-group">
+                @Html.CheckBoxFor(m => m.RememberMe)
+                @Html.LabelFor(m => m.RememberMe)
+            </div>
+            <div class="form-group">
+                <input id="submit-login-credentials" type="submit" value="Log in" class="btn btn-success submit" />
+            </div>
+            <p class="text-muted">
+                @Html.ActionLink("Register", "Register") if you don't have an account.
+            </p>
+        }
     </div>
-    <div class="form-group required">
-      @Html.LabelFor(m => m.Password) (@Html.ActionLink("forgot password", "ForgotPassword"))
-      @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
-      @Html.ValidationMessageFor(m => m.Password)
-    </div>
-    <div class="form-group">
-      @Html.CheckBoxFor(m => m.RememberMe)
-      @Html.LabelFor(m => m.RememberMe)
-    </div>
-    <div class="form-group">
-      <input type="submit" value="Log in" class="btn btn-success" />
-    </div>
-    <p class="text-muted">
-        @Html.ActionLink("Register", "Register") if you don't have an account.
-    </p>
-  }
 </div>

@@ -1,6 +1,6 @@
 ﻿namespace FrontEndTests.Helpers
 {
-    public interface ITestCredentials
+    public interface ICredentials
     {
         string UserName { get; }
         string Password { get; }

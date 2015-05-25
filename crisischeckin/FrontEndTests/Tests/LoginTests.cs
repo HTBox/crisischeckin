@@ -24,13 +24,28 @@ namespace FrontEndTests.Tests
             _driver.Quit();
         }
 
+
+        [TearDown]
+        public void TearDown()
+        {
+            _driver.Manage().Cookies.DeleteAllCookies();
+        }
+
         [Test]
-        public void Nonauthenticated_user_prompted_to_login()
+        public void Administrator_logging_is_redirected_to_disaster_list()
         {
             var homePage = new HomePageManager(_driver);
 
-            homePage.NavigateTo();
-            homePage.LogIn(CredentialsStore.AdminCredentials);
+            var loginPage = homePage.NavigateToAsUnauthenticated();
+            loginPage.LogInAdministrator();
+        }
+
+        [Test]
+        public void Invalid_user_sees_error_message()
+        {
+            var homepage = new HomePageManager(_driver);
+            var loginPage = homepage.NavigateToAsUnauthenticated();
+            loginPage.LogInInvalidUser();
         }
     }
 }
