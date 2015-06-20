@@ -3,10 +3,19 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:minWidth="25px"
-    android:minHeight="25px">
+    android:minHeight="25px"
+    android:layout_margin="4dp">
     <TextView
-        android:text="Text"
         android:layout_width="166.9dp"
         android:layout_height="23.3dp"
-        android:id="@+id/textTitle" />
+        android:id="@+id/textTitle"
+        android:text="@string/AllCurrentDisasters"
+        style="@android:style/TextAppearance.DialogWindowTitle" />
+    <ListView
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textTitle"
+        android:id="@+id/disasterListView" />
 </RelativeLayout>

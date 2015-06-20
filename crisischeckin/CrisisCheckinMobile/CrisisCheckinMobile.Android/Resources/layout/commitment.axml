@@ -2,13 +2,32 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:paddingLeft="4dp"
     android:minWidth="25px"
-    android:minHeight="25px">
+    android:minHeight="25px"
+    android:layout_margin="4dp">
     <TextView
         android:text="Disaster Name"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/disasterName" />
+        android:id="@+id/disasterName"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:paddingBottom="10dp" />
+    <TextView
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/disasterName"
+        android:id="@+id/iAm"
+        android:text="@string/IAm"
+        android:paddingRight="5dp" />
+    <Spinner
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/iAm"
+        android:id="@+id/status"
+        android:layout_below="@id/disasterName"
+        android:layout_alignBottom="@id/iAm"
+        android:layout_alignBaseline="@id/iAm" />
 </RelativeLayout>

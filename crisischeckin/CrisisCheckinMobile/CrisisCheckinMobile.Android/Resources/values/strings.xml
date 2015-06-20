@@ -2,4 +2,5 @@
 <resources>
     <string name="IAm">I am</string>
     <string name="app_name">TaskyAndroid</string>
+    <string name="AllCurrentDisasters">All Current Disasters</string>
 </resources>

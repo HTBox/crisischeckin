@@ -10,7 +10,11 @@ namespace CrisisCheckinMobile.Droid
         {
             base.OnCreate(bundle);
 
-            // Create your application here
+            ActionBar.Title = "";
+            ActionBar.NavigationMode = Android.App.ActionBarNavigationMode.Standard;
+            ActionBar.SetHomeButtonEnabled(true);
+
+
         }
     }
 }

@@ -36,7 +36,7 @@ namespace CrisisCheckinMobile.Droid
 //            var colorDrawable = new ColorDrawable(htboxRedColor);
 //            ActionBar.SetBackgroundDrawable(colorDrawable);
 
-            if (true) // TODO: if already authenticated
+            if (false) // TODO: if already authenticated
             {
                 var commitmentActivity = new Intent(this, typeof(CommitmentActivity));
                 //commitmentActivity.PutExtra("disasterId", disasterId);
@@ -44,6 +44,8 @@ namespace CrisisCheckinMobile.Droid
             }
             else // TODO: send to log on page
             {
+                var disasterListActivity = new Intent(this, typeof(DisasterListActivity));
+                StartActivity(disasterListActivity);
             }
   
         }

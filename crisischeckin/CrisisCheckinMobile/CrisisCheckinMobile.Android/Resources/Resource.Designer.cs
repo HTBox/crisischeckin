@@ -89,7 +89,13 @@ namespace CrisisCheckinMobile.Droid
 			public const int disasterName = 2131165184;
 			
 			// aapt resource value: 0x7f070001
-			public const int textTitle = 2131165185;
+			public const int iAm = 2131165185;
+			
+			// aapt resource value: 0x7f070002
+			public const int status = 2131165186;
+			
+			// aapt resource value: 0x7f070003
+			public const int textTitle = 2131165187;
 			
 			static Id()
 			{
@@ -122,6 +128,9 @@ namespace CrisisCheckinMobile.Droid
 		
 		public partial class String
 		{
+			
+			// aapt resource value: 0x7f050002
+			public const int AllCurrentDisasters = 2131034114;
 			
 			// aapt resource value: 0x7f050000
 			public const int IAm = 2131034112;
