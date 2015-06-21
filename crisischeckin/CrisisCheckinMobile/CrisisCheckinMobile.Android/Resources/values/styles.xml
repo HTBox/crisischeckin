@@ -9,4 +9,15 @@
     <style name="Theme.CrisisCheckInActionBar" parent="@android:style/Widget.Holo.ActionBar.Solid">
         <item name="android:background">@color/htBoxRed</item>
     </style>
+
+    <style name="ScreenTitle">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
+    </style>
+
+    <style name="LabelText">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
+    </style>
 </resources>
