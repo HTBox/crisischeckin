@@ -5,8 +5,6 @@ using System.Linq;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 
-using Xamarin.Forms;
-
 namespace CrisisCheckinMobile.iOS
 {
     // The UIApplicationDelegate for the application. This class is responsible for launching the 
@@ -27,11 +25,11 @@ namespace CrisisCheckinMobile.iOS
         //
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
-            Forms.Init();
+            //Forms.Init();
 
             window = new UIWindow(UIScreen.MainScreen.Bounds);
 
-            window.RootViewController = App.GetMainPage().CreateViewController();
+            //window.RootViewController = App.GetMainPage().CreateViewController();
 
             window.MakeKeyAndVisible();
 
