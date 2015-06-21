@@ -14,7 +14,7 @@ namespace CrisisCheckinMobile.Droid
             ActionBar.NavigationMode = Android.App.ActionBarNavigationMode.Standard;
             ActionBar.SetHomeButtonEnabled(true);
 
-
+            SetContentView(Resource.Layout.disasterlist);
         }
     }
 }
