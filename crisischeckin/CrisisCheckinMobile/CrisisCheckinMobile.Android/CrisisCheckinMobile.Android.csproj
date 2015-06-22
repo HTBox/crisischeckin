@@ -62,6 +62,7 @@
     <Compile Include="Activities\CommitmentActivity.cs" />
     <Compile Include="Activities\MainActivity.cs" />
     <Compile Include="Activities\DisasterListActivity.cs" />
+    <Compile Include="Adapters\DisasterListViewAdapter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config">
@@ -78,6 +79,7 @@
     <AndroidResource Include="Resources\layout\disasterlist.axml" />
     <AndroidResource Include="Resources\values\colors.xml" />
     <AndroidResource Include="Resources\values\strings.xml" />
+    <AndroidResource Include="Resources\layout\disasterListViewRow.axml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CrisisCheckinMobile\CrisisCheckinMobile.csproj">
@@ -97,5 +99,6 @@
     <Folder Include="Resources\layout\" />
     <Folder Include="Resources\values\" />
     <Folder Include="Activities\" />
+    <Folder Include="Adapters\" />
   </ItemGroup>
 </Project>

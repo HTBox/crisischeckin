@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:paddingLeft="5dp"
+    android:paddingTop="5dp">
+    <TextView
+        android:text="Disaster Name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/disasterListViewItemName"
+        android:textSize="20dp"
+        android:textColor="#FFFFFF" />
+    <TextView
+        android:text="Working - until August 12, 2015"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/disasterListViewItemStatusAndDates"
+        android:textColor="@color/htBoxTan"
+        android:textSize="15dp" />
+</LinearLayout>
