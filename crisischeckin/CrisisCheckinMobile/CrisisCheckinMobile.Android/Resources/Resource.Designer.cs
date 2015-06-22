@@ -88,6 +88,12 @@ namespace CrisisCheckinMobile.Droid
 			// aapt resource value: 0x7f070004
 			public const int disasterListView = 2131165188;
 			
+			// aapt resource value: 0x7f070005
+			public const int disasterListViewItemName = 2131165189;
+			
+			// aapt resource value: 0x7f070006
+			public const int disasterListViewItemStatusAndDates = 2131165190;
+			
 			// aapt resource value: 0x7f070000
 			public const int disasterName = 2131165184;
 			
@@ -118,6 +124,9 @@ namespace CrisisCheckinMobile.Droid
 			
 			// aapt resource value: 0x7f030001
 			public const int disasterlist = 2130903041;
+			
+			// aapt resource value: 0x7f030002
+			public const int disasterListViewRow = 2130903042;
 			
 			static Layout()
 			{

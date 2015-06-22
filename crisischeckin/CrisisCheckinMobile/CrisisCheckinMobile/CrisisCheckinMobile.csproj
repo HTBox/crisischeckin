@@ -49,6 +49,7 @@
     <Compile Include="SaveLoad\Serialize.cs" />
     <Compile Include="SaveLoad\ISaveAndLoad.cs" />
     <Compile Include="App.cs" />
+    <Compile Include="Dtos\DisasterListDto.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">
@@ -95,4 +96,7 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <ItemGroup>
+    <Folder Include="Dtos\" />
+  </ItemGroup>
 </Project>

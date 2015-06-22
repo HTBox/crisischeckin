@@ -4,7 +4,8 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:paddingLeft="5dp"
-    android:paddingTop="5dp">
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp">
     <TextView
         android:text="Disaster Name"
         android:layout_width="match_parent"
@@ -18,5 +19,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/disasterListViewItemStatusAndDates"
         android:textColor="@color/htBoxTan"
-        android:textSize="15dp" />
+        android:textSize="15dp"
+        android:paddingBottom="10dp" />
 </LinearLayout>

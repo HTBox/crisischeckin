@@ -1,37 +1,55 @@
 ﻿using Android.Widget;
 using System.Collections.Generic;
+using Android.Views;
+using Android.Content;
 
 namespace CrisisCheckinMobile.Droid
 {
-    public class DisasterListViewAdapter : BaseAdapter<string>
+    public class DisasterListViewAdapter : BaseAdapter<DisasterListDto>
     {
-        List<string> _items;
+        private readonly List<DisasterListDto> _items;
+        private readonly Context _context;
+
+        public DisasterListViewAdapter(Context context, List<DisasterListDto> items)
+        {
+            _items = items;
+            _context = context;
+        }
 
         public override long GetItemId(int position)
         {
-            throw new System.NotImplementedException();
+            return position;
         }
 
-        public override Android.Views.View GetView(int position, Android.Views.View convertView, Android.Views.ViewGroup parent)
+        public override View GetView(int position, View convertView, ViewGroup parent)
         {
-            throw new System.NotImplementedException();
+            View row = convertView ?? 
+                LayoutInflater.From(_context).Inflate(Resource.Layout.disasterListViewRow, null, false);
+
+            TextView disasterName = row.FindViewById<TextView>(Resource.Id.disasterListViewItemName);
+            TextView disasterStatusAndDates = row.FindViewById<TextView>(Resource.Id.disasterListViewItemStatusAndDates);
+
+            var item =_items[position];
+            disasterName.Text = item.DisasterName;
+            disasterStatusAndDates.Text = item.DisasterStatusAndDate;
+
+            return row;
         }
 
         public override int Count
         {
             get
             {
-                throw new System.NotImplementedException();
+                return _items.Count;
             }
         }
 
-        public override string this[int index]
+        public override DisasterListDto this[int index]
         {
             get
             {
-                throw new System.NotImplementedException();
+                return _items[index];
             }
         }
     }
 }
-
