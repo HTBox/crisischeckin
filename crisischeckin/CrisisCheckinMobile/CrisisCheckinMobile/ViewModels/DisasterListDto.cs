@@ -1,12 +1,12 @@
 ﻿
 namespace CrisisCheckinMobile
 {
-    public class DisasterListDto
+    public class DisasterListViewModel
     {
         private readonly string _disasterName;
         private readonly string _disasterStatusAndDate;
 
-        public DisasterListDto(string disasterName, string disasterStatusAndDate)
+        public DisasterListViewModel(string disasterName, string disasterStatusAndDate)
         {
             _disasterName = disasterName;
             _disasterStatusAndDate = disasterStatusAndDate;

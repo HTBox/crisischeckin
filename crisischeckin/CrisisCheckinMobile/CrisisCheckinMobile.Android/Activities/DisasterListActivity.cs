@@ -23,10 +23,10 @@ namespace CrisisCheckinMobile.Droid
             _listView = FindViewById<ListView>(Resource.Id.disasterListView);
 
             // TODO: Get data via the API
-            var data = new List<DisasterListDto>();
-            data.Add(new DisasterListDto("Terrible Disaster", "Working - until August 12, 2015"));
-            data.Add(new DisasterListDto("Disaster Name 2", ""));
-            data.Add(new DisasterListDto("Disaster Name 3", "Planned - September 5 - 21, 2015"));
+            var data = new List<DisasterListViewModel>();
+            data.Add(new DisasterListViewModel("Terrible Disaster", "Working - until August 12, 2015"));
+            data.Add(new DisasterListViewModel("Disaster Name 2", ""));
+            data.Add(new DisasterListViewModel("Disaster Name 3", "Planned - September 5 - 21, 2015"));
 
             var adapter = new DisasterListViewAdapter(this, data);
             _listView.Adapter = adapter;

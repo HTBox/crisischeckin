@@ -22,14 +22,13 @@
     <ConsolePause>false</ConsolePause>
     <MtouchLink>None</MtouchLink>
     <MtouchDebug>True</MtouchDebug>
-    <AssemblyName>FormsTemplateiOS</AssemblyName>
+    <AssemblyName>CrisisCheckIniOS</AssemblyName>
     <MtouchI18n>
     </MtouchI18n>
-    <MtouchArch>Default, ARMv7</MtouchArch>
+    <MtouchArch>i386</MtouchArch>
     <MtouchSdkVersion>7.1</MtouchSdkVersion>
-    <MtouchExtraArgs>
-    </MtouchExtraArgs>
     <MtouchOptimizePNGs>True</MtouchOptimizePNGs>
+    <CodesignKey>iPhone Developer</CodesignKey>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
     <DebugType>none</DebugType>
@@ -39,7 +38,7 @@
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
     <MtouchLink>None</MtouchLink>
-    <AssemblyName>FormsTemplateiOS</AssemblyName>
+    <AssemblyName>CrisisCheckIniOS</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhone' ">
     <DebugSymbols>true</DebugSymbols>
@@ -98,6 +97,24 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <None Include="Resources\Images\CCI-menuHome.png" />
     <None Include="Resources\Images\CCI-menuHome%402x.png" />
+    <Compile Include="LoginViewController.cs" />
+    <Compile Include="LoginViewController.designer.cs">
+      <DependentUpon>LoginViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Constants.cs" />
+    <Compile Include="DisasterListTableSource.cs" />
+    <Compile Include="CrisisCheckInTableViewController.cs" />
+    <Compile Include="CrisisCheckInTableViewController.designer.cs">
+      <DependentUpon>CrisisCheckInTableViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CommitmentViewController.cs" />
+    <Compile Include="CommitmentViewController.designer.cs">
+      <DependentUpon>CommitmentViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CommitmentContainerViewController.cs" />
+    <Compile Include="CommitmentContainerViewController.designer.cs">
+      <DependentUpon>CommitmentContainerViewController.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CrisisCheckinMobile\CrisisCheckinMobile.csproj">
@@ -143,6 +160,7 @@
     <BundleResource Include="Resources\iosMenuIcons\CCI-menuSetting%402x.png" />
     <BundleResource Include="Resources\iosMenuIcons\CCI-menuSettingHi.png" />
     <BundleResource Include="Resources\iosMenuIcons\CCI-menuSettingHi%402x.png" />
+    <BundleResource Include="Resources\Images\Human-Toolbox_Logo_RGB.png" />
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Contents.json" />
@@ -152,5 +170,9 @@
     <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\iOS-Settings%402x.png" />
     <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\iOS-Spotlight.png" />
     <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\iOS-Spotlight%402x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <InterfaceDefinition Include="CrisisCheckIn.storyboard" />
+    <InterfaceDefinition Include="LaunchScreen.storyboard" />
   </ItemGroup>
 </Project>
