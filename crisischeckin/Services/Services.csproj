@@ -50,6 +50,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -94,10 +95,15 @@
     <Compile Include="Interfaces\IVolunteerService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SmtpMessageSender.cs" />
+    <Compile Include="SubjectEnrichmentService.cs" />
     <Compile Include="VolunteerService.cs" />
     <Compile Include="VolunteerTypeService.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{85d45b1b-d669-4370-8d5c-60d2350c5544}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Models\Models.csproj">
       <Project>{3fd36cf5-7d79-4505-a0bb-12e35a613d88}</Project>
       <Name>Models</Name>

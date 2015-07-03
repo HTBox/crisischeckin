@@ -14,5 +14,9 @@
         public const string DefaultTestUserName = "TestUser";
         public const string DefaultTestUserPassword = "test";
 
+        //Environments
+        public const string Staging = "staging";
+        public const string Development = "development";
+        public const string Production = "production";
     }
 }

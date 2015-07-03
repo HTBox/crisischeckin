@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Net.Mail;
+using Common;
 using Services.Interfaces;
 
 namespace Services
@@ -29,7 +31,7 @@ namespace Services
                     var recipientAddress = new MailAddress(recipient.EmailAddress, recipient.Name);
                     var mailMessage = new MailMessage(fromAddress, recipientAddress)
                     {
-                        Subject = message.Subject,
+                        Subject = SubjectEnrichmentService.Enrich(message.Subject),
                         IsBodyHtml = true,
                         Body = message.Body
                     };
@@ -37,5 +39,6 @@ namespace Services
                 }
             }
         }
+
     }
 }
