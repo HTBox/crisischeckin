@@ -72,8 +72,6 @@ namespace crisicheckinweb.App_Start
             kernel.Bind<IWebSecurityWrapper>().To<WebSecurityWrapper>().InRequestScope();
             kernel.Bind<IVolunteerTypeService>().To<VolunteerTypesService>().InRequestScope();
             kernel.Bind<IMessageService>().To<MessageService>().InRequestScope();
-            // Is this still necessary?
-            // kernel.Bind<IMessageSender>().To<DebugMessageSender>();
             kernel.Bind<IMessageSender>().To<SmtpMessageSender>().InRequestScope();
             kernel.Bind<MailAddress>()
                 .ToConstant(new MailAddress("no-reply@crisischeckin.com", "CrisisCheckin"))
