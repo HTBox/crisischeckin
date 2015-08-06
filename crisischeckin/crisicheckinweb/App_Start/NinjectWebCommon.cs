@@ -1,3 +1,5 @@
+using System.Configuration;
+using System.Net;
 using System.Net.Mail;
 using System.Web.Http;
 using crisicheckinweb.Infrastructure;
@@ -74,7 +76,7 @@ namespace crisicheckinweb.App_Start
             kernel.Bind<IMessageService>().To<MessageService>().InRequestScope();
             kernel.Bind<IMessageSender>().To<SmtpMessageSender>().InRequestScope();
             kernel.Bind<MailAddress>()
-                .ToConstant(new MailAddress("no-reply@crisischeckin.com", "CrisisCheckin"))
+                .ToConstant(new MailAddress(ConfigurationManager.AppSettings["stmp.fromname"], ConfigurationManager.AppSettings["smtp.fromaddress"]))
                 .WhenInjectedInto<SmtpMessageSender>();
             kernel.Bind<IMessageCoordinator>().To<MessageCoordinator>().InRequestScope();
             kernel.Bind<IClusterCoordinatorService>().To<ClusterCoordinatorService>().InRequestScope();
@@ -84,7 +86,11 @@ namespace crisicheckinweb.App_Start
                 {
 #if DEBUG
                     // Emails go to "C:\Users\[USER]\AppData\Roaming" if not Release mode
-                    PickupDirectoryLocation = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
+                    PickupDirectoryLocation = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+#else
+                    Host = ConfigurationManager.AppSettings["smtp.host"],
+                    Port = int.Parse(ConfigurationManager.AppSettings["smtp.port"]),
+                    Credentials = new NetworkCredential(ConfigurationManager.AppSettings["stmp.username"], ConfigurationManager.AppSettings["stmp.password"]),
 #endif
                 })
                 .InRequestScope();
