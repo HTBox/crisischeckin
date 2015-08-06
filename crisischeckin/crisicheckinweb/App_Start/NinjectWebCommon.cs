@@ -76,7 +76,7 @@ namespace crisicheckinweb.App_Start
             kernel.Bind<IMessageService>().To<MessageService>().InRequestScope();
             kernel.Bind<IMessageSender>().To<SmtpMessageSender>().InRequestScope();
             kernel.Bind<MailAddress>()
-                .ToConstant(new MailAddress(ConfigurationManager.AppSettings["stmp.fromname"], ConfigurationManager.AppSettings["smtp.fromaddress"]))
+                .ToConstant(new MailAddress(ConfigurationManager.AppSettings["smtp.fromaddress"], ConfigurationManager.AppSettings["smtp.fromname"]))
                 .WhenInjectedInto<SmtpMessageSender>();
             kernel.Bind<IMessageCoordinator>().To<MessageCoordinator>().InRequestScope();
             kernel.Bind<IClusterCoordinatorService>().To<ClusterCoordinatorService>().InRequestScope();
