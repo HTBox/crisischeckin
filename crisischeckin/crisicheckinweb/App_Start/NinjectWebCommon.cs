@@ -86,11 +86,13 @@ namespace crisicheckinweb.App_Start
                 {
 #if DEBUG
                     // Emails go to "C:\Users\[USER]\AppData\Roaming" if not Release mode
+                    DeliveryMethod = SmtpDeliveryMethod.SpecifiedPickupDirectory,
                     PickupDirectoryLocation = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
 #else
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
                     Host = ConfigurationManager.AppSettings["smtp.host"],
                     Port = int.Parse(ConfigurationManager.AppSettings["smtp.port"]),
-                    Credentials = new NetworkCredential(ConfigurationManager.AppSettings["stmp.username"], ConfigurationManager.AppSettings["stmp.password"]),
+                    Credentials = new NetworkCredential(ConfigurationManager.AppSettings["smtp.username"], ConfigurationManager.AppSettings["smtp.password"]),
 #endif
                 })
                 .InRequestScope();
