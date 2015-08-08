@@ -227,6 +227,7 @@
     <Compile Include="ViewModels\DisasterViewModel.cs" />
     <Compile Include="ViewModels\ForgotPasswordViewModel.cs" />
     <Compile Include="ViewModels\ResetPasswordViewModel.cs" />
+    <Compile Include="ViewModels\SelectedDisasterCluster.cs" />
     <Compile Include="ViewModels\SendMessageToAllVolunteersByDisasterViewModel.cs" />
     <Compile Include="ViewModels\UnassignClusterCoordinatorViewModel.cs" />
     <Compile Include="Wrappers\UserCreationException.cs" />

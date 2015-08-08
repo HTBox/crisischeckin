@@ -1,11 +1,11 @@
-﻿using System;
-using System.Linq;
-using System.Web.Mvc;
-using crisicheckinweb.Filters;
+﻿using crisicheckinweb.Filters;
 using crisicheckinweb.ViewModels;
 using Models;
-using Services.Interfaces;
 using Services.Exceptions;
+using Services.Interfaces;
+using System;
+using System.Linq;
+using System.Web.Mvc;
 
 namespace crisicheckinweb.Controllers
 {
@@ -13,12 +13,14 @@ namespace crisicheckinweb.Controllers
     public class DisasterController : BaseController
     {
         private readonly IDisaster _disasterSvc;
-        public DisasterController(IDisaster disasterSvc)
+        private readonly ICluster _clusterSvc;
+
+        public DisasterController(IDisaster disasterSvc, ICluster clusterSvc)
         {
             _disasterSvc = disasterSvc;
+            _clusterSvc = clusterSvc;
         }
 
-        //
         // GET: /Disaster/
         public ActionResult List()
         {
@@ -39,7 +41,12 @@ namespace crisicheckinweb.Controllers
                 var disaster = _disasterSvc.Get(disasterId);
                 return View("Create", CreateViewModel(disaster));
             }
-            return View("Create", new DisasterViewModel { IsActive = true });
+            return View("Create", new DisasterViewModel
+            {
+                IsActive = true,
+                SelectedDisasterClusters = (from list in _clusterSvc.GetList()
+                                            select new SelectedDisasterCluster { Name = list.Name, Selected = true }).ToList()
+            });
         }
 
         [HttpPost]
@@ -85,22 +92,25 @@ namespace crisicheckinweb.Controllers
             return Create(model);
         }
 
-        private static DisasterViewModel CreateViewModel(Disaster disaster)
+        private DisasterViewModel CreateViewModel(Disaster disaster)
         {
             return new DisasterViewModel
             {
                 Id = disaster.Id,
                 Name = disaster.Name,
-                IsActive = disaster.IsActive
+                IsActive = disaster.IsActive,
+                SelectedDisasterClusters = (from list in _clusterSvc.GetList()
+                                            select new SelectedDisasterCluster { Name = list.Name, Selected = true }).ToList()
             };
         }
 
-
         #region api methods
+
         public JsonResult GetActiveDisasters()
         {
             return Json(_disasterSvc.GetActiveList(), JsonRequestBehavior.AllowGet);
         }
-        #endregion
+
+        #endregion api methods
     }
 }
