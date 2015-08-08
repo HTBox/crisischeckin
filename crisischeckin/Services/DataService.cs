@@ -119,6 +119,12 @@ namespace Services
             context.SaveChanges();
         }
 
+        public void AddCluster(Cluster newCluster)
+        {
+            context.Clusters.Add(newCluster);
+            context.SaveChanges();
+        }
+
         public Disaster UpdateDisaster(Disaster updatedDisaster)
         {
             var result = context.Disasters.Find(updatedDisaster.Id);

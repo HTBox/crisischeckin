@@ -10,5 +10,6 @@ namespace Services.Interfaces
     public interface ICluster
     {
         IEnumerable<Cluster> GetList();
+        void Create(Cluster cluster);
     }
 }
