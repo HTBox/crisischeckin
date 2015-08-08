@@ -45,14 +45,6 @@ namespace Services.UnitTest
         }
 
         [Test]
-        [ExpectedException(typeof (ArgumentNullException))]
-        public void Register_NullCluster()
-        {
-            VolunteerService service = new VolunteerService(new Mock<IDataService>().Object);
-            service.Register("first", "last", "email", "555-333-1111", 4);
-        }
-
-        [Test]
         public void Register_ValidVolunteer()
         {
             Person moqPerson = new Person()
@@ -107,29 +99,29 @@ namespace Services.UnitTest
             Assert.AreEqual("555-222-9139 ext 33", actual.PhoneNumber);
         }
 
-		[Test]
-		public void Register_UsernameAvailable()
-		{
-			User moqUser = new User()
-			{
-				Id = 1,
-				UserName = "test123"
-			};
+        [Test]
+        public void Register_UsernameAvailable()
+        {
+            User moqUser = new User()
+            {
+                Id = 1,
+                UserName = "test123"
+            };
 
-			List<User> users = new List<User>();
-			users.Add(moqUser);
+            List<User> users = new List<User>();
+            users.Add(moqUser);
 
-			var moqDataService = new Mock<IDataService>();
-			moqDataService.Setup(s => s.Users).Returns(users.AsQueryable());
+            var moqDataService = new Mock<IDataService>();
+            moqDataService.Setup(s => s.Users).Returns(users.AsQueryable());
 
-			VolunteerService service = new VolunteerService(moqDataService.Object);
-			
-			//test that the username we created is not available.
-			Assert.IsFalse(service.UsernameAvailable("test123"), "Username created for this test should report as not available.");
+            VolunteerService service = new VolunteerService(moqDataService.Object);
+            
+            //test that the username we created is not available.
+            Assert.IsFalse(service.UsernameAvailable("test123"), "Username created for this test should report as not available.");
 
-			//test that a different username is available.
-			Assert.IsTrue(service.UsernameAvailable("test456"), "Username that was not added to our data source should report as available.");
-		}
+            //test that a different username is available.
+            Assert.IsTrue(service.UsernameAvailable("test456"), "Username that was not added to our data source should report as available.");
+        }
 
         [Test]
         public void Register_EmailAlreadyInUse_ReturnFalse()
