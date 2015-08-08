@@ -17,7 +17,7 @@ namespace crisicheckinweb.Controllers
         private readonly IWebSecurityWrapper _webSecurity;
         private readonly IClusterCoordinatorService _clusterCoordinatorService;
         private readonly IVolunteerTypeService _volunteerTypes;
-        private readonly ICluster _clusterSvc;
+        private readonly IDisasterClusterService _disasterClusterSvc;
 
         public HomeController(
             IDisaster disasterSvc,
@@ -25,7 +25,7 @@ namespace crisicheckinweb.Controllers
             IWebSecurityWrapper webSecurity,
             IClusterCoordinatorService clusterCoordinatorService,
             IVolunteerTypeService volunteerTypeService,
-            ICluster clusterService
+            IDisasterClusterService disasterClusterService
             )
         {
             _disasterSvc = disasterSvc;
@@ -33,7 +33,7 @@ namespace crisicheckinweb.Controllers
             _webSecurity = webSecurity;
             _clusterCoordinatorService = clusterCoordinatorService;
             _volunteerTypes = volunteerTypeService;
-            _clusterSvc = clusterService;
+            _disasterClusterSvc = disasterClusterService;
         }
 
         [HttpGet]
@@ -135,7 +135,7 @@ namespace crisicheckinweb.Controllers
             var model = new VolunteerViewModel
             {
                 Disasters = _disasterSvc.GetActiveList(),
-                Clusters = _clusterSvc.GetList(), //TODO: Need to change to get diaster specific list
+                DisasterClusters = _disasterClusterSvc.GetClustersForADisaster(1), //TODO: Need to change to get diaster specific list
                 MyCommitments = commitments,
                 VolunteerTypes = _volunteerTypes.GetList(),
                 Person = person,

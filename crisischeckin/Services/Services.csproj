@@ -69,12 +69,14 @@
     <Compile Include="ClusterService.cs" />
     <Compile Include="DataService.cs" />
     <Compile Include="DebugMessageSender.cs" />
+    <Compile Include="DisasterClusterService.cs" />
     <Compile Include="DisasterService.cs" />
     <Compile Include="Exceptions\CommitmentNotFoundException.cs" />
     <Compile Include="Exceptions\DisasterAlreadyExistsException.cs" />
     <Compile Include="Exceptions\DisasterNotFoundException.cs" />
     <Compile Include="Exceptions\PersonAlreadyExistsException.cs" />
     <Compile Include="Exceptions\PersonNotFoundException.cs" />
+    <Compile Include="Interfaces\IDisasterClusterService.cs" />
     <Compile Include="Interfaces\IMessageCoordinator.cs" />
     <Compile Include="Interfaces\IMessageSender.cs" />
     <Compile Include="Interfaces\IMessageService.cs">

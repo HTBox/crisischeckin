@@ -9,7 +9,7 @@ namespace crisicheckinweb.ViewModels
     public class VolunteerViewModel
     {
         public IEnumerable<Disaster> Disasters { get; set; }
-        public IEnumerable<Cluster> Clusters { get; set; }
+        public IEnumerable<DisasterCluster> DisasterClusters { get; set; }
         public IEnumerable<Commitment> MyCommitments { get; set; }
         public int RemoveCommitmentId { get; set; }
         public int PersonId { get; set; }

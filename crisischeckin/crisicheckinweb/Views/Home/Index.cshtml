@@ -74,7 +74,7 @@
     </tr>
     <tr>
       <td>@Html.DropDownListFor(m => m.SelectedDisasterId, new SelectList(Model.Disasters, "Id", "Name", Model.SelectedDisasterId), "-- Choose One --", new { @class = "form-control" })</td>
-      <td>@Html.DropDownListFor(m => m.SelectedClusterId, new SelectList(Model.Clusters, "Id", "Name", Model.SelectedDisasterId), "-- Choose One --", new { @class = "form-control" })</td>
+      <td>@Html.DropDownListFor(m => m.SelectedClusterId, new SelectList(Model.DisasterClusters, "Id", "Cluster.Name", Model.SelectedClusterId), "-- Choose One --", new { @class = "form-control" })</td>
       <td>@Html.TextBoxFor(m => m.SelectedStartDate, new { id = "dp_startDate", @class = "form-control" })</td>
       <td>@Html.TextBoxFor(m => m.SelectedEndDate, new { id = "dp_endDate", @class = "form-control" })</td>
       <td>

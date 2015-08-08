@@ -43,6 +43,11 @@ namespace Services
             get { return context.Disasters; }
         }
 
+        public IQueryable<DisasterCluster> DisasterClusters
+        {
+            get { return context.DisasterClusters; }
+        }
+
         public IQueryable<Person> Persons
         {
             get { return context.Persons; }

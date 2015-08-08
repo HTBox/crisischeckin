@@ -14,6 +14,7 @@ namespace Services.Interfaces
         IQueryable<User> Users { get; }
         IQueryable<Cluster> Clusters { get; }
         IQueryable<VolunteerType> VolunteerTypes { get; }
+        IQueryable<DisasterCluster> DisasterClusters { get; }
         IQueryable<ClusterCoordinator> ClusterCoordinators { get; }
         IQueryable<ClusterCoordinatorLogEntry> ClusterCoordinatorLogEntries { get; }
         Person AddPerson(Person newPerson);
