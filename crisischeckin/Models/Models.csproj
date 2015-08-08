@@ -77,6 +77,10 @@
     <Compile Include="Migrations\201508081632194_ODFThatConf1.Designer.cs">
       <DependentUpon>201508081632194_ODFThatConf1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201508081812447_ODFThatConf2.cs" />
+    <Compile Include="Migrations\201508081812447_ODFThatConf2.Designer.cs">
+      <DependentUpon>201508081812447_ODFThatConf2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Person.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -107,6 +111,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201508081632194_ODFThatConf1.resx">
       <DependentUpon>201508081632194_ODFThatConf1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201508081812447_ODFThatConf2.resx">
+      <DependentUpon>201508081812447_ODFThatConf2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

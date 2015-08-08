@@ -26,6 +26,8 @@ namespace Models
 
         public virtual Person Person { get; set; }
 
+        public virtual Cluster Cluster { get; set; }
+
         public virtual VolunteerType VolunteerType { get; set; }
     }
 
