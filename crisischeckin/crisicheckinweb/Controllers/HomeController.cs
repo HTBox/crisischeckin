@@ -1,12 +1,12 @@
-﻿using System;
+﻿using Common;
+using crisicheckinweb.ViewModels;
+using crisicheckinweb.Wrappers;
+using Models;
+using Services.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using Common;
-using crisicheckinweb.ViewModels;
-using Models;
-using Services.Interfaces;
-using crisicheckinweb.Wrappers;
 
 namespace crisicheckinweb.Controllers
 {
@@ -123,8 +123,8 @@ namespace crisicheckinweb.Controllers
                 _volunteerSvc.RetrieveCommitments(person.Id, true) :
                 new List<Commitment>().AsEnumerable();
 
-            var clusterCoordinators = (person != null && person.ClusterId.HasValue) ?
-                _clusterCoordinatorService.GetAllCoordinatorsForCluster(person.ClusterId.Value).ToList() :
+            var clusterCoordinators = // TODO (person != null && person.ClusterId.HasValue) ?
+                // _clusterCoordinatorService.GetAllCoordinatorsForCluster(person.ClusterId.Value).ToList() :
                 new List<ClusterCoordinator>().AsEnumerable();
 
             var model = new VolunteerViewModel
@@ -150,7 +150,8 @@ namespace crisicheckinweb.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult RemoveCommitment(VolunteerViewModel model)
         {
-            if (!ModelState.IsValid) return View("Index", GetDefaultViewModel(model));
+            if (!ModelState.IsValid)
+                return View("Index", GetDefaultViewModel(model));
 
             try
             {
@@ -178,6 +179,5 @@ namespace crisicheckinweb.Controllers
 
             return View("Index", modelToReturn);
         }
-
     }
 }

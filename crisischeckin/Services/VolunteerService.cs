@@ -1,9 +1,9 @@
-﻿using System;
-using System.Linq;
-using Models;
+﻿using Models;
 using Services.Exceptions;
 using Services.Interfaces;
+using System;
 using System.Data.Entity;
+using System.Linq;
 
 namespace Services
 {
@@ -40,14 +40,14 @@ namespace Services
                 FirstName = firstName,
                 LastName = lastName,
                 Email = email,
-                PhoneNumber = phoneNumber,
-                ClusterId = cluster
+                PhoneNumber = phoneNumber
             });
         }
 
         public Person UpdateDetails(Person updatedPerson)
         {
-            if (updatedPerson == null) throw new ArgumentNullException("updatedPerson");
+            if (updatedPerson == null)
+                throw new ArgumentNullException("updatedPerson");
 
             var foundPerson = ourService.Persons.SingleOrDefault(p => p.UserId == updatedPerson.UserId);
 
@@ -68,7 +68,7 @@ namespace Services
                 if (!string.IsNullOrEmpty(updatedPerson.FirstName))
                 {
                     foundPerson.FirstName = updatedPerson.FirstName;
-                }               
+                }
                 if (!string.IsNullOrEmpty(updatedPerson.LastName))
                 {
                     foundPerson.LastName = updatedPerson.LastName;
@@ -82,10 +82,10 @@ namespace Services
         public IQueryable<Commitment> RetrieveCommitments(int personId, bool showInactive)
         {
             var filteredCommitments = from c in ourService.Commitments.Include(c => c.Disaster)
-                    where c.PersonId == personId &&
-                    (c.Disaster.IsActive || showInactive)
-                    orderby c.StartDate
-                    select c;
+                                      where c.PersonId == personId &&
+                                      (c.Disaster.IsActive || showInactive)
+                                      orderby c.StartDate
+                                      select c;
 
             return filteredCommitments;
         }
@@ -129,14 +129,15 @@ namespace Services
             };
         }
 
-	    public bool UsernameAvailable(string userName)
-	    {
-	        return ourService.Users.Count(p => p.UserName == userName) <= 0;
-	    }
+        public bool UsernameAvailable(string userName)
+        {
+            return ourService.Users.Count(p => p.UserName == userName) <= 0;
+        }
 
         public bool EmailAlreadyInUse(string email)
         {
-            if (ourService.Persons.Any(p => p.Email == email)) return true;
+            if (ourService.Persons.Any(p => p.Email == email))
+                return true;
             return false;
         }
 

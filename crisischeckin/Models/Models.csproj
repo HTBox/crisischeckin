@@ -64,6 +64,7 @@
     <Compile Include="Commitment.cs" />
     <Compile Include="CrisisCheckin.cs" />
     <Compile Include="Disaster.cs" />
+    <Compile Include="DisasterCluster.cs" />
     <Compile Include="Migrations\201501062117225_Initial.cs" />
     <Compile Include="Migrations\201501062117225_Initial.Designer.cs">
       <DependentUpon>201501062117225_Initial.cs</DependentUpon>
@@ -71,6 +72,10 @@
     <Compile Include="Migrations\201501090235260_AddVolunteerType.cs" />
     <Compile Include="Migrations\201501090235260_AddVolunteerType.Designer.cs">
       <DependentUpon>201501090235260_AddVolunteerType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201508081632194_ODFThatConf1.cs" />
+    <Compile Include="Migrations\201508081632194_ODFThatConf1.Designer.cs">
+      <DependentUpon>201508081632194_ODFThatConf1.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Person.cs" />
@@ -99,6 +104,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201501090235260_AddVolunteerType.resx">
       <DependentUpon>201501090235260_AddVolunteerType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201508081632194_ODFThatConf1.resx">
+      <DependentUpon>201508081632194_ODFThatConf1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
