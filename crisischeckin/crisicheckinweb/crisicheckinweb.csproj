@@ -405,6 +405,7 @@
     <Content Include="Views\Account\PasswordResetCompleted.cshtml" />
     <Content Include="Views\Account\ConfirmAccount.cshtml" />
     <Content Include="Views\Account\RegistrationSuccessful.cshtml" />
+    <Content Include="Views\Cluster\List.cshtml" />
     <Content Include="Views\Cluster\Create.cshtml" />
     <None Include="Web.Staging.config">
       <DependentUpon>Web.config</DependentUpon>

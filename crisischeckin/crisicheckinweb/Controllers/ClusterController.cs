@@ -12,6 +12,22 @@ namespace crisicheckinweb.Controllers
     public class ClusterController : BaseController
     {
         private readonly ICluster _clusterSvc;
+
+        public ClusterController(ICluster clusterSvc)
+        {
+            _clusterSvc = clusterSvc;
+        }
+
+        // GET: Clusters/
+        public ActionResult List()
+        {
+            var viewData = _clusterSvc.GetList()
+                .Select(CreateViewModel);
+
+            return View(viewData);
+        }
+
+  
         // GET: Cluster Create
         public ActionResult Create()
         {
@@ -34,14 +50,19 @@ namespace crisicheckinweb.Controllers
             {
                 _clusterSvc.Create(cluster);
             }
-            //else
-            //{
-            //    _clusterSvc.Update(cluster);
-            //}
-            return View("Create", cluster);
+            return View("List", cluster);
 
  
         }
+
+        private static ClusterViewModel CreateViewModel(Cluster cluster)
+        {
+            return new ClusterViewModel
+            {
+                Name = cluster.Name
+            };
+        }
+
     }
 
 }
