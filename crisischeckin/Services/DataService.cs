@@ -107,6 +107,7 @@ namespace Services
             result.Status = updatedCommitment.Status;
             result.PersonIsCheckedIn = updatedCommitment.PersonIsCheckedIn;
             result.VolunteerType = updatedCommitment.VolunteerType;
+            result.ClusterId = updatedCommitment.ClusterId;
 
             context.SaveChanges();
 

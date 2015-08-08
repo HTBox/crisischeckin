@@ -362,12 +362,12 @@ namespace crisicheckinweb.Controllers
             return View();
         }
 
-		[HttpPost]
-		[AllowAnonymous]
-		public bool UsernameAvailable(string userName)
-		{
-			return _volunteerSvc.UsernameAvailable(userName);
-		}
+        [HttpPost]
+        [AllowAnonymous]
+        public bool UsernameAvailable(string userName)
+        {
+            return _volunteerSvc.UsernameAvailable(userName);
+        }
 
 
         //

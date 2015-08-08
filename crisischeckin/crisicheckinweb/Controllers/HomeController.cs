@@ -17,13 +17,15 @@ namespace crisicheckinweb.Controllers
         private readonly IWebSecurityWrapper _webSecurity;
         private readonly IClusterCoordinatorService _clusterCoordinatorService;
         private readonly IVolunteerTypeService _volunteerTypes;
+        private readonly ICluster _clusterSvc;
 
         public HomeController(
             IDisaster disasterSvc,
             IVolunteerService volunteerSvc,
             IWebSecurityWrapper webSecurity,
             IClusterCoordinatorService clusterCoordinatorService,
-            IVolunteerTypeService volunteerTypeService
+            IVolunteerTypeService volunteerTypeService,
+            ICluster clusterService
             )
         {
             _disasterSvc = disasterSvc;
@@ -31,6 +33,7 @@ namespace crisicheckinweb.Controllers
             _webSecurity = webSecurity;
             _clusterCoordinatorService = clusterCoordinatorService;
             _volunteerTypes = volunteerTypeService;
+            _clusterSvc = clusterService;
         }
 
         [HttpGet]
@@ -99,7 +102,8 @@ namespace crisicheckinweb.Controllers
                         "The logged in user is either the administrator or does not have a valid account for joining a crisis.");
                 }
                 _disasterSvc.AssignToVolunteer(model.SelectedDisasterId,
-                    person.Id, model.SelectedStartDate, model.SelectedEndDate, model.VolunteerType);
+                    person.Id, model.SelectedStartDate, model.SelectedEndDate, model.VolunteerType,
+                    model.SelectedClusterId);
 
                 return Redirect("/Home");
             }
@@ -112,6 +116,7 @@ namespace crisicheckinweb.Controllers
             modelToReturn.SelectedDisasterId = model.SelectedDisasterId;
             modelToReturn.SelectedStartDate = model.SelectedStartDate;
             modelToReturn.SelectedEndDate = model.SelectedEndDate;
+            modelToReturn.SelectedClusterId = model.SelectedClusterId;
 
             return View("Index", modelToReturn);
         }
@@ -130,6 +135,7 @@ namespace crisicheckinweb.Controllers
             var model = new VolunteerViewModel
             {
                 Disasters = _disasterSvc.GetActiveList(),
+                Clusters = _clusterSvc.GetList(), //TODO: Need to change to get diaster specific list
                 MyCommitments = commitments,
                 VolunteerTypes = _volunteerTypes.GetList(),
                 Person = person,
@@ -141,6 +147,7 @@ namespace crisicheckinweb.Controllers
                 model.SelectedDisasterId = viewModel.SelectedDisasterId;
                 model.SelectedStartDate = viewModel.SelectedStartDate;
                 model.SelectedEndDate = viewModel.SelectedEndDate;
+                model.SelectedClusterId = viewModel.SelectedClusterId;
             }
 
             return model;
@@ -176,6 +183,7 @@ namespace crisicheckinweb.Controllers
             modelToReturn.SelectedDisasterId = model.SelectedDisasterId;
             modelToReturn.SelectedStartDate = model.SelectedStartDate;
             modelToReturn.SelectedEndDate = model.SelectedEndDate;
+            modelToReturn.SelectedClusterId = model.SelectedClusterId;
 
             return View("Index", modelToReturn);
         }

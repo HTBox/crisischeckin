@@ -9,11 +9,14 @@ namespace crisicheckinweb.ViewModels
     public class VolunteerViewModel
     {
         public IEnumerable<Disaster> Disasters { get; set; }
+        public IEnumerable<Cluster> Clusters { get; set; }
         public IEnumerable<Commitment> MyCommitments { get; set; }
         public int RemoveCommitmentId { get; set; }
         public int PersonId { get; set; }
         [DisplayName("Volunteer for Disaster")]
         public int SelectedDisasterId { get; set; }
+        [DisplayName("Activity")]
+        public int SelectedClusterId { get; set; }
         [DisplayName("Start Date")]
         public DateTime SelectedStartDate { get; set; }
         [DisplayName("End Date")]
