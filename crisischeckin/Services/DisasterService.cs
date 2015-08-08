@@ -19,7 +19,8 @@ namespace Services
             _dataService = service;
         }
 
-        public void AssignToVolunteer(int disasterId, int personId, DateTime startDate, DateTime endDate, int volunteerType)
+        public void AssignToVolunteer(int disasterId, int personId, DateTime startDate, DateTime endDate,
+            int volunteerType, int clusterId)
         {
             if (DateTime.Compare(endDate, startDate) < 0)
             {
@@ -30,13 +31,13 @@ namespace Services
                 throw new ArgumentException("Please enter a start date that is greater than or equal to today's date.");
             }
 
-			// check if the start and end date falls within an existing commitment
-			// disregard any disasters that are inactive
-			Expression<Func<Commitment, bool>> dateInRange = c =>
-				(DateTime.Compare(c.StartDate, endDate) <= 0) &&
-				(DateTime.Compare(c.EndDate, startDate) >= 0);
+            // check if the start and end date falls within an existing commitment
+            // disregard any disasters that are inactive
+            Expression<Func<Commitment, bool>> dateInRange = c =>
+                (DateTime.Compare(c.StartDate, endDate) <= 0) &&
+                (DateTime.Compare(c.EndDate, startDate) >= 0);
 
-			var hasExistingCommitment = (from c in _dataService.Commitments
+            var hasExistingCommitment = (from c in _dataService.Commitments
                 join d in _dataService.Disasters on c.DisasterId equals d.Id 
                 where d.IsActive && c.PersonId == personId
                 select c).Any(dateInRange);
@@ -52,7 +53,8 @@ namespace Services
                 DisasterId = disasterId,
                 StartDate = startDate,
                 EndDate = endDate,
-                VolunteerTypeId = volunteerType
+                VolunteerTypeId = volunteerType,
+                ClusterId = clusterId
             });
         }
 
