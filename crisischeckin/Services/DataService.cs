@@ -140,6 +140,20 @@ namespace Services
             return result;
         }
 
+        public Cluster UpdateCluster(Cluster updatedCluster)
+        {
+            var result = context.Clusters.Find(updatedCluster.Id);
+
+            if (result == null)
+                throw new ClusterNotFoundException();
+
+            result.Name = updatedCluster.Name;
+
+            context.SaveChanges();
+
+            return result;
+        }
+
         public void SubmitChanges()
         {
             context.SaveChanges();

@@ -50,9 +50,11 @@ namespace crisicheckinweb.Controllers
             {
                 _clusterSvc.Create(cluster);
             }
+            else
+            {
+                _clusterSvc.Update(cluster);
+            }
             return View("List", cluster);
-
- 
         }
 
         private static ClusterViewModel CreateViewModel(Cluster cluster)

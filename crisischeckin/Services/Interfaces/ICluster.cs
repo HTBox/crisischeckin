@@ -11,5 +11,6 @@ namespace Services.Interfaces
     {
         IEnumerable<Cluster> GetList();
         void Create(Cluster cluster);
+        Cluster Update(Cluster cluster);
     }
 }
