@@ -7,7 +7,7 @@ namespace Models.Migrations
     {
         public override void Up()
         {
-            DropForeignKey("dbo.Person", "FK_dbo.Person_dbo.Cluster_Cluster_Id");
+            DropForeignKey("dbo.Person", "FK_dbo.Person_dbo.Cluster_ClusterId");
             DropForeignKey("dbo.Person", "Cluster_Id", "dbo.Cluster");
             DropIndex("dbo.Person", new[] { "Cluster_Id" });
             CreateTable(

@@ -73,8 +73,7 @@ namespace WebProjectTests
                 UserName = "user",
                 Email = "user@email.com",
                 Password = "p@ssw0rd",
-                ConfirmPassword = "p@ssw0rd",
-                Cluster = 42
+                ConfirmPassword = "p@ssw0rd"
             };
         }
 
@@ -138,7 +137,6 @@ namespace WebProjectTests
                 It.IsAny<string>(),
                 It.IsAny<string>(),
                 It.IsAny<string>(),
-                It.IsAny<int>(),
                 It.IsAny<int>()), Times.Never);
         }
 
@@ -152,7 +150,7 @@ namespace WebProjectTests
 
             _volunteerService.Setup(x => x.EmailAlreadyInUse(It.IsAny<string>()))
                 .Returns(false);
-            _volunteerService.Setup(x => x.Register(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()))
+            _volunteerService.Setup(x => x.Register(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()))
                 .Returns(volunteer);
             _webSecurity.Setup(x => x.CreateUser(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string[]>(), out newUserId))
                 .Returns(confirmationToken);
@@ -172,7 +170,6 @@ namespace WebProjectTests
                 model.LastName,
                 model.Email,
                 model.PhoneNumber,
-                model.Cluster,
                 newUserId));
 
             _messageService.Verify(x => x.SendMessage(

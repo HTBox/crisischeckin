@@ -100,7 +100,7 @@ namespace crisicheckinweb.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
-            var model = new RegisterModel { Clusters = _clusterSvc.GetList() };
+            var model = new RegisterModel();
             return View(model);
         }
 
@@ -125,7 +125,7 @@ namespace crisicheckinweb.Controllers
                     {
                         int userId;
                         string token = _webSecurity.CreateUser(model.UserName, model.Password, new[] { Constants.RoleVolunteer }, out userId);
-                        var volunteer = _volunteerSvc.Register(model.FirstName, model.LastName, model.Email, model.PhoneNumber, model.Cluster, userId);
+                        var volunteer = _volunteerSvc.Register(model.FirstName, model.LastName, model.Email, model.PhoneNumber, userId);
                         if (volunteer != null)
                         {
                             // Generate the absolute Url for the account activation action.
@@ -153,7 +153,6 @@ namespace crisicheckinweb.Controllers
             }
 
             // If we got this far, something failed, redisplay form
-            model.Clusters = _clusterSvc.GetList();
             return View(model);
         }
 

@@ -23,8 +23,8 @@ namespace AcceptanceTests.ClusterCoordinatorFeature
             _dataAccessHelper = new DataAccessHelper(_dataService);
             _clusterCoordinatorService = new ClusterCoordinatorService(_dataService);
             _disaster = _dataAccessHelper.Create_a_disaster();
+            _clusterId = _dataAccessHelper.GetRandomClusterId();
             _person = _dataAccessHelper.Create_a_volunteer();
-            _clusterId = _person.ClusterId.GetValueOrDefault();
         }
 
         [Test]
