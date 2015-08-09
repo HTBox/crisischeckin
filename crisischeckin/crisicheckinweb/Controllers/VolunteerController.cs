@@ -71,7 +71,9 @@ namespace crisicheckinweb.Controllers
                 var modifiedResults = (from person in results
                                       select new Person
                                       {
-                                          Commitments = person.Commitments.Where(x => x.DisasterId == model.SelectedDisaster).ToList(),
+                                          Commitments = person.Commitments.Where(x => x.DisasterId == model.SelectedDisaster 
+                                              && model.CommitmentDate >= x.StartDate 
+                                              && model.CommitmentDate <= x.EndDate).ToList(),
                                           Email = person.Email,
                                           FirstName = person.FirstName,
                                           Id = person.Id,
