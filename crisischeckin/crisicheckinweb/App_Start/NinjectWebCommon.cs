@@ -5,6 +5,7 @@ using System.Web.Http;
 using crisicheckinweb.Infrastructure;
 using Models;
 using Services;
+using Twilio;
 
 [assembly: WebActivator.PreApplicationStartMethod(typeof(crisicheckinweb.App_Start.NinjectWebCommon), "Start")]
 [assembly: WebActivator.ApplicationShutdownMethodAttribute(typeof(crisicheckinweb.App_Start.NinjectWebCommon), "Stop")]
@@ -75,6 +76,7 @@ namespace crisicheckinweb.App_Start
             kernel.Bind<IVolunteerTypeService>().To<VolunteerTypesService>().InRequestScope();
             kernel.Bind<IMessageService>().To<MessageService>().InRequestScope();
             kernel.Bind<IMessageSender>().To<SmtpMessageSender>().InRequestScope();
+            kernel.Bind<IMessageSender>().To<SMSMessageSender>().InRequestScope();
             kernel.Bind<MailAddress>()
                 .ToConstant(new MailAddress(ConfigurationManager.AppSettings["smtp.fromaddress"], ConfigurationManager.AppSettings["smtp.fromname"]))
                 .WhenInjectedInto<SmtpMessageSender>();
@@ -96,6 +98,11 @@ namespace crisicheckinweb.App_Start
 #endif
                 })
                 .InRequestScope();
+            kernel.Bind<string>()
+                .ToConstant(ConfigurationManager.AppSettings["SMS.fromphone"])
+                .WhenInjectedInto<SMSMessageSender>();
+            kernel.Bind<Func<TwilioRestClient>>()
+                .ToMethod(c => () => new TwilioRestClient(ConfigurationManager.AppSettings["twilio.account.sid"], ConfigurationManager.AppSettings["twilio.auth.token"]));
         }
     }
 }

@@ -17,6 +17,9 @@ namespace Services
         {
             foreach (var messageSender in _messageSenders)
             {
+                if (message.IsSMSMessage && !(messageSender is SMSMessageSender))
+                    continue;
+
                 messageSender.SendMessage(message, recipients, senderDisplayName);
             }
         }
