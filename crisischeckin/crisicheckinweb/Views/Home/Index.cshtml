@@ -74,7 +74,7 @@
     </tr>
     <tr>
       <td>@Html.DropDownListFor(m => m.SelectedDisasterId, new SelectList(Model.Disasters, "Id", "Name", Model.SelectedDisasterId), "-- Choose One --", new { @class = "form-control", @id = "disasterList" })</td>
-      <td>@Html.DropDownListFor(m => m.SelectedClusterId, Enumerable.Empty<SelectListItem>(), new { @class = "form-control", @id="activityList"})</td>
+      <td>@Html.DropDownListFor(m => m.SelectedClusterId, new SelectList(Model.DisasterClusters, "Cluster.Id", "Cluster.Name", Model.SelectedClusterId), new { @class = "form-control", @id="activityList"})</td>
       <td>@Html.TextBoxFor(m => m.SelectedStartDate, new { id = "dp_startDate", @class = "form-control" })</td>
       <td>@Html.TextBoxFor(m => m.SelectedEndDate, new { id = "dp_endDate", @class = "form-control" })</td>
       <td>
@@ -158,7 +158,7 @@ else
                       $("#activityList").html(""); // clear before appending new list 
                       $.each(disasterClusters, function (i, disasterCluster) {
                           $("#activityList").append(
-                              $('<option></option>').val(disasterCluster).html(disasterCluster.Cluster.Name));
+                              $('<option></option>').val(disasterCluster.Cluster.Id).html(disasterCluster.Cluster.Name));
                       });
                   }
               });

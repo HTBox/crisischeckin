@@ -118,6 +118,12 @@ namespace crisicheckinweb.Controllers
             modelToReturn.SelectedEndDate = model.SelectedEndDate;
             modelToReturn.SelectedClusterId = model.SelectedClusterId;
 
+            if (model.SelectedDisasterId != 0)
+            {
+                modelToReturn.DisasterClusters
+                    = _disasterClusterSvc.GetClustersForADisaster(model.SelectedDisasterId);
+            }
+
             return View("Index", modelToReturn);
         }
 
@@ -155,6 +161,12 @@ namespace crisicheckinweb.Controllers
                 model.SelectedStartDate = viewModel.SelectedStartDate;
                 model.SelectedEndDate = viewModel.SelectedEndDate;
                 model.SelectedClusterId = viewModel.SelectedClusterId;
+
+                if (model.SelectedDisasterId != 0)
+                {
+                    model.DisasterClusters
+                        = _disasterClusterSvc.GetClustersForADisaster(model.SelectedDisasterId);
+                }
             }
 
             return model;
