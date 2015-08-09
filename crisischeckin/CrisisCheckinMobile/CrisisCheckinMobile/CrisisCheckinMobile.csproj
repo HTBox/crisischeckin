@@ -50,7 +50,7 @@
     <Compile Include="SaveLoad\ISaveAndLoad.cs" />
     <Compile Include="App.cs" />
     <Compile Include="ViewModels\CommitmentViewModel.cs" />
-    <Compile Include="ViewModels\DisasterListDto.cs" />
+    <Compile Include="ViewModels\DisasterListViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Net.Http">
@@ -98,7 +98,6 @@
   </Target>
   -->
   <ItemGroup>
-    <Folder Include="Dtos\" />
     <Folder Include="ViewModels\" />
   </ItemGroup>
 </Project>
