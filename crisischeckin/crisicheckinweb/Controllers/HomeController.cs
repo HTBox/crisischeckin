@@ -140,9 +140,10 @@ namespace crisicheckinweb.Controllers
             var commitments = (person != null) ?
                 _volunteerSvc.RetrieveCommitments(person.Id, true) :
                 new List<Commitment>().AsEnumerable();
+            var commitmentForToday = commitments.FirstOrDefault(x => x.StartDate <= DateTime.Today && DateTime.Today <= x.EndDate);
 
-            var clusterCoordinators = // TODO (person != null && person.ClusterId.HasValue) ?
-                // _clusterCoordinatorService.GetAllCoordinatorsForCluster(person.ClusterId.Value).ToList() :
+            var clusterCoordinators =  (commitmentForToday != null && commitmentForToday.ClusterId.HasValue) ?
+                 _clusterCoordinatorService.GetAllCoordinatorsForCluster(commitmentForToday.ClusterId.Value).ToList() :
                 new List<ClusterCoordinator>().AsEnumerable();
 
             var model = new VolunteerViewModel

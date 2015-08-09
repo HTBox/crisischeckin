@@ -116,6 +116,11 @@ namespace crisicheckinweb
             }
 
             context.SaveChanges();
+
+            context.DisasterClusters.Add(new DisasterCluster { DisasterId = 1, ClusterId = 1 });
+            context.DisasterClusters.Add(new DisasterCluster { DisasterId = 2, ClusterId = 2 });
+
+            context.SaveChanges();
         }
     }
 }
