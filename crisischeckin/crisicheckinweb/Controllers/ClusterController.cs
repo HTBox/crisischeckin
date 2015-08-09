@@ -60,7 +60,6 @@ namespace crisicheckinweb.Controllers
         [HttpPost]
         public ActionResult Create(Cluster cluster)
         {
-
             var newCluster = new Cluster
             {
                 Name = cluster.Name,
@@ -74,6 +73,12 @@ namespace crisicheckinweb.Controllers
             //{
             //    _clusterSvc.Update(cluster);
             //}
+            var id = Request.QueryString["DisasterId"];
+
+            if (id != null)
+            {
+                return Redirect("/Disaster/Edit/" + id);
+            }
             return View("List", _clusterSvc.GetList()
                 .Select(CreateViewModel));
         }
