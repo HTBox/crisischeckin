@@ -53,7 +53,7 @@ namespace crisicheckinweb.Controllers
                 return View("CreateMessage", model);
             }
             var sender = model.DisasterName + " - Coordinator";
-            var recipientCriterion = new RecipientCriterion(model.DisasterId, model.ClusterId, model.ClusterCoordinatorsOnly, model.CheckedInOnly);
+            var recipientCriterion = new RecipientCriterion(model.DisasterId, model.SelectedClusterIds, model.ClusterCoordinatorsOnly, model.CheckedInOnly);
             var message = new Message(model.Subject, model.Message);
             _messageSvc.SendMessageToDisasterVolunteers(message, recipientCriterion, sender);
 

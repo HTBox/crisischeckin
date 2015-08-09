@@ -6,38 +6,45 @@
 }
 
 <div class="col-lg-6 col-sm-12 col-xs-12 col-md-6">
-@using (Html.BeginForm("SendMessageToVolunteersByDisaster", "Volunteer"))
-{
-    @Html.HiddenFor(m => m.DisasterId)
+    @using (Html.BeginForm("SendMessageToVolunteersByDisaster", "Volunteer"))
+    {
+        @Html.HiddenFor(m => m.DisasterId)
 
-    <h3>Send Message To Volunteers: @Model.DisasterName</h3>
-    @Html.ValidationSummary()
+        <h3>Send Message To Volunteers: @Model.DisasterName</h3>
+        @Html.ValidationSummary()
 
-    <div class="form-group required">
-        @Html.LabelFor(m => m.Subject)
-        @Html.TextBoxFor(m => m.Subject, new {@class = "form-control"})
-    </div>
-    <div class="form-group required">
-        @Html.LabelFor(m => m.ClusterId)
-        @Html.DropDownListFor(m => m.ClusterId, new SelectList(Model.Clusters, "Id", "Name", Model.ClusterId), "All Clusters", new {@class = "form-control"})
-    </div>
-    <div class="form-group">
-        @Html.CheckBoxFor(m => m.ClusterCoordinatorsOnly)
-        @Html.LabelFor(m => m.ClusterCoordinatorsOnly)
-    </div>
-    <div class="form-group">
-        @Html.CheckBoxFor(m => m.CheckedInOnly)
-        @Html.LabelFor(m => m.CheckedInOnly)
-    </div>
-    <div class="form-group required">
-        @Html.LabelFor(m => m.Message)
-        @Html.TextAreaFor(m => m.Message, 25, 76, new {@class = "form-control"})
-    </div>
+        <div class="form-group required">
+            @Html.LabelFor(m => m.Subject)
+            @Html.TextBoxFor(m => m.Subject, new { @class = "form-control" })
+        </div>
+        <div class="form-group required">
+            @Html.LabelFor(m => m.ClusterId)
+            @Html.ListBoxFor(m => m.SelectedClusterIds,
+                new MultiSelectList(@Model.Clusters, "Id", "Name", @Model.SelectedClusterIds),
+                new { @class = "form-control" })
 
-    <div class="form-group">
-        <input type="submit" value="Send" class="btn btn-success" />
-        <span id="warningMessage"></span>
-    </div>
+            @*@Html.ListBoxFor(x => x.IndexList,
+                                            new MultiSelectList(@Model.IndexList, "Id", "Name", @Model.SelectedIndexes),
+                                            new { id = "listindexes" })
+            @Html.DropDownListFor(m => m.ClusterId, new SelectList(Model.Clusters, "Id", "Name", Model.ClusterId), "All Clusters", new { @class = "form-control" })*@
+        </div>
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.ClusterCoordinatorsOnly)
+            @Html.LabelFor(m => m.ClusterCoordinatorsOnly)
+        </div>
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.CheckedInOnly)
+            @Html.LabelFor(m => m.CheckedInOnly)
+        </div>
+        <div class="form-group required">
+            @Html.LabelFor(m => m.Message)
+            @Html.TextAreaFor(m => m.Message, 25, 76, new { @class = "form-control" })
+        </div>
+
+        <div class="form-group">
+            <input type="submit" value="Send" class="btn btn-success" />
+            <span id="warningMessage"></span>
+        </div>
     }
 </div>
 
