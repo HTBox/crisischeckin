@@ -10,6 +10,7 @@ namespace Services
     public class ClusterService : ICluster
     {
         private readonly IDataService _svc;
+
         public ClusterService(IDataService service)
         {
             if (service == null) { throw new ArgumentNullException("service"); }
@@ -23,14 +24,28 @@ namespace Services
 
         public void Create(Cluster cluster)
         {
-            if (cluster == null) throw new ArgumentNullException("cluster");
-            if (String.IsNullOrWhiteSpace(cluster.Name)) throw new ArgumentNullException("cluster");
-            //if (_dataService.Disasters.Any(d => d.Name == disaster.Name)) throw new DisasterAlreadyExistsException();
-            if (_svc.Clusters.Any(d => d.Name == cluster.Name)) throw new ArgumentNullException("cluster already exists");
-            // Why should disaster name be unique?
-
+            if (cluster == null) throw new ArgumentNullException("cluster not passed to be created");
+            if (String.IsNullOrWhiteSpace(cluster.Name)) throw new ArgumentNullException("cluster name for cluster to be created can not be null");
 
             _svc.AddCluster(cluster);
+        }
+
+
+        public void Save(Cluster cluster)
+        {
+            if (cluster == null) throw new ArgumentNullException("cluster not passed to be updated");
+            if (String.IsNullOrWhiteSpace(cluster.Name)) throw new ArgumentNullException("cluster name for cluster to be updated can not be null");
+
+            _svc.UpdateCluster(cluster);
+        }
+
+        public void Remove(Cluster cluster)
+        {
+            if (cluster == null) throw new ArgumentNullException("cluster not passed to be deleted");
+            if (String.IsNullOrWhiteSpace(cluster.Name)) throw new ArgumentNullException("cluster name for cluster to be deleted can not be null");
+
+            _svc.RemoveCluster(cluster);
+
         }
     }
 }

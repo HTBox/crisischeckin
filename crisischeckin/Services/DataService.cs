@@ -125,6 +125,30 @@ namespace Services
             context.SaveChanges();
         }
 
+        public void RemoveCluster(Cluster cluster)
+        {
+            // attach the cluster to delete to the context, if needed. Otherwise the remove/delete won't work
+            var cluster2Del = context.Clusters.Local.FirstOrDefault(cc => cc.Id == cluster.Id);
+            if (cluster2Del == null)
+                context.Clusters.Attach(cluster);
+
+            context.Clusters.Remove(cluster);
+            context.SaveChanges();
+        }
+
+        public Cluster UpdateCluster(Cluster updatedCluster)
+        {
+            var result = context.Clusters.Find(updatedCluster.Id);
+
+            if (result == null)
+                throw new ClusterNotFoundException();
+
+            result.Name = updatedCluster.Name;
+
+            context.SaveChanges();
+
+            return result;
+        }
         public Disaster UpdateDisaster(Disaster updatedDisaster)
         {
             var result = context.Disasters.Find(updatedDisaster.Id);
@@ -163,6 +187,7 @@ namespace Services
             context.SaveChanges();
         }
 
+       
         public void AppendClusterCoordinatorLogEntry(ClusterCoordinatorLogEntry clusterCoordinatorLogEntry)
         {
             context.ClusterCoordinatorLogEntries.Add(clusterCoordinatorLogEntry);
