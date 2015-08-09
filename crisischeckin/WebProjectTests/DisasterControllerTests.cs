@@ -86,7 +86,13 @@ namespace WebProjectTests
                 It.IsAny<Disaster>())).Throws(new DisasterAlreadyExistsException());
 
             // Act
-            var viewModel = new DisasterViewModel { Id = -1, Name = "test", IsActive = true };
+            var viewModel = new DisasterViewModel 
+            { 
+                Id = -1, 
+                Name = "test", 
+                IsActive = true ,
+                SelectedDisasterClusters = (new System.Collections.Generic.List<SelectedDisasterCluster>() { new SelectedDisasterCluster { Id = 1, Name = "Test", Selected = true }, }),
+            };
             var response = _controllerUnderTest.Create(viewModel);
 
             // Assert
