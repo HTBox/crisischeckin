@@ -121,6 +121,13 @@ namespace crisicheckinweb.Controllers
             return View("Index", modelToReturn);
         }
 
+        public ActionResult LoadDisasterClusterList(int disasterId)
+        {
+            var disasterClusters = _disasterClusterSvc.GetClustersForADisaster(disasterId);
+
+            return Json(disasterClusters, JsonRequestBehavior.AllowGet);
+        }
+
         private VolunteerViewModel GetDefaultViewModel(VolunteerViewModel viewModel = null)
         {
             var person = _volunteerSvc.FindByUserId(_webSecurity.CurrentUserId);
@@ -135,7 +142,7 @@ namespace crisicheckinweb.Controllers
             var model = new VolunteerViewModel
             {
                 Disasters = _disasterSvc.GetActiveList(),
-                DisasterClusters = _disasterClusterSvc.GetClustersForADisaster(1), //TODO: Need to change to get diaster specific list
+                DisasterClusters = _disasterClusterSvc.GetClustersForADisaster(0), //TODO: Need to change to get diaster specific list
                 MyCommitments = commitments,
                 VolunteerTypes = _volunteerTypes.GetList(),
                 Person = person,
