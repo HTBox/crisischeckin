@@ -3,6 +3,7 @@ using Services.Interfaces;
 using System;
 using System.Web.Mvc;
 using crisicheckinweb.ViewModels;
+using Common;
 
 namespace crisicheckinweb.Controllers
 {
@@ -52,9 +53,17 @@ namespace crisicheckinweb.Controllers
                 PopulateSendMessageViewModel(model);
                 return View("CreateMessage", model);
             }
+            else if (model.IsSMSMessage && model.Message.Length > Constants.TwilioMessageLength)
+            {
+                PopulateSendMessageViewModel(model);
+                ModelState["Message"].Errors.Add(string.Format("The message cannot have more than {0} characters when submiting as a SMS.", Constants.TwilioMessageLength));
+                return View("CreateMessage", model);
+            }
+
             var sender = model.DisasterName + " - Coordinator";
             var recipientCriterion = new RecipientCriterion(model.DisasterId, model.SelectedClusterIds, model.ClusterCoordinatorsOnly, model.CheckedInOnly);
-            var message = new Message(model.Subject, model.Message);
+            var message = new Message(model.Subject, model.Message) { IsSMSMessage = model.IsSMSMessage };
+
             _messageSvc.SendMessageToDisasterVolunteers(message, recipientCriterion, sender);
 
             return View(model);

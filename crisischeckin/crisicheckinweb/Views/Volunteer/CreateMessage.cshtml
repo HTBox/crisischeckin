@@ -1,4 +1,5 @@
-﻿@using Microsoft.Web.Mvc
+﻿@using Common
+@using Microsoft.Web.Mvc
 @model crisicheckinweb.ViewModels.SendMessageToAllVolunteersByDisasterViewModel
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
@@ -22,11 +23,6 @@
             @Html.ListBoxFor(m => m.SelectedClusterIds,
                 new MultiSelectList(@Model.Clusters, "Id", "Name", @Model.SelectedClusterIds),
                 new { @class = "form-control" })
-
-            @*@Html.ListBoxFor(x => x.IndexList,
-                                            new MultiSelectList(@Model.IndexList, "Id", "Name", @Model.SelectedIndexes),
-                                            new { id = "listindexes" })
-            @Html.DropDownListFor(m => m.ClusterId, new SelectList(Model.Clusters, "Id", "Name", Model.ClusterId), "All Clusters", new { @class = "form-control" })*@
         </div>
         <div class="form-group">
             @Html.CheckBoxFor(m => m.ClusterCoordinatorsOnly)
@@ -36,12 +32,16 @@
             @Html.CheckBoxFor(m => m.CheckedInOnly)
             @Html.LabelFor(m => m.CheckedInOnly)
         </div>
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.IsSMSMessage)
+            @Html.LabelFor(m => m.IsSMSMessage)
+        </div>
         <div class="form-group required">
             @Html.LabelFor(m => m.Message)
             @Html.TextAreaFor(m => m.Message, 25, 76, new { @class = "form-control" })
         </div>
 
-        <div class="form-group">
+        <div class="form-group pull-right">
             <input type="submit" value="Send" class="btn btn-success" />
             <span id="warningMessage"></span>
         </div>
@@ -51,10 +51,14 @@
 @section scripts
 {
     <script type="text/javascript">
-        (function ($) {
-            $('#Message').bind('keyup', function () {
+        (function($) {
+            $('#Message').bind('keyup', function() {
                 ValidateMessageLength();
-            })
+            });
+
+            $('#IsSMSMessage').click(function () {
+                ValidateMessageLength();
+            });
 
             ValidateMessageLength();
 
@@ -63,17 +67,40 @@
         function ValidateMessageLength() {
 
             var messageLength = $('#Message').val().length;
-            if (messageLength > 600) {
-                $('#warningMessage').text(
-                    'The message can only be 640 characters long. It is currently ' + messageLength);
-                if (messageLength > 640) {
-                    $('#warningMessage').css("color", "red");
+            var isSMS = $('#IsSMSMessage').prop('checked');
+            var errorMessage = "";
+            var isValid = true;
+            var smsMaxLength = parseInt('@Constants.TwilioMessageLength');
+            if (isSMS === true) {
+                if (messageLength > smsMaxLength - 30) {
+                    errorMessage = 'The message can only be ' + smsMaxLength + ' characters long. It is currently ' + messageLength;
+                    if (messageLength > smsMaxLength) {
+                        isValid = false;
+                    } else {
+                        isValid = true;
+                    }
                 } else {
-                    $('#warningMessage').css("color", "black");
+                    errorMessage = "";
                 }
             } else {
-                $('#warningMessage').text('');
+                if (messageLength > 600) {
+                    errorMessage = 'The message can only be 640 characters long. It is currently ' + messageLength;
+                    if (messageLength > 640) {
+                        isValid = false;
+                    } else {
+                        isValid = true;
+                    }
+                } else {
+                    errorMessage = "";
+                }
             }
+
+            $('#warningMessage').text(errorMessage);
+            if (isValid === true)
+                $('#warningMessage').css("color", "black");
+            else
+                $('#warningMessage').css("color", "red");
+
         }
     </script>
 }

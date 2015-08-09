@@ -27,6 +27,8 @@ namespace crisicheckinweb.ViewModels
         public bool ClusterCoordinatorsOnly { get; set; }
         [Display(Name = "Send to checked-in volunteers only")]
         public bool CheckedInOnly { get; set; }
+        [Display(Name = "Send Message via SMS")]
+        public bool IsSMSMessage { get; set; }
 
         public IEnumerable<Cluster> Clusters { get; set; }
         public IEnumerable<int> SelectedClusterIds { get; set; }
