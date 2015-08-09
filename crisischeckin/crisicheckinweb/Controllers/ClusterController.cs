@@ -35,27 +35,6 @@ namespace crisicheckinweb.Controllers
             return View(newCluster);
         }
 
-        // GET: Cluster Edit
-        public ActionResult Edit(int id)
-        {
-           var editedCluster = _clusterSvc.Get(id);
-
-           return View("Create", editedCluster);
-        }
-
-        // POST: Cluster/Create
-        [HttpPost]
-        public ActionResult Edit(Cluster cluster)
-        {
-
-            
-            //    _clusterSvc.Update(cluster);
-           
-            return View("List", _clusterSvc.GetList()
-                .Select(CreateViewModel));
-        }
-
-
         // POST: Cluster/Create
         [HttpPost]
         public ActionResult Create(Cluster cluster)
@@ -70,13 +49,48 @@ namespace crisicheckinweb.Controllers
             {
                 _clusterSvc.Create(cluster);
             }
-            //else
-            //{
-            //    _clusterSvc.Update(cluster);
-            //}
+            else
+            {
+                _clusterSvc.Update(cluster);
+            }
+
             return View("List", _clusterSvc.GetList()
                 .Select(CreateViewModel));
         }
+
+        // GET: Cluster Update
+        public ActionResult Update(int id)
+        {
+           var editedCluster = _clusterSvc.Get(id);
+
+           return View("Create", editedCluster);
+        }
+
+        // POST: Cluster/Update
+        [HttpPost]
+        public ActionResult Update(Cluster cluster)
+        {
+
+            // to do : if (String.IsNullOrWhiteSpace(cluster.Name)) -- if blank name is returned warn user 
+            //if (String.IsNullOrWhiteSpace(cluster.Name)) ModelState.AddModelError("Name", "Cluster Name can not be blank!");
+             _clusterSvc.Update(cluster);
+           
+            return View("List", _clusterSvc.GetList()
+                .Select(CreateViewModel));
+        }
+
+
+        // GET: Cluster Delete
+        public ActionResult Delete(Cluster cluster)
+        {
+            var removeCluster = _clusterSvc.Get(cluster.Id);
+            _clusterSvc.Remove(removeCluster);
+
+            return View("List", _clusterSvc.GetList()
+                .Select(CreateViewModel));
+        }
+
+
 
         private static ClusterViewModel CreateViewModel(Cluster cluster)
         {
