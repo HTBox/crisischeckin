@@ -71,9 +71,13 @@ namespace crisicheckinweb.Controllers
         public ActionResult Update(Cluster cluster)
         {
 
-            // to do : if (String.IsNullOrWhiteSpace(cluster.Name)) -- if blank name is returned warn user 
-            //if (String.IsNullOrWhiteSpace(cluster.Name)) ModelState.AddModelError("Name", "Cluster Name can not be blank!");
-             _clusterSvc.Update(cluster);
+            if (String.IsNullOrWhiteSpace(cluster.Name))
+            {
+                ModelState.AddModelError("Name", "Cluster name has to be set!");
+                return View("Create", cluster);
+            }
+
+           _clusterSvc.Update(cluster);
            
             return View("List", _clusterSvc.GetList()
                 .Select(CreateViewModel));
