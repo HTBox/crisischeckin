@@ -33,6 +33,7 @@
                         <td>
                             @Html.DisplayFor(s => s.SelectedDisasterClusters[i].Name)
                             @Html.HiddenFor(s => s.SelectedDisasterClusters[i].Id)
+                            @Html.HiddenFor(s => s.SelectedDisasterClusters[i].Name)
                         </td>
                     </tr>
                 }

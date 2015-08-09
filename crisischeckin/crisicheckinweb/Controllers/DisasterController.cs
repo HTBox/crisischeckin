@@ -59,6 +59,12 @@ namespace crisicheckinweb.Controllers
             {
                 try
                 {
+                    if (!model.SelectedDisasterClusters.Exists(x => x.Selected == true))
+                    {
+                        ModelState.AddModelError("Name", "You have to include at least one Cluster!");
+                        return View("Create", model);
+                    }
+
                     var disaster = new Disaster
                     {
                         Id = model.Id,
