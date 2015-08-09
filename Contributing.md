@@ -59,4 +59,4 @@ A bug in Visual Studio 2015 RC's handling of EF can cause the `Update-Datebase` 
 Jumping in
 ====
 
-Once you've gotten the projet running in your local environment, check out these issues https://github.com/HTBox/crisischeckin/issues?labels=jump-in&state=open any of which would be a great place to get started helping our project.
+Once you've gotten the project running in your local environment, check out these issues https://github.com/HTBox/crisischeckin/issues?labels=jump-in&state=open any of which would be a great place to get started helping our project.
