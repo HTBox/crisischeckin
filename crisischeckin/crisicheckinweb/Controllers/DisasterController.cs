@@ -72,6 +72,18 @@ namespace crisicheckinweb.Controllers
                         IsActive = model.IsActive
                     };
 
+                    var newClusterList = (from selectedList in model.SelectedDisasterClusters
+                                          join clusterList in _clusterSvc.GetList()
+                                          on selectedList.Id equals clusterList.Id into outerList
+                                          from clusterList in outerList.DefaultIfEmpty()
+                                          where clusterList == null
+                                          select new Cluster { Name = selectedList.Name, Id = selectedList.Id}).ToList();
+
+                    foreach (var item in newClusterList)
+                    {
+                        _clusterSvc.Create(item);
+                    }
+
                     if (model.Id == -1)
                     {
                         _disasterSvc.Create(disaster);
@@ -82,7 +94,14 @@ namespace crisicheckinweb.Controllers
                         {
                             if (item.Selected == true)
                             {
-                                _disasterClusterSvc.Create(new DisasterCluster { Id = -1, DisasterId = id, ClusterId = item.Id });
+                                if (newClusterList.Exists(x => x.Name == item.Name))
+                                {
+                                    _disasterClusterSvc.Create(new DisasterCluster { Id = -1, DisasterId = id, Cluster = newClusterList.Find(x => x.Name == item.Name) });
+                                }
+                                else
+                                {
+                                    _disasterClusterSvc.Create(new DisasterCluster { Id = -1, DisasterId = id, ClusterId = item.Id });
+                                }
                             }
                         }
                     }
@@ -92,12 +111,16 @@ namespace crisicheckinweb.Controllers
 
                         var disasterClusterList = _disasterClusterSvc.GetClustersForADisaster(model.Id);
 
-
+                                       
                         foreach (var item in model.SelectedDisasterClusters)
                         {
                             if (item.Selected == true)
                             {
-                                if(!disasterClusterList.Exists(x => x.ClusterId == item.Id))
+                                if (newClusterList.Exists(x => x.Name == item.Name))
+                                {
+                                    _disasterClusterSvc.Create(new DisasterCluster { Id = -1, DisasterId = model.Id, Cluster = newClusterList.Find(x => x.Name == item.Name) });
+                                }
+                                else
                                 {
                                     _disasterClusterSvc.Create(new DisasterCluster { Id = -1, DisasterId = model.Id, ClusterId = item.Id });
                                 }
