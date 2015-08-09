@@ -1,5 +1,5 @@
-using System.Linq;
 using Models;
+using System.Linq;
 
 namespace Services.Interfaces
 {
@@ -14,14 +14,20 @@ namespace Services.Interfaces
         IQueryable<User> Users { get; }
         IQueryable<Cluster> Clusters { get; }
         IQueryable<VolunteerType> VolunteerTypes { get; }
+        IQueryable<DisasterCluster> DisasterClusters { get; }
         IQueryable<ClusterCoordinator> ClusterCoordinators { get; }
         IQueryable<ClusterCoordinatorLogEntry> ClusterCoordinatorLogEntries { get; }
         Person AddPerson(Person newPerson);
         Person UpdatePerson(Person updatedPerson);
         void AddCommitment(Commitment newCommitment);
+        void AddCluster(Cluster newCluster);
+        void RemoveCluster(Cluster clusterToDelete);
+        Cluster UpdateCluster(Cluster updatedCluster);
         void RemoveCommitmentById(int id);
         void AddDisaster(Disaster newDisaster);
         Disaster UpdateDisaster(Disaster updatedDisaster);
+        void AddDisasterCluster(DisasterCluster newDisasterCluster);
+        void RemoveDisasterCluster(DisasterCluster newDisasterCluster);
         void SubmitChanges();
         ClusterCoordinator AddClusterCoordinator(ClusterCoordinator clusterCoordinator);
         void AppendClusterCoordinatorLogEntry(ClusterCoordinatorLogEntry clusterCoordinatorLogEntry);

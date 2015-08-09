@@ -13,6 +13,9 @@
 
 <h3>List of Disasters</h3>
 
+@Html.ActionLink("Cluster List", "../Cluster/List", new { }, new { @class = "btn btn-black pull-right" })
+
+@Html.ActionLink("Add New Cluster", "../Cluster/Create", new { }, new { @class = "btn btn-black pull-right" }) 
 @Html.ActionLink("Add New Disaster", "Edit", new { id = -1 }, new { @class = "btn btn-black pull-right" })
 <br />
 <br />

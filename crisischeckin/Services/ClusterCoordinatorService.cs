@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Data.Entity;
-using Models;
+﻿using Models;
 using Services.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
 
 namespace Services
 {
@@ -24,7 +24,7 @@ namespace Services
             var doesCoordinatorExist = DoesCoordinatorExist(disasterId, clusterId, personId);
             if (!doesCoordinatorExist)
                 AddClusterCoordinator(disasterId, clusterId, personId);
-           
+
             var result = _dataService.ClusterCoordinators.Include(x => x.Person).Include(x => x.Disaster).Include(x => x.Cluster)
                 .Where(x => x.DisasterId == disasterId
                             && x.ClusterId == clusterId
@@ -77,7 +77,7 @@ namespace Services
                 && x.PersonId == personId);
         }
 
-        ClusterCoordinator AddClusterCoordinator(int disasterId, int clusterId, int personId)
+        private ClusterCoordinator AddClusterCoordinator(int disasterId, int clusterId, int personId)
         {
             return _dataService.AddClusterCoordinator(new ClusterCoordinator
                                                      {
@@ -104,7 +104,7 @@ namespace Services
         }
 
         public void UnassignClusterCoordinator(ClusterCoordinator clusterCoordinator)
-        {           
+        {
             var clusterCoordinatorLogEntry = new ClusterCoordinatorLogEntry
                                              {
                                                  Event = ClusterCoordinatorEvents.Unassigned,
@@ -222,15 +222,13 @@ namespace Services
                             {
                                 Id = p.Id,
                                 FirstName = p.FirstName,
-                                LastName = p.LastName,
-                                ClusterId = p.ClusterId
+                                LastName = p.LastName
                             }).ToList();
             return result.Select(p => new Person
                 {
                     Id = p.Id,
                     FirstName = p.FirstName,
-                    LastName = p.LastName,
-                    ClusterId = p.ClusterId
+                    LastName = p.LastName
                 }).ToList();
         }
     }

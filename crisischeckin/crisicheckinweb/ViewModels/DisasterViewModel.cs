@@ -1,7 +1,8 @@
-﻿using System;
+﻿using Models;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using Models;
 
 namespace crisicheckinweb.ViewModels
 {
@@ -16,5 +17,7 @@ namespace crisicheckinweb.ViewModels
 
         [DisplayName("Currently active")]
         public bool IsActive { get; set; }
+
+        public List<SelectedDisasterCluster> SelectedDisasterClusters { get; set; }
     }
 }

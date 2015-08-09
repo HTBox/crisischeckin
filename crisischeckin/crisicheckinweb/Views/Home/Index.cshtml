@@ -21,7 +21,7 @@
             <dt>Location</dt>
             <dd>@commitmentForToday.VolunteerType.Name</dd>
             <dt>Cluster</dt>
-            <dd>@commitmentForToday.Person.Cluster.Name</dd>
+            <dd>@commitmentForToday.Cluster.Name</dd>
             <dt>Coordinators</dt>
             <dd>
               @foreach (var clusterCoordinator in Model.ClusterCoordinators.Where(cc => cc.DisasterId == commitmentForToday.DisasterId))
@@ -66,13 +66,15 @@
   <table class="table">
     <tr>
       <th>Volunteer for Disaster</th>
+      <th>Activity</th>
       <th>Start Date</th>
       <th>End Date</th>
       <th>Location</th>
       <th></th>
     </tr>
     <tr>
-      <td>@Html.DropDownListFor(m => m.SelectedDisasterId, new SelectList(Model.Disasters, "Id", "Name", Model.SelectedDisasterId), "-- Choose One --", new { @class = "form-control" })</td>
+      <td>@Html.DropDownListFor(m => m.SelectedDisasterId, new SelectList(Model.Disasters, "Id", "Name", Model.SelectedDisasterId), "-- Choose One --", new { @class = "form-control", @id = "disasterList" })</td>
+      <td>@Html.DropDownListFor(m => m.SelectedClusterId, new SelectList(Model.DisasterClusters, "Cluster.Id", "Cluster.Name", Model.SelectedClusterId), new { @class = "form-control", @id="activityList"})</td>
       <td>@Html.TextBoxFor(m => m.SelectedStartDate, new { id = "dp_startDate", @class = "form-control" })</td>
       <td>@Html.TextBoxFor(m => m.SelectedEndDate, new { id = "dp_endDate", @class = "form-control" })</td>
       <td>
@@ -94,10 +96,11 @@
 }
 else
 {
-  <h3>My @Model.Person.Cluster.Name Commitments</h3>
+  <h3>My Commitments</h3>
   <table class="table table-striped table-bordered">
     <tr class="ht-header">
       <th>Disaster Name</th>
+      <th>Activity</th>
       <th>Start Date</th>
       <th>End Date</th>
       <th>Location</th>
@@ -110,6 +113,7 @@ else
     {
       <tr>
         <td>@comm.Disaster.Name</td>
+        <td>@comm.Cluster.Name</td>
         <td>@comm.StartDate.ToShortDateString()</td>
         <td>@comm.EndDate.ToShortDateString()</td>
         <td>@comm.VolunteerType.Name</td>
@@ -141,6 +145,28 @@ else
       function updateEndDate(dateText) {
         $('#dp_endDate').datepicker('option', 'minDate', dateText);
       }
+
+      $(function () {
+          $('select#disasterList').change(function () {
+              var disasterId = $('#disasterList').val();
+              $.ajax({
+                  url: '/Home/LoadDisasterClusterList',
+                  type: "GET",
+                  dataType: "JSON",
+                  data: { disasterId: disasterId } ,
+                  success: function (disasterClusters) {
+                      $("#activityList").html(""); // clear before appending new list 
+                      $.each(disasterClusters, function (i, disasterCluster) {
+                          $("#activityList").append(
+                              $('<option></option>').val(disasterCluster.Cluster.Id).html(disasterCluster.Cluster.Name));
+                      });
+                  }
+              });
+          });
+      });
+
     })(jQuery);
-  </script>
+    
+      
+    </script>
 }

@@ -17,7 +17,7 @@ namespace Services.UnitTest
         public void Register_NullFirstName()
         {
             VolunteerService service = new VolunteerService(new Mock<IDataService>().Object);
-            service.Register("", "last", "email", "555-333-1111", 1, 1);
+            service.Register("", "last", "email", "555-333-1111", 1);
         }
 
         [Test]
@@ -25,7 +25,7 @@ namespace Services.UnitTest
         public void Register_NullLastName()
         {
             VolunteerService service = new VolunteerService(new Mock<IDataService>().Object);
-            service.Register("first", "", "email", "555-333-1111", 1, 2);
+            service.Register("first", "", "email", "555-333-1111", 2);
         }
 
         [Test]
@@ -33,7 +33,7 @@ namespace Services.UnitTest
         public void Register_NullEmail()
         {
             VolunteerService service = new VolunteerService(new Mock<IDataService>().Object);
-            service.Register("first", "last", "", "555-333-1111", 1, 3);
+            service.Register("first", "last", "", "555-333-1111", 3);
         }
 
         [Test]
@@ -41,15 +41,7 @@ namespace Services.UnitTest
         public void Register_NullPhoneNumber()
         {
             VolunteerService service = new VolunteerService(new Mock<IDataService>().Object);
-            service.Register("first", "last", "email", "", 1, 3);
-        }
-
-        [Test]
-        [ExpectedException(typeof (ArgumentNullException))]
-        public void Register_NullCluster()
-        {
-            VolunteerService service = new VolunteerService(new Mock<IDataService>().Object);
-            service.Register("first", "last", "email", "555-333-1111", 0, 4);
+            service.Register("first", "last", "email", "", 3);
         }
 
         [Test]
@@ -62,22 +54,20 @@ namespace Services.UnitTest
                 FirstName = "Bob",
                 LastName = "Jones",
                 Email = "bob.jones@email.com",
-                PhoneNumber = "555-222-9139",
-                ClusterId = 1
+                PhoneNumber = "555-222-9139"
             };
 
             var moqDataService = new Mock<IDataService>();
             moqDataService.Setup(s => s.AddPerson(It.IsAny<Person>())).Returns(moqPerson);
 
             VolunteerService service = new VolunteerService(moqDataService.Object);
-            Person actual = service.Register("Bob", "Jones", "bob.jones@email.com", "555-222-9139", 1, 5);
+            Person actual = service.Register("Bob", "Jones", "bob.jones@email.com", "555-222-9139", 5);
 
             Assert.AreEqual(1, actual.Id);
             Assert.AreEqual("Bob", actual.FirstName);
             Assert.AreEqual("Jones", actual.LastName);
             Assert.AreEqual("bob.jones@email.com", actual.Email);
             Assert.AreEqual("555-222-9139", actual.PhoneNumber);
-            Assert.AreEqual(1, actual.ClusterId);
         }
 
         [Test]
@@ -91,8 +81,7 @@ namespace Services.UnitTest
                 FirstName = "Cathy",
                 LastName = "Jones",
                 Email = "cathy.jones@email.com",
-                PhoneNumber = "555-222-9139",
-                ClusterId = 1
+                PhoneNumber = "555-222-9139"
             };
 
             List<Person> people = new List<Person>();
@@ -102,38 +91,37 @@ namespace Services.UnitTest
             moqDataService.Setup(s => s.Persons).Returns(people.AsQueryable());
 
             VolunteerService service = new VolunteerService(moqDataService.Object);
-            Person actual = service.Register("Cathy", "Jones", "cathy.jones@email.com", "555-222-9139 ext 33", 1, 6);
+            Person actual = service.Register("Cathy", "Jones", "cathy.jones@email.com", "555-222-9139 ext 33", 6);
 
             Assert.AreEqual("Cathy", actual.FirstName);
             Assert.AreEqual("Jones", actual.LastName);
             Assert.AreEqual("cathy.jones@email.com", actual.Email);
             Assert.AreEqual("555-222-9139 ext 33", actual.PhoneNumber);
-            Assert.AreEqual(1, actual.ClusterId);
         }
 
-		[Test]
-		public void Register_UsernameAvailable()
-		{
-			User moqUser = new User()
-			{
-				Id = 1,
-				UserName = "test123"
-			};
+        [Test]
+        public void Register_UsernameAvailable()
+        {
+            User moqUser = new User()
+            {
+                Id = 1,
+                UserName = "test123"
+            };
 
-			List<User> users = new List<User>();
-			users.Add(moqUser);
+            List<User> users = new List<User>();
+            users.Add(moqUser);
 
-			var moqDataService = new Mock<IDataService>();
-			moqDataService.Setup(s => s.Users).Returns(users.AsQueryable());
+            var moqDataService = new Mock<IDataService>();
+            moqDataService.Setup(s => s.Users).Returns(users.AsQueryable());
 
-			VolunteerService service = new VolunteerService(moqDataService.Object);
-			
-			//test that the username we created is not available.
-			Assert.IsFalse(service.UsernameAvailable("test123"), "Username created for this test should report as not available.");
+            VolunteerService service = new VolunteerService(moqDataService.Object);
+            
+            //test that the username we created is not available.
+            Assert.IsFalse(service.UsernameAvailable("test123"), "Username created for this test should report as not available.");
 
-			//test that a different username is available.
-			Assert.IsTrue(service.UsernameAvailable("test456"), "Username that was not added to our data source should report as available.");
-		}
+            //test that a different username is available.
+            Assert.IsTrue(service.UsernameAvailable("test456"), "Username that was not added to our data source should report as available.");
+        }
 
         [Test]
         public void Register_EmailAlreadyInUse_ReturnFalse()
@@ -181,8 +169,7 @@ namespace Services.UnitTest
                 FirstName = "Cathy",
                 LastName = "Jones",
                 Email = "cathy.jones@email.com",
-                PhoneNumber = "555-222-9139",
-                ClusterId = 1
+                PhoneNumber = "555-222-9139"
             };
 
             List<Person> people = new List<Person>();
@@ -196,14 +183,13 @@ namespace Services.UnitTest
                 Email = "cathy.jones@email.com",
                 FirstName = "Cathy",
                 LastName = "CHANGED",
-                PhoneNumber = "555-222-9139",
-                ClusterId = 1
+                PhoneNumber = "555-222-9139"
             });
 
             VolunteerService service = new VolunteerService(moqDataService.Object);
             var actual = service.UpdateDetails(new Person()
             {
-                Id = 1, UserId = 6, Email = "cathy.jones@email.com", FirstName = "Cathy", LastName = "CHANGED", PhoneNumber = "555-222-9139", ClusterId = 1
+                Id = 1, UserId = 6, Email = "cathy.jones@email.com", FirstName = "Cathy", LastName = "CHANGED", PhoneNumber = "555-222-9139"
             });
 
             // Only Last Name has been updated
@@ -818,8 +804,7 @@ namespace Services.UnitTest
                 FirstName = "Cathy",
                 LastName = "Jones",
                 Email = "cathy.jones@email.com",
-                PhoneNumber = "555-222-9139",
-                ClusterId = 1
+                PhoneNumber = "555-222-9139"
             };
 
             var personTwo = new Person
@@ -860,7 +845,6 @@ namespace Services.UnitTest
                 LastName = "Jones",
                 Email = "cathy.jones@email.com",
                 PhoneNumber = "555-222-9139",
-                ClusterId = 1
             };
 
             var personTwo = new Person
