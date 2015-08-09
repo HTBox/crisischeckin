@@ -142,7 +142,7 @@ namespace crisicheckinweb.Controllers
             var model = new VolunteerViewModel
             {
                 Disasters = _disasterSvc.GetActiveList(),
-                DisasterClusters = _disasterClusterSvc.GetClustersForADisaster(0), //TODO: Need to change to get diaster specific list
+                DisasterClusters = _disasterClusterSvc.GetClustersForADisaster(0),
                 MyCommitments = commitments,
                 VolunteerTypes = _volunteerTypes.GetList(),
                 Person = person,

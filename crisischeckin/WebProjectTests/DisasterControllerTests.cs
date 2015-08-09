@@ -17,12 +17,20 @@ namespace WebProjectTests
 
         private Mock<IDisaster> _disaster;
 
+        private Mock<IDisasterClusterService> _disasterClusterService;
+
+        private Mock<ICluster> _cluster;
+
         [SetUp]
         public void SetUp()
         {
             _disaster = new Mock<IDisaster>();
 
-            _controllerUnderTest = new DisasterController(_disaster.Object);
+            _cluster = new Mock<ICluster>();
+
+            _disasterClusterService = new Mock<IDisasterClusterService>();
+
+            _controllerUnderTest = new DisasterController(_disaster.Object, _cluster.Object, _disasterClusterService.Object);
         }
 
         [Test]

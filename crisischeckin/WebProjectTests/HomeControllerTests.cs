@@ -22,6 +22,7 @@ namespace WebProjectTests
         private Mock<IWebSecurityWrapper> _webSecurity;
         private Mock<IClusterCoordinatorService> _clusterCoordinatorService;
         private Mock<IVolunteerTypeService> _volunteerTypeService;
+        private Mock<IDisasterClusterService> _disasterClusterService;
 
         [SetUp]
         public void SetUp()
@@ -31,8 +32,9 @@ namespace WebProjectTests
             _webSecurity = new Mock<IWebSecurityWrapper>();
             _clusterCoordinatorService = new Mock<IClusterCoordinatorService>();
             _volunteerTypeService = new Mock<IVolunteerTypeService>();
+            _disasterClusterService = new Mock<IDisasterClusterService>();
 
-            _controllerUnderTest = new HomeController(_disaster.Object, _volunteerService.Object, _webSecurity.Object, _clusterCoordinatorService.Object, _volunteerTypeService.Object);
+            _controllerUnderTest = new HomeController(_disaster.Object, _volunteerService.Object, _webSecurity.Object, _clusterCoordinatorService.Object, _volunteerTypeService.Object, _disasterClusterService.Object);
         }
 
         [Test]
@@ -45,6 +47,7 @@ namespace WebProjectTests
                 It.IsAny<int>(),
                 It.IsAny<DateTime>(),
                 It.IsAny<DateTime>(),
+                It.IsAny<int>(), 
                 It.IsAny<int>())).Throws(new ArgumentException(""));
 
             // Act
@@ -67,6 +70,7 @@ namespace WebProjectTests
                 It.IsAny<int>(),
                 It.IsAny<DateTime>(),
                 It.IsAny<DateTime>(),
+                It.IsAny<int>(),
                 It.IsAny<int>())).Throws(new ArgumentException(""));
 
             _webSecurity.SetupGet(x => x.CurrentUserId).Returns(10);
