@@ -26,11 +26,14 @@
                     <th>Using</th>
                     <th width="300px;">Cluster Name</th>
                 </tr>
-                @foreach (var d in Model.SelectedDisasterClusters)
+                @for (int i = 0; i < Model.SelectedDisasterClusters.Count; i++)
                 {
                     <tr>
-                        <td>@Html.CheckBoxFor(s => d.Selected)</td>
-                        <td>@d.Name</td>
+                        <td>@Html.CheckBoxFor(s => s.SelectedDisasterClusters[i].Selected)</td>
+                        <td>
+                            @Html.DisplayFor(s => s.SelectedDisasterClusters[i].Name)
+                            @Html.HiddenFor(s => s.SelectedDisasterClusters[i].Id)
+                        </td>
                     </tr>
                 }
             </table>

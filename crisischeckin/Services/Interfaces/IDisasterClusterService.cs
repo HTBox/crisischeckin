@@ -10,5 +10,7 @@ namespace Services.Interfaces
     public interface IDisasterClusterService
     {
         List<DisasterCluster> GetClustersForADisaster(int disasterId);
+        void Create(DisasterCluster disasterCluster);
+        void Remove(DisasterCluster disasterCluster);
     }
 }

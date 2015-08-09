@@ -1,18 +1,18 @@
-﻿using System.Linq;
-using Models;
-using Services.Interfaces;
+﻿using Models;
 using Services.Exceptions;
+using Services.Interfaces;
 using System;
+using System.Linq;
 
 namespace Services
 {
     public class DataService : IDataService
     {
-        // This class does not dispose of the context,
-        // because the Ninject library takes care of that for us.
+        // This class does not dispose of the context, because the Ninject library takes care of
+        // that for us.
 
-        readonly CrisisCheckin context;
-        readonly CrisisCheckinMembership membership_context;
+        private readonly CrisisCheckin context;
+        private readonly CrisisCheckinMembership membership_context;
 
         public DataService(CrisisCheckin ctx, CrisisCheckinMembership mctx)
         {
@@ -24,10 +24,12 @@ namespace Services
         {
             get { return context.Clusters; }
         }
+
         public IQueryable<VolunteerType> VolunteerTypes
         {
             get { return context.VolunteerTypes; }
         }
+
         public IQueryable<ClusterCoordinator> ClusterCoordinators
         {
             get { return context.ClusterCoordinators; }
@@ -140,6 +142,18 @@ namespace Services
             return result;
         }
 
+        public void AddDisasterCluster(DisasterCluster newDisasterCluster)
+        {
+            context.DisasterClusters.Add(newDisasterCluster);
+            context.SaveChanges();
+        }
+
+        public void RemoveDisasterCluster(DisasterCluster newDisasterCluster)
+        {
+            context.DisasterClusters.Remove(newDisasterCluster);
+            context.SaveChanges();
+        }
+
         public void SubmitChanges()
         {
             context.SaveChanges();
@@ -154,7 +168,8 @@ namespace Services
 
         public void RemoveClusterCoordinator(ClusterCoordinator clusterCoordinator)
         {
-            // attach the coordinator to delete to the context, if needed. Otherwise the remove/delete won't work
+            // attach the coordinator to delete to the context, if needed. Otherwise the
+            // remove/delete won't work
             var coordinatorToDelete = context.ClusterCoordinators.Local.FirstOrDefault(cc => cc.Id == clusterCoordinator.Id);
             if (coordinatorToDelete == null)
                 context.ClusterCoordinators.Attach(clusterCoordinator);

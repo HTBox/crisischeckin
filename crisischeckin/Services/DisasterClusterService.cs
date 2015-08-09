@@ -22,5 +22,15 @@ namespace Services
         {
             return _svc.DisasterClusters.Where(x => x.DisasterId == disasterId).OrderBy(x => x.Cluster.Name).ToList();
         }
+
+        public void Create(DisasterCluster disasterCluster)
+        {
+            _svc.AddDisasterCluster(disasterCluster);
+        }
+
+        public void Remove(DisasterCluster disasterCluster)
+        {
+            _svc.RemoveDisasterCluster(disasterCluster);
+        }
     }
 }

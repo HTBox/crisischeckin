@@ -1,5 +1,5 @@
-using System.Linq;
 using Models;
+using System.Linq;
 
 namespace Services.Interfaces
 {
@@ -23,6 +23,8 @@ namespace Services.Interfaces
         void RemoveCommitmentById(int id);
         void AddDisaster(Disaster newDisaster);
         Disaster UpdateDisaster(Disaster updatedDisaster);
+        void AddDisasterCluster(DisasterCluster newDisasterCluster);
+        void RemoveDisasterCluster(DisasterCluster newDisasterCluster);
         void SubmitChanges();
         ClusterCoordinator AddClusterCoordinator(ClusterCoordinator clusterCoordinator);
         void AppendClusterCoordinatorLogEntry(ClusterCoordinatorLogEntry clusterCoordinatorLogEntry);
