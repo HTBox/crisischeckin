@@ -31,6 +31,7 @@ namespace crisicheckinweb.Controllers
         // GET: Cluster Create
         public ActionResult Create()
         {
+
             var newCluster = new Cluster();
             return View(newCluster);
         }
@@ -39,6 +40,12 @@ namespace crisicheckinweb.Controllers
         [HttpPost]
         public ActionResult Create(Cluster cluster)
         {
+
+            if (String.IsNullOrWhiteSpace(cluster.Name))
+            {
+                ModelState.AddModelError("Name", "Cluster name has to be set!");
+                return View("Create", cluster);
+            }
 
             var newCluster = new Cluster
             {
