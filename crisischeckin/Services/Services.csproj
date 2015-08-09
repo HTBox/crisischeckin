@@ -94,6 +94,7 @@
     <Compile Include="MessageRecipient.cs" />
     <Compile Include="MessageService.cs" />
     <Compile Include="Message.cs" />
+    <Compile Include="Mocks\TwilioRestClientMock.cs" />
     <Compile Include="RecipientCriterion.cs" />
     <Compile Include="Interfaces\IClusterCoordinatorService.cs" />
     <Compile Include="Interfaces\IAdmin.cs" />

@@ -5,6 +5,7 @@ using System.Web.Http;
 using crisicheckinweb.Infrastructure;
 using Models;
 using Services;
+using Services.Mocks;
 using Twilio;
 
 [assembly: WebActivator.PreApplicationStartMethod(typeof(crisicheckinweb.App_Start.NinjectWebCommon), "Start")]
@@ -102,7 +103,15 @@ namespace crisicheckinweb.App_Start
                 .ToConstant(ConfigurationManager.AppSettings["SMS.fromphone"])
                 .WhenInjectedInto<SMSMessageSender>();
             kernel.Bind<Func<TwilioRestClient>>()
-                .ToMethod(c => () => new TwilioRestClient(ConfigurationManager.AppSettings["twilio.account.sid"], ConfigurationManager.AppSettings["twilio.auth.token"]));
+                .ToMethod(c => () =>
+                {
+#if DEBUG
+                    return new TwilioRestClientMock(ConfigurationManager.AppSettings["twilio.account.sid"], ConfigurationManager.AppSettings["twilio.auth.token"])
+                    { SaveLocation = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) };
+#else
+                    return new TwilioRestClient(ConfigurationManager.AppSettings["twilio.account.sid"], ConfigurationManager.AppSettings["twilio.auth.token"]);
+#endif
+                });
         }
     }
 }
