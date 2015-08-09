@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Services.Exceptions
 {
-    class ClusterNotFoundException : Exception
+    class ClusterAlreadyExistsException : Exception
     {
     }
 }

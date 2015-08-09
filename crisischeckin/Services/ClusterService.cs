@@ -2,7 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using Services.Interfaces;
+using Services.Exceptions;
 using Models;
 
 namespace Services
@@ -46,6 +47,22 @@ namespace Services
 
             _svc.RemoveCluster(cluster);
 
+        public Cluster Update(Cluster updatedCluster)
+        {
+            if (_svc.Clusters.Count(d => d.Id == updatedCluster.Id) == 0)
+                throw new ClusterNotFoundException();
+
+            if (_svc.Clusters.Any(d => d.Name == updatedCluster.Name && d.Id != updatedCluster.Id))
+                throw new ClusterAlreadyExistsException();
+
+            var result = _svc.UpdateCluster(updatedCluster);
+
+            return result;
+        }
+
+        public Cluster Get(int clusterId)
+        {
+            return _svc.Clusters.SingleOrDefault(d => d.Id.Equals(clusterId));
         }
     }
 }

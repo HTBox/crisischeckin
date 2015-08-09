@@ -12,6 +12,7 @@ namespace Services.Interfaces
         IEnumerable<Cluster> GetList();
         void Create(Cluster cluster);
         void Remove(Cluster cluster);
+        Cluster Update(Cluster cluster);
         void Save(Cluster cluster);
     }
 }
