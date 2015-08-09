@@ -20,6 +20,9 @@ namespace Services.Interfaces
         Person AddPerson(Person newPerson);
         Person UpdatePerson(Person updatedPerson);
         void AddCommitment(Commitment newCommitment);
+        void AddCluster(Cluster newCluster);
+        void RemoveCluster(Cluster clusterToDelete);
+        Cluster UpdateCluster(Cluster updatedCluster);
         void RemoveCommitmentById(int id);
         void AddDisaster(Disaster newDisaster);
         Disaster UpdateDisaster(Disaster updatedDisaster);

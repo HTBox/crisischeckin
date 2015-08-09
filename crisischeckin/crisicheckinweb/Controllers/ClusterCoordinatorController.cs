@@ -7,6 +7,8 @@ using Services.Interfaces;
 
 namespace crisicheckinweb.Controllers
 {
+
+    
     public class ClusterCoordinatorController : BaseController
     {
         readonly ICluster _cluster;
@@ -104,5 +106,7 @@ namespace crisicheckinweb.Controllers
             _clusterCoordinatorService.UnassignClusterCoordinator(clusterCoordinator);
             return RedirectToAction("Index", new { id = clusterCoordinator.DisasterId });
         }
+
+       
     }
 }
