@@ -2,8 +2,10 @@
 using Services.Interfaces;
 using System;
 using System.Web.Mvc;
+using System.Linq;
 using crisicheckinweb.ViewModels;
 using Common;
+using Models;
 
 namespace crisicheckinweb.Controllers
 {
@@ -75,7 +77,20 @@ namespace crisicheckinweb.Controllers
             if (model.SelectedDisaster != 0)
             {
                 var results = _adminSvc.GetVolunteersForDisaster(model.SelectedDisaster, model.CommitmentDate);
-                return PartialView("_FilterResults", results);
+                var modifiedResults = (from person in results
+                                      select new Person
+                                      {
+                                          Commitments = person.Commitments.Where(x => x.DisasterId == model.SelectedDisaster 
+                                              && model.CommitmentDate >= x.StartDate 
+                                              && model.CommitmentDate <= x.EndDate).ToList(),
+                                          Email = person.Email,
+                                          FirstName = person.FirstName,
+                                          Id = person.Id,
+                                          LastName = person.LastName,
+                                          PhoneNumber = person.PhoneNumber,
+                                          UserId = person.UserId
+                                      }).ToList();
+                return PartialView("_FilterResults", modifiedResults);
             }
             return PartialView("_FilterResults");
         }

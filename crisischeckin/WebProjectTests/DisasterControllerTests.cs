@@ -7,6 +7,7 @@ using Models;
 using System.Web.Mvc;
 using crisicheckinweb.ViewModels;
 using Services.Exceptions;
+using System.Linq;
 
 namespace WebProjectTests
 {
@@ -17,21 +18,36 @@ namespace WebProjectTests
 
         private Mock<IDisaster> _disaster;
 
+        private Mock<IDisasterClusterService> _disasterClusterService;
+
+        private Mock<ICluster> _cluster;
+
         [SetUp]
         public void SetUp()
         {
             _disaster = new Mock<IDisaster>();
 
-            _controllerUnderTest = new DisasterController(_disaster.Object);
+            _cluster = new Mock<ICluster>();
+
+            _disasterClusterService = new Mock<IDisasterClusterService>();
+
+            _controllerUnderTest = new DisasterController(_disaster.Object, _cluster.Object, _disasterClusterService.Object);
         }
 
         [Test]
         public void Assign_ValidDataAdd_ReturnsListView()
         {
-            // Arrange
-
+            //Arrange
+            var DisList = new System.Collections.Generic.List<Disaster>() { new Disaster {Name = "test", Id = 1, IsActive = false } };
+            _disaster.Setup(x => x.GetList()).Returns(DisList);
             // Act
-            var viewModel = new DisasterViewModel { Id = -1, Name ="test", IsActive = false};
+            var viewModel = new DisasterViewModel
+            {
+                Id = -1,
+                Name = "test",
+                IsActive = false,
+                SelectedDisasterClusters = (new System.Collections.Generic.List<SelectedDisasterCluster>() { new SelectedDisasterCluster { Id = 1, Name = "Test", Selected = true }, }),
+            };
             var response = _controllerUnderTest.Create(viewModel);
 
             // Assert
@@ -43,9 +59,17 @@ namespace WebProjectTests
         public void Assign_ValidDataUpdate_ReturnsListView()
         {
             // Arrange
+            var disClusList = new System.Collections.Generic.List<DisasterCluster>(){new DisasterCluster { Id = -1, ClusterId = 1, DisasterId = 1 }};
+            _disasterClusterService.Setup(x => x.GetClustersForADisaster(1)).Returns(disClusList);
 
             // Act
-            var viewModel = new DisasterViewModel { Id = 0, Name = "updated", IsActive = true };
+            var viewModel = new DisasterViewModel
+            {
+                Id = 1,
+                Name = "updated",
+                IsActive = true,
+                SelectedDisasterClusters = (new System.Collections.Generic.List<SelectedDisasterCluster>(){new SelectedDisasterCluster{Id = 1, Name = "Test", Selected = true},}),
+            };
             var response = _controllerUnderTest.Create(viewModel);
 
             // Assert
@@ -62,7 +86,13 @@ namespace WebProjectTests
                 It.IsAny<Disaster>())).Throws(new DisasterAlreadyExistsException());
 
             // Act
-            var viewModel = new DisasterViewModel { Id = -1, Name = "test", IsActive = true };
+            var viewModel = new DisasterViewModel 
+            { 
+                Id = -1, 
+                Name = "test", 
+                IsActive = true ,
+                SelectedDisasterClusters = (new System.Collections.Generic.List<SelectedDisasterCluster>() { new SelectedDisasterCluster { Id = 1, Name = "Test", Selected = true }, }),
+            };
             var response = _controllerUnderTest.Create(viewModel);
 
             // Assert

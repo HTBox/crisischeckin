@@ -343,7 +343,7 @@ namespace Services.UnitTest
             disasters.Add(new Disaster { Id = 42, Name = "disaster", IsActive = true });
             mockData.Setup(x => x.Disasters).Returns(disasters.AsQueryable());
             var persons = new List<Person>();
-            persons.Add(new Person { Id = 1, ClusterId = 2 });
+            persons.Add(new Person { Id = 1});
             mockData.Setup(x => x.Persons).Returns(persons.AsQueryable());
 
             var underTest = new AdminService(mockData.Object);

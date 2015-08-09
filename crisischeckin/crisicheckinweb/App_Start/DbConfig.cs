@@ -1,14 +1,13 @@
-﻿using System;
+﻿using Common;
+using Models;
+using Models.Migrations;
+using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Web;
-
-using Common;
-using Models;
-using System.Configuration;
-using Models.Migrations;
 
 namespace crisicheckinweb
 {
@@ -58,12 +57,10 @@ namespace crisicheckinweb
 
         public static void SeedIfNotEmpty(CrisisCheckin context, CrisisCheckinMembership membership_context) // Not overriding DbMigrationsConfiguration<T>.Seed, since it doesn't seem to always get called when it should.
         {
-            // We want to call this method even when the database
-            // updates aren't necessary. That's because VS 2013 
-            // tooling automatically creates the DB when the app
-            // starts. Therefore, this code only executes 
-            // when the clusters table is empty.  That's a good
-            // proxy for a clean database with no data.
+            // We want to call this method even when the database updates aren't necessary. That's
+            // because VS 2013 tooling automatically creates the DB when the app starts. Therefore,
+            // this code only executes when the clusters table is empty. That's a good proxy for a
+            // clean database with no data.
             if (context.Clusters.Any())
                 return;
 
@@ -105,22 +102,25 @@ namespace crisicheckinweb
                         FirstName = "Test",
                         LastName = "User",
                         Email = "TestUser@htbox.org",
-                        Cluster = context.Clusters.FirstOrDefault(cluster => cluster.Name == "Agriculture Cluster"),
-                        Commitments = new Commitment[] 
-                            { 
-                                new Commitment 
-                                { 
-                                    StartDate = new DateTime(DateTime.Now.Year, 1, 1), EndDate = new DateTime(DateTime.Now.Year, 2, 1), 
+                        Commitments = new Commitment[]
+                            {
+                                new Commitment
+                                {
+                                    StartDate = new DateTime(DateTime.Now.Year, 1, 1), EndDate = new DateTime(DateTime.Now.Year, 2, 1),
                                     Disaster = new Disaster { Name = "Test Disaster", IsActive = true },
                                     VolunteerType = vtype
-                                } 
+                                }
                             }
                     });
                 }
             }
 
             context.SaveChanges();
-        }
 
+            context.DisasterClusters.Add(new DisasterCluster { DisasterId = 1, ClusterId = 1 });
+            context.DisasterClusters.Add(new DisasterCluster { DisasterId = 2, ClusterId = 2 });
+
+            context.SaveChanges();
+        }
     }
 }

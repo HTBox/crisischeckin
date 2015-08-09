@@ -95,6 +95,8 @@ namespace Services
                 people = GetPeople(disasterId, checkedInOnly);
             }
 
+            //remove commitments not pertaining to this disaseter
+
             if (people == null)
                 throw new NullReferenceException(string.Format("Attempt to get volunteers for disaster ID {0} returned null.", disasterId));
             return people.ToList();
