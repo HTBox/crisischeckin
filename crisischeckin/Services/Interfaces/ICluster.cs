@@ -13,6 +13,6 @@ namespace Services.Interfaces
         void Create(Cluster cluster);
         void Remove(Cluster cluster);
         Cluster Update(Cluster cluster);
-        void Save(Cluster cluster);
+        Cluster Get(int clusterId);
     }
 }

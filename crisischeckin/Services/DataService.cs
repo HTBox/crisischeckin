@@ -136,19 +136,7 @@ namespace Services
             context.SaveChanges();
         }
 
-        public Cluster UpdateCluster(Cluster updatedCluster)
-        {
-            var result = context.Clusters.Find(updatedCluster.Id);
-
-            if (result == null)
-                throw new ClusterNotFoundException();
-
-            result.Name = updatedCluster.Name;
-
-            context.SaveChanges();
-
-            return result;
-        }
+        
         public Disaster UpdateDisaster(Disaster updatedDisaster)
         {
             var result = context.Disasters.Find(updatedDisaster.Id);

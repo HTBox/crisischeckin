@@ -31,28 +31,20 @@ namespace Services
             _svc.AddCluster(cluster);
         }
 
-
-        public void Save(Cluster cluster)
-        {
-            if (cluster == null) throw new ArgumentNullException("cluster not passed to be updated");
-            if (String.IsNullOrWhiteSpace(cluster.Name)) throw new ArgumentNullException("cluster name for cluster to be updated can not be null");
-
-            _svc.UpdateCluster(cluster);
-        }
-
         public void Remove(Cluster cluster)
         {
             if (cluster == null) throw new ArgumentNullException("cluster not passed to be deleted");
             if (String.IsNullOrWhiteSpace(cluster.Name)) throw new ArgumentNullException("cluster name for cluster to be deleted can not be null");
 
             _svc.RemoveCluster(cluster);
+        }
+
+ 
 
         public Cluster Update(Cluster updatedCluster)
         {
-            if (_svc.Clusters.Count(d => d.Id == updatedCluster.Id) == 0)
-                throw new ClusterNotFoundException();
-
-            if (_svc.Clusters.Any(d => d.Name == updatedCluster.Name && d.Id != updatedCluster.Id))
+ 
+            if (_svc.Clusters.Any(d => d.Name == updatedCluster.Name))
                 throw new ClusterAlreadyExistsException();
 
             var result = _svc.UpdateCluster(updatedCluster);

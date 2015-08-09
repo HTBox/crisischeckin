@@ -35,6 +35,26 @@ namespace crisicheckinweb.Controllers
             return View(newCluster);
         }
 
+        // GET: Cluster Edit
+        public ActionResult Edit(int id)
+        {
+           var editedCluster = _clusterSvc.Get(id);
+
+           return View("Create", editedCluster);
+        }
+
+        // POST: Cluster/Create
+        [HttpPost]
+        public ActionResult Edit(Cluster cluster)
+        {
+
+            
+            //    _clusterSvc.Update(cluster);
+           
+            return View("List", _clusterSvc.GetList()
+                .Select(CreateViewModel));
+        }
+
 
         // POST: Cluster/Create
         [HttpPost]
@@ -43,24 +63,26 @@ namespace crisicheckinweb.Controllers
 
             var newCluster = new Cluster
             {
-                Name = cluster.Name
+                Name = cluster.Name,
             };
 
-            if (cluster.Id == -1)
+            if (cluster.Id == 0)
             {
                 _clusterSvc.Create(cluster);
             }
-            else
-            {
-                _clusterSvc.Update(cluster);
-            }
-            return View("List", cluster);
+            //else
+            //{
+            //    _clusterSvc.Update(cluster);
+            //}
+            return View("List", _clusterSvc.GetList()
+                .Select(CreateViewModel));
         }
 
         private static ClusterViewModel CreateViewModel(Cluster cluster)
         {
             return new ClusterViewModel
             {
+                Id = cluster.Id,
                 Name = cluster.Name
             };
         }

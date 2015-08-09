@@ -25,7 +25,6 @@ namespace Services.Interfaces
         void RemoveCommitmentById(int id);
         void AddDisaster(Disaster newDisaster);
         Disaster UpdateDisaster(Disaster updatedDisaster);
-        Cluster UpdateCluster(Cluster updatedCluster);
         void SubmitChanges();
         ClusterCoordinator AddClusterCoordinator(ClusterCoordinator clusterCoordinator);
         void AppendClusterCoordinatorLogEntry(ClusterCoordinatorLogEntry clusterCoordinatorLogEntry);
