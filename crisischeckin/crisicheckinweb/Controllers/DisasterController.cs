@@ -26,7 +26,7 @@ namespace crisicheckinweb.Controllers
         // GET: /Disaster/
         public ActionResult List()
         {
-            var viewData = _disasterSvc.GetList()
+            var viewData = _disasterSvc.GetList().ToList()
                 .Select(CreateViewModel);
 
             return View(viewData);
