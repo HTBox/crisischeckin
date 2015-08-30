@@ -13,6 +13,7 @@ namespace crisicheckinweb.ViewModels
         [Required]
         [StringLength(50)]
         [DisplayName("Disaster name")]
+        [RegularExpression("^[A-Za-z0-9,. ]*$", ErrorMessageResourceName = "InvalidDisasterName", ErrorMessageResourceType=typeof(Resources.DefaultErrorMessages))]
         public string Name { get; set; }
 
         [DisplayName("Currently active")]
