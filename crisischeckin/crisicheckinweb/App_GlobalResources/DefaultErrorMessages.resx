@@ -117,6 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="InvalidDisasterName" xml:space="preserve">
+    <value>Disaster name cannot have special characters.</value>
+    <comment>For Disaster Create and Edit screen</comment>
+  </data>
   <data name="InvalidPasswordEqualToUserName" xml:space="preserve">
     <value>Invalid password. Your password cannot be equal to your username.</value>
   </data>

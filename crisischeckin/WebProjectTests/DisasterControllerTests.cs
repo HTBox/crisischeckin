@@ -8,6 +8,8 @@ using System.Web.Mvc;
 using crisicheckinweb.ViewModels;
 using Services.Exceptions;
 using System.Linq;
+using WebProjectTests.Infrastructure;
+using System.Collections.Generic;
 
 namespace WebProjectTests
 {
@@ -54,6 +56,52 @@ namespace WebProjectTests
             var result = response as RedirectResult;
             Assert.IsTrue(result.Url.Equals("/Disaster/List"));
         }
+
+        #region ViewModel tests
+
+        [Test]
+        public void Assign_InvalidDisasterName_ReturnsErrorMessage()
+        {
+            //Arrange
+            var viewModel = new DisasterViewModel
+            {
+                Id = -1,
+                Name = "test#3",//invalid name with special char
+                IsActive = false,
+                SelectedDisasterClusters = (new System.Collections.Generic.List<SelectedDisasterCluster>() { new SelectedDisasterCluster { Id = 1, Name = "Test", Selected = true }, }),
+            };
+
+            //Act
+            var validationResults = ModelValidation.ValidateModel(viewModel);
+
+            // Assert
+            Assert.IsTrue(ContainsDisasterValidationResult(validationResults), "Invalid Disaster Message not given");
+        }
+
+        private static bool ContainsDisasterValidationResult(IList<System.ComponentModel.DataAnnotations.ValidationResult> validationResults)
+        {
+            return validationResults.Any(v => v.ErrorMessage.Contains("Disaster"));
+        }
+
+        [Test]
+        public void Assign_ValidDisasterName_ReturnsValidModel()
+        {
+            //Arrange
+            var viewModel = new DisasterViewModel
+            {
+                Id = -1,
+                Name = "test 3",//valid name with space char
+                IsActive = false,
+                SelectedDisasterClusters = (new System.Collections.Generic.List<SelectedDisasterCluster>() { new SelectedDisasterCluster { Id = 1, Name = "Test", Selected = true }, }),
+            };
+
+            //Act
+            var validationResults = ModelValidation.ValidateModel(viewModel);
+
+            // Assert
+            Assert.IsFalse(ContainsDisasterValidationResult(validationResults));
+        } 
+        #endregion
 
         [Test]
         public void Assign_ValidDataUpdate_ReturnsListView()
