@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web.Mvc;
+using crisicheckinweb.ViewModels;
 using Models;
 using Services.Interfaces;
-using crisicheckinweb.ViewModels;
-using System.Web.Mvc;
-
 
 namespace crisicheckinweb.Controllers
 {
@@ -18,21 +17,11 @@ namespace crisicheckinweb.Controllers
             _clusterSvc = clusterSvc;
         }
 
-        // GET: Clusters/
-        public ActionResult List()
-        {
-            var viewData = _clusterSvc.GetList()
-                .Select(CreateViewModel);
 
-            return View(viewData);
-        }
-
-  
         // GET: Cluster Create
         public ActionResult Create()
         {
-
-            var newCluster = new Cluster();
+            Cluster newCluster = new Cluster();
             return View(newCluster);
         }
 
@@ -48,31 +37,57 @@ namespace crisicheckinweb.Controllers
                     return View("Create", cluster);
                 }
 
-                var newCluster = new Cluster
-                {
-                    Name = cluster.Name,
-                };
+                bool clustedExists = _clusterSvc.GetList().Any(t => t.Name.Equals(cluster.Name, StringComparison.CurrentCultureIgnoreCase));
 
-                if (cluster.Id == 0)
+                if (!clustedExists)
                 {
-                    _clusterSvc.Create(cluster);
+
+                    if (cluster.Id == 0)
+                        _clusterSvc.Create(cluster);
+                    else
+                        _clusterSvc.Update(cluster);
+
+                    return View("List", _clusterSvc.GetList().Select(CreateViewModel));
                 }
                 else
-                {
-                    _clusterSvc.Update(cluster);
-                }
-
-                return View("List", _clusterSvc.GetList().Select(CreateViewModel));
+                    ModelState.AddModelError("Name", string.Format("The name '{0}' is already in use.", cluster.Name));
             }
             return View(cluster);
+        }
+
+        private static ClusterViewModel CreateViewModel(Cluster cluster)
+        {
+            return new ClusterViewModel
+            {
+                Id = cluster.Id,
+                Name = cluster.Name
+            };
+        }
+
+        // GET: Cluster Delete
+        public ActionResult Delete(Cluster cluster)
+        {
+            Cluster removeCluster = _clusterSvc.Get(cluster.Id);
+            _clusterSvc.Remove(removeCluster);
+
+            return View("List", _clusterSvc.GetList().Select(CreateViewModel));
+        }
+
+        // GET: Clusters/
+        public ActionResult List()
+        {
+            IEnumerable<ClusterViewModel> viewData = _clusterSvc.GetList()
+                .Select(CreateViewModel);
+
+            return View(viewData);
         }
 
         // GET: Cluster Update
         public ActionResult Update(int id)
         {
-           var editedCluster = _clusterSvc.Get(id);
+            Cluster editedCluster = _clusterSvc.Get(id);
 
-           return View("Create", editedCluster);
+            return View("Create", editedCluster);
         }
 
         // POST: Cluster/Update
@@ -93,29 +108,5 @@ namespace crisicheckinweb.Controllers
 
             return View("Create", cluster);
         }
-
-
-        // GET: Cluster Delete
-        public ActionResult Delete(Cluster cluster)
-        {
-            var removeCluster = _clusterSvc.Get(cluster.Id);
-            _clusterSvc.Remove(removeCluster);
-
-            return View("List", _clusterSvc.GetList()
-                .Select(CreateViewModel));
-        }
-
-
-
-        private static ClusterViewModel CreateViewModel(Cluster cluster)
-        {
-            return new ClusterViewModel
-            {
-                Id = cluster.Id,
-                Name = cluster.Name
-            };
-        }
-
     }
-
 }
