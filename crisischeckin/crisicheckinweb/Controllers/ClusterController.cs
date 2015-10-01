@@ -40,29 +40,31 @@ namespace crisicheckinweb.Controllers
         [HttpPost]
         public ActionResult Create(Cluster cluster)
         {
-
-            if (String.IsNullOrWhiteSpace(cluster.Name))
+            if (ModelState.IsValid)
             {
-                ModelState.AddModelError("Name", "Cluster name has to be set!");
-                return View("Create", cluster);
+                if (String.IsNullOrWhiteSpace(cluster.Name))
+                {
+                    ModelState.AddModelError("Name", "Cluster name has to be set!");
+                    return View("Create", cluster);
+                }
+
+                var newCluster = new Cluster
+                {
+                    Name = cluster.Name,
+                };
+
+                if (cluster.Id == 0)
+                {
+                    _clusterSvc.Create(cluster);
+                }
+                else
+                {
+                    _clusterSvc.Update(cluster);
+                }
+
+                return View("List", _clusterSvc.GetList().Select(CreateViewModel));
             }
-
-            var newCluster = new Cluster
-            {
-                Name = cluster.Name,
-            };
-
-            if (cluster.Id == 0)
-            {
-                _clusterSvc.Create(cluster);
-            }
-            else
-            {
-                _clusterSvc.Update(cluster);
-            }
-
-            return View("List", _clusterSvc.GetList()
-                .Select(CreateViewModel));
+            return View(cluster);
         }
 
         // GET: Cluster Update
@@ -77,17 +79,19 @@ namespace crisicheckinweb.Controllers
         [HttpPost]
         public ActionResult Update(Cluster cluster)
         {
-
-            if (String.IsNullOrWhiteSpace(cluster.Name))
+            if (ModelState.IsValid)
             {
-                ModelState.AddModelError("Name", "Cluster name has to be set!");
-                return View("Create", cluster);
+                if (String.IsNullOrWhiteSpace(cluster.Name))
+                {
+                    ModelState.AddModelError("Name", "Cluster name has to be set!");
+                    return View("Create", cluster);
+                }
+
+                _clusterSvc.Update(cluster);
+                return View("List", _clusterSvc.GetList().Select(CreateViewModel));
             }
 
-           _clusterSvc.Update(cluster);
-           
-            return View("List", _clusterSvc.GetList()
-                .Select(CreateViewModel));
+            return View("Create", cluster);
         }
 
 
