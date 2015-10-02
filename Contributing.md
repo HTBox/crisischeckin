@@ -19,7 +19,7 @@ These are the steps I followed to get crisischeckin up and running on my develop
 
 When the site starts up, you should be presented with a log in page. You can use the Register link at the bottom to start making new accounts.
 
-To log in as an administrator you can use "Administrator" and "P@$$w0rd" for the user name and password.
+To log in as an administrator you can use "**Administrator**" and "**P@$$w0rd**" for the user name and password.
 
 To get test data into your database:
 * Open Solution Explorer in Visual Studio
