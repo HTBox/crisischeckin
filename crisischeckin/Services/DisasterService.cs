@@ -47,6 +47,13 @@ namespace Services
                 throw new ArgumentException("There is already a commitment for this date range");
             }
 
+            var hasCluster = _dataService.Clusters.Any(c => c.Id == clusterId);
+
+            if (!hasCluster)
+            {
+                throw new ArgumentException("There is no cluster for this disaster. Please pick a different disaster.");
+            }
+
             _dataService.AddCommitment(new Commitment
             {
                 PersonId = personId,
