@@ -24,7 +24,7 @@ namespace Services
         {
             if (DateTime.Compare(endDate, startDate) < 0)
             {
-                throw new ArgumentException("Please enter a end date that is greater than or equal to the start date.");
+                throw new ArgumentException("Please enter an end date that is greater than or equal to the start date.");
             }
             if (DateTime.Compare(DateTime.Today, startDate) > 0)
             {
