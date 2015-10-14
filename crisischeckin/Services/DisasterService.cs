@@ -44,7 +44,7 @@ namespace Services
 
             if (hasExistingCommitment)
             {
-                throw new ArgumentException("there is already a commitment for this date range");
+                throw new ArgumentException("You already have a commitment for this date range.");
             }
 
             _dataService.AddCommitment(new Commitment
