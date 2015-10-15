@@ -16,13 +16,13 @@
         </div>
         <div class="panel-body">
           <dl class="dl-horizontal">
-            <dt>Disaster</dt>
+            <dt>Disaster: </dt>
             <dd>@commitmentForToday.Disaster.Name</dd>
-            <dt>Location</dt>
+            <dt>Location: </dt>
             <dd>@commitmentForToday.VolunteerType.Name</dd>
-            <dt>Cluster</dt>
+            <dt>Cluster: </dt>
             <dd>@commitmentForToday.Cluster.Name</dd>
-            <dt>Coordinators</dt>
+            <dt>Coordinators: </dt>
             <dd>
               @foreach (var clusterCoordinator in Model.ClusterCoordinators.Where(cc => cc.DisasterId == commitmentForToday.DisasterId))
               {
