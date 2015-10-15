@@ -38,13 +38,20 @@ namespace Services
                 (DateTime.Compare(c.EndDate, startDate) >= 0);
 
             var hasExistingCommitment = (from c in _dataService.Commitments
-                join d in _dataService.Disasters on c.DisasterId equals d.Id 
+                join d in _dataService.Disasters on c.DisasterId equals d.Id
                 where d.IsActive && c.PersonId == personId
                 select c).Any(dateInRange);
 
             if (hasExistingCommitment)
             {
                 throw new ArgumentException("You already have a commitment for this date range.");
+            }
+
+            var hasCluster = _dataService.Clusters.Any(c => c.Id == clusterId);
+
+            if (!hasCluster)
+            {
+                throw new ArgumentException("There is no cluster for this disaster. Please pick a different disaster.");
             }
 
             _dataService.AddCommitment(new Commitment
@@ -80,7 +87,7 @@ namespace Services
 
         public void RemoveCommitmentById(int commitmentId)
         {
-            //  idempotent method - don't care if the id does not exist. 
+            //  idempotent method - don't care if the id does not exist.
             _dataService.RemoveCommitmentById(commitmentId);
         }
 
@@ -90,7 +97,7 @@ namespace Services
             if (_dataService.Disasters.Count(d => d.Id == updatedDisaster.Id) == 0)
                 throw new DisasterNotFoundException();
 
-            if (_dataService.Disasters.Any(d => d.Name == updatedDisaster.Name && d.Id != updatedDisaster.Id)) 
+            if (_dataService.Disasters.Any(d => d.Name == updatedDisaster.Name && d.Id != updatedDisaster.Id))
                 throw new DisasterAlreadyExistsException();
 
             var result = _dataService.UpdateDisaster(updatedDisaster);
