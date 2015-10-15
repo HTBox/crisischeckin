@@ -19,7 +19,7 @@
             @Html.TextBoxFor(m => m.Subject, new { @class = "form-control" })
         </div>
         <div class="form-group required">
-            @Html.LabelFor(m => m.ClusterId)
+            @Html.LabelFor(m => m.SelectedClusterIds)
             @Html.ListBoxFor(m => m.SelectedClusterIds,
                 new MultiSelectList(@Model.Clusters, "Id", "Name", @Model.SelectedClusterIds),
                 new { @class = "form-control" })
