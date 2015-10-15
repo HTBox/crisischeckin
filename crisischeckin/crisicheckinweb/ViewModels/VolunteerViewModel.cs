@@ -13,7 +13,7 @@ namespace crisicheckinweb.ViewModels
         public IEnumerable<Commitment> MyCommitments { get; set; }
         public int RemoveCommitmentId { get; set; }
         public int PersonId { get; set; }
-        [DisplayName("Volunteer for Disaster")]
+        [DisplayName("Disaster")]
         public int SelectedDisasterId { get; set; }
         [DisplayName("Activity")]
         public int SelectedClusterId { get; set; }

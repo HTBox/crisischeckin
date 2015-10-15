@@ -24,7 +24,7 @@ namespace Services
         {
             if (DateTime.Compare(endDate, startDate) < 0)
             {
-                throw new ArgumentException("Please enter a end date that is greater than or equal to the start date.");
+                throw new ArgumentException("Please enter an end date that is greater than or equal to the start date.");
             }
             if (DateTime.Compare(DateTime.Today, startDate) > 0)
             {
@@ -44,7 +44,7 @@ namespace Services
 
             if (hasExistingCommitment)
             {
-                throw new ArgumentException("There is already a commitment for this date range");
+                throw new ArgumentException("You already have a commitment for this date range.");
             }
 
             var hasCluster = _dataService.Clusters.Any(c => c.Id == clusterId);
