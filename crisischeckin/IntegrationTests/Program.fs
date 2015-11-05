@@ -22,6 +22,16 @@ start firefox
     displayed "Add New Cluster"
     displayed "Cluster List"
 
+"The Administrator can Add a disaster." &&& fun _ ->
+    click "Add New Disaster"
+
+    "#Name" << "Indiana Earth Quake"
+
+    click "input.btn-success"
+
+    // Assert that the new disaster is in the disaster list
+    "td" *= "Indiana Earth Quake"
+
 //run all tests
 run()
 
