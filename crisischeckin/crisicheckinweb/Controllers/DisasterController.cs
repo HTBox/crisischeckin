@@ -1,25 +1,33 @@
-﻿using System;
-using System.Web.Mvc;
+﻿using crisicheckinweb.Filters;
+using crisicheckinweb.ViewModels;
 using Models;
-using Services.Interfaces;
 using Services.Exceptions;
+using Services.Interfaces;
+using System;
+using System.Linq;
+using System.Web.Mvc;
 
 namespace crisicheckinweb.Controllers
 {
-    [Authorize(Roles = Common.Constants.RoleAdmin)]
+    [AccessDeniedAuthorize(Roles = Common.Constants.RoleAdmin, AccessDeniedViewName = "~/Home/AccessDenied")]
     public class DisasterController : BaseController
     {
         private readonly IDisaster _disasterSvc;
-        public DisasterController(IDisaster disasterSvc)
+        private readonly ICluster _clusterSvc;
+        private readonly IDisasterClusterService _disasterClusterSvc;
+
+        public DisasterController(IDisaster disasterSvc, ICluster clusterSvc, IDisasterClusterService disasterClusterSvc)
         {
             _disasterSvc = disasterSvc;
+            _clusterSvc = clusterSvc;
+            _disasterClusterSvc = disasterClusterSvc;
         }
 
-        //
         // GET: /Disaster/
         public ActionResult List()
         {
-            var viewData = _disasterSvc.GetList();
+            var viewData = _disasterSvc.GetList().ToList()
+                .Select(CreateViewModel);
 
             return View(viewData);
         }
@@ -32,86 +40,145 @@ namespace crisicheckinweb.Controllers
 
             if (validId && disasterId != -1)
             {
-                return View("Create", _disasterSvc.Get(disasterId));
+                var disaster = _disasterSvc.Get(disasterId);
+                return View("Create", CreateViewModel(disaster));
             }
-            return View("Create", new Disaster { IsActive = true });
+            return View("Create", new DisasterViewModel
+            {
+                IsActive = true,
+                SelectedDisasterClusters = (from list in _clusterSvc.GetList()
+                                            select new SelectedDisasterCluster 
+                                            { Name = list.Name, Id = list.Id, Selected = true }).ToList()
+            });
         }
 
         [HttpPost]
-        public ActionResult Create(Disaster disaster)
+        public ActionResult Create(DisasterViewModel model)
         {
-            if (ModelState.IsValid && !String.IsNullOrWhiteSpace(disaster.Name))
+            if (ModelState.IsValid)
             {
-                if (disaster.Id == -1)
+                try
                 {
-                    try
+                    if (!model.SelectedDisasterClusters.Exists(x => x.Selected == true))
+                    {
+                        ModelState.AddModelError("Name", "You have to include at least one Cluster!");
+                        return View("Create", model);
+                    }
+
+                    var disaster = new Disaster
+                    {
+                        Id = model.Id,
+                        Name = model.Name,
+                        IsActive = model.IsActive
+                    };
+
+                    var newClusterList = (from selectedList in model.SelectedDisasterClusters
+                                          join clusterList in _clusterSvc.GetList()
+                                          on selectedList.Id equals clusterList.Id into outerList
+                                          from clusterList in outerList.DefaultIfEmpty()
+                                          where clusterList == null
+                                          select new Cluster { Name = selectedList.Name, Id = selectedList.Id}).ToList();
+
+                    foreach (var item in newClusterList)
+                    {
+                        _clusterSvc.Create(item);
+                    }
+
+                    if (model.Id == -1)
                     {
                         _disasterSvc.Create(disaster);
+
+                        var id = _disasterSvc.GetList().Where(x => x.Name == model.Name).FirstOrDefault().Id;
+
+                        foreach (var item in model.SelectedDisasterClusters)
+                        {
+                            if (item.Selected == true)
+                            {
+                                if (newClusterList.Exists(x => x.Name == item.Name))
+                                {
+                                    _disasterClusterSvc.Create(new DisasterCluster { Id = -1, DisasterId = id, Cluster = newClusterList.Find(x => x.Name == item.Name) });
+                                }
+                                else
+                                {
+                                    _disasterClusterSvc.Create(new DisasterCluster { Id = -1, DisasterId = id, ClusterId = item.Id });
+                                }
+                            }
+                        }
                     }
-                    catch (DisasterAlreadyExistsException)
-                    {
-                        ModelState.AddModelError("Name", "A Disaster already exists with that Name!");
-                        return View("Create", disaster);
-                    }
-                }
-                else
-                {
-                    try
+                    else
                     {
                         _disasterSvc.Update(disaster);
+
+                        var disasterClusterList = _disasterClusterSvc.GetClustersForADisaster(model.Id);
+
+                                       
+                        foreach (var item in model.SelectedDisasterClusters)
+                        {
+                            if (item.Selected == true)
+                            {
+                                if (newClusterList.Exists(x => x.Name == item.Name))
+                                {
+                                    _disasterClusterSvc.Create(new DisasterCluster { Id = -1, DisasterId = model.Id, Cluster = newClusterList.Find(x => x.Name == item.Name) });
+                                }
+                                else
+                                {
+                                    _disasterClusterSvc.Create(new DisasterCluster { Id = -1, DisasterId = model.Id, ClusterId = item.Id });
+                                }
+                            }
+                            else
+                            {
+                                if (disasterClusterList.Exists(x => x.ClusterId == item.Id))
+                                {
+                                    _disasterClusterSvc.Remove(disasterClusterList.Find(x => x.ClusterId == item.Id));
+                                }
+                            }
+                        }
                     }
-                    catch (DisasterAlreadyExistsException)
-                    {
-                        ModelState.AddModelError("Name", "A Disaster already exists with that Name!");
-                        return View("Create", disaster);
-                    }
+                }
+                catch (DisasterAlreadyExistsException)
+                {
+                    ModelState.AddModelError("Name", "A Disaster already exists with that Name!");
+                    return View("Create", model);
                 }
 
                 return Redirect("/Disaster/List");
             }
-            ModelState.AddModelError("Name", "Disaster Name is required!");
-            return View("Create", disaster);
+            return View("Create", model);
         }
 
         //TODO: Need to set a schedule for removal.
         [HttpPost]
         [Obsolete("POST /Edit is deprecated. Use POST /Create instead")]
-        public ActionResult Edit(Disaster disaster)
+        public ActionResult Edit(DisasterViewModel model)
         {
             TempData["EditUrlDeprecatedWarning"] = "POST /Edit is deprecated. Use POST /Create instead";
-            if (ModelState.IsValid && !String.IsNullOrWhiteSpace(disaster.Name))
-            {
-                if (disaster.Id == -1)
-                {
-                    try
-                    {
-                        _disasterSvc.Create(disaster);
-                    }
-                    catch (DisasterAlreadyExistsException)
-                    {
-                        ModelState.AddModelError("Name", "A Disaster already exists with that Name!");
-                        return View("Create", disaster);
-                    }
-                }
-                else
-                {
-                    _disasterSvc.Update(disaster);
-                }
-
-                return Redirect("/Disaster/List");
-            }
-
-
-            ModelState.AddModelError("Name", "Disaster Name is required!");
-            return View("Create", disaster);
+            return Create(model);
         }
 
+        private DisasterViewModel CreateViewModel(Disaster disaster)
+        {
+            return new DisasterViewModel
+            {
+                Id = disaster.Id,
+                Name = disaster.Name,
+                IsActive = disaster.IsActive,
+                SelectedDisasterClusters =
+                    (from clustList in _clusterSvc.GetList()
+                     join disList in _disasterClusterSvc.GetClustersForADisaster(disaster.Id)
+                     on clustList.Id equals disList.ClusterId into outerList
+                     from disList in outerList.DefaultIfEmpty()
+                     select new SelectedDisasterCluster 
+                     { Name = clustList.Name, Id = clustList.Id, Selected = (disList != null)}).ToList()
+            };
+        }
 
         #region api methods
+
         public JsonResult GetActiveDisasters()
         {
             return Json(_disasterSvc.GetActiveList(), JsonRequestBehavior.AllowGet);
         }
-        #endregion
+
+        #endregion api methods
     }
 }

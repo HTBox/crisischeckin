@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Models.Disaster>
+﻿@model IEnumerable<crisicheckinweb.ViewModels.DisasterViewModel>
 @{
     ViewBag.Title = "List of Disasters";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
@@ -13,7 +13,10 @@
 
 <h3>List of Disasters</h3>
 
-<a class="btn btn-black pull-right" href="/Disaster/Edit/-1">Add New Disaster</a>
+@Html.ActionLink("Cluster List", "../Cluster/List", new { }, new { @class = "btn btn-black pull-right" })
+
+@Html.ActionLink("Add New Cluster", "../Cluster/Create", new { }, new { @class = "btn btn-black pull-right" }) 
+@Html.ActionLink("Add New Disaster", "Edit", new { id = -1 }, new { @class = "btn btn-black pull-right" })
 <br />
 <br />
 <table class="table table-striped table-bordered" cellpadding="0" cellspacing="0" border="1">
@@ -28,7 +31,7 @@
             <td>@d.Name</td>
             <td>@d.IsActive</td>
             <td>
-                <a href=@String.Format("/Disaster/Edit/{0}", d.Id.ToString())>Edit</a>
+                @Html.ActionLink("Edit", "Edit", new { id = d.Id })
                 @if (d.IsActive)
                 {
                     <text>|</text>

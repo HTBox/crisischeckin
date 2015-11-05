@@ -1,13 +1,13 @@
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Models;
 using Moq;
 using Services.Interfaces;
 
 namespace Services.UnitTest.ClusterCoordinatorService
 {
-    [TestClass]
+    [TestFixture]
     public class GetClusterCoordinatorTests
     {
         Services.ClusterCoordinatorService _clusterCoordinatorService;
@@ -20,8 +20,9 @@ namespace Services.UnitTest.ClusterCoordinatorService
         private Person _person2;
         private Cluster _cluster2;
         private Disaster _disaster2;
+        private Person _person3;
 
-        [TestInitialize]
+        [SetUp]
         public void Init()
         {
             _coordinatorId = 42;
@@ -36,6 +37,7 @@ namespace Services.UnitTest.ClusterCoordinatorService
 
             _person1 = new Person { Id = 3, FirstName = "John", LastName = "Doe" };
             _person2 = new Person { Id = 4, FirstName = "Richard", LastName = "Roe" };
+            _person3 = new Person { Id = 5, FirstName = "Little", LastName = "Toe" };
 
             _dataService.Setup(x => x.Disasters).Returns(new EnumerableQuery<Disaster>(new[]
             {
@@ -50,12 +52,19 @@ namespace Services.UnitTest.ClusterCoordinatorService
             _dataService.Setup(x => x.Persons).Returns(new EnumerableQuery<Person>(new[]
             {
                 _person1,
-                _person2
+                _person2,
+                _person3
+            }));
+            _dataService.Setup(x => x.Commitments).Returns(new EnumerableQuery<Commitment>(new[]
+            {
+                new Commitment { DisasterId = _disaster1.Id, PersonId = _person1.Id },
+                new Commitment { DisasterId = _disaster1.Id, PersonId = _person2.Id },
+                new Commitment { DisasterId = _disaster2.Id, PersonId = _person3.Id }
             }));
             _clusterCoordinatorService = new Services.ClusterCoordinatorService(_dataService.Object);
         }
 
-        [TestMethod]
+        [Test]
         public void GetClusterCoordinator_returns_the_expected_coordinator()
         {
             var coordinators = new EnumerableQuery<ClusterCoordinator>(new[]
@@ -70,7 +79,7 @@ namespace Services.UnitTest.ClusterCoordinatorService
             Assert.AreEqual(_coordinatorId, clusterCoordinator.Id);
         }
 
-        [TestMethod]
+        [Test]
         public void ClusterCoordinatorGetAllCoordinatorsForDisplayReturnsExpectedData()
         {
             // Arrange
@@ -119,10 +128,12 @@ namespace Services.UnitTest.ClusterCoordinatorService
             const string personErrorMsg = "Could not find person with the ID of ";
             var firstPerson = allPersonsForDisplay.FirstOrDefault(x => x.Id == _person1.Id);
             Assert.IsNotNull(firstPerson, personErrorMsg + _person1.Id);
+            var thirdPerson = allPersonsForDisplay.FirstOrDefault(x => x.Id == _person3.Id);
+            Assert.IsNull(thirdPerson, "Third person has not volunteerd for disaster " + _disaster1.Id);
 
         }
 
-        [TestMethod]
+        [Test]
         public void GetAllCoordinatorsForClusterTest()
         {
             // Arrange
@@ -163,7 +174,7 @@ namespace Services.UnitTest.ClusterCoordinatorService
             Assert.AreEqual(_person1.Id, firstCoordinator.PersonId);
         }
 
-        [TestMethod]
+        [Test]
         public void GetCoordinatorFullyLoadedReturnsExpectedData()
         {
             var coordinators = new EnumerableQuery<ClusterCoordinator>(new[]
@@ -203,7 +214,7 @@ namespace Services.UnitTest.ClusterCoordinatorService
             Assert.IsNotNull(coordinator.Cluster);
         }
 
-        [TestMethod]
+        [Test]
         public void GetCoordinatorForUnassignReturnsExpectedData()
         {
             var coordinators = new EnumerableQuery<ClusterCoordinator>(new[]

@@ -1,11 +1,16 @@
-﻿using System.Web.Mvc;
-using System.Web.Security;
+﻿using System;
+using System.Web.Mvc;
+using System.Web.Routing;
+using crisicheckinweb.Filters;
+using crisicheckinweb.Infrastructure;
 using Common;
 using crisicheckinweb.ViewModels;
 using Models;
 using Services.Exceptions;
 using Services.Interfaces;
-using WebMatrix.WebData;
+using crisicheckinweb.Wrappers;
+using Resources;
+using Services;
 
 namespace crisicheckinweb.Controllers
 {
@@ -13,10 +18,15 @@ namespace crisicheckinweb.Controllers
     {
         private readonly IVolunteerService _volunteerSvc;
         private readonly ICluster _clusterSvc;
-        public AccountController(IVolunteerService volunteerSvc, ICluster clusterSvc)
+        private readonly IWebSecurityWrapper _webSecurity;
+        private readonly IMessageService _messageService;
+
+        public AccountController(IVolunteerService volunteerSvc, ICluster clusterSvc, IWebSecurityWrapper webSecurity, IMessageService messageService)
         {
             _clusterSvc = clusterSvc;
+            _webSecurity = webSecurity;
             _volunteerSvc = volunteerSvc;
+            _messageService = messageService;
         }
 
         //
@@ -35,17 +45,43 @@ namespace crisicheckinweb.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(LoginModel model, string returnUrl)
         {
-            if (ModelState.IsValid && WebSecurity.Login(model.UserName, model.Password, persistCookie: model.RememberMe))
+            if (ModelState.IsValid)
             {
-                if (Roles.IsUserInRole(model.UserName, Constants.RoleAdmin))
+                try
                 {
-                    return RedirectToAction("List", "Disaster");
+                    // First assume the username was typed in.
+                    if (_webSecurity.Login(model.UserNameOrEmail, model.Password, model.RememberMe))
+                    {
+                        if (_webSecurity.IsUserInRole(model.UserNameOrEmail, Constants.RoleAdmin))
+                        {
+                            return RedirectToAction("List", "Disaster");
+                        }
+                        return RedirectToLocal(returnUrl);
+                    }
+
+                    // If login fails, assume the email was typed in instead.
+                    var user = _volunteerSvc.FindUserByEmail(model.UserNameOrEmail);
+                    if (user != null)
+                    {
+                        if (_webSecurity.Login(user.UserName, model.Password, model.RememberMe))
+                        {
+                            if (_webSecurity.IsUserInRole(user.UserName, Constants.RoleAdmin))
+                            {
+                                return RedirectToAction("List", "Disaster");
+                            }
+                            return RedirectToLocal(returnUrl);
+                        }
+                    }
                 }
-                return RedirectToLocal(returnUrl);
+                catch (UserNotActivatedException)
+                {
+                    ModelState.AddModelError("", "Your account has to be confirmed by the link sent in the email before you can login.");
+                    return View(model);
+                }
             }
 
             // If we got this far, something failed, redisplay form
-            ModelState.AddModelError("", "The user name or password provided is incorrect.");
+            ModelState.AddModelError("", "The username/email or password provided is incorrect.");
             return View(model);
         }
 
@@ -54,7 +90,7 @@ namespace crisicheckinweb.Controllers
         // GET: /Account/LogOff
         public ActionResult LogOff()
         {
-            WebSecurity.Logout();
+            _webSecurity.Logout();
 
             return RedirectToAction("Login", "Account");
         }
@@ -64,7 +100,7 @@ namespace crisicheckinweb.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
-            var model = new RegisterModel { Clusters = _clusterSvc.GetList() };
+            var model = new RegisterModel();
             return View(model);
         }
 
@@ -84,31 +120,170 @@ namespace crisicheckinweb.Controllers
                     if (_volunteerSvc.EmailAlreadyInUse(model.Email))
                         throw new PersonAlreadyExistsException();
 
-                    WebSecurity.CreateUserAndAccount(model.UserName, model.Password);
-                    WebSecurity.Login(model.UserName, model.Password);
+                    string errorMessage;
+                    if (PasswordComplexity.IsValid(model.Password, model.UserName, out errorMessage))
+                    {
+                        int userId;
+                        string token = _webSecurity.CreateUser(model.UserName, model.Password, new[] { Constants.RoleVolunteer }, out userId);
+                        var volunteer = _volunteerSvc.Register(model.FirstName, model.LastName, model.Email, model.PhoneNumber, userId);
+                        if (volunteer != null)
+                        {
+                            // Generate the absolute Url for the account activation action.
+                            var routeValues = new RouteValueDictionary { { "token", token } };
+                            var accountActivationLink = Url.Action("ConfirmAccount", "Account", routeValues, Request.Url.Scheme);
 
-                    Roles.AddUserToRole(model.UserName, "Volunteer");
+                            var body = String.Format(@"<p>Click on the following link to activate your account: <a href='{0}'>{0}</a></p>", accountActivationLink);
+                            var message = new Message("CrisisCheckin - Activate your account", body);
 
-                    var userId = WebSecurity.GetUserId(model.UserName);
+                            _messageService.SendMessage(message, volunteer);
+                        }
 
-                    _volunteerSvc.Register(model.FirstName, model.LastName, model.Email, model.PhoneNumber, model.Cluster, userId);
-
-                    return RedirectToAction("Index", "Home");
+                        return RedirectToAction("RegistrationSuccessful", "Account");
+                    }
+                    ModelState.AddModelError("Password", errorMessage ?? DefaultErrorMessages.InvalidPasswordFormat);
                 }
                 catch (PersonAlreadyExistsException)
                 {
-                    ModelState.AddModelError("", "Email is already in use!");
+                    ModelState.AddModelError("Email", "Email is already in use!");
                 }
-                catch (MembershipCreateUserException e)
+                catch (UserCreationException e)
                 {
-                    ModelState.AddModelError("", ErrorCodeToString(e.StatusCode));
+                    ModelState.AddModelError("", e.Message);
                 }
             }
 
             // If we got this far, something failed, redisplay form
-            model.Clusters = _clusterSvc.GetList();
             return View(model);
         }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult RegistrationSuccessful()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult ConfirmAccount(string token)
+        {
+            if (!String.IsNullOrWhiteSpace(token))
+            {
+                if (_webSecurity.ConfirmAccount(token))
+                {
+                    return View();
+                }
+            }
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult ForgotPassword()
+        {
+            var model = new ForgotPasswordViewModel();
+            return View(model);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public ActionResult ForgotPassword(ForgotPasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                // First assume the username was typed in.
+                var userName = model.UserNameOrEmail;
+                var userId = _webSecurity.GetUserId(model.UserNameOrEmail);
+                if (userId == -1)
+                {
+                    // If the user was not found by name, assume his email was typed in.
+                    var user = _volunteerSvc.FindUserByEmail(model.UserNameOrEmail);
+                    if (user != null)
+                    {
+                        userName = user.UserName;
+                        userId = user.Id;
+                    }
+                }
+
+                // Only send email when user actually exists. For security reasons
+                // don't show an error when the given user doesn't exist.
+                if (userId != -1)
+                {
+                    var volunteer = _volunteerSvc.FindByUserId(userId);
+                    if (volunteer != null)
+                    {
+                        var token = _webSecurity.GeneratePasswordResetToken(userName);
+                        // Generate the absolute Url for the password reset action.
+                        var routeValues = new RouteValueDictionary { { "token", token } };
+                        var passwordResetLink = Url.Action("ResetPassword", "Account", routeValues, Request.Url.Scheme);
+
+                        var body = String.Format(@"<p>Click on the following link to reset your password: <a href='{0}'>{0}</a></p>", passwordResetLink);
+                        var message = new Message("CrisisCheckin - Password Reset", body);
+
+                        _messageService.SendMessage(message, volunteer);
+                    }
+                }
+                return RedirectToAction("PasswordResetRequested");
+            }
+            return View(model);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult PasswordResetRequested()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult ResetPassword(string token)
+        {
+            var model = new ResetPasswordViewModel
+            {
+                Token = token
+            };
+            return View(model);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public ActionResult ResetPassword(ResetPasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                if (_webSecurity.ResetPassword(model.Token, model.NewPassword))
+                {
+                    return RedirectToAction("PasswordResetCompleted");
+                }
+                ModelState.AddModelError("", "An error occured while resetting your password.");
+            }
+            return View(model);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult PasswordResetCompleted()
+        {
+            return View();
+        }
+
+
+        [HttpPost]
+        [AllowAnonymous]
+        public string CheckPasswordValidity(string userName, string password)
+        {
+            string errorMessage;
+            if (String.IsNullOrWhiteSpace(userName))
+            {
+                userName = _webSecurity.CurrentUserName;
+            }
+            PasswordComplexity.IsValid(password, userName, out errorMessage);
+            return errorMessage;
+        }
+
 
         public ActionResult ChangePassword()
         {
@@ -120,12 +295,20 @@ namespace crisicheckinweb.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (Membership.ValidateUser(User.Identity.Name, model.OldPassword))
+                if (_webSecurity.ValidateUser(_webSecurity.CurrentUserName, model.OldPassword))
                 {
-                    WebSecurity.ChangePassword(User.Identity.Name, model.OldPassword, model.NewPassword);
-                    return RedirectToAction("PasswordChanged");
+                    string errorMessage;
+                    if (PasswordComplexity.IsValid(model.NewPassword, _webSecurity.CurrentUserName, out errorMessage))
+                    {
+                        _webSecurity.ChangePassword(_webSecurity.CurrentUserName, model.OldPassword, model.NewPassword);
+                        return RedirectToAction("PasswordChanged");
+                    }
+                    ModelState.AddModelError("NewPassword", errorMessage ?? DefaultErrorMessages.InvalidPasswordFormat);
                 }
-                ModelState.AddModelError("OldPassword", "Old password is not correct.");
+                else
+                {
+                    ModelState.AddModelError("OldPassword", "Old password is not correct.");
+                }
             }
             return View("ChangePassword", DetermineLayout(), null);
         }
@@ -137,12 +320,12 @@ namespace crisicheckinweb.Controllers
 
         public ActionResult ChangeContactInfo()
         {
-            if (WebSecurity.CurrentUserId == 1)
+            if (_webSecurity.CurrentUserId == 1)
             {
                 TempData["AdminContactError"] = "Administrator is not allowed to have contact details!";
                 return RedirectToAction("Index", "Home");
             }
-            var personToUpdate = _volunteerSvc.GetPersonDetailsForChangeContactInfo(WebSecurity.CurrentUserId);
+            var personToUpdate = _volunteerSvc.GetPersonDetailsForChangeContactInfo(_webSecurity.CurrentUserId);
             if (personToUpdate != null)
             {
                 ChangeContactInfoViewModel model = new ChangeContactInfoViewModel { Email = personToUpdate.Email, PhoneNumber = personToUpdate.PhoneNumber };
@@ -160,7 +343,7 @@ namespace crisicheckinweb.Controllers
                 try
                 {
                     _volunteerSvc.UpdateDetails(new Person {
-                        UserId = WebSecurity.CurrentUserId,
+                        UserId = _webSecurity.CurrentUserId,
                         Email =  model.Email,
                         PhoneNumber = model.PhoneNumber
                     });
@@ -179,17 +362,17 @@ namespace crisicheckinweb.Controllers
             return View();
         }
 
-		[HttpPost]
-		[AllowAnonymous]
-		public bool UsernameAvailable(string userName)
-		{
-			return _volunteerSvc.UsernameAvailable(userName);
-		}
+        [HttpPost]
+        [AllowAnonymous]
+        public bool UsernameAvailable(string userName)
+        {
+            return _volunteerSvc.UsernameAvailable(userName);
+        }
 
 
         //
         // GET: /Account/UpgradeVolunteerToAdministrator
-        [Authorize(Roles = Constants.RoleAdmin)]
+        [AccessDeniedAuthorize(Roles = Constants.RoleAdmin, AccessDeniedViewName = "~/Home/AccessDenied")]
         public ActionResult UpgradeVolunteerToAdministrator()
         {
             // Display list of active users so admin can select user to upgrade
@@ -200,15 +383,12 @@ namespace crisicheckinweb.Controllers
         // POST: /Account/Register
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = Constants.RoleAdmin)]
+        [AccessDeniedAuthorize(Roles = Constants.RoleAdmin, AccessDeniedViewName = "~/Home/AccessDenied")]
         public ActionResult UpgradeVolunteerToAdministrator(UpgradeVolunteerRoleViewModel model)
         {
-            // Get username by selected uerId.
-            //var user = 
-
             if (ModelState.IsValid)
             {
-                Roles.AddUserToRole(model.UserId, Constants.RoleAdmin);
+                _webSecurity.AddUserToRole(model.UserId, Constants.RoleAdmin);
 
                 return RedirectToAction("Index", "Home");
             }
@@ -229,7 +409,7 @@ namespace crisicheckinweb.Controllers
 
         private string DetermineLayout()
         {
-            if (!User.IsInRole(Constants.RoleAdmin))
+            if (!_webSecurity.IsUserInRole(Constants.RoleAdmin))
                 return "~/Views/Shared/_VolunteerLayout.cshtml";
             else
                 return "~/Views/Shared/_AdminLayout.cshtml";
@@ -242,44 +422,6 @@ namespace crisicheckinweb.Controllers
             RemoveLoginSuccess,
         }
 
-        private static string ErrorCodeToString(MembershipCreateStatus createStatus)
-        {
-            // See http://go.microsoft.com/fwlink/?LinkID=177550 for
-            // a full list of status codes.
-            switch (createStatus)
-            {
-                case MembershipCreateStatus.DuplicateUserName:
-                    return "User name already exists. Please enter a different user name.";
-
-                case MembershipCreateStatus.DuplicateEmail:
-                    return "A user name for that e-mail address already exists. Please enter a different e-mail address.";
-
-                case MembershipCreateStatus.InvalidPassword:
-                    return "The password provided is invalid. Please enter a valid password value.";
-
-                case MembershipCreateStatus.InvalidEmail:
-                    return "The e-mail address provided is invalid. Please check the value and try again.";
-
-                case MembershipCreateStatus.InvalidAnswer:
-                    return "The password retrieval answer provided is invalid. Please check the value and try again.";
-
-                case MembershipCreateStatus.InvalidQuestion:
-                    return "The password retrieval question provided is invalid. Please check the value and try again.";
-
-                case MembershipCreateStatus.InvalidUserName:
-                    return "The user name provided is invalid. Please check the value and try again.";
-
-                case MembershipCreateStatus.ProviderError:
-                    return "The authentication provider returned an error. Please verify your entry and try again. If the problem persists, please contact your system administrator.";
-
-                case MembershipCreateStatus.UserRejected:
-                    return "The user creation request has been canceled. Please verify your entry and try again. If the problem persists, please contact your system administrator.";
-
-                default:
-                    return "An unknown error occurred. Please verify your entry and try again. If the problem persists, please contact your system administrator.";
-            }
-        }
         #endregion
-
     }
 }

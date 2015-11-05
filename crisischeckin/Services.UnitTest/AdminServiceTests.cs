@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Models;
 using Moq;
 using Services.Interfaces;
 
 namespace Services.UnitTest
 {
-    [TestClass]
+    [TestFixture]
     public class AdminServiceTests
     {
         private const int disasterWithVolunteersID = 1;
@@ -16,8 +16,10 @@ namespace Services.UnitTest
 
         private const int personWithCommitmentsID = 11;
         private const int personWithNoCommitmentsID = 12;
+        private const int checkedInPersonID = 13;
 
         private const int commitmentId = 101;
+        private const int checkedInCommitmentId = 102;
 
         private readonly Disaster disasterWithCommitments = new Disaster
         {
@@ -40,6 +42,15 @@ namespace Services.UnitTest
             Email = "unused@nothere.com"
         };
 
+        private readonly Person checkedInPerson = new Person
+        {
+            Id = checkedInPersonID,
+            FirstName = "John",
+            LastName = "Doe",
+            PhoneNumber = "(111) 555-9999",
+            Email = "john@nothere.com"
+        };
+
         private readonly Person personWithNoCommitments = new Person
         {
             Id = personWithNoCommitmentsID,
@@ -54,26 +65,37 @@ namespace Services.UnitTest
                                 DisasterId = disasterWithVolunteersID,
                                 Id = commitmentId,
                                 PersonId = personWithCommitmentsID,
+                                PersonIsCheckedIn = false,
+                                StartDate = new DateTime(2013, 8, 10),
+                                EndDate = new DateTime(2013, 8, 15)
+                            };
+
+        private readonly Commitment checkedInCommitment = new Commitment
+                            {
+                                DisasterId = disasterWithVolunteersID,
+                                Id = checkedInCommitmentId,
+                                PersonId = checkedInPersonID,
+                                PersonIsCheckedIn = true,
                                 StartDate = new DateTime(2013, 8, 10),
                                 EndDate = new DateTime(2013, 8, 15)
                             };
 
         private Mock<IDataService> mockService;
 
-        [TestInitialize]
+        [SetUp]
         public void CreateDependencies()
         {
             mockService = new Mock<IDataService>();
         }
 
-        [TestMethod,
-        ExpectedException(typeof(ArgumentNullException))]
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void WhenServiceIsNullConstructorThrowsExceptions()
         {
             var underTest = new AdminService(default(IDataService));
         }
 
-        [TestMethod]
+        [Test]
         public void WhenOneVolunteerHasRegisteredReturnThatOneRecord()
         {
             initializeDisasterCollection(disasterWithCommitments);
@@ -88,7 +110,7 @@ namespace Services.UnitTest
         }
 
         //with empty collections, return an empty list.
-        [TestMethod]
+        [Test]
         public void WhenNoVolunteersAreRegisteredReturnAnEmptyList()
         {
             var underTest = new AdminService(mockService.Object);
@@ -99,16 +121,16 @@ namespace Services.UnitTest
             Assert.IsFalse(result.Any());
         }
 
-        [TestMethod,
-        ExpectedException(typeof(ArgumentNullException))]
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void WhenDisasterIsNullThrowNullArgumentException()
         {
             var underTest = new AdminService(mockService.Object);
             var result = underTest.GetVolunteers(default(Disaster));
         }
 
-        [TestMethod,
-        ExpectedException(typeof(ArgumentException))]
+        [Test]
+        [ExpectedException(typeof(ArgumentException))]
         public void WhenDisasterIsNotFoundThrowArgumentException()
         {
             var underTst = new AdminService(mockService.Object);
@@ -125,7 +147,7 @@ namespace Services.UnitTest
             underTst.GetVolunteers(disaster);
         }
 
-        [TestMethod]
+        [Test]
         public void WhenVolunteerDontCommitReturnCommittedRecords()
         {
             initializeDisasterCollection(disasterWithCommitments);
@@ -141,7 +163,7 @@ namespace Services.UnitTest
 
 
         // person with multiple commitments only once
-        [TestMethod]
+        [Test]
         public void WhenOneVolunteerHasMultipleRegistrationsReturnExactlyOneRecord()
         {
             initializeDisasterCollection(disasterWithCommitments);
@@ -166,7 +188,7 @@ namespace Services.UnitTest
 
         // people with commitments on other disasters does not show up
         // person with multiple commitments only once
-        [TestMethod]
+        [Test]
         public void WhenVolunteersExistForMultipleDisastersReturnCorrectDisaster()
         {
             initializeDisasterCollection(disasterWithCommitments, disasterWithNoCommitments);
@@ -189,7 +211,21 @@ namespace Services.UnitTest
             Assert.AreEqual(1, result.Count());
         }
 
-        [TestMethod]
+        [Test]
+        public void GetVolunteersFiltersCorrectlyWhenRequestingCheckedInOnly()
+        {
+            initializeDisasterCollection(disasterWithCommitments);
+            initializeVolunteerCollection(personWithCommitments, checkedInPerson);
+            initializeCommitmentCollection(commitment, checkedInCommitment);
+
+            var underTest = new AdminService(mockService.Object);
+
+            var result = underTest.GetVolunteers(disasterWithCommitments, checkedInOnly:true);
+
+            Assert.AreEqual(1, result.Count());
+        }
+
+        [Test]
         public void WhenOneVolunteerHasRegisteredReturnOneRecordInRange()
         {
             initializeDisasterCollection(disasterWithCommitments);
@@ -203,7 +239,22 @@ namespace Services.UnitTest
             Assert.AreEqual(1, result.Count());
         }
 
-        [TestMethod]
+
+        [Test]
+        public void WhenOneVolunteerHasRegisteredButIsNotCheckedInReturnNoRecord()
+        {
+            initializeDisasterCollection(disasterWithCommitments);
+            initializeVolunteerCollection(personWithCommitments);
+            initializeCommitmentCollection(commitment);
+
+            var underTest = new AdminService(mockService.Object);
+
+            var result = underTest.GetVolunteersForDate(disasterWithCommitments, new DateTime(2013, 08, 12), clusterCoordinatorsOnly: false, checkedInOnly: true);
+
+            Assert.AreEqual(0, result.Count());
+        }
+
+        [Test]
         public void GetVolunteersByDate_FiltersToOnlyClusterCoordinators()
         {
             var otherCommitment = new Commitment
@@ -234,7 +285,39 @@ namespace Services.UnitTest
             Assert.AreEqual(1, result.Count());
         }
 
-        [TestMethod]
+
+        [Test]
+        public void GetVolunteersByDate_FiltersToOnlyCheckedInClusterCoordinators()
+        {
+            var checkedInNonCoordinatorCommitment = new Commitment
+            {
+                DisasterId = disasterWithCommitments.Id,
+                PersonId = personWithNoCommitmentsID,
+                Id = 102,
+                StartDate = new DateTime(2013, 8, 10),
+                EndDate = new DateTime(2013, 8, 15)
+            };
+
+            var clusterCoordinator = new ClusterCoordinator
+            {
+                Id = 1001,
+                DisasterId = disasterWithCommitments.Id,
+                PersonId = checkedInPersonID,
+            };
+
+            initializeDisasterCollection(disasterWithCommitments);
+            initializeVolunteerCollection(personWithCommitments, checkedInPerson, personWithNoCommitments);
+            initializeCommitmentCollection(commitment, checkedInCommitment, checkedInNonCoordinatorCommitment);
+            mockService.Setup(ds => ds.ClusterCoordinators).Returns(new[] { clusterCoordinator }.AsQueryable());
+
+            var underTest = new AdminService(mockService.Object);
+
+            var result = underTest.GetVolunteersForDate(disasterWithCommitments, new DateTime(2013, 08, 12), clusterCoordinatorsOnly: true, checkedInOnly: true);
+
+            Assert.AreEqual(1, result.Count());
+        }
+
+        [Test]
         public void WhenOneVolunteerHasRegisteredReturnNoRecordsInRange()
         {
             initializeDisasterCollection(disasterWithCommitments);
@@ -248,7 +331,7 @@ namespace Services.UnitTest
             Assert.AreEqual(0, result.Count());
         }
 
-        [TestMethod]
+        [Test]
         public void GetVolunteersForDate_DoesNotReturnDuplicatePeople_WhenCommitmentsOverlap()
         {
             var mockData = new Mock<IDataService>();
@@ -260,7 +343,7 @@ namespace Services.UnitTest
             disasters.Add(new Disaster { Id = 42, Name = "disaster", IsActive = true });
             mockData.Setup(x => x.Disasters).Returns(disasters.AsQueryable());
             var persons = new List<Person>();
-            persons.Add(new Person { Id = 1, ClusterId = 2 });
+            persons.Add(new Person { Id = 1});
             mockData.Setup(x => x.Persons).Returns(persons.AsQueryable());
 
             var underTest = new AdminService(mockData.Object);
@@ -270,7 +353,7 @@ namespace Services.UnitTest
             Assert.AreEqual(1, actual.Count());
         }
 
-        [TestMethod]
+        [Test]
         public void GetVolunteersForDisasterFilteredByDateReturnsExpectedRecord()
         {
             var personWithDifferentCommitmentDateRange = personWithNoCommitments;
@@ -298,7 +381,7 @@ namespace Services.UnitTest
             Assert.AreEqual(actual.First().Id, personWithCommitmentsID);
         }
 
-        [TestMethod]
+        [Test]
         public void GetVolunteersForDisasterUnfilteredByDateReturnsExpectedRecords()
         {
             var personWithDifferentCommitmentDateRange = personWithNoCommitments;

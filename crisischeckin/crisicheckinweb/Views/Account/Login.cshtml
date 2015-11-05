@@ -14,13 +14,13 @@
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
 
-    <div class="form-group">
-      @Html.LabelFor(m => m.UserName)
-      @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
-      @Html.ValidationMessageFor(m => m.UserName)
+    <div class="form-group required">
+      @Html.LabelFor(m => m.UserNameOrEmail)
+      @Html.TextBoxFor(m => m.UserNameOrEmail, new { @class = "form-control" })
+      @Html.ValidationMessageFor(m => m.UserNameOrEmail)
     </div>
-    <div class="form-group">
-      @Html.LabelFor(m => m.Password)
+    <div class="form-group required">
+      @Html.LabelFor(m => m.Password) (@Html.ActionLink("forgot password", "ForgotPassword"))
       @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
       @Html.ValidationMessageFor(m => m.Password)
     </div>
@@ -32,7 +32,7 @@
       <input type="submit" value="Log in" class="btn btn-success" />
     </div>
     <p class="text-muted">
-      @Html.ActionLink("Register", "Register") if you don't have an account.
+        @Html.ActionLink("Register", "Register") if you don't have an account.
     </p>
   }
 </div>

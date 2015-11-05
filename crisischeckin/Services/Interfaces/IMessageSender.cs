@@ -4,6 +4,6 @@ namespace Services.Interfaces
 {
     public interface IMessageSender
     {
-        void SendMessage(Message message, IReadOnlyCollection<MessageRecipient> recipients);
+        void SendMessage(Message message, IReadOnlyCollection<MessageRecipient> recipients, string senderDisplayName = null);
     }
 }

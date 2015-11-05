@@ -1,9 +1,9 @@
-﻿using System;
-using System.Linq;
-using Models;
+﻿using Models;
 using Services.Exceptions;
 using Services.Interfaces;
+using System;
 using System.Data.Entity;
+using System.Linq;
 
 namespace Services
 {
@@ -18,13 +18,12 @@ namespace Services
             ourService = service;
         }
 
-        public Person Register(string firstName, string lastName, string email, string phoneNumber, int cluster, int userId)
+        public Person Register(string firstName, string lastName, string email, string phoneNumber, int userId)
         {
             if (string.IsNullOrWhiteSpace(firstName)) { throw new ArgumentNullException("firstName"); }
             if (string.IsNullOrWhiteSpace(lastName)) { throw new ArgumentNullException("lastName"); }
             if (string.IsNullOrWhiteSpace(email)) { throw new ArgumentNullException("email"); }
             if (string.IsNullOrWhiteSpace(phoneNumber)) { throw new ArgumentNullException("phoneNumber"); }
-            if (cluster <= 0) { throw new ArgumentNullException("cluster"); }
 
             var foundPerson = ourService.Persons.Any(p => p.Email == email);
 
@@ -40,14 +39,14 @@ namespace Services
                 FirstName = firstName,
                 LastName = lastName,
                 Email = email,
-                PhoneNumber = phoneNumber,
-                ClusterId = cluster
+                PhoneNumber = phoneNumber
             });
         }
 
         public Person UpdateDetails(Person updatedPerson)
         {
-            if (updatedPerson == null) throw new ArgumentNullException("updatedPerson");
+            if (updatedPerson == null)
+                throw new ArgumentNullException("updatedPerson");
 
             var foundPerson = ourService.Persons.SingleOrDefault(p => p.UserId == updatedPerson.UserId);
 
@@ -68,7 +67,7 @@ namespace Services
                 if (!string.IsNullOrEmpty(updatedPerson.FirstName))
                 {
                     foundPerson.FirstName = updatedPerson.FirstName;
-                }               
+                }
                 if (!string.IsNullOrEmpty(updatedPerson.LastName))
                 {
                     foundPerson.LastName = updatedPerson.LastName;
@@ -82,10 +81,10 @@ namespace Services
         public IQueryable<Commitment> RetrieveCommitments(int personId, bool showInactive)
         {
             var filteredCommitments = from c in ourService.Commitments.Include(c => c.Disaster)
-                    where c.PersonId == personId &&
-                    (c.Disaster.IsActive || showInactive)
-                    orderby c.StartDate
-                    select c;
+                                      where c.PersonId == personId &&
+                                      (c.Disaster.IsActive || showInactive)
+                                      orderby c.StartDate
+                                      select c;
 
             return filteredCommitments;
         }
@@ -96,6 +95,14 @@ namespace Services
                 throw new ArgumentNullException("disaster", "Disaster cannot be null");
 
             return RetrieveCommitments(person.Id, true).Where(c => c.DisasterId == disaster.Id);
+        }
+
+        public void UpdateCommitment(Commitment commitment)
+        {
+            if (commitment == null)
+                throw new ArgumentNullException("commitment", "Commitment cannot be null");
+
+            ourService.UpdateCommitment(commitment);
         }
 
         public Person FindByUserId(int userId)
@@ -121,15 +128,26 @@ namespace Services
             };
         }
 
-	    public bool UsernameAvailable(string userName)
-	    {
-	        return ourService.Users.Count(p => p.UserName == userName) <= 0;
-	    }
+        public bool UsernameAvailable(string userName)
+        {
+            return ourService.Users.Count(p => p.UserName == userName) <= 0;
+        }
 
         public bool EmailAlreadyInUse(string email)
         {
-            if (ourService.Persons.Any(p => p.Email == email)) return true;
+            if (ourService.Persons.Any(p => p.Email == email))
+                return true;
             return false;
+        }
+
+        public User FindUserByEmail(string email)
+        {
+            var userId = ourService.Persons
+                .Where(p => String.Compare(p.Email, email, StringComparison.OrdinalIgnoreCase) == 0)
+                .Select(p => p.UserId)
+                .FirstOrDefault();
+
+            return userId.HasValue ? ourService.Users.FirstOrDefault(u => u.Id == userId) : null;
         }
     }
 }

@@ -1,6 +1,12 @@
+using System.Configuration;
+using System.Net;
 using System.Net.Mail;
 using System.Web.Http;
+using crisicheckinweb.Infrastructure;
 using Models;
+using Services;
+using Services.Mocks;
+using Twilio;
 
 [assembly: WebActivator.PreApplicationStartMethod(typeof(crisicheckinweb.App_Start.NinjectWebCommon), "Start")]
 [assembly: WebActivator.ApplicationShutdownMethodAttribute(typeof(crisicheckinweb.App_Start.NinjectWebCommon), "Stop")]
@@ -13,7 +19,6 @@ namespace crisicheckinweb.App_Start
     using Microsoft.Web.Infrastructure.DynamicModuleHelper;
     using Ninject;
     using Ninject.Web.Common;
-    using Services;
     using Services.Interfaces;
     using Services.Api;
     using WebApiContrib.IoC.Ninject;
@@ -72,21 +77,42 @@ namespace crisicheckinweb.App_Start
             kernel.Bind<IVolunteerTypeService>().To<VolunteerTypesService>().InRequestScope();
             kernel.Bind<IMessageService>().To<MessageService>().InRequestScope();
             kernel.Bind<IMessageSender>().To<SmtpMessageSender>().InRequestScope();
+            kernel.Bind<IMessageSender>().To<SMSMessageSender>().InRequestScope();
+            kernel.Bind<MailAddress>()
+                .ToConstant(new MailAddress(ConfigurationManager.AppSettings["smtp.fromaddress"], ConfigurationManager.AppSettings["smtp.fromname"]))
+                .WhenInjectedInto<SmtpMessageSender>();
             kernel.Bind<IMessageCoordinator>().To<MessageCoordinator>().InRequestScope();
             kernel.Bind<IClusterCoordinatorService>().To<ClusterCoordinatorService>().InRequestScope();
             kernel.Bind<IApiService>().To<ApiService>().InRequestScope();
-            kernel.Bind<Func<SmtpClient>>().ToMethod(c => () => new SmtpClient()).InRequestScope();
-#if DEBUG
-            kernel.Bind<IMessageSender>().To<DebugMessageSender>();
-#else
-            kernel.Bind<SmtpMessageSender.SmtpSettings>()
-                .ToConstant(new SmtpMessageSender.SmtpSettings
+            kernel.Bind<IDisasterClusterService>().To<DisasterClusterService>().InRequestScope();
+            kernel.Bind<Func<SmtpClient>>()
+                .ToMethod(c => () => new SmtpClient
                 {
-                    SenderName = "Admin", // TODO: Figure out how to make this come from current user
-                    SenderEmail = "test@test.com"
+#if DEBUG
+                    // Emails go to "C:\Users\[USER]\AppData\Roaming" if not Release mode
+                    DeliveryMethod = SmtpDeliveryMethod.SpecifiedPickupDirectory,
+                    PickupDirectoryLocation = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+#else
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
+                    Host = ConfigurationManager.AppSettings["smtp.host"],
+                    Port = int.Parse(ConfigurationManager.AppSettings["smtp.port"]),
+                    Credentials = new NetworkCredential(ConfigurationManager.AppSettings["smtp.username"], ConfigurationManager.AppSettings["smtp.password"]),
+#endif
                 })
                 .InRequestScope();
+            kernel.Bind<string>()
+                .ToConstant(ConfigurationManager.AppSettings["SMS.fromphone"])
+                .WhenInjectedInto<SMSMessageSender>();
+            kernel.Bind<Func<TwilioRestClient>>()
+                .ToMethod(c => () =>
+                {
+#if DEBUG
+                    return new TwilioRestClientMock(ConfigurationManager.AppSettings["twilio.account.sid"], ConfigurationManager.AppSettings["twilio.auth.token"])
+                    { SaveLocation = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) };
+#else
+                    return new TwilioRestClient(ConfigurationManager.AppSettings["twilio.account.sid"], ConfigurationManager.AppSettings["twilio.auth.token"]);
 #endif
+                });
         }
     }
 }

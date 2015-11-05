@@ -2,7 +2,7 @@
 using System.Linq;
 using crisicheckinweb.Controllers;
 using crisicheckinweb.ViewModels;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Models;
 using Moq;
 using Services.Interfaces;
@@ -10,29 +10,28 @@ using System;
 
 namespace WebProjectTests
 {
-    [TestClass]
+    [TestFixture]
     public class VolunteerControllerTests
     {
+        private VolunteerController _controllerUnderTest;
+
         private Mock<IDisaster> _disasterSvc;
         private Mock<ICluster> _clusterSvc;
         private Mock<IAdmin> _adminSvc;
         private Mock<IMessageService> _messageSvc;
 
-        [TestInitialize]
+        [SetUp]
         public void TestInit()
         {
             _disasterSvc = new Mock<IDisaster>();
             _clusterSvc = new Mock<ICluster>();
             _adminSvc = new Mock<IAdmin>();
             _messageSvc = new Mock<IMessageService>();
+
+            _controllerUnderTest = new VolunteerController(_disasterSvc.Object, _clusterSvc.Object, _adminSvc.Object, _messageSvc.Object);
         }
 
-        private VolunteerController CreateVolunteerController()
-        {
-            return new VolunteerController(_disasterSvc.Object, _clusterSvc.Object, _adminSvc.Object, _messageSvc.Object);
-        }
-
-        [TestMethod]
+        [Test]
         public void Lookup_UnfilteredVolunteers_For_Disaster_Returns_AllVolunteers_ForTheDisaster()
         {
             //Arrange
@@ -40,12 +39,10 @@ namespace WebProjectTests
             var disaster = new Disaster();
             _disasterSvc.Setup(x => x.Get(disasterId)).Returns(disaster);
             var allVolunteers = new List<Person>();
-            _adminSvc.Setup(x => x.GetVolunteersForDisaster(disaster.Id, null)).Returns(allVolunteers);
+            _adminSvc.Setup(x => x.GetVolunteersForDisaster(disaster.Id, null, false)).Returns(allVolunteers);
 
-            var controller = CreateVolunteerController();
             //Act
-
-            var response = controller.Filter(new ListByDisasterViewModel
+            var response = _controllerUnderTest.Filter(new ListByDisasterViewModel
             {
                 SelectedDisaster = disasterId, CommitmentDate = null
             });
@@ -57,7 +54,7 @@ namespace WebProjectTests
             CollectionAssert.AreEquivalent(allVolunteers.ToArray(), model.ToArray());
         }
 
-        [TestMethod]
+        [Test]
         public void Lookup_FilteredVolunteers_For_Disaster_Returns_Volunteers_ForTheDisaster_FilteredByDate()
         {
             //Arrange
@@ -66,12 +63,10 @@ namespace WebProjectTests
             var disaster = new Disaster();
             _disasterSvc.Setup(x => x.Get(disasterId)).Returns(disaster);
             var filteredVolunteers = new List<Person>();
-            _adminSvc.Setup(x => x.GetVolunteersForDisaster(disaster.Id, filteredDateTime)).Returns(filteredVolunteers);
+            _adminSvc.Setup(x => x.GetVolunteersForDisaster(disaster.Id, filteredDateTime, false)).Returns(filteredVolunteers);
 
-            var controller = CreateVolunteerController();
             //Act
-
-            var response = controller.Filter(new ListByDisasterViewModel
+            var response = _controllerUnderTest.Filter(new ListByDisasterViewModel
             {
                 SelectedDisaster = disasterId, CommitmentDate = filteredDateTime
             });

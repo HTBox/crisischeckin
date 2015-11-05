@@ -1,12 +1,14 @@
-﻿using Services.Interfaces;
+﻿using Services;
+using Services.Interfaces;
 using System;
 using System.Web.Mvc;
+using System.Linq;
 using crisicheckinweb.ViewModels;
+using Common;
+using Models;
 
 namespace crisicheckinweb.Controllers
 {
-    using Services;
-
     public class VolunteerController : BaseController
     {
         private readonly IDisaster _disasterSvc;
@@ -53,9 +55,18 @@ namespace crisicheckinweb.Controllers
                 PopulateSendMessageViewModel(model);
                 return View("CreateMessage", model);
             }
-            var recipientCriterion = new RecipientCriterion(model.DisasterId, model.ClusterId, model.ClusterCoordinatorsOnly);
-            var message = new Message(model.Subject, model.Message);
-            _messageSvc.SendMessageToDisasterVolunteers(recipientCriterion, message);
+            else if (model.IsSMSMessage && model.Message.Length > Constants.TwilioMessageLength)
+            {
+                PopulateSendMessageViewModel(model);
+                ModelState["Message"].Errors.Add(string.Format("The message cannot have more than {0} characters when submiting as a SMS.", Constants.TwilioMessageLength));
+                return View("CreateMessage", model);
+            }
+
+            var sender = model.DisasterName + " - Coordinator";
+            var recipientCriterion = new RecipientCriterion(model.DisasterId, model.SelectedClusterIds, model.ClusterCoordinatorsOnly, model.CheckedInOnly);
+            var message = new Message(model.Subject, model.Message) { IsSMSMessage = model.IsSMSMessage };
+
+            _messageSvc.SendMessageToDisasterVolunteers(message, recipientCriterion, sender);
 
             return View(model);
         }
@@ -66,7 +77,20 @@ namespace crisicheckinweb.Controllers
             if (model.SelectedDisaster != 0)
             {
                 var results = _adminSvc.GetVolunteersForDisaster(model.SelectedDisaster, model.CommitmentDate);
-                return PartialView("_FilterResults", results);
+                var modifiedResults = (from person in results
+                                      select new Person
+                                      {
+                                          Commitments = person.Commitments.Where(x => x.DisasterId == model.SelectedDisaster 
+                                              && model.CommitmentDate >= x.StartDate 
+                                              && model.CommitmentDate <= x.EndDate).ToList(),
+                                          Email = person.Email,
+                                          FirstName = person.FirstName,
+                                          Id = person.Id,
+                                          LastName = person.LastName,
+                                          PhoneNumber = person.PhoneNumber,
+                                          UserId = person.UserId
+                                      }).ToList();
+                return PartialView("_FilterResults", modifiedResults);
             }
             return PartialView("_FilterResults");
         }

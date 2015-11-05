@@ -12,9 +12,9 @@
             <td>
                 @foreach (var coordinator in cluster.Coordinators)
                 {
-                    <div>
+                    <div class="cluster-coordinator">
                         @coordinator.Name
-                        <a class="close glyphicon glyphicon-remove" href="@Url.Action("ConfirmUnassignCoordinator", new {id=@coordinator.Id})"></a>
+                        <a class="close glyphicon glyphicon-remove" href="@Url.Action("ConfirmUnassignCoordinator", new {id=@coordinator.Id, disasterId=@Model.DisasterId})"></a>
                     </div>
                 }
             </td>
