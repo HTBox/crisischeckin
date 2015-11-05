@@ -1,19 +1,21 @@
 ﻿using Models;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
+using crisicheckinweb.Infrastructure.Attributes;
 
 namespace crisicheckinweb.ViewModels
 {
     public class RegisterModel
     {
+        private string _userName;
+
         [Required]
         [Display(Name = "First Name")]
+        [StringLength(30)]
         public string FirstName { get; set; }
 
         [Required]
+        [StringLength(30)]
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
@@ -29,13 +31,11 @@ namespace crisicheckinweb.ViewModels
         [Required]
         [StringLength(30, ErrorMessage = "The {0} must be between {2} and {1} characters long.", MinimumLength = 3)]
         [Display(Name = "User name")]
-        private string userName;
-        public string UserName { get { return userName; } set { userName = value.Trim(); } }
-      
+        public string UserName { get { return _userName; } set { _userName = value != null ? value.Trim() : value; } }
 
         [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be between {2} and {1} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
+        [BasicPassword]
         [Display(Name = "Password")]
         public string Password { get; set; }
 
@@ -43,11 +43,5 @@ namespace crisicheckinweb.ViewModels
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
-
-        [Required]
-        [Display(Name = "Cluster")]
-        public int Cluster { get; set; }
-
-        public IEnumerable<Cluster> Clusters { get; set; }
     }
 }

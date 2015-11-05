@@ -1,27 +1,21 @@
 ﻿@using Common
-@{
-  if (User.Identity != null && string.IsNullOrWhiteSpace(User.Identity.Name))
-  {
-    Html.Encode("");
-  }
-  else
-  {
-    @(string.Format("Welcome, {0}!", User.Identity.Name))
+<ul class="nav navbar-nav navbar-right">
+    @{
+        if (User.Identity != null && string.IsNullOrWhiteSpace(User.Identity.Name))
+        {
+            Html.Encode("");
+        }
+        else
+        {
+            <li><a href="/Account/Logoff"> Logout @User.Identity.Name</a></li>
 
-    <text>[ </text>
+            if (!User.Identity.Name.ToLower().Equals("administrator"))
+            {
+                <li><a href="/Account/ChangeContactInfo"> Change Contact Info </a></li>
+            }
 
-    if (User.IsInRole(Constants.RoleAdmin))
-    {
-      <text> <a href="/Disaster/List"> Admin </a> | </text>
+            <li><a href="/Account/ChangePassword"> Change Password</a></li>
+
+        }
     }
-
-    <text>
-      <a href="/Account/Logoff"> Logout </a> |
-      @if (!User.Identity.Name.ToLower().Equals("administrator"))
-      {
-        <a href="/Account/ChangeContactInfo"> Change Contact Info </a> <span>|</span>
-      }
-      <a href="/Account/ChangePassword"> Change Password</a>  ]
-    </text>
-  }
-}
+</ul>

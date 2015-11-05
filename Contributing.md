@@ -4,21 +4,22 @@ Getting started contributing
 These are the steps I followed to get crisischeckin up and running on my development machine. I was using Visual Studio 2013, but 2012 should work just as well.
 
 * Clone the repo to your local machine
-* Open the crisischeckin\crisischeckin.sln file in Visual Studio
+* Open the crisischeckin\CrisisCheckinWeb.sln file in Visual Studio
 * Right click on the solution item at the root of the solution explorer and choose "Manage NuGet packages for solution"
     * In the NuGet window, click on the "Restore" button at the top to install all the NuGet packages needed. This will also install Entity Framework cmdlets for PowerShell (package manager console) which you'll need for setting up the database
 * Close Visual Studio
-* Open the crisischeckin.sln file in Visual Studio again (this is to make sure the new cmdlets will be available in the package manager console)
+* Open the CrisisCheckinWeb.sln file in Visual Studio again (this is to make sure the new cmdlets will be available in the package manager console)
 * Run "Rebuild solution" from the Build menu (it should complete with no errors)
-* Open up the Package Manager Console (Tools -> Library Package Manager -> Package Manager Console)
+* Open up the Package Manager Console (Tools -> NuGet Package Manager -> Package Manager Console)
 * Run the command `Update-Database -ProjectName models -StartupProject crisicheckinweb`  in the package manager console window. This should apply the code-based migrations and complete with no errors (but I did get yellow warnings that don't seem to have caused any problems)
+* You may need to install the NUnit Test runner so that all the unit tests appear.
 * Run all the tests (Test -> Run -> All Tests), they should all pass without problems
 * Set the start up project to crisicheckinweb
 * Press F5 to run the site (or choose Debug -> Start Debugging)
 
 When the site starts up, you should be presented with a log in page. You can use the Register link at the bottom to start making new accounts.
 
-To log in as an administrator you can use "Administrator" and "P@$$w0rd" for the user name and password.
+To log in as an administrator you can use "**Administrator**" and "**P@$$w0rd**" for the user name and password.
 
 To get test data into your database:
 * Open Solution Explorer in Visual Studio
@@ -45,7 +46,17 @@ After doing that, you should be able to run the Update-Database command again to
 
 You can also learn more on the wiki in the "Migrations" page on the wiki.
 
+Note for Visual Studio 2015 RC users
+====
+
+A bug in Visual Studio 2015 RC's handling of EF can cause the `Update-Datebase` command to fail.  The fix is very simple and it documented [here](https://github.com/aspnet/EntityFramework/issues/1950#issuecomment-99164398).
+
+1. Copy the contents of the `EntityFramework.psm1` file (don't save a new one).
+2. Open the `EntityFramework.psm1` in `...\crisischeckin\crisischeckin\packages\EntityFramework.6.1.1\tools` and replace the contents with the contents of the new file.
+3. Restart Visual Studio.
+4. Run the `Update-Database` command again.
+
 Jumping in
 ====
 
-Once you've gotten the projet running in your local environment, check out these issues https://github.com/HTBox/crisischeckin/issues?labels=jump-in&state=open any of which would be a great place to get started helping our project.
+Once you've gotten the project running in your local environment, check out these issues https://github.com/HTBox/crisischeckin/issues?labels=jump-in&state=open any of which would be a great place to get started helping our project.

@@ -13,18 +13,17 @@ namespace Services
             _messageSenders = messageSenders;
         }
 
-        public void SendMessage(Message message, List<MessageRecipient> recipients)
+        public void SendMessage(Message message, List<MessageRecipient> recipients, string senderDisplayName = null)
         {
             foreach (var messageSender in _messageSenders)
             {
-                try
+                if (message.IsSMSMessage)
                 {
-                    messageSender.SendMessage(message, recipients);
+                    if (messageSender is SMSMessageSender)
+                        messageSender.SendMessage(message, recipients, senderDisplayName);
                 }
-                catch (Exception)
-                {
-                    //TODO: Add logging implementation--awaiting decision from Bill
-                }
+                else if (!(messageSender is SMSMessageSender))
+                    messageSender.SendMessage(message, recipients, senderDisplayName);
             }
         }
     }

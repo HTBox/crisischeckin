@@ -7,13 +7,13 @@ namespace Models.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.1-30610")]
-    public sealed partial class AddCommitmentStatus : IMigrationMetadata
+    public sealed partial class AddVolunteerType : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AddCommitmentStatus));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(AddVolunteerType));
         
         string IMigrationMetadata.Id
         {
-            get { return "201408102352228_AddCommitmentStatus"; }
+            get { return "201501090235260_AddVolunteerType"; }
         }
         
         string IMigrationMetadata.Source

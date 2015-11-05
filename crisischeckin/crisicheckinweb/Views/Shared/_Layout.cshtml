@@ -1,58 +1,49 @@
 ﻿@using System.Web.Optimization
 @{
-  Layout = null;
+    Layout = null;
 }
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Crisis Checkin</title>
-  <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
-  <link href="~/Content/themes/base/jquery.ui.all.css" rel="stylesheet" />
-  <link href="~/Content/body.min.css" rel="stylesheet" />
-  <link href="~/Content/Forms.min.css" rel="stylesheet" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Crisis Checkin</title>
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/themes/base/jqueryui")
 
-  @RenderSection("styles", false)
+    @RenderSection("styles", false)
 
-  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-  <![endif]-->
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
 
 </head>
 <body>
-  <div class="container">
+    <div class="container">
 
-    @if (TempData["AdminContactError"] != null)
-    {
-      <div class="alert alert-danger alert-error fade in">
-        <a href="#" class="close" data-dismiss="alert">&times;</a>
-        @TempData["AdminContactError"]
-      </div>
-    }
+        @if (TempData["AdminContactError"] != null)
+        {
+            <div class="alert alert-danger alert-error fade in">
+                <a href="#" class="close" data-dismiss="alert">&times;</a>
+                @TempData["AdminContactError"]
+            </div>
+        }
 
-    @if (TempData["EditUrlDeprecatedWarning"] != null)
-    {
-      <div class="alert alert-info fade in">
-        <a href="#" class="close" data-dismiss="alert">&times;</a>
-        @TempData["EditUrlDeprecatedWarning"]
-      </div>
-    }
+        @if (TempData["EditUrlDeprecatedWarning"] != null)
+        {
+            <div class="alert alert-info fade in">
+                <a href="#" class="close" data-dismiss="alert">&times;</a>
+                @TempData["EditUrlDeprecatedWarning"]
+            </div>
+        }
 
-    @RenderBody()
-  </div>
-  <script src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-1.9.1.min.js"></script>
-  <script>
-    // Fallback to loading jQuery from a local path if the CDN is unavailable
-    (window.jQuery || document.write('<script src="/scripts/jquery-1.9.1.min.js"><\/script>'));
-  </script>
+        @RenderBody()
+    </div>
 
-  <script type="text/javascript" src="~/scripts/jquery.unobtrusive-ajax.js"></script>
-  <script type="text/javascript" src="~/scripts/jquery-ui-1.10.4.min.js"></script>
-  <script type="text/javascript" src="~/scripts/bootstrap.min.js"></script>
-  @RenderSection("scripts", false)
+    @Scripts.Render("~/bundles/libs")
+    @RenderSection("scripts", false)
 </body>
 </html>

@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<Models.Person>
 @{
-    ViewBag.Title = "_FilterResults";
+    ViewBag.Title = "_FilterResults";    
 }
 
 <style>
@@ -25,7 +25,12 @@
                 <td>@(person.LastName + ", " + person.FirstName)</td>
                 <td>@person.Email</td>
                 <td>@person.PhoneNumber</td>
-                <td>@(Html.Encode(person.Cluster != null ? person.Cluster.Name : ""))</td>
+                <td>
+                    @foreach (var commitment in person.Commitments)
+                    {
+                        @(Html.Encode(commitment.Cluster != null ? commitment.Cluster.Name : ""))    
+                    }            
+                </td>
             </tr>
         }
     }

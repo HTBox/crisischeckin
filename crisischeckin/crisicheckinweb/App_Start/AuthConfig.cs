@@ -27,20 +27,8 @@ namespace crisicheckinweb
         {
             public SimpleMembershipInitializer()
             {
-                System.Data.Entity.Database.SetInitializer<CrisisCheckin>(null);
-
                 try
                 {
-                    using (var context = new CrisisCheckin())
-                    {
-                        
-                        if (!context.Database.Exists())
-                        {
-                            // Create the SimpleMembership database without Entity Framework migration schema
-                            ((IObjectContextAdapter)context).ObjectContext.CreateDatabase();
-                        }
-                    }
-
                     if (!WebSecurity.Initialized)
                     {
                         WebSecurity.InitializeDatabaseConnection("CrisisCheckin", "User", "Id", "UserName", autoCreateTables: true);

@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
+﻿using System.ComponentModel.DataAnnotations;
+using crisicheckinweb.Infrastructure.Attributes;
 
 namespace crisicheckinweb.ViewModels
 {
@@ -15,7 +11,7 @@ namespace crisicheckinweb.ViewModels
 
         [Display(Name = "New Password: ")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Required")]
-        [StringLength(100, ErrorMessage = "Must be at least {2} characters long.", MinimumLength = 6)]
+        [BasicPassword]
         public string NewPassword { get; set; }
 
         [Display(Name = "Confirm New Password:")]

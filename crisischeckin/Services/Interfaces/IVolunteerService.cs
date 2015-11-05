@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Models;
 
 namespace Services.Interfaces
 {
     public interface IVolunteerService
     {
-        Person Register(string firstName, string lastName, string email, string phoneNumber, int cluster, int userId);
+        Person Register(string firstName, string lastName, string email, string phoneNumber, int userId);
 
         Person UpdateDetails(Person person);
 
@@ -22,5 +19,8 @@ namespace Services.Interfaces
 
 		bool UsernameAvailable(string userName);
         bool EmailAlreadyInUse(string email);
+        User FindUserByEmail(string email);
+
+        void UpdateCommitment(Commitment commitment);
     }
 }

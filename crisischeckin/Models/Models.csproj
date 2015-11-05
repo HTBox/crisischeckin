@@ -31,6 +31,15 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Staging|AnyCPU'">
+    <OutputPath>bin\Staging\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -55,13 +64,22 @@
     <Compile Include="Commitment.cs" />
     <Compile Include="CrisisCheckin.cs" />
     <Compile Include="Disaster.cs" />
-    <Compile Include="Migrations\201408101741031_Initial.cs" />
-    <Compile Include="Migrations\201408101741031_Initial.Designer.cs">
-      <DependentUpon>201408101741031_Initial.cs</DependentUpon>
+    <Compile Include="DisasterCluster.cs" />
+    <Compile Include="Migrations\201501062117225_Initial.cs" />
+    <Compile Include="Migrations\201501062117225_Initial.Designer.cs">
+      <DependentUpon>201501062117225_Initial.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201408102352228_AddCommitmentStatus.cs" />
-    <Compile Include="Migrations\201408102352228_AddCommitmentStatus.Designer.cs">
-      <DependentUpon>201408102352228_AddCommitmentStatus.cs</DependentUpon>
+    <Compile Include="Migrations\201501090235260_AddVolunteerType.cs" />
+    <Compile Include="Migrations\201501090235260_AddVolunteerType.Designer.cs">
+      <DependentUpon>201501090235260_AddVolunteerType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201508081632194_ODFThatConf1.cs" />
+    <Compile Include="Migrations\201508081632194_ODFThatConf1.Designer.cs">
+      <DependentUpon>201508081632194_ODFThatConf1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201508081812447_ODFThatConf2.cs" />
+    <Compile Include="Migrations\201508081812447_ODFThatConf2.Designer.cs">
+      <DependentUpon>201508081812447_ODFThatConf2.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Person.cs" />
@@ -73,6 +91,7 @@
     <Compile Include="v2\PersonCluster.cs" />
     <Compile Include="v2\PersonPhone.cs" />
     <Compile Include="v2\PhoneType.cs" />
+    <Compile Include="VolunteerType.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -84,11 +103,17 @@
     <Content Include="Migrations\DefaultData.sql.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201408101741031_Initial.resx">
-      <DependentUpon>201408101741031_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201501062117225_Initial.resx">
+      <DependentUpon>201501062117225_Initial.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201408102352228_AddCommitmentStatus.resx">
-      <DependentUpon>201408102352228_AddCommitmentStatus.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201501090235260_AddVolunteerType.resx">
+      <DependentUpon>201501090235260_AddVolunteerType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201508081632194_ODFThatConf1.resx">
+      <DependentUpon>201508081632194_ODFThatConf1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201508081812447_ODFThatConf2.resx">
+      <DependentUpon>201508081812447_ODFThatConf2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

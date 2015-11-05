@@ -19,25 +19,39 @@ namespace Services
             _dataService = service;
         }
 
-        public void AssignToVolunteer(int disasterId, int personId, DateTime startDate, DateTime endDate)
+        public void AssignToVolunteer(int disasterId, int personId, DateTime startDate, DateTime endDate,
+            int volunteerType, int clusterId)
         {
             if (DateTime.Compare(endDate, startDate) < 0)
-                throw new ArgumentException("endDate cannot be earlier than startDate");
+            {
+                throw new ArgumentException("Please enter an end date that is greater than or equal to the start date.");
+            }
+            if (DateTime.Compare(DateTime.Today, startDate) > 0)
+            {
+                throw new ArgumentException("Please enter a start date that is greater than or equal to today's date.");
+            }
 
-			// check if the start and end date falls within an existing commitment
-			// disregard any disasters that are inactive
-			Expression<Func<Commitment, bool>> dateInRange = c =>
-				(DateTime.Compare(c.StartDate, endDate) <= 0) &&
-				(DateTime.Compare(c.EndDate, startDate) >= 0);
+            // check if the start and end date falls within an existing commitment
+            // disregard any disasters that are inactive
+            Expression<Func<Commitment, bool>> dateInRange = c =>
+                (DateTime.Compare(c.StartDate, endDate) <= 0) &&
+                (DateTime.Compare(c.EndDate, startDate) >= 0);
 
-			var hasExistingCommitment = (from c in _dataService.Commitments
-                join d in _dataService.Disasters on c.DisasterId equals d.Id 
+            var hasExistingCommitment = (from c in _dataService.Commitments
+                join d in _dataService.Disasters on c.DisasterId equals d.Id
                 where d.IsActive && c.PersonId == personId
                 select c).Any(dateInRange);
 
             if (hasExistingCommitment)
             {
-                throw new ArgumentException("there is already a commitment for this date range");
+                throw new ArgumentException("You already have a commitment for this date range.");
+            }
+
+            var hasCluster = _dataService.Clusters.Any(c => c.Id == clusterId);
+
+            if (!hasCluster)
+            {
+                throw new ArgumentException("There is no cluster for this disaster. Please pick a different disaster.");
             }
 
             _dataService.AddCommitment(new Commitment
@@ -45,7 +59,9 @@ namespace Services
                 PersonId = personId,
                 DisasterId = disasterId,
                 StartDate = startDate,
-                EndDate = endDate
+                EndDate = endDate,
+                VolunteerTypeId = volunteerType,
+                ClusterId = clusterId
             });
         }
 
@@ -71,7 +87,7 @@ namespace Services
 
         public void RemoveCommitmentById(int commitmentId)
         {
-            //  idempotent method - don't care if the id does not exist. 
+            //  idempotent method - don't care if the id does not exist.
             _dataService.RemoveCommitmentById(commitmentId);
         }
 
@@ -81,7 +97,7 @@ namespace Services
             if (_dataService.Disasters.Count(d => d.Id == updatedDisaster.Id) == 0)
                 throw new DisasterNotFoundException();
 
-            if (_dataService.Disasters.Any(d => d.Name == updatedDisaster.Name && d.Id != updatedDisaster.Id)) 
+            if (_dataService.Disasters.Any(d => d.Name == updatedDisaster.Name && d.Id != updatedDisaster.Id))
                 throw new DisasterAlreadyExistsException();
 
             var result = _dataService.UpdateDisaster(updatedDisaster);

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Models;
 using Moq;
 using Services.Exceptions;
@@ -9,50 +9,42 @@ using Services.Interfaces;
 
 namespace Services.UnitTest
 {
-    [TestClass]
+    [TestFixture]
     public class VolunteerServiceTest
     {
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Register_NullFirstName()
         {
             VolunteerService service = new VolunteerService(new Mock<IDataService>().Object);
-            service.Register("", "last", "email", "555-333-1111", 1, 1);
+            service.Register("", "last", "email", "555-333-1111", 1);
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Register_NullLastName()
         {
             VolunteerService service = new VolunteerService(new Mock<IDataService>().Object);
-            service.Register("first", "", "email", "555-333-1111", 1, 2);
+            service.Register("first", "", "email", "555-333-1111", 2);
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Register_NullEmail()
         {
             VolunteerService service = new VolunteerService(new Mock<IDataService>().Object);
-            service.Register("first", "last", "", "555-333-1111", 1, 3);
+            service.Register("first", "last", "", "555-333-1111", 3);
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Register_NullPhoneNumber()
         {
             VolunteerService service = new VolunteerService(new Mock<IDataService>().Object);
-            service.Register("first", "last", "email", "", 1, 3);
+            service.Register("first", "last", "email", "", 3);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof (ArgumentNullException))]
-        public void Register_NullCluster()
-        {
-            VolunteerService service = new VolunteerService(new Mock<IDataService>().Object);
-            service.Register("first", "last", "email", "555-333-1111", 0, 4);
-        }
-
-        [TestMethod]
+        [Test]
         public void Register_ValidVolunteer()
         {
             Person moqPerson = new Person()
@@ -62,25 +54,23 @@ namespace Services.UnitTest
                 FirstName = "Bob",
                 LastName = "Jones",
                 Email = "bob.jones@email.com",
-                PhoneNumber = "555-222-9139",
-                ClusterId = 1
+                PhoneNumber = "555-222-9139"
             };
 
             var moqDataService = new Mock<IDataService>();
             moqDataService.Setup(s => s.AddPerson(It.IsAny<Person>())).Returns(moqPerson);
 
             VolunteerService service = new VolunteerService(moqDataService.Object);
-            Person actual = service.Register("Bob", "Jones", "bob.jones@email.com", "555-222-9139", 1, 5);
+            Person actual = service.Register("Bob", "Jones", "bob.jones@email.com", "555-222-9139", 5);
 
             Assert.AreEqual(1, actual.Id);
             Assert.AreEqual("Bob", actual.FirstName);
             Assert.AreEqual("Jones", actual.LastName);
             Assert.AreEqual("bob.jones@email.com", actual.Email);
             Assert.AreEqual("555-222-9139", actual.PhoneNumber);
-            Assert.AreEqual(1, actual.ClusterId);
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(PersonAlreadyExistsException))]
         public void Register_VolunteerAlreadyExists()
         {
@@ -91,8 +81,7 @@ namespace Services.UnitTest
                 FirstName = "Cathy",
                 LastName = "Jones",
                 Email = "cathy.jones@email.com",
-                PhoneNumber = "555-222-9139",
-                ClusterId = 1
+                PhoneNumber = "555-222-9139"
             };
 
             List<Person> people = new List<Person>();
@@ -102,40 +91,39 @@ namespace Services.UnitTest
             moqDataService.Setup(s => s.Persons).Returns(people.AsQueryable());
 
             VolunteerService service = new VolunteerService(moqDataService.Object);
-            Person actual = service.Register("Cathy", "Jones", "cathy.jones@email.com", "555-222-9139 ext 33", 1, 6);
+            Person actual = service.Register("Cathy", "Jones", "cathy.jones@email.com", "555-222-9139 ext 33", 6);
 
             Assert.AreEqual("Cathy", actual.FirstName);
             Assert.AreEqual("Jones", actual.LastName);
             Assert.AreEqual("cathy.jones@email.com", actual.Email);
             Assert.AreEqual("555-222-9139 ext 33", actual.PhoneNumber);
-            Assert.AreEqual(1, actual.ClusterId);
         }
 
-		[TestMethod]
-		public void Register_UsernameAvailable()
-		{
-			User moqUser = new User()
-			{
-				Id = 1,
-				UserName = "test123"
-			};
+        [Test]
+        public void Register_UsernameAvailable()
+        {
+            User moqUser = new User()
+            {
+                Id = 1,
+                UserName = "test123"
+            };
 
-			List<User> users = new List<User>();
-			users.Add(moqUser);
+            List<User> users = new List<User>();
+            users.Add(moqUser);
 
-			var moqDataService = new Mock<IDataService>();
-			moqDataService.Setup(s => s.Users).Returns(users.AsQueryable());
+            var moqDataService = new Mock<IDataService>();
+            moqDataService.Setup(s => s.Users).Returns(users.AsQueryable());
 
-			VolunteerService service = new VolunteerService(moqDataService.Object);
-			
-			//test that the username we created is not available.
-			Assert.IsFalse(service.UsernameAvailable("test123"), "Username created for this test should report as not available.");
+            VolunteerService service = new VolunteerService(moqDataService.Object);
+            
+            //test that the username we created is not available.
+            Assert.IsFalse(service.UsernameAvailable("test123"), "Username created for this test should report as not available.");
 
-			//test that a different username is available.
-			Assert.IsTrue(service.UsernameAvailable("test456"), "Username that was not added to our data source should report as available.");
-		}
+            //test that a different username is available.
+            Assert.IsTrue(service.UsernameAvailable("test456"), "Username that was not added to our data source should report as available.");
+        }
 
-        [TestMethod]
+        [Test]
         public void Register_EmailAlreadyInUse_ReturnFalse()
         {
             Person moqPerson = new Person()
@@ -153,7 +141,7 @@ namespace Services.UnitTest
             Assert.IsFalse(service.EmailAlreadyInUse("cathy.jones@email.com"));
         }
 
-        [TestMethod]
+        [Test]
         public void Register_EmailAlreadyInUse_ReturnTrue()
         {
             Person moqPerson = new Person()
@@ -171,7 +159,7 @@ namespace Services.UnitTest
             Assert.IsTrue(service.EmailAlreadyInUse("matt.smith@email.com"));
         }		
 
-        [TestMethod]
+        [Test]
         public void UpdateDetails_Valid()
         {
             Person moqPerson = new Person()
@@ -181,8 +169,7 @@ namespace Services.UnitTest
                 FirstName = "Cathy",
                 LastName = "Jones",
                 Email = "cathy.jones@email.com",
-                PhoneNumber = "555-222-9139",
-                ClusterId = 1
+                PhoneNumber = "555-222-9139"
             };
 
             List<Person> people = new List<Person>();
@@ -196,14 +183,13 @@ namespace Services.UnitTest
                 Email = "cathy.jones@email.com",
                 FirstName = "Cathy",
                 LastName = "CHANGED",
-                PhoneNumber = "555-222-9139",
-                ClusterId = 1
+                PhoneNumber = "555-222-9139"
             });
 
             VolunteerService service = new VolunteerService(moqDataService.Object);
             var actual = service.UpdateDetails(new Person()
             {
-                Id = 1, UserId = 6, Email = "cathy.jones@email.com", FirstName = "Cathy", LastName = "CHANGED", PhoneNumber = "555-222-9139", ClusterId = 1
+                Id = 1, UserId = 6, Email = "cathy.jones@email.com", FirstName = "Cathy", LastName = "CHANGED", PhoneNumber = "555-222-9139"
             });
 
             // Only Last Name has been updated
@@ -212,7 +198,7 @@ namespace Services.UnitTest
             Assert.AreEqual("Cathy", actual.FirstName);
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(PersonNotFoundException))]
         public void UpdateDetails_PersonNotFound()
         {
@@ -241,7 +227,7 @@ namespace Services.UnitTest
             });
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(PersonEmailAlreadyInUseException))]
         public void UpdateDetails_PersonEmailAlreadyInUse()
         {
@@ -284,7 +270,7 @@ namespace Services.UnitTest
             });
         }
 
-        [TestMethod]
+        [Test]
         public void UpdateDetails_ChangeEmailToUnusuedEmail_DoesNotThrowPersonEmailAlreadyInUseException()
         {
             Person moqPersonOne = new Person()
@@ -326,7 +312,7 @@ namespace Services.UnitTest
             });
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void UpdateDetails_NullPerson()
         {
@@ -336,7 +322,7 @@ namespace Services.UnitTest
             service.UpdateDetails(null);
         }
 
-        [TestMethod]
+        [Test]
         public void UpdateDetails_DoesNotClearFirstOrLastNameIfBlank()
         {
             var moqPersonOne = new Person
@@ -372,7 +358,7 @@ namespace Services.UnitTest
             Assert.IsFalse(string.IsNullOrEmpty(actual.LastName), "Expected Last Name not to be null or empty.");
         }
 
-        [TestMethod]
+        [Test]
         public void WhenPersonIdDoesNotExistReturnsEmptyList()
         {
             var moqDataService = new Mock<IDataService>();
@@ -382,7 +368,7 @@ namespace Services.UnitTest
             var results = underTest.RetrieveCommitments(0, false);
         }
 
-        [TestMethod]
+        [Test]
         public void WhenQueriedAllCommitmentsAreReturned()
         {
             var moqDataService = new Mock<IDataService>();
@@ -419,7 +405,7 @@ namespace Services.UnitTest
             Assert.IsTrue(results.Single().Id == personId);
         }
 
-        [TestMethod]
+        [Test]
         public void WhenNoCommitmentsExistAnywhereEmptyCollectionIsReturned()
         {
             var moqDataService = new Mock<IDataService>();
@@ -445,7 +431,7 @@ namespace Services.UnitTest
         }
 
         // Inactive disaster depends on flag
-        [TestMethod]
+        [Test]
         public void WhenQueryingInactiveDisastersAllCommitmentsReturned()
         {
             var moqDataService = new Mock<IDataService>();
@@ -482,7 +468,7 @@ namespace Services.UnitTest
             Assert.IsTrue(results.Single().Id == 1);
         }
 
-        [TestMethod]
+        [Test]
         public void WhenQueryingActiveDisastersFilteredCommitmentsReturned()
         {
             var moqDataService = new Mock<IDataService>();
@@ -519,7 +505,7 @@ namespace Services.UnitTest
         }
 
         // only records for this user
-        [TestMethod]
+        [Test]
         public void WhenQueryingReturnCommitmentsForThisUser()
         {
             var moqDataService = new Mock<IDataService>();
@@ -565,8 +551,8 @@ namespace Services.UnitTest
         }
 
 
-        [TestMethod,
-        ExpectedException(typeof(ArgumentNullException))]
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void WhenDisasterIsNullGetCommitmentsThrowsNullArgumentException()
         {
             var moqDataService = new Mock<IDataService>();
@@ -582,7 +568,7 @@ namespace Services.UnitTest
             var results = underTest.RetrieveCommitmentsForDisaster(person, default(Disaster));
         }
 
-        [TestMethod]
+        [Test]
         public void WhenQueriedActiveCommitmentsAreReturned()
         {
             var moqDataService = new Mock<IDataService>();
@@ -625,7 +611,7 @@ namespace Services.UnitTest
             Assert.IsTrue(results.Single().Id == 1);
         }
 
-        [TestMethod]
+        [Test]
         public void WhenNoCommitmentsExistEmptyCollectionIsReturned()
         {
             var moqDataService = new Mock<IDataService>();
@@ -656,7 +642,7 @@ namespace Services.UnitTest
         }
 
         // Inactive disaster depends on flag
-        [TestMethod]
+        [Test]
         public void WhenQueryingDisasterAllCommitmentsReturned()
         {
             var moqDataService = new Mock<IDataService>();
@@ -699,7 +685,7 @@ namespace Services.UnitTest
         }
 
         // only records for this user
-        [TestMethod]
+        [Test]
         public void WhenQueryingReturnCommitmentsOnlyForThisUser()
         {
             var moqDataService = new Mock<IDataService>();
@@ -749,7 +735,7 @@ namespace Services.UnitTest
         }
 
         // Only records for the specific disaster
-        [TestMethod]
+        [Test]
         public void WhenQueryingReturnCommitmentsOnlyForThisDisaster()
         {
             var moqDataService = new Mock<IDataService>();
@@ -808,7 +794,7 @@ namespace Services.UnitTest
             Assert.AreEqual(1, results.Count());
         }
 
-        [TestMethod]
+        [Test]
         public void GetPersonDetailsForChangeContactInfoReturnsExpectedData()
         {
             var personOne = new Person
@@ -818,8 +804,7 @@ namespace Services.UnitTest
                 FirstName = "Cathy",
                 LastName = "Jones",
                 Email = "cathy.jones@email.com",
-                PhoneNumber = "555-222-9139",
-                ClusterId = 1
+                PhoneNumber = "555-222-9139"
             };
 
             var personTwo = new Person
@@ -848,7 +833,7 @@ namespace Services.UnitTest
             Assert.AreEqual(personTwo.PhoneNumber, result.PhoneNumber);
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof (PersonNotFoundException))]
         public void GetPersonDetailsForChangeContactInfoThrowsExpectedPersonNotFoundException()
         {
@@ -860,7 +845,6 @@ namespace Services.UnitTest
                 LastName = "Jones",
                 Email = "cathy.jones@email.com",
                 PhoneNumber = "555-222-9139",
-                ClusterId = 1
             };
 
             var personTwo = new Person

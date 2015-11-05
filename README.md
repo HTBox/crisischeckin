@@ -1,12 +1,12 @@
 crisischeckin
 =============
 
-A system for automatically keeping track of who is responding to a particular emergency and 
-automatically creating a "contact list"/"phone book" of those that are there. 
+A system for automatically keeping track of who is responding to a particular emergency and
+automatically creating a "contact list"/"phone book" of those that are there.
 See presentation by Andrej Verity - http://www.youtube.com/watch?v=ypA9Iza5OFg
 
-If you're interested in helping us validate the application, please help us test it on our 
-staging site:  http://crisischeckin.azurewebsites.net
+If you're interested in helping us validate the application, please help us test it on our
+staging site:  http://crisischeckin-d.azurewebsites.net
 
 The Administrator login (on the staging site) is:
 UID:  Administrator
@@ -31,3 +31,23 @@ Important notes from a member of the NGO community (Future requirements)
 One problem with volunteers for crisis events is keeping unqualified and unneeded people out of the way of the most qualified and necessary workers to get into the zones.  Volunteers often can become a huge burden who actually interfere and draw away support and logistics that is needed for the local victims and necessary first-response personnel.  Some thought is needed to classify and prioritize volunteers to allow NGOs to filter out the key personnel from the rest that will be unmanageable with thousands of names.  Too many unqualified volunteers can be as bad or worse than too few qualified ones.  NGOs may need to define the traits of volunteers that they consider important or not for various purposes.
 
 The point is that we will need to start building more of a profile for volunteers and their skills.
+
+Installation on a Mac
+====================
+Since this project is an asp.net project and it is necessary to use virtual studio. That being said this is one solution for developers using Macs to contribute to this project. This is also a solution for developers starting who do not already have visual studio installed on their computer.
+####Step 1:
+Create a fast dev environment to have visual studio. One solution to this is using Microsoft Azure, for this you have to have a Microsoft account (Hotmail or Outlook). Once you are logged into Azure follow these steps.
+######a.
+Select new from the lower left-hand corner. Select the virtual machine option and then select from gallery.
+![Imgur](http://i.imgur.com/Nxa6490.png)
+######b.
+Now from the gallery options choose the visual studio on the right hand side. Suggest selecting "Visual Studio Community 2015 with Azure SDK 2.7" or the most updated version. Now continue through the steps to set up the name of your virtual machine, user name and password.
+![Imgur](http://i.imgur.com/jhbVyFN.png)
+######c.
+Now download the Microsoft Remote Desktop app (from the App store) to be able to access your virtual machine.
+######d.
+Back on the azure website you have to connect to your virtual machine. This will download a Remote Desktop Program. If you have trouble with this take the information and put it into the Remote Desktop App after pressing new. For your username it may be just your username but it might be domain/username and then your password.
+![Imgur](http://i.imgur.com/IglP8Wi.png)
+
+####Step 2:
+Now in the virtual machine it is now suggested to download a GitHub desktop app. Clone your forked repo and start contributing.

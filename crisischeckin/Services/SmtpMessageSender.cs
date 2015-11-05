@@ -1,50 +1,44 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net.Mail;
-using Services.Interfaces;
-using Models;
-using System.Net;
 using System.Configuration;
+using System.Net.Mail;
+using Common;
+using Services.Interfaces;
 
 namespace Services
 {
     public class SmtpMessageSender : IMessageSender
     {
         private readonly Func<SmtpClient> _smtpClientFactory;
-        private readonly SmtpSettings _smtpSettings;
+        private readonly MailAddress _senderAddress;
 
-        public SmtpMessageSender(Func<SmtpClient> smtpClientFactory, SmtpSettings smtpSettings)
+        public SmtpMessageSender(Func<SmtpClient> smtpClientFactory, MailAddress senderAddress)
         {
             _smtpClientFactory = smtpClientFactory;
-            _smtpSettings = smtpSettings;
+            _senderAddress = senderAddress;
         }
 
-        public void SendMessage(Message message, IReadOnlyCollection<MessageRecipient> recipients)
+        public void SendMessage(Message message, IReadOnlyCollection<MessageRecipient> recipients, string senderDisplayName = null)
         {
-
-            using (var smtpClient = new SmtpClient(Convert.ToString(ConfigurationSettings.AppSettings["smtpClient"]), Convert.ToInt32(ConfigurationSettings.AppSettings["smtpClientPort"])))
+            using (var smtpClient = _smtpClientFactory())
             {
-                smtpClient.Credentials = new NetworkCredential(Convert.ToString(ConfigurationSettings.AppSettings["smtpUserName"]), Convert.ToString(ConfigurationSettings.AppSettings["smtpPwd"]));
-                smtpClient.EnableSsl = Convert.ToBoolean(ConfigurationSettings.AppSettings["smtpSSLRequired"]);
-                var fromAddress = CreateAddress(string.Concat(message.Subject, " - Coordinator"), "no-reply@CrisisCheckin.com");
+                var fromAddress = !String.IsNullOrWhiteSpace(senderDisplayName)
+                    ? new MailAddress(_senderAddress.Address, senderDisplayName)
+                    : _senderAddress;
 
                 foreach (var recipient in recipients)
                 {
-                    var recipientAddr = CreateAddress(recipient.Name, recipient.EmailAddress);
-                    smtpClient.Send(fromAddress, recipientAddr, message.Subject, message.Body);
+                    var recipientAddress = new MailAddress(recipient.EmailAddress, recipient.Name);
+                    var mailMessage = new MailMessage(fromAddress, recipientAddress)
+                    {
+                        Subject = SubjectEnrichmentService.Enrich(message.Subject),
+                        IsBodyHtml = true,
+                        Body = message.Body
+                    };
+                    smtpClient.Send(mailMessage);
                 }
             }
         }
 
-        private static string CreateAddress(string name, string email)
-        {
-            return string.Format("\"{0}\" <{1}>", name, email);
-        }
-
-        public class SmtpSettings
-        {
-            public string SenderName { get; set; }
-            public string SenderEmail { get; set; }
-        }
     }
 }

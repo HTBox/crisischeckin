@@ -1,27 +1,25 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using System.Web.Routing;
 using crisicheckinweb.ViewModels;
 using Models;
 using Services.Interfaces;
 
 namespace crisicheckinweb.Controllers
 {
-    public class ClusterCoordinatorController : Controller
+
+    
+    public class ClusterCoordinatorController : BaseController
     {
         readonly ICluster _cluster;
         readonly IClusterCoordinatorService _clusterCoordinatorService;
-        readonly IDataService _dataService;
         readonly IDisaster _disaster;
 
         public ClusterCoordinatorController(
             IDisaster disaster,
             ICluster cluster,
-            IClusterCoordinatorService clusterCoordinatorService,
-            IDataService dataService)
+            IClusterCoordinatorService clusterCoordinatorService)
         {
-            _dataService = dataService;
             _disaster = disaster;
             _cluster = cluster;
             _clusterCoordinatorService = clusterCoordinatorService;
@@ -81,9 +79,14 @@ namespace crisicheckinweb.Controllers
         }
 
         [HttpGet]
-        public ActionResult ConfirmUnassignCoordinator(int id)
+        public ActionResult ConfirmUnassignCoordinator(int id, int disasterId)
         {
             var clusterCoordinator = _clusterCoordinatorService.GetCoordinatorForUnassign(id);
+            if (clusterCoordinator == null)
+            {
+                return RedirectToAction("Index", new { id = disasterId });
+            }
+
             var vm = new UnassignClusterCoordinatorViewModel
                      {
                          DisasterId = clusterCoordinator.DisasterId,
@@ -99,9 +102,11 @@ namespace crisicheckinweb.Controllers
         {
             var clusterCoordinator = _clusterCoordinatorService.GetCoordinatorFullyLoaded(id);
             if (null == clusterCoordinator)
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index");
             _clusterCoordinatorService.UnassignClusterCoordinator(clusterCoordinator);
             return RedirectToAction("Index", new { id = clusterCoordinator.DisasterId });
         }
+
+       
     }
 }

@@ -1,12 +1,13 @@
-﻿using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System;
+using System.Linq;
 using Models;
+using NUnit.Framework;
 using Services;
 using Services.Interfaces;
 
 namespace AcceptanceTests.ClusterCoordinatorFeature
 {
-    [TestClass]
+    [TestFixture]
     public class A_person_can_be_unassigned_as_a_cluster_coordinator_for_a_disaster : With_an_empty_database_environment
     {
         ClusterCoordinator _clusterCoordinator;
@@ -14,19 +15,19 @@ namespace AcceptanceTests.ClusterCoordinatorFeature
         DataAccessHelper _dataAccessHelper;
         DataService _dataService;
 
-        [TestInitialize]
+        [SetUp]
         public void Arrange()
         {
-            _dataService = new DataService(new CrisisCheckin());
+            _dataService = new DataService(new CrisisCheckin(), new CrisisCheckinMembership());
             _dataAccessHelper = new DataAccessHelper(_dataService);
             _clusterCoordinatorService = new ClusterCoordinatorService(_dataService);
             var disaster = _dataAccessHelper.Create_a_disaster();
             var person = _dataAccessHelper.Create_a_volunteer();
-            var clusterId = person.ClusterId.GetValueOrDefault();
+            var clusterId = _dataAccessHelper.GetRandomClusterId(); 
             _clusterCoordinator = _clusterCoordinatorService.AssignClusterCoordinator(disaster.Id, clusterId, person.Id);
         }
 
-        [TestMethod]
+        [Test]
         public void Unassign_a_user_and_verify_results()
         {
             _clusterCoordinatorService.UnassignClusterCoordinator(_clusterCoordinator);

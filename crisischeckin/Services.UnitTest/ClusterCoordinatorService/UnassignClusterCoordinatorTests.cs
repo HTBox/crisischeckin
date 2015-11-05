@@ -1,12 +1,12 @@
 ﻿using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Models;
 using Moq;
 using Services.Interfaces;
 
 namespace Services.UnitTest.ClusterCoordinatorService
 {
-    [TestClass]
+    [TestFixture]
     public class UnassignClusterCoordinatorTests
     {
         Cluster _cluster;
@@ -16,7 +16,7 @@ namespace Services.UnitTest.ClusterCoordinatorService
         Disaster _disaster;
         Person _person;
 
-        [TestInitialize]
+        [SetUp]
         public void Init()
         {
             _clusterCoordinator = new ClusterCoordinator
@@ -40,7 +40,7 @@ namespace Services.UnitTest.ClusterCoordinatorService
             _clusterCoordinatorService = new Services.ClusterCoordinatorService(_dataService.Object);
         }
 
-        [TestMethod]
+        [Test]
         public void UnassignClusterCoordinator_removes_an_existing_ClusterCoordinatorRecord()
         {
             _clusterCoordinatorService.UnassignClusterCoordinator(_clusterCoordinator);
@@ -50,7 +50,7 @@ namespace Services.UnitTest.ClusterCoordinatorService
                                                                                                 cc.PersonId == _clusterCoordinator.PersonId)));
         }
 
-        [TestMethod]
+        [Test]
         public void UnassignClusterCoordinator_appends_a_ClusterCoordinatorLogEntry()
         {
             _clusterCoordinatorService.UnassignClusterCoordinator(_clusterCoordinator);
