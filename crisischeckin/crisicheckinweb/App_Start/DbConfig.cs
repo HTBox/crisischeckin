@@ -81,13 +81,15 @@ namespace crisicheckinweb
             context.SaveChanges();
             var vtype = context.VolunteerTypes.First(vt => vt.Name == VolunteerType.VOLUNTEERTYPE_ONSITE);
 
+            var firstCluster = context.Clusters.FirstOrDefault();
+
             context.Persons.AddOrUpdate(
                 p => p.FirstName,
                 new Person
                 {
                     FirstName = "Bob",
                     Commitments =
-                        new Commitment[] { new Commitment { StartDate = new DateTime(2014, 1, 1), EndDate = new DateTime(2014, 2, 1), Disaster = new Disaster { Name = "Hurricane", IsActive = true }, VolunteerType = vtype } }
+                        new Commitment[] { new Commitment { StartDate = new DateTime(2014, 1, 1), EndDate = new DateTime(2014, 2, 1), Disaster = new Disaster { Name = "Hurricane", IsActive = true }, VolunteerType = vtype, Cluster = firstCluster } }
                 });
 
             // Set up automated test user
@@ -108,7 +110,7 @@ namespace crisicheckinweb
                                 {
                                     StartDate = new DateTime(DateTime.Now.Year, 1, 1), EndDate = new DateTime(DateTime.Now.Year, 2, 1),
                                     Disaster = new Disaster { Name = "Test Disaster", IsActive = true },
-                                    VolunteerType = vtype
+                                    VolunteerType = vtype, Cluster = firstCluster
                                 }
                             }
                     });
