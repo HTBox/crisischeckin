@@ -119,3 +119,6 @@ UpgradeLog*.XML
 #Xamarin
 *.userpref
 *.userprefs
+
+#GhostDoc
+*.sln.GhostDoc.xml
