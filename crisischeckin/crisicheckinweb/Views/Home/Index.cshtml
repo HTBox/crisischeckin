@@ -64,35 +64,39 @@
 
 
   <table class="table">
-    <tr>
-      <th>Disaster</th>
-      <th>Activity</th>
-      <th>Start Date</th>
-      <th>End Date</th>
-      <th>Location</th>
-      <th></th>
-    </tr>
-    <tr>
-      <td>@Html.DropDownListFor(m => m.SelectedDisasterId, new SelectList(Model.Disasters, "Id", "Name", Model.SelectedDisasterId), "-- Choose One --", new { @class = "form-control", @id = "disasterList" })</td>
-      <td>@Html.DropDownListFor(m => m.SelectedClusterId, new SelectList(Model.DisasterClusters, "Cluster.Id", "Cluster.Name", Model.SelectedClusterId), new { @class = "form-control", @id="activityList"})</td>
-      <td>@Html.TextBoxFor(m => m.SelectedStartDate, new { id = "dp_startDate", @class = "form-control" })</td>
-      <td>@Html.TextBoxFor(m => m.SelectedEndDate, new { id = "dp_endDate", @class = "form-control" })</td>
-      <td>
-        @Html.DropDownListFor(
+      <thead>
+          <tr>
+              <th>Disaster <span style="color:red;">*</span></th>
+              <th>Activity</th>
+              <th>Start Date</th>
+              <th>End Date</th>
+              <th>Location <span style="color:red;">*</span></th>
+              <th></th>
+          </tr>
+      </thead>
+      <tbody>
+          <tr>
+              <td>@Html.DropDownListFor(m => m.SelectedDisasterId, new SelectList(Model.Disasters, "Id", "Name", Model.SelectedDisasterId), "-- Choose One --", new { @class = "form-control", @id = "disasterList" })</td>
+              <td>@Html.DropDownListFor(m => m.SelectedClusterId, new SelectList(Model.DisasterClusters, "Cluster.Id", "Cluster.Name", Model.SelectedClusterId), new { @class = "form-control", @id = "activityList" })</td>
+              <td>@Html.TextBoxFor(m => m.SelectedStartDate, new { id = "dp_startDate", @class = "form-control" })</td>
+              <td>@Html.TextBoxFor(m => m.SelectedEndDate, new { id = "dp_endDate", @class = "form-control" })</td>
+              <td>
+                  @Html.DropDownListFor(
                     m => m.VolunteerType,
                     selectList: new SelectList(Model.VolunteerTypes, "Id", "Name", Model.VolunteerType),
                     optionLabel: "-- Choose One --",
                     htmlAttributes: new { @class = "form-control" })
-      </td>
-      <td><input class="btn btn-black" id="GoButton" type="submit" value="Volunteer" /></td>
-    </tr>
+              </td>
+              <td><input class="btn btn-black" id="GoButton" type="submit" value="Volunteer" /></td>
+          </tr>
+      </tbody>
   </table>
 }
 
 <br />
 @if (!Model.MyCommitments.Any())
 {
-  <h3>Thank you for volunteering. Please select a disaster and a date range that you are able to volunteer for.</h3>
+  <h3>Thank you for volunteering.<br />Please select a disaster, a date range, and a location that you are able to volunteer for.</h3>
 }
 else
 {
