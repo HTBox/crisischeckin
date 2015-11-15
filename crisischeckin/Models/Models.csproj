@@ -81,6 +81,10 @@
     <Compile Include="Migrations\201508081812447_ODFThatConf2.Designer.cs">
       <DependentUpon>201508081812447_ODFThatConf2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201511132021070_RequireClusterName.cs" />
+    <Compile Include="Migrations\201511132021070_RequireClusterName.Designer.cs">
+      <DependentUpon>201511132021070_RequireClusterName.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Person.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -114,6 +118,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201508081812447_ODFThatConf2.resx">
       <DependentUpon>201508081812447_ODFThatConf2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201511132021070_RequireClusterName.resx">
+      <DependentUpon>201511132021070_RequireClusterName.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

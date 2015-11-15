@@ -31,12 +31,6 @@ namespace crisicheckinweb.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (String.IsNullOrWhiteSpace(cluster.Name))
-                {
-                    ModelState.AddModelError("Name", "Cluster name has to be set!");
-                    return View("Create", cluster);
-                }
-
                 bool clustedExists = _clusterSvc.GetList().Any(t => t.Name.Equals(cluster.Name, StringComparison.CurrentCultureIgnoreCase));
 
                 if (!clustedExists)
@@ -50,8 +44,11 @@ namespace crisicheckinweb.Controllers
                     return View("List", _clusterSvc.GetList().Select(CreateViewModel));
                 }
                 else
+                {
                     ModelState.AddModelError("Name", string.Format("The name '{0}' is already in use.", cluster.Name));
+                }
             }
+
             return View(cluster);
         }
 
@@ -96,14 +93,19 @@ namespace crisicheckinweb.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (String.IsNullOrWhiteSpace(cluster.Name))
-                {
-                    ModelState.AddModelError("Name", "Cluster name has to be set!");
-                    return View("Create", cluster);
-                }
+                bool clustedExists = _clusterSvc.GetList().Any(t => t.Name.Equals(cluster.Name, StringComparison.CurrentCultureIgnoreCase));
 
-                _clusterSvc.Update(cluster);
-                return View("List", _clusterSvc.GetList().Select(CreateViewModel));
+                if (!clustedExists)
+                {
+                    _clusterSvc.Update(cluster);
+
+                    return View("List", _clusterSvc.GetList().Select(CreateViewModel));
+                }
+                else
+                {
+                    ModelState.AddModelError("Name", string.Format("The name '{0}' is already in use.", cluster.Name));
+                }
+                
             }
 
             return View("Create", cluster);
