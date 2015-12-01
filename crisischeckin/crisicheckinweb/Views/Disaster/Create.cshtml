@@ -9,41 +9,49 @@
     @Html.HiddenFor(m => m.Id)
     <h3>Create / Edit Disaster</h3>
     @Html.ValidationSummary()
-    <div class="col-sm-3">
-        <div class="form-group">
-            @Html.LabelFor(m => m.Name)
-            @Html.TextBoxFor(m => m.Name, new {@class = "form-control" })
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="form-group">
+                @Html.LabelFor(m => m.Name)
+                @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+            </div>
+            <div>
+                @Html.CheckBoxFor(m => m.IsActive)
+                @Html.LabelFor(m => m.IsActive)
+            </div>
         </div>
-        <div>
-            @Html.CheckBoxFor(m => m.IsActive)
-            @Html.LabelFor(m => m.IsActive)
-        </div>
-        <div>
-        @if (Request.Url.Segments.Length > 3)
-        {
-            @Html.ActionLink("Add New Cluster", "../Cluster/Create", new {DisasterId = Request.Url.Segments[3]}, new { @class = "btn btn-black" })
-            <br />                  
-        }
-            <br />
-            <table class="table table-striped table-bordered" cellpadding="0" cellspacing="0" border="1">
-                <tr class="ht-header">
-                    <th>Using</th>
-                    <th width="300px;">Cluster Name</th>
-                </tr>
-                @for (int i = 0; i < Model.SelectedDisasterClusters.Count; i++)
-                {
-                    <tr>
-                        <td>@Html.CheckBoxFor(s => s.SelectedDisasterClusters[i].Selected)</td>
-                        <td>
-                            @Html.DisplayFor(s => s.SelectedDisasterClusters[i].Name)
-                            @Html.HiddenFor(s => s.SelectedDisasterClusters[i].Id)
-                            @Html.HiddenFor(s => s.SelectedDisasterClusters[i].Name)
-                        </td>
+        <div class="col-sm-8">
+            <div>
+                <h4>Clusters assigned to the disaster</h4>
+                <table class="table table-striped table-bordered table-condensed" cellpadding="0" cellspacing="0" border="1">
+                    <tr class="ht-header">
+                        <th class="col-md-1">Using</th>
+                        <th class="col-md-11">Cluster Name</th>
                     </tr>
-                }
-            </table>
-        </div>
-        <input type="submit" value="@(Model.Id > 0 ? "Update" : "Create")" class="btn btn-success" />
-    </div>
+                    <tbody>
+                        @for (int i = 0; i < Model.SelectedDisasterClusters.Count; i++)
+                        {
+                            <tr>
+                                <td class="text-center">@Html.CheckBoxFor(s => s.SelectedDisasterClusters[i].Selected)</td>
+                                <td>
+                                    @Html.DisplayFor(s => s.SelectedDisasterClusters[i].Name)
+                                    @Html.HiddenFor(s => s.SelectedDisasterClusters[i].Id)
+                                    @Html.HiddenFor(s => s.SelectedDisasterClusters[i].Name)
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
 
+                        @if (Request.Url.Segments.Length > 3)
+                {
+                            @Html.ActionLink("Add New Cluster", "../Cluster/Create", new { DisasterId = Request.Url.Segments[3] }, new { @class = "btn btn-black pull-right" })
+                        }
+
+            </div>
+
+
+        </div>
+    </div>
+    <input type="submit" value="@(Model.Id > 0 ? "Update" : "Create") Disaster" class="btn btn-success" />
 }
