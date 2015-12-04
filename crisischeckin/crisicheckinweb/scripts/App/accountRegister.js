@@ -173,7 +173,7 @@
             var element = $(this);
             clearWarning(element);
             if (element.val().length === 0) {
-                requiredMessage(element, "User Name");
+                requiredMessage(element, "Username");
             }
         });
 
