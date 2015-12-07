@@ -116,11 +116,7 @@ namespace crisicheckinweb.Controllers
                         {
                             if (item.Selected == true)
                             {
-                                if (newClusterList.Exists(x => x.Name == item.Name))
-                                {
-                                    _disasterClusterSvc.Create(new DisasterCluster { Id = -1, DisasterId = model.Id, Cluster = newClusterList.Find(x => x.Name == item.Name) });
-                                }
-                                else
+                                if (!disasterClusterList.Exists(x => x.ClusterId == item.Id))
                                 {
                                     _disasterClusterSvc.Create(new DisasterCluster { Id = -1, DisasterId = model.Id, ClusterId = item.Id });
                                 }
