@@ -8,16 +8,9 @@ start firefox
 "The Administrator can log in." &&& fun _ ->
 
     //go to url
-    url "http://localhost:2077/Account/Login"
+    Actions.Login Constants.AdminUserName Constants.AdminPassword
 
-    // Enter the username and password
-    "#UserNameOrEmail" << "Administrator"
-    "#Password" << "P@$$w0rd"
-
-    // Log in
-    click "input.btn-success"
-
-    // Assert that the three action buttons are displayed
+     // Assert that the three action buttons are displayed
     displayed "Add New Disaster"
     displayed "Add New Cluster"
     displayed "Cluster List"
@@ -31,6 +24,22 @@ start firefox
 
     // Assert that the new disaster is in the disaster list
     "td" *= "Indiana Earth Quake"
+
+"The Administrator can Add a cluster." &&& fun _ ->
+    Actions.Login Constants.AdminUserName Constants.AdminPassword 
+    click "Add New Cluster"
+    "#Name" << "Test Cluster"
+    click "input.btn-success"
+
+    // Assert that the cluster shows up in the cluster list
+    "td" *= "Test Cluster"
+
+//"A new user can create an account" &&& fun _ ->
+//    Actions.CreateAccount "Test" "User"
+//    "h3" *= "Registration was successful"
+
+"The Test User can login" &&&& fun _ ->
+    Actions.Login "TestUser" "test"
 
 //run all tests
 run()
