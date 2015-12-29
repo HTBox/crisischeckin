@@ -30,7 +30,27 @@ let Login username password =
     click "input.btn-success"
 
 
+/// Admin Actions
+let AddDisaster disasterName = 
+    click "Add New Disaster"
+    "#Name" << disasterName
+    click "input.btn-success"
 
+let AddACluster cluster =
+    click "Add New Cluster"
+    "#Name" << cluster
+    click "input.btn-success"
+
+
+let ViewVolunteers _ =
+    click "View Volunteers"
+
+let SelectADisaster disaster =
+    "#SelectedDisaster" << disaster
+    click "#GoButton"
+
+
+/// Basic User Actions
 let VolunteerForDisaster disaster cluster startDate endDate location =
     "#disasterList" << disaster
     "#activityList" << cluster

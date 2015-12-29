@@ -4,9 +4,9 @@ open System
 
 //start an instance of the firefox browser
 start firefox
+resize (800, 600)
 
 "The Administrator can log in." &&& fun _ ->
-
     //go to url
     Actions.Login Constants.AdminUserName Constants.AdminPassword
 
@@ -16,32 +16,42 @@ start firefox
     displayed "Cluster List"
 
 "The Administrator can Add a disaster." &&& fun _ ->
-    click "Add New Disaster"
-
-    "#Name" << "Indiana Earth Quake"
-
-    click "input.btn-success"
+    Actions.Login Constants.AdminUserName Constants.AdminPassword
+    Actions.AddDisaster Constants.TestDisasterName
 
     // Assert that the new disaster is in the disaster list
-    "td" *= "Indiana Earth Quake"
+    "td" *= Constants.TestDisasterName
 
-"The Administrator can Add a cluster." &&& fun _ ->
+"The Administrator can Add a cluster." &&! fun _ ->
     Actions.Login Constants.AdminUserName Constants.AdminPassword 
-    click "Add New Cluster"
-    "#Name" << "Test Cluster"
-    click "input.btn-success"
-
+    Actions.AddACluster "Test Cluster"
+    
     // Assert that the cluster shows up in the cluster list
     "td" *= "Test Cluster"
 
 "The Test User can login" &&& fun _ ->
     Actions.Login "TestUser" "test"
+    
+    displayed " Logout TestUser"
 
 "The Test User can Volunteer for a disaster" &&& fun _ ->
     Actions.Login Constants.BasicUserName Constants.BasicPassword
-    Actions.VolunteerForDisaster "Indiana Earth Quake" "Logistics Cluster" "12/28/15" "12/31/15" "On Site"
+    // TODO - make the dates relative to todays date
+    Actions.VolunteerForDisaster Constants.TestDisasterName "Logistics Cluster" "12/29/15" "12/31/15" "On Site"
+    "dd" *= Constants.TestDisasterName
     
+"The admin can see that the user registered for the disaster" &&& fun _ ->
+    Actions.Login Constants.AdminUserName Constants.AdminPassword
+    Actions.ViewVolunteers()
+    Actions.SelectADisaster Constants.TestDisasterName
+    "div#results td" *= "User, Test"
 
+"The user can signin for the disaster" &&& fun _ -> 
+    Actions.Login "TestUser" "test"
+    click "Check-in"
+    "span" *= "Thank you for your help today!"
+    
+    
 //run all tests
 run()
 
