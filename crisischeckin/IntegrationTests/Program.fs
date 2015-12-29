@@ -34,12 +34,13 @@ start firefox
     // Assert that the cluster shows up in the cluster list
     "td" *= "Test Cluster"
 
-//"A new user can create an account" &&& fun _ ->
-//    Actions.CreateAccount "Test" "User"
-//    "h3" *= "Registration was successful"
-
-"The Test User can login" &&&& fun _ ->
+"The Test User can login" &&& fun _ ->
     Actions.Login "TestUser" "test"
+
+"The Test User can Volunteer for a disaster" &&& fun _ ->
+    Actions.Login Constants.BasicUserName Constants.BasicPassword
+    Actions.VolunteerForDisaster "Indiana Earth Quake" "Logistics Cluster" "12/28/15" "12/31/15" "On Site"
+    
 
 //run all tests
 run()

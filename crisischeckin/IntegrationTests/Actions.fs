@@ -31,3 +31,10 @@ let Login username password =
 
 
 
+let VolunteerForDisaster disaster cluster startDate endDate location =
+    "#disasterList" << disaster
+    "#activityList" << cluster
+    "#dp_startDate" << startDate
+    "#dp_endDate" << endDate
+    "#VolunteerType" << location
+    click "#GoButton"
