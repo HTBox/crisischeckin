@@ -36,8 +36,9 @@ resize (800, 600)
 
 "The Test User can Volunteer for a disaster" &&& fun _ ->
     Actions.Login Constants.BasicUserName Constants.BasicPassword
-    // TODO - make the dates relative to todays date
-    Actions.VolunteerForDisaster Constants.TestDisasterName "Logistics Cluster" "12/29/15" "12/31/15" "On Site"
+    let today = Dates.Today()
+    let tomorrow = Dates.Tomorrow()
+    Actions.VolunteerForDisaster Constants.TestDisasterName "Logistics Cluster" today tomorrow "On Site"
     "dd" *= Constants.TestDisasterName
     
 "The admin can see that the user registered for the disaster" &&& fun _ ->
