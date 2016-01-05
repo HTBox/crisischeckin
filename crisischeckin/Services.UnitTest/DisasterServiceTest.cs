@@ -165,9 +165,11 @@ namespace Services.UnitTest
                 }
             };
             var disasters = new List<Disaster> { new Disaster { Id = 2, IsActive = true } };
+            var clusters = new List<Cluster> { new Cluster { Id = 1 } };
 
             _mockDataService.Setup(s => s.Commitments).Returns(commitments.AsQueryable());
             _mockDataService.Setup(s => s.Disasters).Returns(disasters.AsQueryable());
+            _mockDataService.Setup(s => s.Clusters).Returns(clusters.AsQueryable());
 
             var startDate = commitmentDate.AddDays(-1);
             var endDate = commitmentDate.AddDays(-1);
@@ -197,9 +199,11 @@ namespace Services.UnitTest
                 }
             };
             var disasters = new List<Disaster> { new Disaster { Id = 2, IsActive = true } };
+            var clusters = new List<Cluster> { new Cluster { Id = 1 } };
 
             _mockDataService.Setup(s => s.Commitments).Returns(commitments.AsQueryable());
             _mockDataService.Setup(s => s.Disasters).Returns(disasters.AsQueryable());
+            _mockDataService.Setup(s => s.Clusters).Returns(clusters.AsQueryable());
 
             var startDate = commitmentDate.AddDays(1);
             var endDate = commitmentDate.AddDays(1);
@@ -264,8 +268,10 @@ namespace Services.UnitTest
         public void AssignToVolunteer_Valid()
         {
             Commitment createdCommitment = null;
+            var clusters = new List<Cluster> { new Cluster { Id = 1 } };
             _mockDataService.Setup(s => s.AddCommitment(It.IsAny<Commitment>()))
                 .Callback<Commitment>(commitment => createdCommitment = commitment);
+            _mockDataService.Setup(s => s.Clusters).Returns(clusters.AsQueryable());
 
             const int personId = 5;
             const int disasterId = 10;
@@ -294,9 +300,11 @@ namespace Services.UnitTest
                 }
             };
             var disasters = new List<Disaster> { new Disaster { Id = 2, IsActive = true } };
+            var clusters = new List<Cluster> { new Cluster { Id = 1 } };
 
             _mockDataService.Setup(s => s.Commitments).Returns(commitments.AsQueryable());
             _mockDataService.Setup(s => s.Disasters).Returns(disasters.AsQueryable());
+            _mockDataService.Setup(s => s.Clusters).Returns(clusters.AsQueryable());
 
             const int personId = 5;
             const int disasterId = 2;
