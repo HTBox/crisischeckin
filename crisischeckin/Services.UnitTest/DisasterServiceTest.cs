@@ -33,6 +33,11 @@ namespace Services.UnitTest
         public void CreateDependencies()
         {
             _mockDataService = new Mock<IDataService>();
+            _mockDataService.Setup(s => s.Clusters).Returns(new List<Cluster>
+            {
+                new Cluster {Id = 1, Name="Sample" }
+            }.AsQueryable());
+
             _disasterService = new DisasterService(_mockDataService.Object);
         }
 
