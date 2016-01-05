@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "List";
+    Response.Headers["Cache-Control"] = "no-cache, max-age=0, must-revalidate, no-store";
 }
 
 <h2>List Of Clusters</h2>
