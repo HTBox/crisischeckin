@@ -15,10 +15,11 @@
                 @Html.LabelFor(m => m.Name)
                 @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
             </div>
-            <div>
+            <div class="form-group">
                 @Html.CheckBoxFor(m => m.IsActive)
                 @Html.LabelFor(m => m.IsActive)
             </div>
+            <input type="submit" value="@(Model.Id > 0 ? "Update" : "Create") Disaster" class="btn btn-success" />
         </div>
         <div class="col-sm-8">
             <div>
@@ -53,5 +54,4 @@
 
         </div>
     </div>
-    <input type="submit" value="@(Model.Id > 0 ? "Update" : "Create") Disaster" class="btn btn-success" />
 }
