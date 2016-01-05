@@ -12,6 +12,10 @@ The Administrator login (on the staging site) is:
 UID:  Administrator
 PW: P@$$w0rd
 
+The volunteer login (on the staging site) is:
+UID: TestUser
+PW: test
+
 
 simple requirements
 =============
