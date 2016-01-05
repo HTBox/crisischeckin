@@ -65,7 +65,7 @@ namespace Services.UnitTest
                                 DisasterId = disasterWithVolunteersID,
                                 Id = commitmentId,
                                 PersonId = personWithCommitmentsID,
-                                PersonIsCheckedIn = false,
+                                Status = CommitmentStatus.Planned,
                                 StartDate = new DateTime(2013, 8, 10),
                                 EndDate = new DateTime(2013, 8, 15)
                             };
@@ -75,7 +75,7 @@ namespace Services.UnitTest
                                 DisasterId = disasterWithVolunteersID,
                                 Id = checkedInCommitmentId,
                                 PersonId = checkedInPersonID,
-                                PersonIsCheckedIn = true,
+                                Status = CommitmentStatus.Here,
                                 StartDate = new DateTime(2013, 8, 10),
                                 EndDate = new DateTime(2013, 8, 15)
                             };

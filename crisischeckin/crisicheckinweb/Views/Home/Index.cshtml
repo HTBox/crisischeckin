@@ -1,4 +1,5 @@
 ﻿@model crisicheckinweb.ViewModels.VolunteerViewModel
+@using Models
 @{
   ViewBag.Title = "Volunteer Home";
   Layout = "~/Views/Shared/_VolunteerLayout.cshtml";
@@ -31,25 +32,16 @@
               }
             </dd>
           </dl>
-          @if (commitmentForToday.PersonIsCheckedIn)
+          @foreach (var action in Model.AvailableActions)
           {
-            using (Html.BeginForm("Checkout", "Home", FormMethod.Post, new { @class = "form-horizontal" }))
+            using (Html.BeginForm(action.ActionName, "Home", FormMethod.Post, new { @class = "form-horizontal" }))
             {
               @Html.AntiForgeryToken()
               @Html.Hidden("commitmentId", commitmentForToday.Id)
-              <button class="btn btn-black" type="submit">Check-out</button>
-              <span> Thank you for your help today!</span>
+              <button class="btn btn-black" type="submit">@action.ButtonText</button>
+              <span>@action.Description</span>
             }
-          }
-          else
-          {
-            using (Html.BeginForm("Checkin", "Home", FormMethod.Post, new { @class = "form-horizontal" }))
-            {
-              @Html.AntiForgeryToken()
-              @Html.Hidden("commitmentId", commitmentForToday.Id)
-              <button class="btn btn-black" type="submit">Check-in</button>
-              <span> and start helping now!</span>
-            }
+            <br/>
           }
         </div>
       </div>

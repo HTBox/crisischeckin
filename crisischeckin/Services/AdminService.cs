@@ -58,9 +58,9 @@ namespace Services
 
             var people = from cc in _dataService.ClusterCoordinators
                          where cc.DisasterId == disasterId
-                         join c in _dataService.Commitments on cc.PersonId equals c.PersonId
+                         join c in Commitment.FilteredByStatus(_dataService.Commitments, checkedInOnly)
+                            on cc.PersonId equals c.PersonId
                          where c.DisasterId == disasterId
-                         where !checkedInOnly || c.PersonIsCheckedIn
                          where date >= c.StartDate && date <= c.EndDate
                          select cc.Person;
 
@@ -73,12 +73,11 @@ namespace Services
                 throw new ArgumentException("disasterId must be greater than zero", "disasterId");
 
             var people = from p in _dataService.Persons
-                         join c in _dataService.Commitments on p.Id equals c.PersonId
+                         join c in Commitment.FilteredByStatus(_dataService.Commitments, checkedInOnly)
+                            on p.Id equals c.PersonId
                          where c.DisasterId == disasterId
-                         where !checkedInOnly || c.PersonIsCheckedIn
                          where date >= c.StartDate && date <= c.EndDate
                          select p;
-            //people.Include(x => x.Cluster);
 
             return people.Distinct();
         }
@@ -108,9 +107,9 @@ namespace Services
                 throw new ArgumentException("disasterId is invalid.", "disasterId");
 
             var people = from p in _dataService.Persons
-                         join c in _dataService.Commitments on p.Id equals c.PersonId
+                         join c in Commitment.FilteredByStatus(_dataService.Commitments, checkedInOnly)
+                            on p.Id equals c.PersonId
                          where c.DisasterId == disasterId
-                         where !checkedInOnly || c.PersonIsCheckedIn
                          select p;
 
             return people.Distinct();

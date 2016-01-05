@@ -85,6 +85,10 @@
     <Compile Include="Migrations\201511132021070_RequireClusterName.Designer.cs">
       <DependentUpon>201511132021070_RequireClusterName.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201601052014162_DropPersonIsCheckedInBoolean.cs" />
+    <Compile Include="Migrations\201601052014162_DropPersonIsCheckedInBoolean.Designer.cs">
+      <DependentUpon>201601052014162_DropPersonIsCheckedInBoolean.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Person.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -121,6 +125,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201511132021070_RequireClusterName.resx">
       <DependentUpon>201511132021070_RequireClusterName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601052014162_DropPersonIsCheckedInBoolean.resx">
+      <DependentUpon>201601052014162_DropPersonIsCheckedInBoolean.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

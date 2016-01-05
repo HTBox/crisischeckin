@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace Models
 {
@@ -16,8 +17,6 @@ namespace Models
 
         public int VolunteerTypeId { get; set; }
 
-        public bool PersonIsCheckedIn { get; set; }
-
         public CommitmentStatus Status { get; set; }
 
         public int? ClusterId { get; set; }
@@ -29,16 +28,49 @@ namespace Models
         public virtual Cluster Cluster { get; set; }
 
         public virtual VolunteerType VolunteerType { get; set; }
+
+
+
+        public bool PersonIsCheckedIn
+        {
+            get { return Status == CommitmentStatus.Here; }
+        }
+
+        public void CheckIn()
+        {
+            Status = CommitmentStatus.Here;
+        }
+
+        public void ReportDelay()
+        {
+            Status = CommitmentStatus.Delayed;
+        }
+
+        public void ReportUnavailable()
+        {
+            Status = CommitmentStatus.Unavailable;
+        }
+
+        public void CheckOut()
+        {
+            Status = CommitmentStatus.Finished;
+        }
+
+        public static IQueryable<Commitment> FilteredByStatus(IQueryable<Commitment> commitments, bool checkedInOnly)
+        {
+            if (checkedInOnly)
+                return commitments.Where(c => c.Status == CommitmentStatus.Here);
+            else
+                return commitments;
+        }
     }
 
     public enum CommitmentStatus
     {
-        None,
-        Planned,
-        Delayed,
-        Out,
-        Here,
-        Unavailable,
-        Finished
+        Planned = 0,
+        Delayed = 1,
+        Here = 2,
+        Unavailable = 3,
+        Finished = 4
     }
 }
