@@ -18,5 +18,6 @@ namespace Services.Interfaces
         IEnumerable<Disaster> GetActiveList();
         IEnumerable<Disaster> GetList();
         string GetName(int disasterId);
+        void RemoveClusterCoordinator(int currentUserId, int clusterId, int disasterId);
     }
 }

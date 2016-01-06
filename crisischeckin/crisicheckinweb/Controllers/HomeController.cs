@@ -216,12 +216,16 @@ namespace crisicheckinweb.Controllers
                 var person = _volunteerSvc.FindByUserId(_webSecurity.CurrentUserId);
                 var commitments = _volunteerSvc.RetrieveCommitments(person.Id, true).AsEnumerable();
 
-                if (commitments.FirstOrDefault(c => c.Id == model.RemoveCommitmentId) == null)
+
+                var commitment = commitments.FirstOrDefault(c => c.Id == model.RemoveCommitmentId);
+                if (commitment == null)
                 {
                     throw new ArgumentException("Commitment supplied is not yours.");
                 }
 
+                _disasterSvc.RemoveClusterCoordinator(_webSecurity.CurrentUserId, commitment.ClusterId.Value, commitment.DisasterId);
                 _disasterSvc.RemoveCommitmentById(model.RemoveCommitmentId);
+                
 
                 return Redirect("/Home");
             }
