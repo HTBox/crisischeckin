@@ -212,6 +212,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="App_Start\AuthConfig.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\ClusterGroupController.cs" />
     <Compile Include="Controllers\ClusterController.cs" />
     <Compile Include="Controllers\ClusterCoordinatorController.cs" />
     <Compile Include="Controllers\DisasterController.cs" />
@@ -232,6 +233,7 @@
     <Compile Include="ViewModels\AvailableAction.cs" />
     <Compile Include="ViewModels\ChangeContactInfoViewModel.cs" />
     <Compile Include="ViewModels\ClusterCoordinatorViewModel.cs" />
+    <Compile Include="ViewModels\ClusterGroupViewModel.cs" />
     <Compile Include="ViewModels\ClusterViewModel.cs" />
     <Compile Include="ViewModels\ConfirmUnassignClusterCoordinatorViewModel.cs" />
     <Compile Include="ViewModels\DisasterClusterCoordinatorsViewModel.cs" />
@@ -419,6 +421,8 @@
     <Content Include="Views\Account\RegistrationSuccessful.cshtml" />
     <Content Include="Views\Cluster\List.cshtml" />
     <Content Include="Views\Cluster\Create.cshtml" />
+    <Content Include="Views\ClusterGroup\Create.cshtml" />
+    <Content Include="Views\ClusterGroup\List.cshtml" />
     <None Include="Web.Staging.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
