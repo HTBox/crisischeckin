@@ -56,7 +56,7 @@ namespace crisicheckinweb.Controllers
                         {
                             return RedirectToAction("List", "Disaster");
                         }
-                        return RedirectToLocal(returnUrl);
+                        return RedirectToAction("Index", "Home");
                     }
 
                     // If login fails, assume the email was typed in instead.
@@ -69,7 +69,7 @@ namespace crisicheckinweb.Controllers
                             {
                                 return RedirectToAction("List", "Disaster");
                             }
-                            return RedirectToLocal(returnUrl);
+                            return RedirectToAction("Index", "Home");
                         }
                     }
                 }

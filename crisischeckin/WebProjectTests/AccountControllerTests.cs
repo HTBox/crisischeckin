@@ -438,8 +438,9 @@ namespace WebProjectTests
             var response = _controllerUnderTest.Login(model, "/return/url");
 
             // Assert
-            var result = response as RedirectResult;
-            Assert.AreEqual("/return/url", result.Url);
+            var result = response as RedirectToRouteResult;
+            Assert.AreEqual("Index", result.RouteValues["action"]);
+            Assert.AreEqual("Home", result.RouteValues["controller"]);
         }
 
         [Test]
@@ -501,8 +502,9 @@ namespace WebProjectTests
             var response = _controllerUnderTest.Login(model, "/return/url");
 
             // Assert
-            var result = response as RedirectResult;
-            Assert.AreEqual("/return/url", result.Url);
+            var result = response as RedirectToRouteResult;
+            Assert.AreEqual("Index", result.RouteValues["action"]);
+            Assert.AreEqual("Home", result.RouteValues["controller"]);
         }
 
         [Test]
