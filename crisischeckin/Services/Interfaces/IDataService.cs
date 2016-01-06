@@ -33,5 +33,6 @@ namespace Services.Interfaces
         void AppendClusterCoordinatorLogEntry(ClusterCoordinatorLogEntry clusterCoordinatorLogEntry);
         void RemoveClusterCoordinator(ClusterCoordinator clusterCoordinator);
         Commitment UpdateCommitment(Commitment updatedCommitment);
+        void RemoveClusterCoordinator(int personId, int clusterId, int disasterId);
     }
 }

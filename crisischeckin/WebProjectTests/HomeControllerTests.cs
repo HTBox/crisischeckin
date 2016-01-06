@@ -120,7 +120,7 @@ namespace WebProjectTests
         public void RemoveCommitmentById_Valid_RedirectsToHome()
         {
             // Arrange
-            var commitments = new List<Commitment>() { new Commitment() { Id = 7, PersonId = 13}};
+            var commitments = new List<Commitment>() { new Commitment() { Id = 7, PersonId = 13, ClusterId = 1, DisasterId = 1}};
 
             _volunteerService.Setup(service => service.FindByUserId(It.IsAny<int>())).Returns(new Person() { Id = 13 });
             _volunteerService.Setup(service => service.RetrieveCommitments(13, true)).Returns(commitments.AsQueryable());

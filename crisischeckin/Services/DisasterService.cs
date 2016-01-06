@@ -75,6 +75,11 @@ namespace Services
             return _dataService.Disasters.Where(d => d.Id.Equals(disasterId)).Select(d => d.Name).FirstOrDefault();
         }
 
+        public void RemoveClusterCoordinator(int personId, int clusterId, int disasterId)
+        {
+            _dataService.RemoveClusterCoordinator(personId, clusterId, disasterId);
+        }
+
         public void Create(Disaster disaster)
         {
             if (disaster == null) throw new ArgumentNullException("disaster");

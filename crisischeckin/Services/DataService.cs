@@ -120,6 +120,15 @@ namespace Services
             return result;
         }
 
+        public void RemoveClusterCoordinator(int personId, int clusterId, int disasterId)
+        {
+            var clusterCoordinator = context.ClusterCoordinators.SingleOrDefault(
+                x => x.PersonId == personId && x.ClusterId == clusterId && x.DisasterId == disasterId);
+            if (clusterCoordinator == null) return;
+            context.ClusterCoordinators.Remove(clusterCoordinator);
+            context.SaveChanges();
+        }
+
         public void AddDisaster(Disaster newDisaster)
         {
             context.Disasters.Add(newDisaster);
