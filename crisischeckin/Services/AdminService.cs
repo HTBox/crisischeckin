@@ -37,21 +37,21 @@ namespace Services
             return GetVolunteersForDate(disaster.Id, date, clusterCoordinatorsOnly, checkedInOnly);
         }
 
-        public IEnumerable<Person> GetVolunteersForDate(int disasterId, DateTime date, bool clusterCoordinatorsOnly, bool checkedInOnly = false)
+        public IEnumerable<Person> GetVolunteersForDate(int disasterId, DateTime date, bool clusterCoordinatorsOnly, bool checkedInOnly = false, IEnumerable<int> inClusterIds=null)
         {
             if (disasterId <= 0)
                 throw new ArgumentException("disasterId is invalid.", "disasterId");
 
             var people = clusterCoordinatorsOnly
-                ? GetClusterCoordinatorsForDateQueryable(disasterId, date, checkedInOnly)
-                : GetVolunteersForDateQueryable(disasterId, date, checkedInOnly);
+                ? GetClusterCoordinatorsForDateQueryable(disasterId, date, checkedInOnly, inClusterIds)
+                : GetVolunteersForDateQueryable(disasterId, date, checkedInOnly, inClusterIds);
 
             if (people == null)
                 throw new NullReferenceException(string.Format("Attempt to get volunteers for disaster ID {0} returned null.", disasterId));
             return people.ToList();
         }
 
-        private IQueryable<Person> GetClusterCoordinatorsForDateQueryable(int disasterId, DateTime date, bool checkedInOnly)
+        private IQueryable<Person> GetClusterCoordinatorsForDateQueryable(int disasterId, DateTime date, bool checkedInOnly, IEnumerable<int> inClusterIds)
         {
             if (disasterId <= 0)
                 throw new ArgumentException("disasterId must be greater than zero", "disasterId");
@@ -62,12 +62,13 @@ namespace Services
                             on cc.PersonId equals c.PersonId
                          where c.DisasterId == disasterId
                          where date >= c.StartDate && date <= c.EndDate
+                         where inClusterIds == null || !inClusterIds.Any() ? true : inClusterIds != null && inClusterIds.Any(cid => cid == c.ClusterId)
                          select cc.Person;
 
             return people.Distinct();
         }
 
-        private IQueryable<Person> GetVolunteersForDateQueryable(int disasterId, DateTime date, bool checkedInOnly)
+        private IQueryable<Person> GetVolunteersForDateQueryable(int disasterId, DateTime date, bool checkedInOnly, IEnumerable<int> inClusterIds)
         {
             if (disasterId <= 0)
                 throw new ArgumentException("disasterId must be greater than zero", "disasterId");
@@ -77,6 +78,7 @@ namespace Services
                             on p.Id equals c.PersonId
                          where c.DisasterId == disasterId
                          where date >= c.StartDate && date <= c.EndDate
+                         where inClusterIds == null || !inClusterIds.Any() ? true : inClusterIds != null && inClusterIds.Any(cid => cid == c.ClusterId)
                          select p;
 
             return people.Distinct();

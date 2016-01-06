@@ -32,7 +32,7 @@ namespace Services
 
         public void SendMessageToDisasterVolunteers(Message message, RecipientCriterion recipientCriterion, string senderDisplayName = null)
         {
-            var volunteers = _adminSvc.GetVolunteersForDate(recipientCriterion.DisasterId, DateTime.Today, recipientCriterion.ClusterCoordinatorsOnly, recipientCriterion.CheckedInOnly).ToList();
+            var volunteers = _adminSvc.GetVolunteersForDate(recipientCriterion.DisasterId, DateTime.Today, recipientCriterion.ClusterCoordinatorsOnly, recipientCriterion.CheckedInOnly, recipientCriterion.ClusterIds).ToList();
 
             if (!volunteers.Any())
                 return;
