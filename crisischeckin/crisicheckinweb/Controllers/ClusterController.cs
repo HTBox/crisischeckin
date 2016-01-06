@@ -41,7 +41,7 @@ namespace crisicheckinweb.Controllers
                     else
                         _clusterSvc.Update(cluster);
 
-                    return View("List", _clusterSvc.GetList().Select(CreateViewModel));
+                    return RedirectToAction("List");
                 }
                 else
                 {
@@ -67,7 +67,7 @@ namespace crisicheckinweb.Controllers
             Cluster removeCluster = _clusterSvc.Get(cluster.Id);
             _clusterSvc.Remove(removeCluster);
 
-            return View("List", _clusterSvc.GetList().Select(CreateViewModel));
+            return RedirectToAction("List");
         }
 
         // GET: Clusters/
