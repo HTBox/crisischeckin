@@ -229,6 +229,7 @@
     <Compile Include="NavigationRoutes\NavigationRouteConfigurationExtensions.cs" />
     <Compile Include="NavigationRoutes\NavigationRouteFilter.cs" />
     <Compile Include="ViewModels\AssignClusterCoordinatorViewModel.cs" />
+    <Compile Include="ViewModels\AvailableAction.cs" />
     <Compile Include="ViewModels\ChangeContactInfoViewModel.cs" />
     <Compile Include="ViewModels\ClusterCoordinatorViewModel.cs" />
     <Compile Include="ViewModels\ClusterViewModel.cs" />

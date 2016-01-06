@@ -103,7 +103,7 @@ namespace crisicheckinweb.Api
         public void CheckIn(int commitmentId)
         {
             Commitment commitment = Context.Commitments.Single(c => c.Id == commitmentId);
-            commitment.PersonIsCheckedIn = true;
+            commitment.CheckIn();
             Context.SaveChanges();
         }
 
@@ -115,7 +115,7 @@ namespace crisicheckinweb.Api
         public void CheckOut(int commitmentId)
         {
             Commitment commitment = Context.Commitments.Single(c => c.Id == commitmentId);
-            commitment.PersonIsCheckedIn = false;
+            commitment.CheckOut();
             Context.SaveChanges();
         }
 

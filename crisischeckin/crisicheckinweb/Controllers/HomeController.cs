@@ -49,37 +49,25 @@ namespace crisicheckinweb.Controllers
         [HttpPost]
         public ActionResult Checkin(int commitmentId)
         {
-            var person = _volunteerSvc.FindByUserId(_webSecurity.CurrentUserId);
-            if (person != null)
-            {
-                var commitment = _volunteerSvc.RetrieveCommitments(person.Id, true)
-                    .FirstOrDefault(x => x.Id == commitmentId);
-                if (commitment != null)
-                {
-                    commitment.PersonIsCheckedIn = true;
-                    _volunteerSvc.UpdateCommitment(commitment);
-                }
-            }
+            return UpdateCommitment(commitmentId, c => c.CheckIn());
+        }
 
-            return RedirectToAction("Index");
+        [HttpPost]
+        public ActionResult ReportDelay(int commitmentId)
+        {
+            return UpdateCommitment(commitmentId, c => c.ReportDelay());
+        }
+
+        [HttpPost]
+        public ActionResult ReportUnavailable(int commitmentId)
+        {
+            return UpdateCommitment(commitmentId, c => c.ReportUnavailable());
         }
 
         [HttpPost]
         public ActionResult Checkout(int commitmentId)
         {
-            var person = _volunteerSvc.FindByUserId(_webSecurity.CurrentUserId);
-            if (person != null)
-            {
-                var commitment = _volunteerSvc.RetrieveCommitments(person.Id, true)
-                    .FirstOrDefault(x => x.Id == commitmentId);
-                if (commitment != null)
-                {
-                    commitment.PersonIsCheckedIn = false;
-                    _volunteerSvc.UpdateCommitment(commitment);
-                }
-            }
-
-            return RedirectToAction("Index");
+            return UpdateCommitment(commitmentId, c => c.CheckOut());
         }
 
         public ActionResult AccessDenied()
@@ -142,15 +130,58 @@ namespace crisicheckinweb.Controllers
                 new List<Commitment>().AsEnumerable();
             var commitmentForToday = commitments.FirstOrDefault(x => x.StartDate <= DateTime.Today && DateTime.Today <= x.EndDate);
 
-            var clusterCoordinators =  (commitmentForToday != null && commitmentForToday.ClusterId.HasValue) ?
+            var clusterCoordinators = (commitmentForToday != null && commitmentForToday.ClusterId.HasValue) ?
                  _clusterCoordinatorService.GetAllCoordinatorsForCluster(commitmentForToday.ClusterId.Value).ToList() :
                 new List<ClusterCoordinator>().AsEnumerable();
+
+
+            List<AvailableAction> availableActions = new List<AvailableAction>();
+            if (commitmentForToday != null)
+            {
+                if (commitmentForToday.Status != CommitmentStatus.Here)
+                {
+                    availableActions.Add(new AvailableAction
+                    {
+                        ActionName = "Checkin",
+                        ButtonText = "Check-in",
+                        Description = " and start helping now!"
+                    });
+                }
+                if (commitmentForToday.Status == CommitmentStatus.Planned)
+                {
+                    availableActions.Add(new AvailableAction
+                    {
+                        ActionName = "ReportDelay",
+                        ButtonText = "Delayed",
+                        Description = " I'll be there when I can."
+                    });
+                }
+                if (commitmentForToday.Status == CommitmentStatus.Here)
+                {
+                    availableActions.Add(new AvailableAction
+                    {
+                        ActionName = "Checkout",
+                        ButtonText = "Check-out",
+                        Description = " Thank you for your help today!"
+                    });
+                }
+                if (commitmentForToday.Status != CommitmentStatus.Unavailable)
+                {
+                    availableActions.Add(new AvailableAction
+                    {
+                        ActionName = "ReportUnavailable",
+                        ButtonText = "Unavailable",
+                        Description = " I can't help you at this time."
+                    });
+                }
+            }
 
             var model = new VolunteerViewModel
             {
                 Disasters = _disasterSvc.GetActiveList(),
                 DisasterClusters = _disasterClusterSvc.GetClustersForADisaster(0),
                 MyCommitments = commitments,
+                AvailableActions = availableActions,
                 VolunteerTypes = _volunteerTypes.GetList(),
                 Person = person,
                 ClusterCoordinators = clusterCoordinators
@@ -206,6 +237,23 @@ namespace crisicheckinweb.Controllers
             modelToReturn.SelectedClusterId = model.SelectedClusterId;
 
             return View("Index", modelToReturn);
+        }
+
+        private ActionResult UpdateCommitment(int commitmentId, Action<Commitment> change)
+        {
+            var person = _volunteerSvc.FindByUserId(_webSecurity.CurrentUserId);
+            if (person != null)
+            {
+                var commitment = _volunteerSvc.RetrieveCommitments(person.Id, true)
+                    .FirstOrDefault(x => x.Id == commitmentId);
+                if (commitment != null)
+                {
+                    change(commitment);
+                    _volunteerSvc.UpdateCommitment(commitment);
+                }
+            }
+
+            return RedirectToAction("Index");
         }
     }
 }

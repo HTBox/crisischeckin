@@ -112,7 +112,6 @@ namespace Services
             result.StartDate = updatedCommitment.StartDate;
             result.EndDate = updatedCommitment.EndDate;
             result.Status = updatedCommitment.Status;
-            result.PersonIsCheckedIn = updatedCommitment.PersonIsCheckedIn;
             result.VolunteerType = updatedCommitment.VolunteerType;
             result.ClusterId = updatedCommitment.ClusterId;
 
