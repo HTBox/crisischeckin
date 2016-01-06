@@ -12,40 +12,68 @@
   if (commitmentForToday != null)
   {
       <div class="panel panel-default">
-        <div class="panel-heading">
-          <h3 class="panel-title">Commitment for today</h3>
-        </div>
-        <div class="panel-body">
-          <dl class="dl-horizontal">
-            <dt>Disaster: </dt>
-            <dd>@commitmentForToday.Disaster.Name</dd>
-            <dt>Location: </dt>
-            <dd>@commitmentForToday.VolunteerType.Name</dd>
-            <dt>Cluster: </dt>
-            <dd>@commitmentForToday.Cluster.Name</dd>
-            <dt>Coordinators: </dt>
-            <dd>
-              @foreach (var clusterCoordinator in Model.ClusterCoordinators.Where(cc => cc.DisasterId == commitmentForToday.DisasterId))
+          <div class="panel-heading">
+              <h3 class="panel-title">Commitment for today</h3>
+          </div>
+          <div class="panel-body">
+              <dl class="dl-horizontal">
+                  <dt>Disaster: </dt>
+                  <dd>@commitmentForToday.Disaster.Name</dd>
+                  <dt>Location: </dt>
+                  <dd>@commitmentForToday.VolunteerType.Name</dd>
+                  <dt>Cluster: </dt>
+                  <dd>@commitmentForToday.Cluster.Name</dd>
+                  <dt>Coordinators: </dt>
+                  <dd>
+                      @foreach (var clusterCoordinator in Model.ClusterCoordinators.Where(cc => cc.DisasterId == commitmentForToday.DisasterId))
+                      {
+                          <span>@(clusterCoordinator.Person.LastName + ", " + clusterCoordinator.Person.FirstName) (Phone - @(clusterCoordinator.Person.PhoneNumber) | Email - @(clusterCoordinator.Person.Email))
+                </span><br/>
+                      }
+                  </dd>
+              </dl>
+              @foreach (var action in Model.AvailableActions)
               {
-                <span>@(clusterCoordinator.Person.LastName + ", " + clusterCoordinator.Person.FirstName) (Phone - @(clusterCoordinator.Person.PhoneNumber) | Email - @(clusterCoordinator.Person.Email))
-                </span><br />
+                  using (Html.BeginForm(action.ActionName, "Home", FormMethod.Post, new {@class = "form-horizontal", id = @action.FormId}))
+                  {
+                      @Html.AntiForgeryToken()
+                      @Html.Hidden("commitmentId", commitmentForToday.Id)
+                      <button class="btn btn-black" type="submit" id="@action.ButtonId">@action.ButtonText</button>
+                      <span>@action.Description</span>
+                  }
+                  <br/>
               }
-            </dd>
-          </dl>
-          @foreach (var action in Model.AvailableActions)
-          {
-            using (Html.BeginForm(action.ActionName, "Home", FormMethod.Post, new { @class = "form-horizontal" }))
-            {
-              @Html.AntiForgeryToken()
-              @Html.Hidden("commitmentId", commitmentForToday.Id)
-              <button class="btn btn-black" type="submit">@action.ButtonText</button>
-              <span>@action.Description</span>
-            }
-            <br/>
-          }
-        </div>
+          </div>
       </div>
-  }
+
+    <div class="modal fade" id="delayed-modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Please Modify Your Availability Dates</h4>
+                </div>
+                <div class="modal-body form-horizontal">
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">Start Date</label>
+                        <div class="col-md-3">
+                            <input class="form-control" readonly="readonly" type="text" value="@commitmentForToday.StartDate.ToShortDateString()"
+                                   id="new-start-date"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">End Date</label>
+                        <div class="col-md-3"><input class="form-control" readonly="readonly" type="text" value="@commitmentForToday.EndDate.ToShortDateString()" id="new-end-date" /></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="new-dates-button">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    }
 }
 
 
@@ -127,41 +155,8 @@ else
 }
 @section scripts
 {
-  <script type="text/javascript">
-    (function ($) {
-      $(document).ready(function () {
-        $("#dp_startDate").datepicker({ minDate: 'today', onSelect: updateEndDate }).datepicker('setDate',
-            '@(Model.SelectedStartDate == default(DateTime) ? DateTime.Now : Model.SelectedStartDate)');
-        $("#dp_endDate").datepicker({ minDate: 'today' }).datepicker('setDate',
-            '@(Model.SelectedEndDate == default(DateTime) ? DateTime.Now : Model.SelectedEndDate)');
-
-        $('.contact').tooltip();
-      });
-
-      function updateEndDate(dateText) {
-        $('#dp_endDate').datepicker('option', 'minDate', dateText);
-      }
-
-      $(function () {
-          $('select#disasterList').change(function () {
-              var disasterId = $('#disasterList').val();
-              $.ajax({
-                  url: '/Home/LoadDisasterClusterList',
-                  type: "GET",
-                  dataType: "JSON",
-                  data: { disasterId: disasterId } ,
-                  success: function (disasterClusters) {
-                      $("#activityList").html(""); // clear before appending new list 
-                      $.each(disasterClusters, function (i, disasterCluster) {
-                          $("#activityList").append(
-                              $('<option></option>').val(disasterCluster.Cluster.Id).html(disasterCluster.Cluster.Name));
-                      });
-                  }
-              });
-          });
-      });
-
-    })(jQuery);
+  <script type="text/javascript" src="~/scripts/App/home.js">
+    
     
       
     </script>

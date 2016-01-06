@@ -53,9 +53,9 @@ namespace crisicheckinweb.Controllers
         }
 
         [HttpPost]
-        public ActionResult ReportDelay(int commitmentId)
+        public ActionResult ReportDelay(int commitmentId, DateTime startDate, DateTime endDate)
         {
-            return UpdateCommitment(commitmentId, c => c.ReportDelay());
+            return UpdateCommitment(commitmentId, c => c.ReportDelay(startDate, endDate));
         }
 
         [HttpPost]
@@ -144,7 +144,8 @@ namespace crisicheckinweb.Controllers
                     {
                         ActionName = "Checkin",
                         ButtonText = "Check-in",
-                        Description = " and start helping now!"
+                        Description = " and start helping now!",
+                        ButtonId = "check-in-button"
                     });
                 }
                 if (commitmentForToday.Status == CommitmentStatus.Planned)
@@ -153,7 +154,9 @@ namespace crisicheckinweb.Controllers
                     {
                         ActionName = "ReportDelay",
                         ButtonText = "Delayed",
-                        Description = " I'll be there when I can."
+                        Description = " I'll be there when I can.",
+                        ButtonId = "delayed-button",
+                        FormId = "delayed-form"
                     });
                 }
                 if (commitmentForToday.Status == CommitmentStatus.Here)
@@ -162,7 +165,8 @@ namespace crisicheckinweb.Controllers
                     {
                         ActionName = "Checkout",
                         ButtonText = "Check-out",
-                        Description = " Thank you for your help today!"
+                        Description = " Thank you for your help today!",
+                        ButtonId = "check-out-button"
                     });
                 }
                 if (commitmentForToday.Status != CommitmentStatus.Unavailable)
@@ -171,7 +175,8 @@ namespace crisicheckinweb.Controllers
                     {
                         ActionName = "ReportUnavailable",
                         ButtonText = "Unavailable",
-                        Description = " I can't help you at this time."
+                        Description = " I can't help you at this time.",
+                        ButtonId = "unavailable-button"
                     });
                 }
             }
