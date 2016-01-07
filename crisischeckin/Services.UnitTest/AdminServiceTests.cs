@@ -412,6 +412,133 @@ namespace Services.UnitTest
                 "Could not find second expected Person.");
         }
 
+        [Test]
+        public void GetVolunteersForDate_WithFilteredClustersForVolunteers_ReturnsOnePerson()
+        {
+            initializeVolunteerCollection(new Person() {Id=432}, new Person { Id = 345 });
+            initializeDisasterCollection(new Disaster { Id=1, IsActive = true});
+            initializeCommitmentCollection(new Commitment
+                {
+                    Id = 876,
+                    DisasterId = 1,
+                    PersonId = 432,
+                    Status = CommitmentStatus.Here,
+                    StartDate = new DateTime(2015, 1, 1),
+                    EndDate = new DateTime(2015, 1, 31),
+                    ClusterId = 780
+                }, new Commitment
+                {
+                    DisasterId = 1,
+                    Id = 877,
+                    PersonId = 345,
+                    Status = CommitmentStatus.Here,
+                    StartDate = new DateTime(2015, 1, 1),
+                    EndDate = new DateTime(2015, 1, 31),
+                    ClusterId = 781
+                });
+
+            var adminService = new AdminService(mockService.Object);
+
+            var results =
+                adminService.GetVolunteersForDate(1, new DateTime(2015, 1, 7), false, false, new[] {781}).ToArray();
+
+            Assert.AreEqual(1, results.Length);
+            Assert.AreEqual(345,results[0].Id);
+
+        }
+
+        [Test]
+        public void GetVolunteersForDate_WithFilteredClustersForCoordinators_ReturnsOneCoordinator()
+        {
+
+            var firstPerson = new Person() { Id = 231 };
+            var secondPerson = new Person() { Id = 233 };
+            var disaster = new Disaster { Id = 1, IsActive = true };
+            var cluster = new Cluster {Id = 765};
+
+            initializeVolunteerCollection(firstPerson, secondPerson);
+            initializeDisasterCollection(disaster);
+            initializeClusterCollection(cluster);
+
+            initializeCoordinatorCollection(
+                new ClusterCoordinator { Id = 432, PersonId = firstPerson.Id, Person = firstPerson, DisasterId = disaster.Id, Disaster = disaster, Cluster = cluster, ClusterId = cluster.Id},
+                new ClusterCoordinator { Id = 345, PersonId = secondPerson.Id, Person = secondPerson, DisasterId = disaster.Id, Disaster = disaster });
+
+
+            initializeCommitmentCollection(new Commitment
+            {
+                DisasterId = disaster.Id,
+                Disaster = disaster,
+                PersonId = firstPerson.Id,
+                Person = firstPerson,
+                ClusterId = cluster.Id,
+                Cluster = cluster,
+                StartDate = new DateTime(2015, 1, 5),
+                EndDate = new DateTime(2015, 1, 23)
+            },
+            new Commitment
+            {
+                DisasterId = disaster.Id,
+                Disaster = disaster,
+                PersonId = secondPerson.Id,
+                Person = secondPerson,
+                StartDate = new DateTime(2015, 1, 5),
+                EndDate = new DateTime(2015, 1, 20)
+            });
+
+            var adminService = new AdminService(mockService.Object);
+
+            var results =
+                adminService.GetVolunteersForDate(1, new DateTime(2015, 1, 7), true, false, new[] { 765 }).ToArray();
+
+            Assert.AreEqual(1, results.Length);
+            Assert.AreEqual(firstPerson, results[0]);
+        }
+
+        [Test]
+        public void GetVolunteersForDate_Coordinators_ReturnsTwoCoordinators()
+        {
+            
+            var firstPerson = new Person() {Id = 231};
+            var secondPerson = new Person() {Id = 233};
+            var disaster = new Disaster {Id = 1, IsActive = true};
+
+            initializeVolunteerCollection(firstPerson, secondPerson);
+            initializeDisasterCollection(disaster);
+
+            initializeCoordinatorCollection(
+                new ClusterCoordinator { Id = 432, PersonId = firstPerson.Id, Person = firstPerson, DisasterId = disaster.Id, Disaster = disaster},
+                new ClusterCoordinator { Id = 345, PersonId = secondPerson.Id, Person = secondPerson, DisasterId = disaster.Id, Disaster = disaster});
+
+
+            initializeCommitmentCollection(new Commitment
+            {
+                DisasterId = disaster.Id,
+                Disaster = disaster,
+                PersonId = firstPerson.Id,
+                Person = firstPerson,
+                StartDate = new DateTime(2015,1,5),
+                EndDate = new DateTime(2015,1,23)
+            },
+            new Commitment
+            {
+                DisasterId = disaster.Id,
+                Disaster = disaster,
+                PersonId = secondPerson.Id,
+                Person = secondPerson,
+                StartDate = new DateTime(2015, 1, 5),
+                EndDate = new DateTime(2015, 1, 20)
+            });
+
+            var adminService = new AdminService(mockService.Object);
+
+            var results =
+                adminService.GetVolunteersForDate(1, new DateTime(2015, 1, 7),true, false).ToArray();
+
+            Assert.AreEqual(2, results.Length);
+        }
+
+
         private void initializeDisasterCollection(params Disaster[] disasters)
         {
             mockService.Setup(ds => ds.Disasters).Returns(disasters.AsQueryable());
@@ -426,5 +553,15 @@ namespace Services.UnitTest
         {
             mockService.Setup(ds => ds.Commitments).Returns(commitments.AsQueryable());
         }
+        private void initializeCoordinatorCollection(params ClusterCoordinator[] coordinators)
+        {
+            mockService.Setup(ds => ds.ClusterCoordinators).Returns(coordinators.AsQueryable());
+        }
+
+        private void initializeClusterCollection(params Cluster[] clusters)
+        {
+            mockService.Setup(ds => ds.Clusters).Returns(clusters.AsQueryable());
+        }
+
     }
 }
