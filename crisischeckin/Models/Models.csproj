@@ -90,9 +90,9 @@
     <Compile Include="Migrations\201601052014162_DropPersonIsCheckedInBoolean.Designer.cs">
       <DependentUpon>201601052014162_DropPersonIsCheckedInBoolean.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201601061919332_AddClusterGroup.cs" />
-    <Compile Include="Migrations\201601061919332_AddClusterGroup.Designer.cs">
-      <DependentUpon>201601061919332_AddClusterGroup.cs</DependentUpon>
+    <Compile Include="Migrations\201601062244410_AddClusterGroup.cs" />
+    <Compile Include="Migrations\201601062244410_AddClusterGroup.Designer.cs">
+      <DependentUpon>201601062244410_AddClusterGroup.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Person.cs" />
@@ -134,8 +134,8 @@
     <EmbeddedResource Include="Migrations\201601052014162_DropPersonIsCheckedInBoolean.resx">
       <DependentUpon>201601052014162_DropPersonIsCheckedInBoolean.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601061919332_AddClusterGroup.resx">
-      <DependentUpon>201601061919332_AddClusterGroup.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201601062244410_AddClusterGroup.resx">
+      <DependentUpon>201601062244410_AddClusterGroup.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

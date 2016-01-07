@@ -64,19 +64,25 @@ namespace crisicheckinweb
             if (context.Clusters.Any())
                 return;
 
+            context.ClusterGroups.AddOrUpdate(g => g.Name, 
+                new ClusterGroup { Name = "UN Clusters", Description = "The UN Cluster list." });
+
+            context.SaveChanges();
+            var clusterGroup = context.ClusterGroups.First();
+
             context.Clusters.AddOrUpdate(
                 c => c.Name,
-                new Cluster { Name = "Agriculture Cluster" },
-                new Cluster { Name = "Camp Coordination and Management Cluster" },
-                new Cluster { Name = "Early Recovery Cluster" },
-                new Cluster { Name = "Emergency Shelter Cluster" },
-                new Cluster { Name = "Emergency Telecommunications Cluster" },
-                new Cluster { Name = "Food Cluster" },
-                new Cluster { Name = "Health Cluster" },
-                new Cluster { Name = "Logistics Cluster" },
-                new Cluster { Name = "Nutrition Cluster" },
-                new Cluster { Name = "Protection Cluster" },
-                new Cluster { Name = "Water and Sanitation Cluster" }
+                new Cluster { Name = "Agriculture Cluster", ClusterGroupId = clusterGroup.Id },
+                new Cluster { Name = "Camp Coordination and Management Cluster", ClusterGroupId = clusterGroup.Id },
+                new Cluster { Name = "Early Recovery Cluster", ClusterGroupId = clusterGroup.Id },
+                new Cluster { Name = "Emergency Shelter Cluster", ClusterGroupId = clusterGroup.Id },
+                new Cluster { Name = "Emergency Telecommunications Cluster", ClusterGroupId = clusterGroup.Id },
+                new Cluster { Name = "Food Cluster", ClusterGroupId = clusterGroup.Id },
+                new Cluster { Name = "Health Cluster", ClusterGroupId = clusterGroup.Id },
+                new Cluster { Name = "Logistics Cluster", ClusterGroupId = clusterGroup.Id },
+                new Cluster { Name = "Nutrition Cluster", ClusterGroupId = clusterGroup.Id },
+                new Cluster { Name = "Protection Cluster", ClusterGroupId = clusterGroup.Id },
+                new Cluster { Name = "Water and Sanitation Cluster", ClusterGroupId = clusterGroup.Id }
                 );
             context.SaveChanges();
             var vtype = context.VolunteerTypes.First(vt => vt.Name == VolunteerType.VOLUNTEERTYPE_ONSITE);

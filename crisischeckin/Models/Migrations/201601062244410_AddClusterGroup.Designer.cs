@@ -13,7 +13,7 @@ namespace Models.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201601061919332_AddClusterGroup"; }
+            get { return "201601062244410_AddClusterGroup"; }
         }
         
         string IMigrationMetadata.Source

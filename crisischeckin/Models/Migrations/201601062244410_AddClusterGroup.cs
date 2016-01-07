@@ -7,7 +7,6 @@ namespace Models.Migrations
     {
         public override void Up()
         {
-
             Sql("ALTER TABLE dbo.Cluster NOCHECK CONSTRAINT ALL");
             CreateTable(
                 "dbo.ClusterGroup",
@@ -18,7 +17,7 @@ namespace Models.Migrations
                         Description = c.String(nullable: false),
                     })
                 .PrimaryKey(t => t.Id);
-            
+
             Sql("SET IDENTITY_INSERT dbo.ClusterGroup ON");
             Sql("INSERT INTO dbo.ClusterGroup (Id, Name, Description) VALUES (1, 'UN Clusters', 'Description here')");
             Sql("SET IDENTITY_INSERT dbo.ClusterGroup OFF");
