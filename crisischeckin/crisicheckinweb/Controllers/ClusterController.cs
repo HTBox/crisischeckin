@@ -11,10 +11,12 @@ namespace crisicheckinweb.Controllers
     public class ClusterController : BaseController
     {
         private readonly ICluster _clusterSvc;
+        private readonly IClusterGroup _clusterGroupSvc;
 
-        public ClusterController(ICluster clusterSvc)
+        public ClusterController(ICluster clusterSvc, IClusterGroup clusterGroupSvc)
         {
             _clusterSvc = clusterSvc;
+            _clusterGroupSvc = clusterGroupSvc;
         }
 
 
@@ -22,6 +24,7 @@ namespace crisicheckinweb.Controllers
         public ActionResult Create()
         {
             Cluster newCluster = new Cluster();
+            ViewBag.ClusterGroups = _clusterGroupSvc.GetList();
             return View(newCluster);
         }
 
@@ -48,6 +51,8 @@ namespace crisicheckinweb.Controllers
                     ModelState.AddModelError("Name", string.Format("The name '{0}' is already in use.", cluster.Name));
                 }
             }
+
+            ViewBag.ClusterGroups = _clusterGroupSvc.GetList();
 
             return View(cluster);
         }
@@ -84,6 +89,8 @@ namespace crisicheckinweb.Controllers
         {
             Cluster editedCluster = _clusterSvc.Get(id);
 
+            ViewBag.ClusterGroups = _clusterGroupSvc.GetList();
+
             return View("Create", editedCluster);
         }
 
@@ -107,6 +114,8 @@ namespace crisicheckinweb.Controllers
                 }
                 
             }
+
+            ViewBag.ClusterGroups = _clusterGroupSvc.GetList();
 
             return View("Create", cluster);
         }

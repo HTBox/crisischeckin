@@ -20,6 +20,11 @@ namespace Services
             membership_context = mctx;
         }
 
+        public IQueryable<ClusterGroup> ClusterGroups
+        {
+            get { return context.ClusterGroups; }
+        }
+
         public IQueryable<Cluster> Clusters
         {
             get { return context.Clusters; }
@@ -162,6 +167,39 @@ namespace Services
 
             result.Name = updatedDisaster.Name;
             result.IsActive = updatedDisaster.IsActive;
+
+            context.SaveChanges();
+
+            return result;
+        }
+
+
+        public void AddClusterGroup(ClusterGroup newCluster)
+        {
+            context.ClusterGroups.Add(newCluster);
+            context.SaveChanges();
+        }
+
+        public void RemoveClusterGroup(ClusterGroup cluster)
+        {
+            // attach the cluster to delete to the context, if needed. Otherwise the remove/delete won't work
+            var cluster2Del = context.ClusterGroups.Local.FirstOrDefault(cc => cc.Id == cluster.Id);
+            if (cluster2Del == null)
+                context.ClusterGroups.Attach(cluster);
+
+            context.ClusterGroups.Remove(cluster);
+            context.SaveChanges();
+        }
+
+        public ClusterGroup UpdateClusterGroup(ClusterGroup updatedCluster)
+        {
+            var result = context.ClusterGroups.Find(updatedCluster.Id);
+
+            if (result == null)
+                throw new ClusterGroupNotFoundException();
+
+            result.Name = updatedCluster.Name;
+            result.Description = updatedCluster.Description;
 
             context.SaveChanges();
 

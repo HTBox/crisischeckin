@@ -27,6 +27,8 @@ namespace Models
 
         public DbSet<Person> Persons { get; set; }
 
+        public DbSet<ClusterGroup> ClusterGroups { get; set; }
+
         public DbSet<Cluster> Clusters { get; set; }
 
         public DbSet<VolunteerType> VolunteerTypes { get; set; }
