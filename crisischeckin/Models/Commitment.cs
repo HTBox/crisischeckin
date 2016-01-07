@@ -41,9 +41,11 @@ namespace Models
             Status = CommitmentStatus.Here;
         }
 
-        public void ReportDelay()
+        public void ReportDelay(DateTime startDate, DateTime endDate)
         {
             Status = CommitmentStatus.Delayed;
+            StartDate = startDate;
+            EndDate = endDate;
         }
 
         public void ReportUnavailable()
