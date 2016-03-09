@@ -1,9 +1,15 @@
 crisischeckin
 =============
 
-A system for automatically keeping track of who is responding to a particular emergency and
-automatically creating a "contact list"/"phone book" of those that are there.
-See presentation by Andrej Verity - http://www.youtube.com/watch?v=ypA9Iza5OFg
+CrisisCheckin is an application meant to capture, share and integrate the data around volunteers, organizations and resources
+actively deployed into a disaster.  This ensures that we create opportunities for coordination and data sharing that will increase
+effectiveness and productivity of resources delivering resources to the needs of those affected in disasters.
+
+CrisisCheckin is being developed for many use cases but one of our key use cases is being the spotlight example of how to create
+value from data sharing during response to disasters and medical crises as part of Operation Dragon Fire (http://odf.nvoad.org)
+
+More information will come and for key issues to help contribute to excercises planned in March, April and May of 2016 please see this milestone:
+https://github.com/HTBox/crisischeckin/milestones/Operation%20Dragon%20Fire%20-%20East%20Coast%20Excercise
 
 If you're interested in helping us validate the application, please help us test it on our
 staging site:  http://crisischeckin-d.azurewebsites.net
