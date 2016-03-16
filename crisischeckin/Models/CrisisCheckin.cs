@@ -39,6 +39,8 @@ namespace Models
 
         public DbSet<DisasterCluster> DisasterClusters { get; set; }
 
+        public DbSet<Organization> Organizations { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
