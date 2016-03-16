@@ -64,6 +64,7 @@
     <Compile Include="ClusterCoordinatorEvents.cs" />
     <Compile Include="ClusterCoordinatorLog.cs" />
     <Compile Include="Commitment.cs" />
+    <Compile Include="Contact.cs" />
     <Compile Include="CrisisCheckin.cs" />
     <Compile Include="Disaster.cs" />
     <Compile Include="DisasterCluster.cs" />
@@ -99,8 +100,13 @@
     <Compile Include="Migrations\201603151415056_AddOrganizations.Designer.cs">
       <DependentUpon>201603151415056_AddOrganizations.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201603161244132_AddingContactsAndResources.cs" />
+    <Compile Include="Migrations\201603161244132_AddingContactsAndResources.Designer.cs">
+      <DependentUpon>201603161244132_AddingContactsAndResources.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Organization.cs" />
+    <Compile Include="OrganizationResource.cs" />
     <Compile Include="Person.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="User.cs" />
@@ -145,6 +151,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603151415056_AddOrganizations.resx">
       <DependentUpon>201603151415056_AddOrganizations.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603161244132_AddingContactsAndResources.resx">
+      <DependentUpon>201603161244132_AddingContactsAndResources.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

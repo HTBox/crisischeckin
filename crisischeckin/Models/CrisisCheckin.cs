@@ -41,6 +41,10 @@ namespace Models
 
         public DbSet<Organization> Organizations { get; set; }
 
+        public DbSet<Contact> Contacts { get; set; }
+
+        public DbSet<OrganizationResource> OrganizationResources { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
