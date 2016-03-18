@@ -104,11 +104,16 @@
     <Compile Include="Migrations\201603161244132_AddingContactsAndResources.Designer.cs">
       <DependentUpon>201603161244132_AddingContactsAndResources.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201603172354237_FixResources.cs" />
+    <Compile Include="Migrations\201603172354237_FixResources.Designer.cs">
+      <DependentUpon>201603172354237_FixResources.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Organization.cs" />
-    <Compile Include="OrganizationResource.cs" />
+    <Compile Include="Resource.cs" />
     <Compile Include="Person.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResourceType.cs" />
     <Compile Include="User.cs" />
     <Compile Include="v2\Assignment.cs" />
     <Compile Include="Cluster.cs" />
@@ -154,6 +159,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603161244132_AddingContactsAndResources.resx">
       <DependentUpon>201603161244132_AddingContactsAndResources.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603172354237_FixResources.resx">
+      <DependentUpon>201603172354237_FixResources.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

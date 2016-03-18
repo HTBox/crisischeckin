@@ -23,7 +23,7 @@ namespace Models.Migrations
                 .Index(t => t.Person_Id);
             
             CreateTable(
-                "dbo.OrganizationResource",
+                "dbo.Resource",
                 c => new
                     {
                         OrganizationResourceId = c.Int(nullable: false, identity: true),
@@ -39,13 +39,13 @@ namespace Models.Migrations
         
         public override void Down()
         {
-            DropForeignKey("dbo.OrganizationResource", "Organization_OrganizationId", "dbo.Organization");
+            DropForeignKey("dbo.Resource", "Organization_OrganizationId", "dbo.Organization");
             DropForeignKey("dbo.Contact", "Person_Id", "dbo.Person");
             DropForeignKey("dbo.Contact", "Organization_OrganizationId", "dbo.Organization");
-            DropIndex("dbo.OrganizationResource", new[] { "Organization_OrganizationId" });
+            DropIndex("dbo.Resource", new[] { "Organization_OrganizationId" });
             DropIndex("dbo.Contact", new[] { "Person_Id" });
             DropIndex("dbo.Contact", new[] { "Organization_OrganizationId" });
-            DropTable("dbo.OrganizationResource");
+            DropTable("dbo.Resource");
             DropTable("dbo.Contact");
         }
     }
