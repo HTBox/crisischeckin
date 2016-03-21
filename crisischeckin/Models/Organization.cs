@@ -29,10 +29,15 @@ namespace Models
 
     public enum OrganizationTypeEnum
     {
+        [Display(Name = "Non Profit")]
         NonProfit = 0,
+        [Display(Name = "Non Governmental Organization")]
         NGO = 1,
+        [Display(Name = "Private")]
         Private = 2,
+        [Display(Name = "State")]
         State = 3,
+        [Display(Name = "Local")]
         Local = 4
     }
 }
