@@ -86,6 +86,7 @@ namespace crisicheckinweb.App_Start
             kernel.Bind<IClusterCoordinatorService>().To<ClusterCoordinatorService>().InRequestScope();
             kernel.Bind<IApiService>().To<ApiService>().InRequestScope();
             kernel.Bind<IDisasterClusterService>().To<DisasterClusterService>().InRequestScope();
+            kernel.Bind<IResourceService>().To<ResourceService>().InRequestScope();
             kernel.Bind<Func<SmtpClient>>()
                 .ToMethod(c => () => new SmtpClient
                 {

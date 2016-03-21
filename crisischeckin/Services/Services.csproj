@@ -97,6 +97,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Interfaces\IApiService.cs" />
+    <Compile Include="Interfaces\IResourceService.cs" />
     <Compile Include="Interfaces\IVolunteerTypeService.cs" />
     <Compile Include="MessageCoordinator.cs" />
     <Compile Include="MessageRecipient.cs" />
@@ -111,6 +112,7 @@
     <Compile Include="Interfaces\IDisaster.cs" />
     <Compile Include="Interfaces\IVolunteerService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResourceService.cs" />
     <Compile Include="SMSMessageSender.cs" />
     <Compile Include="SmtpMessageSender.cs" />
     <Compile Include="SubjectEnrichmentService.cs" />

@@ -2,6 +2,7 @@
 using Services.Exceptions;
 using Services.Interfaces;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Services
@@ -70,6 +71,21 @@ namespace Services
             get { return context.ClusterCoordinatorLogEntries; }
         }
 
+        public IQueryable<Resource> Resources
+        {
+            get { return context.Resources; }
+        }
+
+        public IQueryable<ResourceType> ResourceTypes
+        {
+            get { return context.ResourceTypes; }
+        }
+
+        public IQueryable<Organization> Organizations
+        {
+            get { return context.Organizations; }
+        } 
+
         public Person AddPerson(Person newPerson)
         {
             var result = context.Persons.Add(newPerson);
@@ -92,6 +108,16 @@ namespace Services
             context.SaveChanges();
 
             return result;
+        }
+
+        public List<Resource> GetResourcesForOrganization(int organizationId)
+        {
+            return context.Resources.Where(x => x.Allocator.OrganizationId == organizationId).ToList();
+        }
+
+        public List<ResourceType> GetResourceTypes()
+        {
+            return context.ResourceTypes.ToList();
         }
 
         public void AddCommitment(Commitment newCommitment)
