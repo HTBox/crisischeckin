@@ -15,7 +15,7 @@
         <th>Volunteer Name</th>
         <th>Email</th>
         <th>Phone</th>
-        <th>Cluster</th>
+        <th>Commitments</th>
     </tr>
     @if (Model != null)
     {
@@ -26,10 +26,26 @@
                 <td>@person.Email</td>
                 <td>@person.PhoneNumber</td>
                 <td>
-                    @foreach (var commitment in person.Commitments)
+                    @if (person.Commitments.Any())
                     {
-                        @(Html.Encode(commitment.Cluster != null ? commitment.Cluster.Name : ""))    
-                    }            
+                        <table>
+                            <tr>
+                                <th>Activity</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Location</th>
+                            </tr>
+                            @foreach (var commitment in person.Commitments)
+                            {
+                                <tr>
+                                    <td>@commitment.Cluster.Name</td>
+                                    <td>@commitment.StartDate.ToShortDateString()</td>
+                                    <td>@commitment.EndDate.ToShortDateString()</td>
+                                    <td>@commitment.VolunteerType.Name</td>
+                                </tr>
+                            }
+                        </table>
+                    }
                 </td>
             </tr>
         }
