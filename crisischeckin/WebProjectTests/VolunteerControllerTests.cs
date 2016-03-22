@@ -7,6 +7,7 @@ using Models;
 using Moq;
 using Services.Interfaces;
 using System;
+using crisicheckinweb.Wrappers;
 
 namespace WebProjectTests
 {
@@ -19,6 +20,8 @@ namespace WebProjectTests
         private Mock<ICluster> _clusterSvc;
         private Mock<IAdmin> _adminSvc;
         private Mock<IMessageService> _messageSvc;
+        private Mock<IVolunteerService> _volunteerSvc;
+        private Mock<IWebSecurityWrapper> _webSecurity;
 
         [SetUp]
         public void TestInit()
@@ -27,8 +30,10 @@ namespace WebProjectTests
             _clusterSvc = new Mock<ICluster>();
             _adminSvc = new Mock<IAdmin>();
             _messageSvc = new Mock<IMessageService>();
+            _volunteerSvc = new Mock<IVolunteerService>();
+            _webSecurity = new Mock<IWebSecurityWrapper>();
 
-            _controllerUnderTest = new VolunteerController(_disasterSvc.Object, _clusterSvc.Object, _adminSvc.Object, _messageSvc.Object);
+            _controllerUnderTest = new VolunteerController(_disasterSvc.Object, _clusterSvc.Object, _adminSvc.Object, _messageSvc.Object, _volunteerSvc.Object, _webSecurity.Object);
         }
 
         [Test]

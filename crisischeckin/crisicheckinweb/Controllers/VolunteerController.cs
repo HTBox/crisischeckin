@@ -7,6 +7,7 @@ using crisicheckinweb.ViewModels;
 using Common;
 using Models;
 using System.Collections.Generic;
+using crisicheckinweb.Wrappers;
 
 namespace crisicheckinweb.Controllers
 {
@@ -16,13 +17,17 @@ namespace crisicheckinweb.Controllers
         private readonly ICluster _clusterSvc;
         private readonly IAdmin _adminSvc;
         private readonly IMessageService _messageSvc;
+        private readonly IVolunteerService _volunteerSvc;
+        private readonly IWebSecurityWrapper _webSecurity;
 
-        public VolunteerController(IDisaster disasterSvc, ICluster clusterSvc, IAdmin adminSvc, IMessageService messageSvc)
+        public VolunteerController(IDisaster disasterSvc, ICluster clusterSvc, IAdmin adminSvc, IMessageService messageSvc, IVolunteerService volunteerSvc, IWebSecurityWrapper webSecurity)
         {
             _disasterSvc = disasterSvc;
             _clusterSvc = clusterSvc;
             _adminSvc = adminSvc;
             _messageSvc = messageSvc;
+            _volunteerSvc = volunteerSvc;
+            _webSecurity = webSecurity;
         }
 
         [HttpGet]
@@ -31,6 +36,36 @@ namespace crisicheckinweb.Controllers
             var model = new ListByDisasterViewModel { Disasters = _disasterSvc.GetActiveList(), CommitmentDate = null };
             return View(model);
         }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AddContact(ListByDisasterViewModel model)
+        {
+            try
+            {
+                var person = _volunteerSvc.FindByUserId(_webSecurity.CurrentUserId);
+                if (!person.OrganizationId.HasValue)
+                {
+                    throw new ArgumentException("Signed in User is not part of an Organization");
+                }
+
+                _adminSvc.AddContactForOrganization(person.OrganizationId.Value, model.AddContactId);
+            }
+            catch (ArgumentException ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+            }
+
+            var viewModel = new ListByDisasterViewModel
+            {
+                Disasters = _disasterSvc.GetActiveList(),
+                SelectedDisaster = model.SelectedDisaster,
+                CommitmentDate = model.CommitmentDate
+            };
+            return View("ListByDisaster", viewModel);
+        }
+
 
         [HttpGet]
         public ActionResult CreateMessageToVolunteersByDisaster(int id)

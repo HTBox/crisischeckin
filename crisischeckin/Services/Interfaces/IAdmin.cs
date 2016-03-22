@@ -14,5 +14,6 @@ namespace Services.Interfaces
         IEnumerable<Resource> GetResourceCheckinsForOrganization(int organizationId);
         IEnumerable<ResourceType> GetResourceTypes();
         IEnumerable<Contact> GetContactsForDisaster(int disasterId);
+        void AddContactForOrganization(int organizationId, int contactId);
     }
 }
