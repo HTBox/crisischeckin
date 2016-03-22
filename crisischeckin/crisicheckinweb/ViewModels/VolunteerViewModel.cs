@@ -24,6 +24,8 @@ namespace crisicheckinweb.ViewModels
         public DateTime SelectedEndDate { get; set; }
         [DisplayName("Location")]
         public int VolunteerType { get; set; }
+        [DisplayName("Location Detail")]
+        public string Location { get; set; }
         public IEnumerable<VolunteerType> VolunteerTypes { get; set; }
         public Person Person { get; set; }
         public IEnumerable<ClusterCoordinator> ClusterCoordinators { get; set; }

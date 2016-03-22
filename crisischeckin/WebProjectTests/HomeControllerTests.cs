@@ -48,7 +48,8 @@ namespace WebProjectTests
                 It.IsAny<DateTime>(),
                 It.IsAny<DateTime>(),
                 It.IsAny<int>(), 
-                It.IsAny<int>())).Throws(new ArgumentException(""));
+                It.IsAny<int>(),
+                It.IsAny<string>())).Throws(new ArgumentException(""));
 
             // Act
             var viewModel = new VolunteerViewModel { SelectedStartDate = DateTime.Today.AddDays(-1) };
@@ -71,7 +72,8 @@ namespace WebProjectTests
                 It.IsAny<DateTime>(),
                 It.IsAny<DateTime>(),
                 It.IsAny<int>(),
-                It.IsAny<int>())).Throws(new ArgumentException(""));
+                It.IsAny<int>(),
+                It.IsAny<string>())).Throws(new ArgumentException(""));
 
             _webSecurity.SetupGet(x => x.CurrentUserId).Returns(10);
 

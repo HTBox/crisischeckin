@@ -105,7 +105,8 @@
                     m => m.VolunteerType,
                     selectList: new SelectList(Model.VolunteerTypes, "Id", "Name", Model.VolunteerType),
                     optionLabel: "-- Choose One --",
-                    htmlAttributes: new { @class = "form-control" })
+                    htmlAttributes: new { @class = "form-control" })<br />
+                  @Html.TextBoxFor(m => m.Location, new { @class = "form-control"} )
               </td>
               <td><input class="btn btn-black" id="GoButton" type="submit" value="Volunteer" /></td>
           </tr>
@@ -140,7 +141,12 @@ else
         <td>@comm.Cluster.Name</td>
         <td>@comm.StartDate.ToShortDateString()</td>
         <td>@comm.EndDate.ToShortDateString()</td>
-        <td>@comm.VolunteerType.Name</td>
+        <td>@comm.VolunteerType.Name
+            @if (!String.IsNullOrWhiteSpace(comm.Location))
+            {
+                @(" (" + comm.Location + ")")
+            }
+        </td>
         @using (Html.BeginForm("RemoveCommitment", "Home", FormMethod.Post, new { @class = "navbar-form" }))
         {
           @Html.AntiForgeryToken()

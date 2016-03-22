@@ -41,7 +41,12 @@
                                     <td>@commitment.Cluster.Name</td>
                                     <td>@commitment.StartDate.ToShortDateString()</td>
                                     <td>@commitment.EndDate.ToShortDateString()</td>
-                                    <td>@commitment.VolunteerType.Name</td>
+                                    <td>@commitment.VolunteerType.Name
+                                    @if (!String.IsNullOrWhiteSpace(commitment.Location))
+                                    {
+                                        @(" (" + commitment.Location + ")")
+                                    }
+                                    </td>
                                 </tr>
                             }
                         </table>

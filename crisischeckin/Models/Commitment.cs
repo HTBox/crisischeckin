@@ -29,6 +29,8 @@ namespace Models
 
         public virtual VolunteerType VolunteerType { get; set; }
 
+        public virtual string Location { get; set; }
+
 
 
         public bool PersonIsCheckedIn

@@ -20,7 +20,7 @@ namespace Services
         }
 
         public void AssignToVolunteer(int disasterId, int personId, DateTime startDate, DateTime endDate,
-            int volunteerType, int clusterId)
+            int volunteerType, int clusterId, string location)
         {
             if (DateTime.Compare(endDate, startDate) < 0)
             {
@@ -61,7 +61,8 @@ namespace Services
                 StartDate = startDate,
                 EndDate = endDate,
                 VolunteerTypeId = volunteerType,
-                ClusterId = clusterId
+                ClusterId = clusterId,
+                Location = location
             });
         }
 
