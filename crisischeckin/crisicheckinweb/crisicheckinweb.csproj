@@ -264,10 +264,6 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Content Include="App_Data\crisischeckin.mdf" />
-    <Content Include="App_Data\crisischeckin_log.ldf">
-      <DependentUpon>crisischeckin.mdf</DependentUpon>
-    </Content>
     <Content Include="App_Data\dummyfile.txt" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
