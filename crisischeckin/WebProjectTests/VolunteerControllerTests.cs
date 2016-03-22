@@ -48,10 +48,10 @@ namespace WebProjectTests
             });
 
             //Assert
-            var model = response.Model as IEnumerable<Person>;
-            Assert.IsNotNull(model, "View Model is not an IEnumerable<Person>.");
+            var model = response.Model as CheckinListsResultsViewModel;
+            Assert.IsNotNull(model, "View Model is not an CheckinListsResultsViewModel.");
 
-            CollectionAssert.AreEquivalent(allVolunteers.ToArray(), model.ToArray());
+            CollectionAssert.AreEquivalent(allVolunteers.ToArray(), model.VolunteerCheckins.ToArray());
         }
 
         [Test]
@@ -72,10 +72,10 @@ namespace WebProjectTests
             });
 
             //Assert
-            var model = response.Model as IEnumerable<Person>;
-            Assert.IsNotNull(model, "View Model is not an IEnumerable<Person>.");
+            var model = response.Model as CheckinListsResultsViewModel;
+            Assert.IsNotNull(model, "View Model is not an CheckinListsResultsViewModel.");
 
-            CollectionAssert.AreEquivalent(filteredVolunteers.ToArray(), model.ToArray());
+            CollectionAssert.AreEquivalent(filteredVolunteers.ToArray(), model.VolunteerCheckins.ToArray());
         }
     }
 }
