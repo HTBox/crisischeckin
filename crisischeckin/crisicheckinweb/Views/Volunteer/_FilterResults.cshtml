@@ -33,7 +33,14 @@
                 <tr>
                     @if (ci == 0)
                     {
-                        <td rowspan="@person.Commitments.Count()">@(person.LastName + ", " + person.FirstName)</td>
+                        <td rowspan="@person.Commitments.Count()">@(person.LastName + ", " + person.FirstName)<br />
+                            @using (Html.BeginForm("AddContact", "Volunteer", FormMethod.Post, new { @class = "navbar-form" }))
+                            {
+                              @Html.AntiForgeryToken()
+                              @Html.HiddenFor(m => m.AddContactId, new { @Value = person.Id })
+                              <button class="btn btn-black btn-xs" type="submit">Add as Contact</button>
+                            }                        
+                        </td>
                         <td rowspan="@person.Commitments.Count()">@(person.Organization != null ? person.Organization.OrganizationName : "none")</td>
                         <td rowspan="@person.Commitments.Count()">@person.Email</td>
                         <td rowspan="@person.Commitments.Count()">@person.PhoneNumber</td>

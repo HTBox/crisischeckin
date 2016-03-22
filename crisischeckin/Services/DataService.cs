@@ -115,6 +115,12 @@ namespace Services
             return result;
         }
 
+        public void AddContact(Contact newContact)
+        {
+            context.Contacts.Add(newContact);
+            context.SaveChanges();
+        }
+
         public void AddResource(Resource newResource)
         {
             context.Resources.Add(newResource);

@@ -18,5 +18,7 @@ namespace crisicheckinweb.ViewModels
         public List<Person> VolunteerCheckins { get; set; }
         public List<Resource> ResourceCheckins { get; set; }
         public List<Contact> OrganizationContacts { get; set; }
+
+        public int AddContactId { get; set; }
     }
 }

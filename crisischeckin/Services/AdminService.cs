@@ -147,6 +147,34 @@ namespace Services
             return people.ToList();
         }
 
+        public void AddContactForOrganization(int organizationId, int contactId)
+        {
+            var organization = _dataService.Organizations.FirstOrDefault(o => o.OrganizationId == organizationId);
+            if (organization == null)
+            {
+                return;
+            }
+
+            var person = _dataService.Persons.FirstOrDefault(p => p.Id == contactId);
+            if (person == null)
+            {
+                return;
+            }
+
+            var contacts = _dataService.Contacts.Where(c => c.Organization.OrganizationId == organizationId && c.Person.Id == contactId);
+            if (contacts.Count() > 0)
+            {
+                return;
+            }
+
+            _dataService.AddContact(new Contact()
+            {
+                Organization = organization,
+                Person = person,
+                Title = "title"
+            });
+        }
+
         private IQueryable<Resource> GetResourcesForOrganization(int organizationId)
         {
             if (organizationId <= 0)

@@ -25,6 +25,7 @@ namespace Services.Interfaces
         Person AddPerson(Person newPerson);
         Person UpdatePerson(Person updatedPerson);
         void AddResource(Resource newResource);
+        void AddContact(Contact newContact);
         void AddCommitment(Commitment newCommitment);
         void AddCluster(Cluster newCluster);
         void RemoveCluster(Cluster clusterToDelete);
