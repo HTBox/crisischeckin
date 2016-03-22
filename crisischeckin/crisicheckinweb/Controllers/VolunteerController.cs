@@ -6,6 +6,7 @@ using System.Linq;
 using crisicheckinweb.ViewModels;
 using Common;
 using Models;
+using System.Collections.Generic;
 
 namespace crisicheckinweb.Controllers
 {
@@ -27,7 +28,7 @@ namespace crisicheckinweb.Controllers
         [HttpGet]
         public ActionResult ListByDisaster()
         {
-            var model = new ListByDisasterViewModel { Disasters = _disasterSvc.GetActiveList() };
+            var model = new ListByDisasterViewModel { Disasters = _disasterSvc.GetActiveList(), CommitmentDate = null };
             return View(model);
         }
 
@@ -77,19 +78,39 @@ namespace crisicheckinweb.Controllers
             if (model.SelectedDisaster != 0)
             {
                 var results = _adminSvc.GetVolunteersForDisaster(model.SelectedDisaster, model.CommitmentDate);
-                var modifiedResults = (from person in results
-                                      select new Person
-                                      {
-                                          Commitments = person.Commitments.Where(x => x.DisasterId == model.SelectedDisaster 
-                                              && model.CommitmentDate >= x.StartDate 
-                                              && model.CommitmentDate <= x.EndDate).ToList(),
-                                          Email = person.Email,
-                                          FirstName = person.FirstName,
-                                          Id = person.Id,
-                                          LastName = person.LastName,
-                                          PhoneNumber = person.PhoneNumber,
-                                          UserId = person.UserId
-                                      }).ToList();
+                List<Person> modifiedResults = new List<Person>();
+                if (model.CommitmentDate == null)
+                {
+                        modifiedResults = (from person in results
+                                           select new Person
+                                           {
+                                               Commitments = person.Commitments.Where(x => x.DisasterId == model.SelectedDisaster).ToList(),
+                                               Email = person.Email,
+                                               FirstName = person.FirstName,
+                                               Id = person.Id,
+                                               LastName = person.LastName,
+                                               PhoneNumber = person.PhoneNumber,
+                                               UserId = person.UserId
+                                           }).ToList();
+
+                }
+                else
+                {
+                        modifiedResults = (from person in results
+                                           select new Person
+                                           {
+                                               Commitments = person.Commitments.Where(x => x.DisasterId == model.SelectedDisaster
+                                                   && model.CommitmentDate >= x.StartDate
+                                                   && model.CommitmentDate <= x.EndDate).ToList(),
+                                               Email = person.Email,
+                                               FirstName = person.FirstName,
+                                               Id = person.Id,
+                                               LastName = person.LastName,
+                                               PhoneNumber = person.PhoneNumber,
+                                               UserId = person.UserId
+                                           }).ToList();
+
+                }
                 return PartialView("_FilterResults", modifiedResults);
             }
             return PartialView("_FilterResults");
