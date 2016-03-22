@@ -87,6 +87,8 @@ namespace crisicheckinweb.Controllers
                                                Commitments = person.Commitments.Where(x => x.DisasterId == model.SelectedDisaster).ToList(),
                                                Email = person.Email,
                                                FirstName = person.FirstName,
+                                               Organization = person.Organization,
+                                               OrganizationId = person.OrganizationId,
                                                Id = person.Id,
                                                LastName = person.LastName,
                                                PhoneNumber = person.PhoneNumber,

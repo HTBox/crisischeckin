@@ -70,6 +70,11 @@ namespace Services
             get { return context.ClusterCoordinatorLogEntries; }
         }
 
+        public IQueryable<Organization> Organizations
+        {
+            get { return context.Organizations;  }
+        }
+
         public Person AddPerson(Person newPerson)
         {
             var result = context.Persons.Add(newPerson);
@@ -88,6 +93,7 @@ namespace Services
             result.LastName = updatedPerson.LastName;
             result.Email = updatedPerson.Email;
             result.PhoneNumber = updatedPerson.PhoneNumber;
+            result.OrganizationId = updatedPerson.OrganizationId;
 
             context.SaveChanges();
 

@@ -18,6 +18,7 @@ namespace Services.Interfaces
         IQueryable<DisasterCluster> DisasterClusters { get; }
         IQueryable<ClusterCoordinator> ClusterCoordinators { get; }
         IQueryable<ClusterCoordinatorLogEntry> ClusterCoordinatorLogEntries { get; }
+        IQueryable<Organization> Organizations { get; }
         Person AddPerson(Person newPerson);
         Person UpdatePerson(Person updatedPerson);
         void AddCommitment(Commitment newCommitment);

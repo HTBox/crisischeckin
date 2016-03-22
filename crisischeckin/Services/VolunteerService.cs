@@ -18,7 +18,7 @@ namespace Services
             ourService = service;
         }
 
-        public Person Register(string firstName, string lastName, string email, string phoneNumber, int userId)
+        public Person Register(string firstName, string lastName, int? OrganizationId, string email, string phoneNumber, int userId)
         {
             if (string.IsNullOrWhiteSpace(firstName)) { throw new ArgumentNullException("firstName"); }
             if (string.IsNullOrWhiteSpace(lastName)) { throw new ArgumentNullException("lastName"); }
@@ -38,6 +38,7 @@ namespace Services
                 UserId = userId,
                 FirstName = firstName,
                 LastName = lastName,
+                OrganizationId = OrganizationId,
                 Email = email,
                 PhoneNumber = phoneNumber
             });
@@ -63,16 +64,22 @@ namespace Services
                     }
                     foundPerson.Email = updatedPerson.Email;
                 }
+                
                 // update the found person with any appropriate changes
                 if (!string.IsNullOrEmpty(updatedPerson.FirstName))
                 {
                     foundPerson.FirstName = updatedPerson.FirstName;
                 }
+
                 if (!string.IsNullOrEmpty(updatedPerson.LastName))
                 {
                     foundPerson.LastName = updatedPerson.LastName;
                 }
+
                 foundPerson.PhoneNumber = updatedPerson.PhoneNumber;
+
+                foundPerson.OrganizationId = updatedPerson.OrganizationId;
+
                 return ourService.UpdatePerson(foundPerson);
             }
             throw new PersonNotFoundException();
@@ -115,7 +122,8 @@ namespace Services
             var result = ourService.Persons.Where(p => p.UserId == userId).Select(per => new
             {
                 Email = per.Email,
-                PhoneNumber = per.PhoneNumber
+                PhoneNumber = per.PhoneNumber,
+                OrganizationId = per.OrganizationId
             }).FirstOrDefault();
 
             if (result == null)
@@ -124,7 +132,8 @@ namespace Services
             return new Person
             {
                 Email = result.Email,
-                PhoneNumber = result.PhoneNumber
+                PhoneNumber = result.PhoneNumber,
+                OrganizationId = result.OrganizationId
             };
         }
 

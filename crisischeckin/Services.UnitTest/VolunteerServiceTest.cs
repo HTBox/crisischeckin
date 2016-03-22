@@ -17,7 +17,7 @@ namespace Services.UnitTest
         public void Register_NullFirstName()
         {
             VolunteerService service = new VolunteerService(new Mock<IDataService>().Object);
-            service.Register("", "last", "email", "555-333-1111", 1);
+            service.Register("", "last", null, "email", "555-333-1111", 1);
         }
 
         [Test]
@@ -25,7 +25,7 @@ namespace Services.UnitTest
         public void Register_NullLastName()
         {
             VolunteerService service = new VolunteerService(new Mock<IDataService>().Object);
-            service.Register("first", "", "email", "555-333-1111", 2);
+            service.Register("first", "", null, "email", "555-333-1111", 2);
         }
 
         [Test]
@@ -33,7 +33,7 @@ namespace Services.UnitTest
         public void Register_NullEmail()
         {
             VolunteerService service = new VolunteerService(new Mock<IDataService>().Object);
-            service.Register("first", "last", "", "555-333-1111", 3);
+            service.Register("first", "last", null, "", "555-333-1111", 3);
         }
 
         [Test]
@@ -41,7 +41,7 @@ namespace Services.UnitTest
         public void Register_NullPhoneNumber()
         {
             VolunteerService service = new VolunteerService(new Mock<IDataService>().Object);
-            service.Register("first", "last", "email", "", 3);
+            service.Register("first", "last", null, "email", "", 3);
         }
 
         [Test]
@@ -61,7 +61,7 @@ namespace Services.UnitTest
             moqDataService.Setup(s => s.AddPerson(It.IsAny<Person>())).Returns(moqPerson);
 
             VolunteerService service = new VolunteerService(moqDataService.Object);
-            Person actual = service.Register("Bob", "Jones", "bob.jones@email.com", "555-222-9139", 5);
+            Person actual = service.Register("Bob", "Jones", null, "bob.jones@email.com", "555-222-9139", 5);
 
             Assert.AreEqual(1, actual.Id);
             Assert.AreEqual("Bob", actual.FirstName);
@@ -91,7 +91,7 @@ namespace Services.UnitTest
             moqDataService.Setup(s => s.Persons).Returns(people.AsQueryable());
 
             VolunteerService service = new VolunteerService(moqDataService.Object);
-            Person actual = service.Register("Cathy", "Jones", "cathy.jones@email.com", "555-222-9139 ext 33", 6);
+            Person actual = service.Register("Cathy", "Jones", null, "cathy.jones@email.com", "555-222-9139 ext 33", 6);
 
             Assert.AreEqual("Cathy", actual.FirstName);
             Assert.AreEqual("Jones", actual.LastName);

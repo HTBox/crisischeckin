@@ -19,6 +19,11 @@ namespace crisicheckinweb.ViewModels
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
+        public IEnumerable<Organization> Organizations { get; set; }
+
+        [Display(Name = "Organization")]
+        public int? SelectedOrganizationId { get; set; }
+
         [Required]
         [Display(Name = "Phone Number")]
         public string PhoneNumber { get; set; }

@@ -18,13 +18,13 @@ namespace Models
 
         public OrganizationTypeEnum Type { get; set; }
         
-        // I haven't implemented the link to the resources table yet, because we don't have one.
         // I also haven't implemented the link to the Contacts table yet, because again, we don't have one. 
 
-        public virtual Person PocPerson { get; set; }
-
         public virtual IList<Disaster> Disasters { get; set; }
-        
+
+        public virtual IList<Resource> Resources { get; set; }
+
+        public virtual IList<Person> Persons { get; set; }
     }
 
     public enum OrganizationTypeEnum

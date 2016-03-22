@@ -20,13 +20,15 @@ namespace crisicheckinweb.Controllers
         private readonly ICluster _clusterSvc;
         private readonly IWebSecurityWrapper _webSecurity;
         private readonly IMessageService _messageService;
+        private readonly IOrganizationService _organizationService;
 
-        public AccountController(IVolunteerService volunteerSvc, ICluster clusterSvc, IWebSecurityWrapper webSecurity, IMessageService messageService)
+        public AccountController(IVolunteerService volunteerSvc, ICluster clusterSvc, IWebSecurityWrapper webSecurity, IMessageService messageService, IOrganizationService organizationService)
         {
             _clusterSvc = clusterSvc;
             _webSecurity = webSecurity;
             _volunteerSvc = volunteerSvc;
             _messageService = messageService;
+            _organizationService = organizationService;
         }
 
         //
@@ -100,7 +102,10 @@ namespace crisicheckinweb.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
-            var model = new RegisterModel();
+            var model = new RegisterModel()
+            {
+                Organizations = _organizationService.GetActiveList()
+            };
             return View(model);
         }
 
@@ -125,7 +130,7 @@ namespace crisicheckinweb.Controllers
                     {
                         int userId;
                         string token = _webSecurity.CreateUser(model.UserName, model.Password, new[] { Constants.RoleVolunteer }, out userId);
-                        var volunteer = _volunteerSvc.Register(model.FirstName, model.LastName, model.Email, model.PhoneNumber, userId);
+                        var volunteer = _volunteerSvc.Register(model.FirstName, model.LastName, model.SelectedOrganizationId, model.Email, model.PhoneNumber, userId);
                         if (volunteer != null)
                         {
                             // Generate the absolute Url for the account activation action.
@@ -328,7 +333,12 @@ namespace crisicheckinweb.Controllers
             var personToUpdate = _volunteerSvc.GetPersonDetailsForChangeContactInfo(_webSecurity.CurrentUserId);
             if (personToUpdate != null)
             {
-                ChangeContactInfoViewModel model = new ChangeContactInfoViewModel { Email = personToUpdate.Email, PhoneNumber = personToUpdate.PhoneNumber };
+                ChangeContactInfoViewModel model = new ChangeContactInfoViewModel {
+                    Email = personToUpdate.Email,
+                    PhoneNumber = personToUpdate.PhoneNumber,
+                    SelectedOrganizationId = personToUpdate.OrganizationId,
+                    Organizations = _organizationService.GetActiveList()
+                };
                 return View(model);
             }
 
@@ -345,7 +355,8 @@ namespace crisicheckinweb.Controllers
                     _volunteerSvc.UpdateDetails(new Person {
                         UserId = _webSecurity.CurrentUserId,
                         Email =  model.Email,
-                        PhoneNumber = model.PhoneNumber
+                        PhoneNumber = model.PhoneNumber,
+                        OrganizationId = model.SelectedOrganizationId
                     });
                     return RedirectToAction("ContactInfoChanged");
                 }

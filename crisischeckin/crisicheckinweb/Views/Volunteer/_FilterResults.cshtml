@@ -13,6 +13,7 @@
 <table>
     <tr>
         <th>Volunteer Name</th>
+        <th>Organization</th>
         <th>Email</th>
         <th>Phone</th>
         <th>Activity</th>
@@ -32,6 +33,7 @@
                     @if (ci == 0)
                     {
                         <td rowspan="@person.Commitments.Count()">@(person.LastName + ", " + person.FirstName)</td>
+                        <td rowspan="@person.Commitments.Count()">@(person.Organization != null ? person.Organization.OrganizationName : "none")</td>
                         <td rowspan="@person.Commitments.Count()">@person.Email</td>
                         <td rowspan="@person.Commitments.Count()">@person.PhoneNumber</td>
                     }
