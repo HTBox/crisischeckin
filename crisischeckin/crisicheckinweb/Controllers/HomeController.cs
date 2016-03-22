@@ -14,6 +14,7 @@ namespace crisicheckinweb.Controllers
     {
         private readonly IDisaster _disasterSvc;
         private readonly IVolunteerService _volunteerSvc;
+        private readonly IAdmin _adminService;
         private readonly IWebSecurityWrapper _webSecurity;
         private readonly IClusterCoordinatorService _clusterCoordinatorService;
         private readonly IVolunteerTypeService _volunteerTypes;
@@ -25,7 +26,8 @@ namespace crisicheckinweb.Controllers
             IWebSecurityWrapper webSecurity,
             IClusterCoordinatorService clusterCoordinatorService,
             IVolunteerTypeService volunteerTypeService,
-            IDisasterClusterService disasterClusterService
+            IDisasterClusterService disasterClusterService,
+            IAdmin adminService
             )
         {
             _disasterSvc = disasterSvc;
@@ -34,6 +36,7 @@ namespace crisicheckinweb.Controllers
             _clusterCoordinatorService = clusterCoordinatorService;
             _volunteerTypes = volunteerTypeService;
             _disasterClusterSvc = disasterClusterService;
+            _adminService = adminService;
         }
 
         [HttpGet]
@@ -125,9 +128,15 @@ namespace crisicheckinweb.Controllers
         private VolunteerViewModel GetDefaultViewModel(VolunteerViewModel viewModel = null)
         {
             var person = _volunteerSvc.FindByUserId(_webSecurity.CurrentUserId);
+
             var commitments = (person != null) ?
                 _volunteerSvc.RetrieveCommitments(person.Id, true) :
                 new List<Commitment>().AsEnumerable();
+
+            var resources = (person != null && person.OrganizationId.HasValue) ?
+                _adminService.GetResourceCheckinsForOrganization(person.OrganizationId.Value) :
+                new List<Resource>().AsEnumerable();
+
             var commitmentForToday = commitments.FirstOrDefault(x => x.StartDate <= DateTime.Today && DateTime.Today <= x.EndDate);
 
             var clusterCoordinators = (commitmentForToday != null && commitmentForToday.ClusterId.HasValue) ?
@@ -186,6 +195,7 @@ namespace crisicheckinweb.Controllers
                 Disasters = _disasterSvc.GetActiveList(),
                 DisasterClusters = _disasterClusterSvc.GetClustersForADisaster(0),
                 MyCommitments = commitments,
+                MyOrgResources = resources,
                 AvailableActions = availableActions,
                 VolunteerTypes = _volunteerTypes.GetList(),
                 Person = person,

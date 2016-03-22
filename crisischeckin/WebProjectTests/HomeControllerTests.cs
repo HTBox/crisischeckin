@@ -23,6 +23,7 @@ namespace WebProjectTests
         private Mock<IClusterCoordinatorService> _clusterCoordinatorService;
         private Mock<IVolunteerTypeService> _volunteerTypeService;
         private Mock<IDisasterClusterService> _disasterClusterService;
+        private Mock<IAdmin> _adminService;
 
         [SetUp]
         public void SetUp()
@@ -33,8 +34,9 @@ namespace WebProjectTests
             _clusterCoordinatorService = new Mock<IClusterCoordinatorService>();
             _volunteerTypeService = new Mock<IVolunteerTypeService>();
             _disasterClusterService = new Mock<IDisasterClusterService>();
+            _adminService = new Mock<IAdmin>();
 
-            _controllerUnderTest = new HomeController(_disaster.Object, _volunteerService.Object, _webSecurity.Object, _clusterCoordinatorService.Object, _volunteerTypeService.Object, _disasterClusterService.Object);
+            _controllerUnderTest = new HomeController(_disaster.Object, _volunteerService.Object, _webSecurity.Object, _clusterCoordinatorService.Object, _volunteerTypeService.Object, _disasterClusterService.Object, _adminService.Object);
         }
 
         [Test]
