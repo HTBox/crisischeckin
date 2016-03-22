@@ -10,7 +10,7 @@ namespace Services.Interfaces
     public interface IDisaster
     {
         void AssignToVolunteer(int disasterId, int personId, DateTime startDate, DateTime endDate, 
-            int volunteerType, int clusterId);
+            int volunteerType, int clusterId, string location);
         void RemoveCommitmentById(int commitmentId);
         Disaster Get(int disasterId);
         void Create(Disaster disaster);

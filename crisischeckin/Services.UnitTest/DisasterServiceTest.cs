@@ -55,7 +55,7 @@ namespace Services.UnitTest
         {
             var startDate = new DateTime(2013, 6, 13);
             var endDate = startDate.Subtract(TimeSpan.FromDays(1));
-            _disasterService.AssignToVolunteer(0, 0, startDate, endDate, 1, 1);
+            _disasterService.AssignToVolunteer(0, 0, startDate, endDate, 1, 1, "");
         }
 
         [Test]
@@ -64,7 +64,7 @@ namespace Services.UnitTest
         {
             var startDate = DateTime.Today.AddDays(-10);
             var endDate = startDate.AddDays(1);
-            _disasterService.AssignToVolunteer(0, 0, startDate, endDate, 1, 1);
+            _disasterService.AssignToVolunteer(0, 0, startDate, endDate, 1, 1, "");
         }
 
         [Test]
@@ -85,7 +85,7 @@ namespace Services.UnitTest
             _mockDataService.Setup(s => s.Commitments).Returns(commitments.AsQueryable());
             _mockDataService.Setup(s => s.Disasters).Returns(disasters.AsQueryable());
 
-            _disasterService.AssignToVolunteer(0, 0, new DateTime(2013, 6, 11), new DateTime(2013, 6, 20), 1, 1);
+            _disasterService.AssignToVolunteer(0, 0, new DateTime(2013, 6, 11), new DateTime(2013, 6, 20), 1, 1, "");
         }
 
         [Test]
@@ -106,7 +106,7 @@ namespace Services.UnitTest
             _mockDataService.Setup(s => s.Commitments).Returns(commitments.AsQueryable());
             _mockDataService.Setup(s => s.Disasters).Returns(disasters.AsQueryable());
 
-            _disasterService.AssignToVolunteer(0, 0, new DateTime(2013, 6, 5), new DateTime(2013, 6, 12), 1, 1);
+            _disasterService.AssignToVolunteer(0, 0, new DateTime(2013, 6, 5), new DateTime(2013, 6, 12), 1, 1, "");
         }
 
         [Test]
@@ -127,7 +127,7 @@ namespace Services.UnitTest
             _mockDataService.Setup(s => s.Commitments).Returns(commitments.AsQueryable());
             _mockDataService.Setup(s => s.Disasters).Returns(disasters.AsQueryable());
 
-            _disasterService.AssignToVolunteer(0, 0, new DateTime(2013, 5, 6), new DateTime(2013, 5, 9), 1, 1);
+            _disasterService.AssignToVolunteer(0, 0, new DateTime(2013, 5, 6), new DateTime(2013, 5, 9), 1, 1, "");
         }
 
         [Test]
@@ -148,7 +148,7 @@ namespace Services.UnitTest
             _mockDataService.Setup(s => s.Commitments).Returns(commitments.AsQueryable());
             _mockDataService.Setup(s => s.Disasters).Returns(disasters.AsQueryable());
 
-            _disasterService.AssignToVolunteer(0, 0, new DateTime(2013, 5, 7), new DateTime(2013, 5, 7), 1, 1);
+            _disasterService.AssignToVolunteer(0, 0, new DateTime(2013, 5, 7), new DateTime(2013, 5, 7), 1, 1, "");
         }
 
         [Test]
@@ -178,7 +178,7 @@ namespace Services.UnitTest
 
             var startDate = commitmentDate.AddDays(-1);
             var endDate = commitmentDate.AddDays(-1);
-            _disasterService.AssignToVolunteer(0, 0, startDate, endDate, 1, 1);
+            _disasterService.AssignToVolunteer(0, 0, startDate, endDate, 1, 1, "");
 
             Assert.IsNotNull(createdCommitment);
             Assert.AreEqual(startDate, createdCommitment.StartDate);
@@ -212,7 +212,7 @@ namespace Services.UnitTest
 
             var startDate = commitmentDate.AddDays(1);
             var endDate = commitmentDate.AddDays(1);
-            _disasterService.AssignToVolunteer(0, 0, startDate, endDate, 1, 1);
+            _disasterService.AssignToVolunteer(0, 0, startDate, endDate, 1, 1, "");
 
             Assert.IsNotNull(createdCommitment);
             Assert.AreEqual(startDate, createdCommitment.StartDate);
@@ -241,7 +241,7 @@ namespace Services.UnitTest
             _mockDataService.Setup(s => s.Commitments).Returns(commitments.AsQueryable());
             _mockDataService.Setup(s => s.Disasters).Returns(disasters.AsQueryable());
 
-            _disasterService.AssignToVolunteer(0, 0, new DateTime(2013, 5, 10), new DateTime(2013, 5, 10), 1, 1);
+            _disasterService.AssignToVolunteer(0, 0, new DateTime(2013, 5, 10), new DateTime(2013, 5, 10), 1, 1, "");
         }
 
         [Test]
@@ -266,7 +266,7 @@ namespace Services.UnitTest
             _mockDataService.Setup(s => s.Commitments).Returns(commitments.AsQueryable());
             _mockDataService.Setup(s => s.Disasters).Returns(disasters.AsQueryable());
 
-            _disasterService.AssignToVolunteer(0, 0, new DateTime(2013, 5, 6), new DateTime(2013, 5, 6), 1, 1);
+            _disasterService.AssignToVolunteer(0, 0, new DateTime(2013, 5, 6), new DateTime(2013, 5, 6), 1, 1, "");
         }
 
         [Test]
@@ -282,7 +282,7 @@ namespace Services.UnitTest
             const int disasterId = 10;
             var startDate = DateTime.Today;
             var endDate = startDate.AddDays(1);
-            _disasterService.AssignToVolunteer(disasterId, personId, startDate, endDate, 1, 1);
+            _disasterService.AssignToVolunteer(disasterId, personId, startDate, endDate, 1, 1, "");
 
             Assert.IsNotNull(createdCommitment);
             Assert.AreEqual(createdCommitment.PersonId, personId);
@@ -320,7 +320,7 @@ namespace Services.UnitTest
             _mockDataService.Setup(s => s.AddCommitment(It.IsAny<Commitment>()))
                 .Callback<Commitment>(commitment => createdCommitment = commitment);
 
-            _disasterService.AssignToVolunteer(disasterId, personId, startDate, endDate, 1, 1);
+            _disasterService.AssignToVolunteer(disasterId, personId, startDate, endDate, 1, 1, "");
             Assert.IsNotNull(createdCommitment);
             Assert.AreEqual(createdCommitment.PersonId, personId);
             Assert.AreEqual(createdCommitment.DisasterId, disasterId);

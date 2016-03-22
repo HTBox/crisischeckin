@@ -15,23 +15,38 @@
         <th>Volunteer Name</th>
         <th>Email</th>
         <th>Phone</th>
-        <th>Cluster</th>
+        <th>Activity</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Location</th>
     </tr>
     @if (Model != null)
     {
         foreach (var person in Model)
         {
-            <tr>
-                <td>@(person.LastName + ", " + person.FirstName)</td>
-                <td>@person.Email</td>
-                <td>@person.PhoneNumber</td>
-                <td>
-                    @foreach (var commitment in person.Commitments)
+            for (int ci = 0; ci < person.Commitments.Count(); ci++)
+            {
+                var commitment = person.Commitments.ElementAt(ci);
+
+                <tr>
+                    @if (ci == 0)
                     {
-                        @(Html.Encode(commitment.Cluster != null ? commitment.Cluster.Name : ""))    
-                    }            
-                </td>
-            </tr>
+                        <td rowspan="@person.Commitments.Count()">@(person.LastName + ", " + person.FirstName)</td>
+                        <td rowspan="@person.Commitments.Count()">@person.Email</td>
+                        <td rowspan="@person.Commitments.Count()">@person.PhoneNumber</td>
+                    }
+                    <td>@commitment.Cluster.Name</td>
+                    <td>@commitment.StartDate.ToShortDateString()</td>
+                    <td>@commitment.EndDate.ToShortDateString()</td>
+                    <td>
+                        @commitment.VolunteerType.Name
+                        @if (!String.IsNullOrWhiteSpace(commitment.Location))
+                        {
+                            @(" (" + commitment.Location + ")")
+                        }
+                    </td>
+                </tr>
+            }
         }
     }
 </table>    

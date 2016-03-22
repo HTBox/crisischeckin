@@ -91,7 +91,7 @@ namespace crisicheckinweb.Controllers
                 }
                 _disasterSvc.AssignToVolunteer(model.SelectedDisasterId,
                     person.Id, model.SelectedStartDate, model.SelectedEndDate, model.VolunteerType,
-                    model.SelectedClusterId);
+                    model.SelectedClusterId, model.Location);
 
                 return Redirect("/Home");
             }
