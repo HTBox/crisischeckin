@@ -122,7 +122,8 @@ namespace Services
             var result = ourService.Persons.Where(p => p.UserId == userId).Select(per => new
             {
                 Email = per.Email,
-                PhoneNumber = per.PhoneNumber
+                PhoneNumber = per.PhoneNumber,
+                OrganizationId = per.OrganizationId
             }).FirstOrDefault();
 
             if (result == null)
@@ -131,7 +132,8 @@ namespace Services
             return new Person
             {
                 Email = result.Email,
-                PhoneNumber = result.PhoneNumber
+                PhoneNumber = result.PhoneNumber,
+                OrganizationId = result.OrganizationId
             };
         }
 
