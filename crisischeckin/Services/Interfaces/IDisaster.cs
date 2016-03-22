@@ -11,7 +11,9 @@ namespace Services.Interfaces
     {
         void AssignToVolunteer(int disasterId, int personId, DateTime startDate, DateTime endDate, 
             int volunteerType, int clusterId, string location);
+        void AddResourceCheckIn(Organization organization, int disasterId, string description, int qty, int resourceTypeId, DateTime startDate, DateTime endDate, string location);
         void RemoveCommitmentById(int commitmentId);
+        void RemoveResourceById(int resourceId);
         Disaster Get(int disasterId);
         void Create(Disaster disaster);
         Disaster Update(Disaster updatedDisaster);

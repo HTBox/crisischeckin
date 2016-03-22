@@ -103,6 +103,21 @@ namespace Services
             return contacts.ToList();
         }
 
+        public IEnumerable<ResourceType> GetResourceTypes()
+        {
+            return _dataService.ResourceTypes.ToList();
+        }
+
+        public IEnumerable<Resource> GetResourceCheckinsForOrganization(int organizationId)
+        {
+            IEnumerable<Resource> resources;
+            resources = GetResourcesForOrganization(organizationId);
+
+            if (resources == null)
+                throw new NullReferenceException(string.Format("Attempt to get volunteers for organization ID {0} returned null.", organizationId));
+            return resources.ToList();
+        }
+
         public IEnumerable<Resource> GetResourceCheckinsForDisaster(int disasterId, DateTime? commitmentDate)
         {
             IEnumerable<Resource> resources;
@@ -130,6 +145,18 @@ namespace Services
             if (people == null)
                 throw new NullReferenceException(string.Format("Attempt to get volunteers for disaster ID {0} returned null.", disasterId));
             return people.ToList();
+        }
+
+        private IQueryable<Resource> GetResourcesForOrganization(int organizationId)
+        {
+            if (organizationId <= 0)
+                throw new ArgumentException("organizationId is invalid.", "organizationId");
+
+            var results = from r in _dataService.Resources
+                          where r.Allocator.OrganizationId == organizationId
+                          select r;
+
+            return results;
         }
 
         private IQueryable<Resource> GetResources(int disasterId, DateTime? date)
