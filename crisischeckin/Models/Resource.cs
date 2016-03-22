@@ -20,7 +20,12 @@ namespace Models
         public Address Location { get; set; }
         public Decimal Qty { get; set; }
         public ResourceStatus Status { get; set; }
-        public Disaster Disaster { get; set; }      
+
+        public int DisasterId { get; set; }
+        public virtual Disaster Disaster { get; set; }
+
+        public int ResourceTypeId { get; set; }
+        public virtual ResourceType ResourceType { get; set; }      
          
     }
 

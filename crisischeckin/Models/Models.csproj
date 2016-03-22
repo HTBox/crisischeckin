@@ -116,6 +116,10 @@
     <Compile Include="Migrations\201603220411258_AddPersonOrganizationRelationship.Designer.cs">
       <DependentUpon>201603220411258_AddPersonOrganizationRelationship.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201603220606458_ConnectResourceType.cs" />
+    <Compile Include="Migrations\201603220606458_ConnectResourceType.Designer.cs">
+      <DependentUpon>201603220606458_ConnectResourceType.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Organization.cs" />
     <Compile Include="Resource.cs" />
@@ -176,6 +180,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603220411258_AddPersonOrganizationRelationship.resx">
       <DependentUpon>201603220411258_AddPersonOrganizationRelationship.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603220606458_ConnectResourceType.resx">
+      <DependentUpon>201603220606458_ConnectResourceType.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

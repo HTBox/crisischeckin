@@ -75,6 +75,16 @@ namespace Services
             get { return context.Organizations;  }
         }
 
+        public IQueryable<Resource> Resources
+        {
+            get { return context.Resources; }
+        }
+
+        public IQueryable<Contact> Contacts
+        {
+            get { return context.Contacts; }
+        }
+
         public Person AddPerson(Person newPerson)
         {
             var result = context.Persons.Add(newPerson);
