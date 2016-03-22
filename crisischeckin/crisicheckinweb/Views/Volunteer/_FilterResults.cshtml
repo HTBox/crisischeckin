@@ -15,44 +15,38 @@
         <th>Volunteer Name</th>
         <th>Email</th>
         <th>Phone</th>
-        <th>Commitments</th>
+        <th>Activity</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Location</th>
     </tr>
     @if (Model != null)
     {
         foreach (var person in Model)
         {
-            <tr>
-                <td>@(person.LastName + ", " + person.FirstName)</td>
-                <td>@person.Email</td>
-                <td>@person.PhoneNumber</td>
-                <td>
-                    @if (person.Commitments.Any())
+            for (int ci = 0; ci < person.Commitments.Count(); ci++)
+            {
+                var commitment = person.Commitments.ElementAt(ci);
+
+                <tr>
+                    @if (ci == 0)
                     {
-                        <table>
-                            <tr>
-                                <th>Activity</th>
-                                <th>Start Date</th>
-                                <th>End Date</th>
-                                <th>Location</th>
-                            </tr>
-                            @foreach (var commitment in person.Commitments)
-                            {
-                                <tr>
-                                    <td>@commitment.Cluster.Name</td>
-                                    <td>@commitment.StartDate.ToShortDateString()</td>
-                                    <td>@commitment.EndDate.ToShortDateString()</td>
-                                    <td>@commitment.VolunteerType.Name
-                                    @if (!String.IsNullOrWhiteSpace(commitment.Location))
-                                    {
-                                        @(" (" + commitment.Location + ")")
-                                    }
-                                    </td>
-                                </tr>
-                            }
-                        </table>
+                        <td rowspan="@person.Commitments.Count()">@(person.LastName + ", " + person.FirstName)</td>
+                        <td rowspan="@person.Commitments.Count()">@person.Email</td>
+                        <td rowspan="@person.Commitments.Count()">@person.PhoneNumber</td>
                     }
-                </td>
-            </tr>
+                    <td>@commitment.Cluster.Name</td>
+                    <td>@commitment.StartDate.ToShortDateString()</td>
+                    <td>@commitment.EndDate.ToShortDateString()</td>
+                    <td>
+                        @commitment.VolunteerType.Name
+                        @if (!String.IsNullOrWhiteSpace(commitment.Location))
+                        {
+                            @(" (" + commitment.Location + ")")
+                        }
+                    </td>
+                </tr>
+            }
         }
     }
 </table>    
