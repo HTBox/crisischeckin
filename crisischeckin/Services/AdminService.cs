@@ -103,6 +103,11 @@ namespace Services
             return contacts.ToList();
         }
 
+        public IEnumerable<ResourceType> GetResourceTypes()
+        {
+            return _dataService.ResourceTypes.ToList();
+        }
+
         public IEnumerable<Resource> GetResourceCheckinsForOrganization(int organizationId)
         {
             IEnumerable<Resource> resources;

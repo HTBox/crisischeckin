@@ -19,6 +19,30 @@ namespace Services
             _dataService = service;
         }
 
+        public void AddResourceCheckIn(Organization organization, int disasterId, string description, int qty, int resourceTypeId, DateTime startDate, DateTime endDate, string location)
+        {
+            if (DateTime.Compare(endDate, startDate) < 0)
+            {
+                throw new ArgumentException("Please enter an end date that is greater than or equal to the start date.");
+            }
+            if (DateTime.Compare(DateTime.Today, startDate) > 0)
+            {
+                throw new ArgumentException("Please enter a start date that is greater than or equal to today's date.");
+            }
+
+            _dataService.AddResource(new Resource
+            {
+                Allocator = organization,
+                DisasterId = disasterId,
+                Description = description,
+                Qty = qty,
+                ResourceTypeId = resourceTypeId,
+                StartOfAvailability = startDate,
+                EndOfAvailability = endDate,
+                Location = new Address { AddressLine1 = location }
+            });
+        }
+
         public void AssignToVolunteer(int disasterId, int personId, DateTime startDate, DateTime endDate,
             int volunteerType, int clusterId, string location)
         {
@@ -38,9 +62,9 @@ namespace Services
                 (DateTime.Compare(c.EndDate, startDate) >= 0);
 
             var hasExistingCommitment = (from c in _dataService.Commitments
-                join d in _dataService.Disasters on c.DisasterId equals d.Id
-                where d.IsActive && c.PersonId == personId
-                select c).Any(dateInRange);
+                                         join d in _dataService.Disasters on c.DisasterId equals d.Id
+                                         where d.IsActive && c.PersonId == personId
+                                         select c).Any(dateInRange);
 
             if (hasExistingCommitment)
             {
@@ -89,6 +113,12 @@ namespace Services
             // Why should disaster name be unique?
 
             _dataService.AddDisaster(disaster);
+        }
+
+        public void RemoveResourceById(int resourceId)
+        {
+            //  idempotent method - don't care if the id does not exist.
+            _dataService.RemoveResourceById(resourceId);
         }
 
         public void RemoveCommitmentById(int commitmentId)

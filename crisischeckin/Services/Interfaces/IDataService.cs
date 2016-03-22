@@ -21,8 +21,10 @@ namespace Services.Interfaces
         IQueryable<Organization> Organizations { get; }
         IQueryable<Resource> Resources { get; }
         IQueryable<Contact> Contacts { get; }
+        IQueryable<ResourceType> ResourceTypes { get; }
         Person AddPerson(Person newPerson);
         Person UpdatePerson(Person updatedPerson);
+        void AddResource(Resource newResource);
         void AddCommitment(Commitment newCommitment);
         void AddCluster(Cluster newCluster);
         void RemoveCluster(Cluster clusterToDelete);
@@ -31,6 +33,7 @@ namespace Services.Interfaces
         void RemoveClusterGroup(ClusterGroup clusterToDelete);
         ClusterGroup UpdateClusterGroup(ClusterGroup updatedCluster);
         void RemoveCommitmentById(int id);
+        void RemoveResourceById(int id);
         void AddDisaster(Disaster newDisaster);
         Disaster UpdateDisaster(Disaster updatedDisaster);
         void AddDisasterCluster(DisasterCluster newDisasterCluster);

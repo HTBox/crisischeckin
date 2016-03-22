@@ -85,6 +85,11 @@ namespace Services
             get { return context.Contacts; }
         }
 
+        public IQueryable<ResourceType> ResourceTypes
+        {
+            get { return context.ResourceTypes; }
+        }
+
         public Person AddPerson(Person newPerson)
         {
             var result = context.Persons.Add(newPerson);
@@ -110,9 +115,22 @@ namespace Services
             return result;
         }
 
+        public void AddResource(Resource newResource)
+        {
+            context.Resources.Add(newResource);
+            context.SaveChanges();
+        }
+
         public void AddCommitment(Commitment newCommitment)
         {
             context.Commitments.Add(newCommitment);
+            context.SaveChanges();
+        }
+
+        public void RemoveResourceById(int id)
+        {
+            var resource = context.Resources.Find(id);
+            context.Resources.Remove(resource);
             context.SaveChanges();
         }
 

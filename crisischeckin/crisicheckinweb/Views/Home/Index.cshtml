@@ -185,7 +185,7 @@ else
         @using (Html.BeginForm("RemoveResource", "Home", FormMethod.Post, new { @class = "navbar-form" }))
         {
             @Html.AntiForgeryToken()
-            @Html.HiddenFor(m => m.RemoveCommitmentId, new { @Value = r.ResourceId })
+            @Html.HiddenFor(m => m.RemoveResourceId, new { @Value = r.ResourceId })
             <td>
                 <button class="btn btn-danger btn-xs" type="submit"><i class="glyphicon glyphicon-remove"></i> Remove</button>
             </td>
@@ -219,9 +219,9 @@ else
                 <td>@Html.DropDownListFor(m => m.SelectedDisasterId, new SelectList(Model.Disasters, "Id", "Name", Model.SelectedDisasterId), "-- Choose One --", new { @class = "form-control", @id = "disasterList" })</td>
                 <td>@Html.TextBoxFor(m => m.Description)</td>
                 <td>@Html.TextBoxFor(m => m.Qty)</td>
-                <td>@Html.DropDownListFor(m => m.SelectedResourceTypeId, new SelectList(Model.ResourceTypes, "ResourceType.Id", "ResourceType.Name", Model.SelectedResourceTypeId), new { @class = "form-control", @id = "resourcetypelist" })</td>
-                <td>@Html.TextBoxFor(m => m.SelectedStartDate, new { id = "dp_startDate", @class = "form-control" })</td>
-                <td>@Html.TextBoxFor(m => m.SelectedEndDate, new { id = "dp_endDate", @class = "form-control" })</td>
+                <td>@Html.DropDownListFor(m => m.SelectedResourceTypeId, new SelectList(Model.ResourceTypes, "ResourceTypeId", "TypeName", Model.SelectedResourceTypeId), "-- Choose One --", new { @class = "form-control", @id = "resourcetypelist" })</td>
+                <td>@Html.TextBoxFor(m => m.ResourceStartDate, new { id = "dp_resStartDate", @class = "form-control" })</td>
+                <td>@Html.TextBoxFor(m => m.ResourceEndDate, new { id = "dp_resEndDate", @class = "form-control" })</td>
                 <td>@Html.TextBoxFor(m => m.Location, new { @class = "form-control" })</td>
                 <td><input class="btn btn-black" id="GoButton" type="submit" value="Checkin" /></td>
             </tr>

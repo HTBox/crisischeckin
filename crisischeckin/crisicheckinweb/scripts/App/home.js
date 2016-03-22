@@ -13,6 +13,18 @@
         $('#dp_endDate').datepicker('option', 'minDate', dateText);
     }
 
+    $(document).ready(function () {
+        $("#dp_resStartDate").datepicker({ minDate: 'today', onSelect: updateResEndDate }).datepicker('setDate',
+            '@(Model.ResourceStartDate == default(DateTime) ? DateTime.Now : Model.ResourceStartDate)');
+        $("#dp_resEndDate").datepicker({ minDate: 'today' }).datepicker('setDate',
+            '@(Model.ResourceEndDate == default(DateTime) ? DateTime.Now : Model.ResourceEndDate)');
+
+    });
+
+    function updateResEndDate(dateText) {
+        $('#dp_resEndDate').datepicker('option', 'minDate', dateText);
+    }
+
     $(function () {
         $('select#disasterList').change(function () {
             var disasterId = $('#disasterList').val();

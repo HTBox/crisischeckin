@@ -78,6 +78,52 @@ namespace crisicheckinweb.Controllers
             return View();
         }
 
+
+        [HttpPost]
+        public ActionResult CheckinResource(VolunteerViewModel model)
+        {
+            if (!ModelState.IsValid)
+                return View("Index", GetDefaultViewModel(model));
+
+            try
+            {
+                var person = _volunteerSvc.FindByUserId(_webSecurity.CurrentUserId);
+                if (person == null)
+                {
+                    throw new ArgumentException(
+                        "The logged in user is either the administrator or does not have a valid account for joining a crisis.");
+                }
+                _disasterSvc.AddResourceCheckIn(person.Organization, model.SelectedDisasterId, model.Description,
+                    model.Qty, model.SelectedResourceTypeId, model.ResourceStartDate, model.ResourceEndDate, model.Location);
+
+                return Redirect("/Home");
+            }
+            catch (ArgumentException ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+            }
+
+            var modelToReturn = GetDefaultViewModel();
+            modelToReturn.SelectedDisasterId = model.SelectedDisasterId;
+            modelToReturn.SelectedStartDate = model.SelectedStartDate;
+            modelToReturn.SelectedEndDate = model.SelectedEndDate;
+            modelToReturn.SelectedClusterId = model.SelectedClusterId;
+            modelToReturn.Description = model.Description;
+            modelToReturn.Qty = model.Qty;
+            modelToReturn.SelectedResourceTypeId = model.SelectedResourceTypeId;
+            modelToReturn.ResourceStartDate = model.ResourceStartDate;
+            modelToReturn.ResourceEndDate = model.ResourceEndDate;
+            modelToReturn.Location = model.Location;
+
+            if (model.SelectedDisasterId != 0)
+            {
+                modelToReturn.DisasterClusters
+                    = _disasterClusterSvc.GetClustersForADisaster(model.SelectedDisasterId);
+            }
+
+            return View("Index", modelToReturn);
+        }
+
         [HttpPost]
         public ActionResult Assign(VolunteerViewModel model)
         {
@@ -136,6 +182,8 @@ namespace crisicheckinweb.Controllers
             var resources = (person != null && person.OrganizationId.HasValue) ?
                 _adminService.GetResourceCheckinsForOrganization(person.OrganizationId.Value) :
                 new List<Resource>().AsEnumerable();
+
+            var resourceTypes = _adminService.GetResourceTypes();
 
             var commitmentForToday = commitments.FirstOrDefault(x => x.StartDate <= DateTime.Today && DateTime.Today <= x.EndDate);
 
@@ -196,6 +244,7 @@ namespace crisicheckinweb.Controllers
                 DisasterClusters = _disasterClusterSvc.GetClustersForADisaster(0),
                 MyCommitments = commitments,
                 MyOrgResources = resources,
+                ResourceTypes = resourceTypes,
                 AvailableActions = availableActions,
                 VolunteerTypes = _volunteerTypes.GetList(),
                 Person = person,
@@ -209,6 +258,12 @@ namespace crisicheckinweb.Controllers
                 model.SelectedEndDate = viewModel.SelectedEndDate;
                 model.SelectedClusterId = viewModel.SelectedClusterId;
 
+                model.Description = viewModel.Description;
+                model.Qty = viewModel.Qty;
+                model.SelectedResourceTypeId = viewModel.SelectedResourceTypeId;
+                model.ResourceStartDate = viewModel.ResourceStartDate;
+                model.ResourceEndDate = viewModel.ResourceEndDate;
+
                 if (model.SelectedDisasterId != 0)
                 {
                     model.DisasterClusters
@@ -217,6 +272,47 @@ namespace crisicheckinweb.Controllers
             }
 
             return model;
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult RemoveResource(VolunteerViewModel model)
+        {
+            if (!ModelState.IsValid)
+                return View("Index", GetDefaultViewModel(model));
+
+            try
+            {
+                var person = _volunteerSvc.FindByUserId(_webSecurity.CurrentUserId);
+                if (!person.OrganizationId.HasValue)
+                {
+                    throw new ArgumentException("Signed in User is not part of an Organization");
+                }
+
+                var resources = _adminService.GetResourceCheckinsForOrganization(person.OrganizationId.Value);
+
+                var resource = resources.FirstOrDefault(r => r.ResourceId == model.RemoveResourceId);
+                if (resource == null)
+                {
+                    throw new ArgumentException("Resource supplied is not yours.");
+                }
+
+                _disasterSvc.RemoveResourceById(resource.ResourceId);
+
+                return Redirect("/Home");
+            }
+            catch (ArgumentException ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+            }
+
+            var modelToReturn = GetDefaultViewModel();
+            modelToReturn.SelectedDisasterId = model.SelectedDisasterId;
+            modelToReturn.SelectedStartDate = model.SelectedStartDate;
+            modelToReturn.SelectedEndDate = model.SelectedEndDate;
+            modelToReturn.SelectedClusterId = model.SelectedClusterId;
+
+            return View("Index", modelToReturn);
         }
 
         [HttpPost]
