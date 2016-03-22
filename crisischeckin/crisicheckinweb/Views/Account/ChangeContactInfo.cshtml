@@ -5,30 +5,36 @@
 
 
 <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-  <h2>Change Contact Info</h2>
-  @using (Html.BeginForm("ChangeContactInfo", "Account", FormMethod.Post))
-  {
-    if (@Model != null)
+    <h2>Change Contact Info</h2>
+    @using (Html.BeginForm("ChangeContactInfo", "Account", FormMethod.Post))
     {
-      <div class="form-group required">
-        @Html.LabelFor(m => m.Email)
-        @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
-        @Html.ValidationMessageFor(m => m.Email)
-      </div>
+        if (@Model != null)
+        {
+            <div class="form-group required">
+                @Html.LabelFor(m => m.Email)
+                @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Email)
+            </div>
 
-      <div class="form-group required">
-        @Html.LabelFor(m => m.PhoneNumber)
-        @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control" })
-        @Html.ValidationMessageFor(m => m.PhoneNumber)
-      </div>
+            <div class="form-group required">
+                @Html.LabelFor(m => m.PhoneNumber)
+                @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.PhoneNumber)
+            </div>
 
-      <div class="form-group">
-        <input type="submit" value="Submit" class="btn btn-success" />
-      </div>
-    }
-    else
-    {
-      <div class="text-danger">You may not change your contact info at this time.</div>
-    }
+            <div class="form-group">
+                @Html.LabelFor(model => model.SelectedOrganizationId)
+                @Html.DropDownListFor(model => model.SelectedOrganizationId, new SelectList(Model.Organizations, "Id", "Name"), new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.SelectedOrganizationId, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+            <input type="submit" value="Submit" class="btn btn-success" />
+            </div>
+        }
+        else
+        {
+          <div class="text-danger">You may not change your contact info at this time.</div>
+        }
   }
 </div>

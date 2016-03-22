@@ -55,7 +55,7 @@ namespace WebProjectTests
 
             var reqContext = new RequestContext(_httpContext.Object, new RouteData());
 
-            _controllerUnderTest = new AccountController(_volunteerService.Object, _cluster.Object, _webSecurity.Object, _messageService.Object);
+            _controllerUnderTest = new AccountController(_volunteerService.Object, _cluster.Object, _webSecurity.Object, _messageService.Object, null);
             _controllerUnderTest.ControllerContext = new ControllerContext(reqContext, _controllerUnderTest);
 
             _routeCollection = new RouteCollection();

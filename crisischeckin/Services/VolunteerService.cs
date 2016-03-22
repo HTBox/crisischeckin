@@ -63,16 +63,22 @@ namespace Services
                     }
                     foundPerson.Email = updatedPerson.Email;
                 }
+                
                 // update the found person with any appropriate changes
                 if (!string.IsNullOrEmpty(updatedPerson.FirstName))
                 {
                     foundPerson.FirstName = updatedPerson.FirstName;
                 }
+
                 if (!string.IsNullOrEmpty(updatedPerson.LastName))
                 {
                     foundPerson.LastName = updatedPerson.LastName;
                 }
+
                 foundPerson.PhoneNumber = updatedPerson.PhoneNumber;
+
+                foundPerson.OrganizationId = updatedPerson.OrganizationId;
+
                 return ourService.UpdatePerson(foundPerson);
             }
             throw new PersonNotFoundException();
