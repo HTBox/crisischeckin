@@ -22,6 +22,10 @@ namespace Models
 
         public string FullName { get { return LastName + ", " + FirstName; } }
 
+        public int? OrganizationId { get; set; }
+        
+        public virtual Organization Organization { get; set; }
+
         public virtual ICollection<Commitment> Commitments { get; set; }
     }
 }

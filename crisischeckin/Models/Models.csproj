@@ -112,6 +112,10 @@
     <Compile Include="Migrations\201603220312337_AddCommitmentLocation.Designer.cs">
       <DependentUpon>201603220312337_AddCommitmentLocation.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201603220411258_AddPersonOrganizationRelationship.cs" />
+    <Compile Include="Migrations\201603220411258_AddPersonOrganizationRelationship.Designer.cs">
+      <DependentUpon>201603220411258_AddPersonOrganizationRelationship.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Organization.cs" />
     <Compile Include="Resource.cs" />
@@ -169,6 +173,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603220312337_AddCommitmentLocation.resx">
       <DependentUpon>201603220312337_AddCommitmentLocation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603220411258_AddPersonOrganizationRelationship.resx">
+      <DependentUpon>201603220411258_AddPersonOrganizationRelationship.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
