@@ -1,15 +1,14 @@
 ﻿@model crisicheckinweb.ViewModels.ListByDisasterViewModel
 @{
-    ViewBag.Title = "Volunteers for this Disaster";
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "List Checkins";
+    Layout = "~/Views/Shared/_VolunteerLayout.cshtml";
 }
 
-<h2>List of Volunteers</h2>
+<h2>@ViewBag.Title</h2>
 @using (Ajax.BeginForm("Filter", "Volunteer", new AjaxOptions() { UpdateTargetId = "results" }))
 {
-    <h3>Disaster: </h3>
     <div class="form-inline form-group">
-        @Html.DropDownListFor(m => m.SelectedDisaster, new SelectList(Model.Disasters, "Id", "Name", Model.SelectedDisaster), "-- Choose One --", new { @class="form-control" })
+        <text>Disaster: </text>@Html.DropDownListFor(m => m.SelectedDisaster, new SelectList(Model.Disasters, "Id", "Name", Model.SelectedDisaster), "-- Choose One --", new { @class = "form-control" })
 
         <text>Filter by Date: </text>@Html.TextBoxFor(m => m.CommitmentDate, new { id = "dp_startDate", @class="form-control" })
         <input class="btn btn-black" id="GoButton" type="submit" value="Go" />
@@ -22,7 +21,7 @@
     <script type="text/javascript">
         (function ($) {
             $(document).ready(function () {
-                //$("#dp_startDate").datepicker().datepicker('setDate', new Date());
+                $("#dp_startDate").datepicker();
             });
         })(jQuery);
     </script>

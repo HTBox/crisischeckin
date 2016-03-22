@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Models;
 using Services.Interfaces;
+using System.Data.Entity;
 
 namespace Services
 {
@@ -37,7 +38,7 @@ namespace Services
             return GetVolunteersForDate(disaster.Id, date, clusterCoordinatorsOnly, checkedInOnly);
         }
 
-        public IEnumerable<Person> GetVolunteersForDate(int disasterId, DateTime date, bool clusterCoordinatorsOnly, bool checkedInOnly = false, IEnumerable<int> inClusterIds=null)
+        public IEnumerable<Person> GetVolunteersForDate(int disasterId, DateTime date, bool clusterCoordinatorsOnly, bool checkedInOnly = false, IEnumerable<int> inClusterIds = null)
         {
             if (disasterId <= 0)
                 throw new ArgumentException("disasterId is invalid.", "disasterId");
@@ -90,6 +91,28 @@ namespace Services
             return people.Distinct();
         }
 
+        public IEnumerable<Contact> GetContactsForDisaster(int disasterId)
+        {
+            IEnumerable<Contact> contacts;
+            contacts = _dataService.Contacts.Include("Organization").Include("Person");
+
+            //need to filter by current disaster after reworking contacts database
+
+            if (contacts == null)
+                throw new NullReferenceException(string.Format("Attempt to get volunteers for disaster ID {0} returned null.", disasterId));
+            return contacts.ToList();
+        }
+
+        public IEnumerable<Resource> GetResourceCheckinsForDisaster(int disasterId, DateTime? commitmentDate)
+        {
+            IEnumerable<Resource> resources;
+            resources = GetResources(disasterId, commitmentDate);
+
+            if (resources == null)
+                throw new NullReferenceException(string.Format("Attempt to get volunteers for disaster ID {0} returned null.", disasterId));
+            return resources.ToList();
+        }
+
         public IEnumerable<Person> GetVolunteersForDisaster(int disasterId, DateTime? commitmentDate, bool checkedInOnly = false)
         {
             IEnumerable<Person> people;
@@ -107,6 +130,23 @@ namespace Services
             if (people == null)
                 throw new NullReferenceException(string.Format("Attempt to get volunteers for disaster ID {0} returned null.", disasterId));
             return people.ToList();
+        }
+
+        private IQueryable<Resource> GetResources(int disasterId, DateTime? date)
+        {
+            if (disasterId <= 0)
+                throw new ArgumentException("disasterId is invalid.", "disasterId");
+
+            var results = from r in _dataService.Resources
+                          where r.DisasterId == disasterId
+                          select r;
+
+            if (date.HasValue)
+            {
+                results = results.Where(r => date >= r.StartOfAvailability && date <= r.EndOfAvailability);
+            }
+
+            return results;
         }
 
         private IQueryable<Person> GetPeople(int disasterId, bool checkedInOnly)
