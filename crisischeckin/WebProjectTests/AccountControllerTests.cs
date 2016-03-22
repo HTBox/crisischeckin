@@ -135,6 +135,7 @@ namespace WebProjectTests
             _volunteerService.Verify(x => x.Register(
                 It.IsAny<string>(),
                 It.IsAny<string>(),
+                It.IsAny<int?>(),
                 It.IsAny<string>(),
                 It.IsAny<string>(),
                 It.IsAny<int>()), Times.Never);
@@ -150,7 +151,7 @@ namespace WebProjectTests
 
             _volunteerService.Setup(x => x.EmailAlreadyInUse(It.IsAny<string>()))
                 .Returns(false);
-            _volunteerService.Setup(x => x.Register(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()))
+            _volunteerService.Setup(x => x.Register(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int?>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()))
                 .Returns(volunteer);
             _webSecurity.Setup(x => x.CreateUser(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string[]>(), out newUserId))
                 .Returns(confirmationToken);
@@ -168,6 +169,7 @@ namespace WebProjectTests
             _volunteerService.Verify(x => x.Register(
                 model.FirstName,
                 model.LastName,
+                model.SelectedOrganizationId,
                 model.Email,
                 model.PhoneNumber,
                 newUserId));

@@ -18,7 +18,7 @@ namespace Services
             ourService = service;
         }
 
-        public Person Register(string firstName, string lastName, string email, string phoneNumber, int userId)
+        public Person Register(string firstName, string lastName, int? OrganizationId, string email, string phoneNumber, int userId)
         {
             if (string.IsNullOrWhiteSpace(firstName)) { throw new ArgumentNullException("firstName"); }
             if (string.IsNullOrWhiteSpace(lastName)) { throw new ArgumentNullException("lastName"); }
@@ -38,6 +38,7 @@ namespace Services
                 UserId = userId,
                 FirstName = firstName,
                 LastName = lastName,
+                OrganizationId = OrganizationId,
                 Email = email,
                 PhoneNumber = phoneNumber
             });
