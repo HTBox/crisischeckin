@@ -114,7 +114,7 @@ namespace Services
 
         public Person FindByUserId(int userId)
         {
-            return ourService.Persons.SingleOrDefault(p => p.UserId == userId);
+            return ourService.Persons.Include(p => p.Organization).SingleOrDefault(p => p.UserId == userId);
         }
 
         public Person GetPersonDetailsForChangeContactInfo(int userId)

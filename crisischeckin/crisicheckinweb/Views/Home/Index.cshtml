@@ -19,6 +19,11 @@
               <dl class="dl-horizontal">
                   <dt>Disaster: </dt>
                   <dd>@commitmentForToday.Disaster.Name</dd>
+                  @if(Model.Person.Organization != null)
+                  {
+                      <dt>Organization: </dt>
+                      <dd>@Model.Person.Organization.OrganizationName</dd>
+                  }
                   <dt>Location: </dt>
                   <dd>@commitmentForToday.VolunteerType.Name</dd>
                   <dt>Cluster: </dt>
