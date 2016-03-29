@@ -57,7 +57,11 @@ namespace Services
             if (disasterId <= 0)
                 throw new ArgumentException("disasterId must be greater than zero", "disasterId");
 
-            var inClusterIdsArray = inClusterIds?.ToArray() ?? new int[0];
+            var inClusterIdsArray = new int[0];
+            if (inClusterIds != null)
+            {
+                inClusterIdsArray = inClusterIds.ToArray();
+            }
             var hasClusters = inClusterIdsArray.Length == 0;
 
             var people = from cc in _dataService.ClusterCoordinators
@@ -77,7 +81,11 @@ namespace Services
             if (disasterId <= 0)
                 throw new ArgumentException("disasterId must be greater than zero", "disasterId");
 
-            var inClusterIdsArray = inClusterIds?.ToArray() ?? new int[0];
+            var inClusterIdsArray = new int [0];
+            if (inClusterIds != null)
+            {
+                inClusterIdsArray = inClusterIds.ToArray();
+            }
             var hasClusters = inClusterIdsArray.Length == 0;
 
             var people = from p in _dataService.Persons
