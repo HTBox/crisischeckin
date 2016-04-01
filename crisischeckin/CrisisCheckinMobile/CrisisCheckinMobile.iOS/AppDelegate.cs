@@ -1,6 +1,6 @@
 ﻿
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
+using Foundation;
+using UIKit;
 using System;
 
 namespace CrisisCheckinMobile.iOS
@@ -34,7 +34,7 @@ namespace CrisisCheckinMobile.iOS
         // Creates an instance of viewControllerName from the given storyboard
         public UIViewController GetViewController(UIStoryboard storyboard, string viewControllerName)
         {
-            return storyboard.InstantiateViewController(viewControllerName) as UIViewController;
+            return storyboard.InstantiateViewController(viewControllerName);
         }
 
         //
@@ -46,22 +46,19 @@ namespace CrisisCheckinMobile.iOS
         //
         public override bool FinishedLaunching(UIApplication application, NSDictionary launchOptions)
         {
-            //UINavigationBar.Appearance.BackgroundColor = Constants.HtBoxRed;
-            //UINavigationBar.Appearance.BarTintColor = Constants.HtBoxRed;
-
-            //Window.TintColor = UIColor.White;
-            //UINavigationBar.Appearance.TintColor = UIColor.White;
-//            UINavigationBar.Appearance.SetTitleTextAttributes(new UITextAttributes
-//                {
-//                    TextColor = UIColor.White
-//                });
+            UITabBarItem.Appearance.SetTitleTextAttributes(new UITextAttributes
+                {
+                    TextColor = Constants.HtBoxDarkBrown
+                }, UIControlState.Normal);
+            UITabBar.Appearance.SelectedImageTintColor = Constants.HtBoxRed;
 
             UIApplication.SharedApplication.SetStatusBarStyle(UIStatusBarStyle.LightContent, false); // sets the battery icon etc. to white text
-            //UITableViewCell.Appearance.TintColor = UIColor.White;
 
             // Init the login controller and set it as the root view
             var loginViewController = GetViewController(MainStoryboard, _loginViewControllerName) as LoginViewController;
             loginViewController.OnLoginSuccess += LoginViewController_OnLoginSuccess;
+
+            //var c = GetViewController(MainStoryboard, "CommitmentScreen") as CommitmentViewController;
             Window.RootViewController = loginViewController;
 
             return true;
@@ -71,6 +68,15 @@ namespace CrisisCheckinMobile.iOS
         {
             // Successful login, so set the root view controller to the tabbed view controller
             var tabBarController = GetViewController(MainStoryboard, _tabBarControllerName) as UITabBarController;
+
+            // make sure the unselected images are brown
+            var items = tabBarController.TabBar.Items;
+            for (var i = 0; i < items.Length; i++)
+            {
+                var image = items[i].Image;
+                items[i].Image = image.ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);
+            }
+
             Window.RootViewController = tabBarController;
         }
     }

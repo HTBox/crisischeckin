@@ -1,6 +1,6 @@
-﻿
+
 using System;
-using MonoTouch.UIKit;
+using UIKit;
 
 // To keep the app from scaling on the iPhone 6
 // http://conceptdev.blogspot.com/2014/09/iphone-6-and-6-plus-launch-images-for.html

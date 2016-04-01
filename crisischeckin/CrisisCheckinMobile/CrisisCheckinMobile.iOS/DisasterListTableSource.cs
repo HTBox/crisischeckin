@@ -1,7 +1,7 @@
-﻿using System;
-using MonoTouch.UIKit;
+using System;
+using UIKit;
 using System.Collections.Generic;
-using MonoTouch.Foundation;
+using Foundation;
 
 namespace CrisisCheckinMobile.iOS
 {
@@ -14,8 +14,7 @@ namespace CrisisCheckinMobile.iOS
             get;
             set;
         }
-
-        // in the MyTableSource class
+            
         public UITableViewController Parent
         {
             get;
@@ -43,7 +42,7 @@ namespace CrisisCheckinMobile.iOS
             return cell;
         }
 
-        public override int RowsInSection(UITableView tableview, int section)
+        public override nint RowsInSection(UITableView tableview, nint section)
         {
             // see http://docs.xamarin.com/guides/ios/application_fundamentals/delegates,_protocols,_and_events
             // NOTE: Don't call the base implementation on a Model class
@@ -58,7 +57,7 @@ namespace CrisisCheckinMobile.iOS
 
 //            // conditionally get and push the view controller based on the status
               // and pass the appropriate data
-//            Parent.NavigationController.PushViewController(new UIViewController(), false);
+              // Parent.NavigationController.PushViewController(new CommitmentViewController(), false);
 //        }
 
         #endregion
