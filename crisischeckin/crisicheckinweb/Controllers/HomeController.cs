@@ -201,7 +201,7 @@ namespace crisicheckinweb.Controllers
                     {
                         ActionName = "Checkin",
                         ButtonText = "Check-in",
-                        Description = " and start helping now!",
+                        Description = " Start helping now!",
                         ButtonId = "check-in-button"
                     });
                 }
