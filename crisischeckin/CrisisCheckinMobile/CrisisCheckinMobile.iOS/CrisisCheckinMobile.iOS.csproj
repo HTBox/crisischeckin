@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -12,6 +12,7 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <TargetFrameworkIdentifier>Xamarin.iOS</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v1.0</TargetFrameworkVersion>
+    <AssemblyName>CrisisCheckIniOS</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
     <DebugSymbols>true</DebugSymbols>
@@ -96,6 +97,7 @@
   <ItemGroup>
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
+    <Compile Include="PickerModel.cs" />
     <Compile Include="SaveAndLoad_iOS.cs" />
     <None Include="Info.plist" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -118,6 +120,14 @@
     <Compile Include="CommitmentContainerViewController.cs" />
     <Compile Include="CommitmentContainerViewController.designer.cs">
       <DependentUpon>CommitmentContainerViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PendingViewController.cs" />
+    <Compile Include="PendingViewController.designer.cs">
+      <DependentUpon>PendingViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="OnSiteViewController.cs" />
+    <Compile Include="OnSiteViewController.designer.cs">
+      <DependentUpon>OnSiteViewController.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -159,13 +169,27 @@
     <BundleResource Include="Resources\Images\Human-Toolbox_Logo_RGB.png" />
   </ItemGroup>
   <ItemGroup>
-    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Contents.json" />
-    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\iOS-AppIcon-iPad.png" />
-    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\iOS-AppIcon-iPhone%402x.png" />
-    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\iOS-Settings.png" />
-    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\iOS-Settings%402x.png" />
-    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\iOS-Spotlight.png" />
-    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\iOS-Spotlight%402x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Contents.json">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\iOS-AppIcon-iPad.png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\iOS-AppIcon-iPhone%402x.png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\iOS-Settings.png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\iOS-Settings%402x.png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\iOS-Spotlight.png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\iOS-Spotlight%402x.png">
+      <InProject>false</InProject>
+    </ImageAsset>
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="CrisisCheckIn.storyboard" />

@@ -58,8 +58,8 @@ namespace CrisisCheckinMobile.iOS
             var loginViewController = GetViewController(MainStoryboard, _loginViewControllerName) as LoginViewController;
             loginViewController.OnLoginSuccess += LoginViewController_OnLoginSuccess;
 
-            //var c = GetViewController(MainStoryboard, "CommitmentScreen") as CommitmentViewController;
-            Window.RootViewController = loginViewController;
+            var c = GetViewController(MainStoryboard, "CommitmentScreen") as CommitmentViewController;
+            Window.RootViewController = c; //loginViewController;
 
             return true;
         }
@@ -69,7 +69,7 @@ namespace CrisisCheckinMobile.iOS
             // Successful login, so set the root view controller to the tabbed view controller
             var tabBarController = GetViewController(MainStoryboard, _tabBarControllerName) as UITabBarController;
 
-            // make sure the unselected images are brown
+            // make sure the unselected tab bar images are brown (original color)
             var items = tabBarController.TabBar.Items;
             for (var i = 0; i < items.Length; i++)
             {

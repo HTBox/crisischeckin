@@ -40,7 +40,7 @@ namespace CrisisCheckinMobile.iOS
         // Creates an instance of viewControllerName from the given storyboard
         public UIViewController GetViewController(UIStoryboard storyboard, string viewControllerName)
         {
-            return storyboard.InstantiateViewController(viewControllerName) as UIViewController;
+            return storyboard.InstantiateViewController(viewControllerName);
         }
 
 		public CommitmentContainerViewController (IntPtr handle) : base (handle)
@@ -65,7 +65,6 @@ namespace CrisisCheckinMobile.iOS
                 // do this based on condition of state of ViewModel since it's not null
                 CurrentViewControllerName = Constants.SecondControllerName;
                 DisplayContentController(_secondViewController);
-
             }
         }
             
@@ -104,7 +103,7 @@ namespace CrisisCheckinMobile.iOS
         {
             AddChildViewController(content);
             content.View.AutoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight;
-            content.View.Frame = new CGRect(0, 0, this.View.Frame.Size.Width, this.View.Frame.Size.Height);
+            content.View.Frame = new CGRect(0, 0, View.Frame.Size.Width, View.Frame.Size.Height);
             View.AddSubview(content.View);
             content.DidMoveToParentViewController(this);
         }

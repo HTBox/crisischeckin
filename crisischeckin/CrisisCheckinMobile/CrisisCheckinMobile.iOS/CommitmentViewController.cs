@@ -11,12 +11,19 @@ namespace CrisisCheckinMobile.iOS
             set;
         }
 
+	    private CommitmentStatus _selectedStatus;
+        private EventHandler<PickerChangedEventArgs> _statusSelectedEventHandler;
+	    private EventHandler _barButtonClickEventHandler;
+	    private PickerModel _pickerModel;
+	    private UIPickerView _statusPicker;
+	    private UIBarButtonItem _doneButton;
+
         private CommitmentContainerViewController _container;
         private CommitmentContainerViewController Container
         {
             get
             {
-                return (_container ?? (_container = GetContainer()));
+                return _container ?? (_container = GetContainer());
             }
         }
 
@@ -37,42 +44,69 @@ namespace CrisisCheckinMobile.iOS
 		{
 		}
 
-        public override void ViewDidLoad()
-        {
-            base.ViewDidLoad();
-            DisasterStatusText.Layer.BorderColor = Constants.HtBoxTan.CGColor; // TODO: use whatever is in the mockup; may have to change
-                                                                               // after migration to unified
-            DisasterStatusText.BorderStyle = UITextBorderStyle.Line;
-            DisasterStatusText.Layer.BorderWidth = 1f;
+	    public override void ViewWillAppear(bool animated)
+	    {
+	        base.ViewWillAppear(animated);
 
-            //DisasterStatusText.ClipsToBounds = true; // might have to do this per James M. and Stack Overflow
+            var rawStatuses = Enum.GetValues(typeof(CommitmentStatus));
+            var statuses = new CommitmentStatus[rawStatuses.Length];
+            var i = 0;
+            foreach (CommitmentStatus status in rawStatuses)
+            {
+                statuses[i] = status;
+                i++;
+            }
+            _pickerModel = new PickerModel(statuses);
+            _statusSelectedEventHandler = (sender, args) =>
+            {
+                _selectedStatus = args.SelectedValue;
+            };
+            _pickerModel.PickerChanged += _statusSelectedEventHandler;
 
-            //DisasterStatusText.Layer.BorderColor = Constants.HtBoxTan;
+            _statusPicker = new UIPickerView
+            {
+                ShowSelectionIndicator = true,
+                Model = _pickerModel
+            };
 
-            //UIPickerView statusPicker = new UIPickerView();
-            //statusPicker.ShowSelectionIndicator = true;
-
-            /*
-             // Setup the toolbar
-            UIToolbar toolbar = new UIToolbar();
-            toolbar.BarStyle = UIBarStyle.Black;
-            toolbar.Translucent = true;
+            // Setup the toolbar
+            var toolbar = new UIToolbar
+            {
+                BarStyle = UIBarStyle.Black,
+                Translucent = true
+            };
             toolbar.SizeToFit();
 
+            _barButtonClickEventHandler = (s, e) =>
+            {
+                DisasterStatusText.Text = Enum.GetName(typeof(CommitmentStatus), _selectedStatus);
+                DisasterStatusText.ResignFirstResponder();
+            };
             // Create a 'done' button for the toolbar and add it to the toolbar
-            UIBarButtonItem doneButton = new UIBarButtonItem("Done", UIBarButtonItemStyle.Done,
-                (s, e) => {
-                this.ColorTextField.Text = selectedColor;
-                this.ColorTextField.ResignFirstResponder();
-            });
-            toolbar.SetItems(new UIBarButtonItem[]{doneButton}, true);
+            _doneButton = new UIBarButtonItem("Done", UIBarButtonItemStyle.Done, _barButtonClickEventHandler);
+            toolbar.SetItems(new[] { _doneButton }, true);
 
             // Tell the textbox to use the picker for input
-            this.ColorTextField.InputView = picker;
+            DisasterStatusText.InputView = _statusPicker;
 
             // Display the toolbar over the pickers
-            this.ColorTextField.InputAccessoryView = toolbar;
-            */
+            DisasterStatusText.InputAccessoryView = toolbar;
+	    }
+
+	    public override void ViewWillDisappear(bool animated)
+	    {
+	        base.ViewWillDisappear(animated);
+	        _pickerModel.PickerChanged -= _statusSelectedEventHandler;
+	        _doneButton.Clicked -= _barButtonClickEventHandler;
+	    }
+
+	    public override void ViewDidLoad()
+        {
+            base.ViewDidLoad();
+            DisasterStatusText.Layer.BorderColor = Constants.HtBoxTan.CGColor;
+            DisasterStatusText.BorderStyle = UITextBorderStyle.Line;
+            DisasterStatusText.Layer.BorderWidth = 1f;
+            DisasterStatusText.ClipsToBounds = true; // might have to do this per James M. and Stack Overflow
         }
 
         private void TriggerStatusChange(string segueName)
