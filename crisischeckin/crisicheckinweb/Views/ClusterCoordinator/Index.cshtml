@@ -25,7 +25,14 @@
         </div>
         <div class="form-group">
             @Html.LabelFor(m => m.AvailablePeople, "Available People: ")
-            @Html.DropDownListFor(m => m.SelectedPersonId, new SelectList(Model.AvailablePeople, "Id", "FullName", Model.SelectedPersonId), "-- Choose One --", new { @class = "form-control" })
+            @if (Model.AvailablePeople.Any())
+            {
+                @Html.DropDownListFor(m => m.SelectedPersonId, new SelectList(Model.AvailablePeople, "Id", "FullName", Model.SelectedPersonId), "-- Choose One --", new {@class = "form-control"})
+            }
+            else
+            {
+                <span>No people available.</span>
+            }
         </div>
 
         <input class="btn btn-black" id="AddButton" type="submit" value="Assign Coordinator" />
