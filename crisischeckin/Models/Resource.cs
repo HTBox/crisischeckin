@@ -12,7 +12,8 @@ namespace Models
         public int ResourceId { get; set; }
 
         public Organization Allocator { get; set; }
-
+        public virtual Person Person { get; set; }
+        public int? PersonId { get; set; }
         public string Description { get; set; }
 
         public DateTime StartOfAvailability { get; set; }

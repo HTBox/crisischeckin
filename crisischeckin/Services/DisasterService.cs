@@ -19,7 +19,7 @@ namespace Services
             _dataService = service;
         }
 
-        public void AddResourceCheckIn(Organization organization, int disasterId, string description, int qty, int resourceTypeId, DateTime startDate, DateTime endDate, string location)
+        public void AddResourceCheckIn(Organization organization, Person person, int disasterId, string description, int qty, int resourceTypeId, DateTime startDate, DateTime endDate, string location)
         {
             if (DateTime.Compare(endDate, startDate) < 0)
             {
@@ -33,6 +33,7 @@ namespace Services
             _dataService.AddResource(new Resource
             {
                 Allocator = organization,
+                Person = person,
                 DisasterId = disasterId,
                 Description = description,
                 Qty = qty,
