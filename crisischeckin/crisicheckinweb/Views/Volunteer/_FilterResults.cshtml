@@ -78,8 +78,8 @@
         {
             <tr>
                 <td>@resource.Description</td>
-                <td>@(resource.Allocator != null ? resource.Allocator.OrganizationName : "none")</td>
-                <td>@resource.Qty</td>
+                <td>@(resource.Allocator != null ? resource.Allocator.OrganizationName  : "none") @if (resource.Person != null) { @("- " + resource.Person.FullName)}</td>
+                <td>@resource.Qty </td>
                 <td>@resource.ResourceType.TypeName</td>
                 <td>@resource.StartOfAvailability.ToShortDateString()</td>
                 <td>@resource.EndOfAvailability.ToShortDateString()</td>

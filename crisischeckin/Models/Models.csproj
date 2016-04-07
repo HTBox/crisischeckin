@@ -120,6 +120,14 @@
     <Compile Include="Migrations\201603220606458_ConnectResourceType.Designer.cs">
       <DependentUpon>201603220606458_ConnectResourceType.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201604062134388_AddingResourceTypes.cs" />
+    <Compile Include="Migrations\201604062134388_AddingResourceTypes.Designer.cs">
+      <DependentUpon>201604062134388_AddingResourceTypes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201604062202384_AddPersonToResource.cs" />
+    <Compile Include="Migrations\201604062202384_AddPersonToResource.Designer.cs">
+      <DependentUpon>201604062202384_AddPersonToResource.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Organization.cs" />
     <Compile Include="Resource.cs" />
@@ -183,6 +191,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603220606458_ConnectResourceType.resx">
       <DependentUpon>201603220606458_ConnectResourceType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604062134388_AddingResourceTypes.resx">
+      <DependentUpon>201604062134388_AddingResourceTypes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604062202384_AddPersonToResource.resx">
+      <DependentUpon>201604062202384_AddPersonToResource.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

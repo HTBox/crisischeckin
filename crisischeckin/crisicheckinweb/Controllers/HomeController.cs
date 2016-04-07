@@ -93,7 +93,7 @@ namespace crisicheckinweb.Controllers
                     throw new ArgumentException(
                         "The logged in user is either the administrator or does not have a valid account for joining a crisis.");
                 }
-                _disasterSvc.AddResourceCheckIn(person.Organization, model.SelectedDisasterId, model.Description,
+                _disasterSvc.AddResourceCheckIn(person.Organization, person, model.SelectedDisasterId, model.Description,
                     model.Qty, model.SelectedResourceTypeId, model.ResourceStartDate, model.ResourceEndDate, model.Location);
 
                 return Redirect("/Home");
