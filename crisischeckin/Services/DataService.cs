@@ -123,6 +123,7 @@ namespace Services
 
         public void AddResource(Resource newResource)
         {
+            newResource.EntryMade = DateTime.Now;
             context.Resources.Add(newResource);
             context.SaveChanges();
         }

@@ -64,6 +64,7 @@
 <h3>Field Reported Data</h3>
 <table>
     <tr>
+        <th>Entry Made</th>
         <th>Description</th>
         <th>Organization</th>
         <th>Quantity</th>
@@ -77,6 +78,7 @@
         foreach (var resource in Model.ResourceCheckins)
         {
             <tr>
+                <td>@resource.EntryMade.ToShortDateString() @resource.EntryMade.ToShortTimeString()</td>
                 <td>@resource.Description</td>
                 <td>@(resource.Allocator != null ? resource.Allocator.OrganizationName  : "none") @if (resource.Person != null) { @("- " + resource.Person.FullName)}</td>
                 <td>@resource.Qty </td>
