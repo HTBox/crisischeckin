@@ -16,6 +16,8 @@ namespace Models
         public int? PersonId { get; set; }
         public string Description { get; set; }
 
+        public DateTime EntryMade { get; set; }
+
         public DateTime StartOfAvailability { get; set; }
         public DateTime EndOfAvailability { get; set; }
         public Address Location { get; set; }
