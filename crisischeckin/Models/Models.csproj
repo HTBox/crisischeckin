@@ -128,6 +128,10 @@
     <Compile Include="Migrations\201604062202384_AddPersonToResource.Designer.cs">
       <DependentUpon>201604062202384_AddPersonToResource.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201604080956174_DateEnteredOnResources.cs" />
+    <Compile Include="Migrations\201604080956174_DateEnteredOnResources.Designer.cs">
+      <DependentUpon>201604080956174_DateEnteredOnResources.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Organization.cs" />
     <Compile Include="Resource.cs" />
@@ -197,6 +201,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201604062202384_AddPersonToResource.resx">
       <DependentUpon>201604062202384_AddPersonToResource.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604080956174_DateEnteredOnResources.resx">
+      <DependentUpon>201604080956174_DateEnteredOnResources.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
