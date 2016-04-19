@@ -1,0 +1,74 @@
+﻿@model crisicheckinweb.ViewModels.NewOrganizationViewModel
+
+@{
+    ViewBag.Title = "Register New Organization";
+    Layout = "~/Views/Shared/_VolunteerLayout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<p>Please enter the details for the new organization.</p>
+<p></p>
+@using (Html.BeginForm("ProcessNewOrganization", "Organization", FormMethod.Post))
+{
+@Html.ValidationSummary()
+
+<div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <div class="form-group required">
+            @Html.LabelFor(x => x.OrganizationName)
+            @Html.TextBoxFor(x => x.OrganizationName, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.OrganizationName)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(x => x.Address.BuildingName)
+            @Html.TextBoxFor(x => x.Address.BuildingName, new { @class = "form-control" })
+            @Html.ValidationMessageFor(( x => x.Address.BuildingName))
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(x => x.Address.AddressLine1)
+            @Html.TextBoxFor(x => x.Address.AddressLine1, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.Address.AddressLine1)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(x => x.Address.AddressLine2)
+            @Html.TextBoxFor(x => x.Address.AddressLine2, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.Address.AddressLine2)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(x => x.Address.AddressLine3)
+            @Html.TextBoxFor(x => x.Address.AddressLine3, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.Address.AddressLine3)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(x => x.Address.City)
+            @Html.TextBoxFor(x => x.Address.City, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.Address.City)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(x => x.Address.County)
+            @Html.TextBoxFor(x => x.Address.County, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.Address.County)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(x => x.Address.State)
+            @Html.TextBoxFor(x => x.Address.State, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.Address.State)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(x => x.Address.Country)
+            @Html.TextBoxFor(x => x.Address.Country, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.Address.Country)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(x => x.Type)
+            @Html.DropDownListFor(x => x.Type, Model.TypeSelectionList, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.Type)
+        </div>
+        <div class="form-group"><input type="submit" value="Register" class="btn btn-success"/></div>
+
+        @Html.HiddenFor(x => x.UserIdRegisteringOrganization);
+    </div>
+</div>
+}
+

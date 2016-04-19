@@ -217,6 +217,7 @@
     <Compile Include="Controllers\ClusterCoordinatorController.cs" />
     <Compile Include="Controllers\DisasterController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\OrganizationController.cs" />
     <Compile Include="Filters\AccessDeniedAuthorizeAttribute.cs" />
     <Compile Include="Filters\CrisisCheckInApiAuthorizeAttribute.cs" />
     <Compile Include="Helpers\ElmahHandleErrorAttribute.cs" />
@@ -240,6 +241,7 @@
     <Compile Include="ViewModels\DisasterClusterCoordinatorsViewModel.cs" />
     <Compile Include="ViewModels\DisasterViewModel.cs" />
     <Compile Include="ViewModels\ForgotPasswordViewModel.cs" />
+    <Compile Include="ViewModels\NewOrganizationViewModel.cs" />
     <Compile Include="ViewModels\ResetPasswordViewModel.cs" />
     <Compile Include="ViewModels\SelectedDisasterCluster.cs" />
     <Compile Include="ViewModels\SendMessageToAllVolunteersByDisasterViewModel.cs" />
@@ -425,6 +427,9 @@
     <Content Include="Views\Cluster\Create.cshtml" />
     <Content Include="Views\ClusterGroup\Create.cshtml" />
     <Content Include="Views\ClusterGroup\List.cshtml" />
+    <Content Include="Views\Organization\RegisterNewOrganization.cshtml" />
+    <Content Include="Views\Organization\ProcessNewOrganization.cshtml" />
+    <Content Include="Views\Organization\OrganizationVerified.cshtml" />
     <None Include="Web.Staging.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

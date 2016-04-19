@@ -21,7 +21,18 @@ namespace Services
 
         public IEnumerable<Organization> GetActiveList()
         {
-            return _dataService.Organizations.OrderBy(o => o.OrganizationName);
+            return _dataService.Organizations.Where(x => x.Verified).OrderBy(o => o.OrganizationName);
         }
+
+        public Organization AddOrganization(Organization newOrganization)
+        {
+            return _dataService.AddOrganization(newOrganization);
+        }
+
+        public void VerifyOrganization(int organizationId)
+        {
+            _dataService.VerifyOrganization(organizationId);
+        }
+
     }
 }
