@@ -132,6 +132,10 @@
     <Compile Include="Migrations\201604080956174_DateEnteredOnResources.Designer.cs">
       <DependentUpon>201604080956174_DateEnteredOnResources.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201604191341494_AddVerifiedFlagToOrganizations.cs" />
+    <Compile Include="Migrations\201604191341494_AddVerifiedFlagToOrganizations.Designer.cs">
+      <DependentUpon>201604191341494_AddVerifiedFlagToOrganizations.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Organization.cs" />
     <Compile Include="Resource.cs" />
@@ -204,6 +208,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201604080956174_DateEnteredOnResources.resx">
       <DependentUpon>201604080956174_DateEnteredOnResources.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604191341494_AddVerifiedFlagToOrganizations.resx">
+      <DependentUpon>201604191341494_AddVerifiedFlagToOrganizations.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

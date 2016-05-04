@@ -22,6 +22,10 @@ namespace Services.Interfaces
         IQueryable<Resource> Resources { get; }
         IQueryable<Contact> Contacts { get; }
         IQueryable<ResourceType> ResourceTypes { get; }
+
+        Organization AddOrganization(Organization newOrganization);
+
+        void VerifyOrganization(int organizationId);
         Person AddPerson(Person newPerson);
         Person UpdatePerson(Person updatedPerson);
         void AddResource(Resource newResource);

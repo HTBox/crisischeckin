@@ -3,6 +3,7 @@ using Services.Exceptions;
 using Services.Interfaces;
 using System;
 using System.Linq;
+using Models.Migrations;
 
 namespace Services
 {
@@ -88,6 +89,23 @@ namespace Services
         public IQueryable<ResourceType> ResourceTypes
         {
             get { return context.ResourceTypes; }
+        }
+
+        public Organization AddOrganization(Organization newOrganization)
+        {
+            var result = context.Organizations.Add(newOrganization);
+            context.SaveChanges();
+            return result;
+        }
+
+        public void VerifyOrganization(int organizationId)
+        {
+            var organization = context.Organizations.FirstOrDefault(x => x.OrganizationId == organizationId);
+            if (organization != null)
+            {
+                organization.Verified = true;
+                context.SaveChanges();
+            }
         }
 
         public Person AddPerson(Person newPerson)

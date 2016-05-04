@@ -51,6 +51,7 @@ namespace Models
             base.OnModelCreating(modelBuilder);
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
             modelBuilder.Conventions.Remove<StringLengthAttributeConvention>();
+            
         }
     }
 }
