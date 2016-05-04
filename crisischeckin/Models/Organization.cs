@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Models
 {
@@ -23,6 +24,7 @@ namespace Models
         public bool Verified { get; set; }
 
         // I also haven't implemented the link to the Contacts table yet, because again, we don't have one. 
+        
 
         public virtual IList<Disaster> Disasters { get; set; }
 
