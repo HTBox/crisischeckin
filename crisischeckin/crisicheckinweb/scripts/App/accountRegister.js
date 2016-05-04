@@ -1,4 +1,8 @@
-﻿(function ($) {
+﻿var emailInvalid = false;
+var usernameInvalid = false;
+var passwordInvalid = false;
+
+(function ($) {
 
     function checkUsernameExists(userName, parent) {
         if (!userName || userName.trim().length < 3) {
@@ -15,9 +19,11 @@
                 if (e == "False") {
                     vals.class = "failure";
                     vals.output = "Sorry, the username requested is not available.";
+                    usernameInvalid = true;
                 } else {
                     vals.class = "success";
                     vals.output = "The username requested is available.";
+                    usernameInvalid = false;
                 }
                 var feedBack = $('<div class=\"feedbackHelper ' + vals.class + '\">' + vals.output + '</div>');
                 $(parent).after(feedBack);
@@ -40,9 +46,11 @@
                 if (validationResult && validationResult.length > 0) {
                     vals.class = "failure";
                     vals.output = validationResult;
+                    passwordInvalid = true;
                 } else {
                     vals.class = "success";
                     vals.output = "The password meets the requirements.";
+                    passwordInvalid = false;
                 }
                 var feedBack = $('<div class=\"feedbackHelper ' + vals.class + '\">' + vals.output + '</div>');
                 $(parent).after(feedBack);
@@ -73,7 +81,9 @@
         if (!regex) {
             regex = new RegExp(/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i);
         }
-        return regex.test(email);
+        var match = regex.test(email);
+        emailInvalid = !match;
+        return match;
     }
 
     function requiredMessage(element, fieldType) {
@@ -118,6 +128,11 @@
                 if ($("#txt_userName").val().length > 0) {
                     checkUsernameExists($("#txt_userName").val(), $("#txt_userName"));
                 }
+                else {
+                    usernameInvalid = false;
+                }
+
+                setSubmitDisabled();
             }
         });
 
@@ -128,6 +143,10 @@
                 if ($("#txt_password").val().length > 0) {
                     checkPasswordValidity($("#txt_userName").val(), $("#txt_password").val(), $("#txt_password"));
                 }
+                else {
+                    passwordInvalid = false;
+                }
+                setSubmitDisabled();
             }
         });
 
@@ -149,7 +168,14 @@
                     addErrorMessage(element, message);
                 }
             }
+            setSubmitDisabled();
         });
+
+        function setSubmitDisabled()
+        {
+            var disable = usernameInvalid || emailInvalid || passwordInvalid;
+            $('input[type="submit"]').prop('disabled', disable);
+        }
 
         $("#FirstName").focusout(function () {
             var element = $(this);
