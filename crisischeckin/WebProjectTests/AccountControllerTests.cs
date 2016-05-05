@@ -14,6 +14,7 @@ using Common;
 using Services.Exceptions;
 using NUnit.Framework;
 using Services;
+using System.Collections.Generic;
 
 namespace WebProjectTests
 {
@@ -29,6 +30,7 @@ namespace WebProjectTests
         private Mock<HttpContextBase> _httpContext;
         private Mock<IMessageService> _messageService;
         private RouteCollection _routeCollection;
+        private Mock<IOrganizationService> _organisationService;
 
         [SetUp]
         public void Setup()
@@ -54,13 +56,23 @@ namespace WebProjectTests
             _httpContext.SetupGet(x => x.Response).Returns(response.Object);
 
             var reqContext = new RequestContext(_httpContext.Object, new RouteData());
-
-            _controllerUnderTest = new AccountController(_volunteerService.Object, _cluster.Object, _webSecurity.Object, _messageService.Object, null);
+            var organization = new Organization()
+            {
+                OrganizationName = "Test",
+                OrganizationId = 1
+            };
+            var organizationList = new List<Organization>();
+            organizationList.Add(organization);
+            _organisationService = new Mock<IOrganizationService>();
+            _organisationService.Setup(x => x.GetActiveList()).Returns(organizationList);
+            _controllerUnderTest = new AccountController(_volunteerService.Object, _cluster.Object, _webSecurity.Object, _messageService.Object, _organisationService.Object);
             _controllerUnderTest.ControllerContext = new ControllerContext(reqContext, _controllerUnderTest);
 
             _routeCollection = new RouteCollection();
             RouteConfig.RegisterRoutes(_routeCollection);
             _controllerUnderTest.Url = new UrlHelper(reqContext, _routeCollection);
+
+            
         }
 
         private RegisterModel CreateValidRegisterModel()
@@ -82,7 +94,7 @@ namespace WebProjectTests
         {
             // Arrange
             _volunteerService.Setup(x => x.EmailAlreadyInUse("existing@email.com")).Returns(true);
-
+            
             // Act
             var model = CreateValidRegisterModel();
             model.Email = "existing@email.com";
