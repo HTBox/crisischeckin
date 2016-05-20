@@ -19,6 +19,11 @@ namespace Services
             _dataService = service;
         }
 
+        public Organization Get(int id)
+        {
+            return _dataService.Organizations.SingleOrDefault(org => org.OrganizationId.Equals(id));
+        }
+
         public IEnumerable<Organization> GetActiveList()
         {
             return _dataService.Organizations.Where(x => x.Verified).OrderBy(o => o.OrganizationName);
@@ -33,6 +38,5 @@ namespace Services
         {
             _dataService.VerifyOrganization(organizationId);
         }
-
     }
 }

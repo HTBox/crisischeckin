@@ -1,0 +1,25 @@
+﻿@model crisicheckinweb.ViewModels.OrganizationHomeViewModel
+@using Models
+@{
+    ViewBag.Title = "Organization Home";
+}
+
+<h2>@Model.Organization.OrganizationName - Home</h2>
+
+<h3>Contacts</h3>
+<table class="table table-striped table-bordered">
+    <tr class="ht-header">
+        <th>Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+    </tr>
+    @foreach (var contact in Model.Organization.Contacts)
+    {
+        <tr>
+            <td>@contact.Person.FullName</td>
+            <td>@contact.Person.Email</td>
+            <td>@contact.Person.PhoneNumber</td>
+        </tr>
+    }
+</table>
+

@@ -23,15 +23,13 @@ namespace Models
         
         public bool Verified { get; set; }
 
-        // I also haven't implemented the link to the Contacts table yet, because again, we don't have one. 
-        
-
         public virtual IList<Disaster> Disasters { get; set; }
 
         public virtual IList<Resource> Resources { get; set; }
 
         public virtual IList<Person> Persons { get; set; }
 
+        public virtual IList<Contact> Contacts { get; set; }
     }
 
     public enum OrganizationTypeEnum

@@ -28,7 +28,11 @@ namespace crisicheckinweb.Controllers
             this.MessageService = messageService;
         }
 
-
+        public ActionResult List()
+        {
+            var organizations = OrganizationService.GetActiveList();
+            return View(organizations);
+        }
        
         public ActionResult RegisterNewOrganization()
         {
@@ -98,6 +102,13 @@ namespace crisicheckinweb.Controllers
             OrganizationService.VerifyOrganization(id);
 
             return View("OrganizationVerified");
+        }
+
+        public ActionResult Home(int id)
+        {
+            Organization org = OrganizationService.Get(id);
+            var model = new OrganizationHomeViewModel() { Organization = org };
+            return View(model);
         }
     }
 }
