@@ -362,6 +362,7 @@
     <Content Include="scripts\App\config.js" />
     <Content Include="scripts\App\Controllers\Volunteer\listByDisasterController.js" />
     <Content Include="scripts\App\disasterEdit.js" />
+    <Content Include="scripts\App\organizationHome.js" />
     <Content Include="scripts\App\home.js" />
     <Content Include="scripts\App\Models\Volunteer\listByDisasterModel.js" />
     <Content Include="scripts\bootstrap.js" />

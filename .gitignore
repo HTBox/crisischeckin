@@ -122,3 +122,7 @@ UpgradeLog*.XML
 
 #GhostDoc
 *.sln.GhostDoc.xml
+crisischeckin/AcceptanceTests/AcceptanceTests.csproj
+crisischeckin/AcceptanceTests/AcceptanceTests.csproj
+crisischeckin/AcceptanceTests/AcceptanceTests.csproj
+crisischeckin/AcceptanceTests/packages.config
