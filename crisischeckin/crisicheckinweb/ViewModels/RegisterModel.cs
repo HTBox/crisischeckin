@@ -26,6 +26,7 @@ namespace crisicheckinweb.ViewModels
 
         [Required]
         [Display(Name = "Phone Number")]
+        [RegularExpression(@"^\d{0,15}$", ErrorMessage = "Invalid phone number.")]
         public string PhoneNumber { get; set; }
 
         [Required]
