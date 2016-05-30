@@ -44,7 +44,7 @@ The point is that we will need to start building more of a profile for volunteer
 
 Installation on a Mac
 ====================
-Since this project is an asp.net project and it is necessary to use virtual studio. That being said this is one solution for developers using Macs to contribute to this project. This is also a solution for developers starting who do not already have visual studio installed on their computer.
+Since this project is an asp.net project and it is necessary to use visual studio. That being said this is one solution for developers using Macs to contribute to this project. This is also a solution for developers starting who do not already have visual studio installed on their computer.
 ####Step 1:
 Create a fast dev environment to have visual studio. One solution to this is using Microsoft Azure, for this you have to have a Microsoft account (Hotmail or Outlook). Once you are logged into Azure follow these steps.
 ######a.
