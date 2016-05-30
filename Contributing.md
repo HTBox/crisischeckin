@@ -12,7 +12,7 @@ These are the steps I followed to get crisischeckin up and running on my develop
 * Run "Rebuild solution" from the Build menu (it should complete with no errors)
 * Open up the Package Manager Console (Tools -> NuGet Package Manager -> Package Manager Console)
 * Run the command `Update-Database -ProjectName models -StartupProject crisicheckinweb`  in the package manager console window. This should apply the code-based migrations and complete with no errors (but I did get yellow warnings that don't seem to have caused any problems)
-* You may need to install the NUnit Test runner so that all the unit tests appear.
+* You may need to install the NUnit Test Adapter (by Tomer Lieber) so that all the unit tests appear.
 * Run all the tests (Test -> Run -> All Tests), they should all pass without problems
 * Set the start up project to crisicheckinweb
 * Press F5 to run the site (or choose Debug -> Start Debugging)
