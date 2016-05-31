@@ -240,6 +240,7 @@
     <Compile Include="ViewModels\ConfirmUnassignClusterCoordinatorViewModel.cs" />
     <Compile Include="ViewModels\DisasterClusterCoordinatorsViewModel.cs" />
     <Compile Include="ViewModels\DisasterViewModel.cs" />
+    <Compile Include="ViewModels\ResourceCheckinsListResultsViewModel.cs" />
     <Compile Include="ViewModels\ForgotPasswordViewModel.cs" />
     <Compile Include="ViewModels\NewOrganizationViewModel.cs" />
     <Compile Include="ViewModels\ResetPasswordViewModel.cs" />
@@ -430,6 +431,8 @@
     <Content Include="Views\Organization\RegisterNewOrganization.cshtml" />
     <Content Include="Views\Organization\ProcessNewOrganization.cshtml" />
     <Content Include="Views\Organization\OrganizationVerified.cshtml" />
+    <Content Include="Views\Volunteer\ListResourceCheckinsByDisaster.cshtml" />
+    <Content Include="Views\Volunteer\_FilterResourceCheckinResults.cshtml" />
     <None Include="Web.Staging.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
