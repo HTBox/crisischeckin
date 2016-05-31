@@ -240,7 +240,6 @@
     <Compile Include="ViewModels\ConfirmUnassignClusterCoordinatorViewModel.cs" />
     <Compile Include="ViewModels\DisasterClusterCoordinatorsViewModel.cs" />
     <Compile Include="ViewModels\DisasterViewModel.cs" />
-    <Compile Include="ViewModels\ResourceCheckinsListResultsViewModel.cs" />
     <Compile Include="ViewModels\ForgotPasswordViewModel.cs" />
     <Compile Include="ViewModels\NewOrganizationViewModel.cs" />
     <Compile Include="ViewModels\ResetPasswordViewModel.cs" />
