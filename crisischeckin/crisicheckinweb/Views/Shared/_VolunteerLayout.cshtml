@@ -15,17 +15,8 @@
         </div>
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-                @{
-                    if (User.Identity != null && string.IsNullOrWhiteSpace(User.Identity.Name))
-                    {
-                        Html.Encode("");
-                    }
-                    else
-                    {
-                        @Html.MenuItem("View Checkins", "ListbyDisaster", "Volunteer")
-                        @Html.MenuItem("View Data", "ListResourceCheckinsbyDisaster", "Volunteer")
-                    }
-                }
+                @Html.MenuItem("View Checkins", "ListbyDisaster", "Volunteer")
+                @Html.MenuItem("View Data", "ListResourceCheckinsbyDisaster", "Volunteer")
             </ul>
             @Html.Partial("_LoginStatus")
         </div><!--/.nav-collapse -->
