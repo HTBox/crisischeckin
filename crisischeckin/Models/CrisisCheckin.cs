@@ -46,6 +46,11 @@ namespace Models
         public DbSet<Resource> Resources { get; set; }
 
         public DbSet<ResourceType> ResourceTypes { get; set; }
+
+        public DbSet<Request> Requests { get; set; }
+
+        public DbSet<RequestAssigniee> RequestAssigniee { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

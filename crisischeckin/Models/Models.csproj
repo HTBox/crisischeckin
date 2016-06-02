@@ -66,6 +66,8 @@
     <Compile Include="Commitment.cs" />
     <Compile Include="Contact.cs" />
     <Compile Include="CrisisCheckin.cs" />
+    <Compile Include="Request.cs" />
+    <Compile Include="RequestAssigniee.cs" />
     <Compile Include="Disaster.cs" />
     <Compile Include="DisasterCluster.cs" />
     <Compile Include="Migrations\201501062117225_Initial.cs" />
