@@ -430,6 +430,8 @@
     <Content Include="Views\Organization\RegisterNewOrganization.cshtml" />
     <Content Include="Views\Organization\ProcessNewOrganization.cshtml" />
     <Content Include="Views\Organization\OrganizationVerified.cshtml" />
+    <Content Include="Views\Volunteer\ListResourceCheckinsByDisaster.cshtml" />
+    <Content Include="Views\Volunteer\_FilterResourceCheckinResults.cshtml" />
     <None Include="Web.Staging.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
