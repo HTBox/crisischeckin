@@ -8,6 +8,7 @@ namespace Models
 {
     public class RequestAssigniee
     {
+        public int RequestAssignieeId { get; set; }
         public int AssignieeId { get; set; }
         public int RequestId { get; set; }
 
