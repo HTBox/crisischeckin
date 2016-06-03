@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Data.Entity;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Net;
 using System.Threading;
 using System.Web.Mvc;
+using crisicheckinweb.ViewModels;
 using crisicheckinweb.Wrappers;
+using Microsoft.Ajax.Utilities;
 using Models;
 
 namespace crisicheckinweb.Controllers
@@ -22,8 +25,12 @@ namespace crisicheckinweb.Controllers
         // GET: Requests
         public async Task<ActionResult> Index()
         {
-            var requests = db.Requests.Include(r => r.Creator);
-            return View(await requests.ToListAsync());
+            var requests = db.Requests.Include(r => r.Creator).Include(r => r.Assigniees);
+            return View(new RequestIndexPageViewModel()
+            {
+                Requests = await requests.ToListAsync(),
+                RequestSearch = new RequestSearch()
+            });
         }
 
         // GET: Requests/Details/5
@@ -124,6 +131,58 @@ namespace crisicheckinweb.Controllers
             db.Requests.Remove(request);
             await db.SaveChangesAsync();
             return RedirectToAction("Index");
+        }
+
+        [HttpPost, ActionName("Filter")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Filter(RequestSearch specifiedRequest)
+        {
+            var requests = db.Requests.Include(r => r.Creator).Include(r => r.Assigniees);
+
+            if (specifiedRequest.Description != null)
+            {
+                requests = requests.Where(x => x.Description.Contains(specifiedRequest.Description));
+            }
+
+            if (specifiedRequest.Location != null)
+            {
+                requests = requests.Where(x => x.Location.Contains(specifiedRequest.Location));
+            }
+
+            if (specifiedRequest.NullableCreatedDate != null)
+            {
+                requests = requests.Where(x => x.CreatedDate == specifiedRequest.NullableCreatedDate);
+            }
+
+            if (specifiedRequest.NullableEndDate != null)
+            {
+                requests = requests.Where(x => x.EndDate == specifiedRequest.NullableEndDate);
+            }
+
+            if (specifiedRequest.RequestStatus != RequestStatus.All)
+            {
+                switch (specifiedRequest.RequestStatus)
+                {
+                    case RequestStatus.Unassigned:
+                        requests = requests.Where(x => x.Completed == false && !x.Assigniees.Any());
+                        break;
+                    case RequestStatus.Assigned:
+                        requests = requests.Where(x => x.Completed == false && x.Assigniees.Any());
+                        break;
+                    case RequestStatus.Completed:
+                        requests = requests.Where(x => x.Completed == true);
+                        break;
+                    default:
+                        ModelState.AddModelError("RequestStatus", "Please select a valid request status");
+                        break;
+                }
+            }
+
+            return View("Index", new RequestIndexPageViewModel()
+            {
+                Requests = await requests.ToListAsync(),
+                RequestSearch = new RequestSearch()
+            });
         }
 
         protected override void Dispose(bool disposing)

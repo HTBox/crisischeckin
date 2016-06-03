@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Models.Request>
+﻿@model crisicheckinweb.ViewModels.RequestIndexPageViewModel
 
 @{
     ViewBag.Title = "Index";
@@ -9,32 +9,45 @@
 <p>Put out requests to the volunteer community and people can assign themselves to them.</p>
 
 <p>
-    @Html.ActionLink("Create New", "Create", new {}, new {@class = "btn btn-black"})
+    
 </p>
 
-@Html.Partial("_FilterRequestPartial")
+<div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+    <div class="btn-group" role="group" aria-label="First group">
+        @Html.ActionLink("Create New", "Create", new { }, new { @class = "btn btn-black" })
+    </div>
+    <div class="btn-group" role="group" aria-label="Second group">
+        <button type="button" class="btn btn-black" id="filter-button">Filter</button>
+    </div>
+</div>
+
+<div id="filter-holder" style="display: none;">
+    @Html.Partial("_FilterRequestPartial", Model.RequestSearch)
+</div>
+
+<br/>
 
 <table class="table table-striped table-bordered">
     <tr class="ht-header">
         <th>
-            @Html.DisplayNameFor(model => model.Description)
+            @Html.ActionLink(Html.DisplayNameFor(model => model.RequestSearch.Description), "Sort", new { order = ViewBag. })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Location)
+            @Html.DisplayNameFor(model => model.RequestSearch.Location)
         </th>
         <th>
             Created By
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.EndDate)
+            @Html.DisplayNameFor(model => model.RequestSearch.EndDate)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Completed)
+            @Html.DisplayNameFor(model => model.RequestSearch.Completed)
         </th>
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
+@foreach (var item in Model.Requests) {
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.Description)
@@ -51,7 +64,18 @@
         <td>
             @if (item.Completed == false)
             {
-                @Html.Raw(new HtmlString("<p>Open</p>"))
+                if (item.Assigniees.Any())
+                {
+                    @Html.Raw(new HtmlString("<p>Assigned</p>"))
+                }
+                else
+                {
+                    @Html.Raw(new HtmlString("<p>Unassigned</p>"))
+                }
+            }
+            else
+            {
+                @Html.Raw(new HtmlString("<p>Completed</p>"))
             }
             @*@Html.DisplayFor(modelItem => item.Completed)*@
         </td>
@@ -64,3 +88,20 @@
 }
 
 </table>
+
+
+@section scripts
+{
+    <script type="text/javascript">
+        (function ($) {
+            $(document).ready(function () {
+                $("#dp_startDate").datepicker();
+                $("#dp_endDate").datepicker();
+
+                $("#filter-button").click(function () {
+                    $("#filter-holder").toggle();
+                });
+            });
+        })(jQuery);
+    </script>
+}
