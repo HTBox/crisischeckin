@@ -9,8 +9,11 @@
 <p>Put out requests to the volunteer community and people can assign themselves to them.</p>
 
 <p>
-    @Html.ActionLink("Create New", "Create", new { }, new { @class = "btn btn-black" })
+    @Html.ActionLink("Create New", "Create", new {}, new {@class = "btn btn-black"})
 </p>
+
+@Html.Partial("_FilterRequestPartial")
+
 <table class="table table-striped table-bordered">
     <tr class="ht-header">
         <th>
@@ -28,6 +31,7 @@
         <th>
             @Html.DisplayNameFor(model => model.Completed)
         </th>
+        <th></th>
     </tr>
 
 @foreach (var item in Model) {
@@ -42,10 +46,14 @@
             @Html.DisplayFor(modelItem => item.Creator.FirstName)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.EndDate)
+            @item.EndDate.ToShortDateString()
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Completed)
+            @if (item.Completed == false)
+            {
+                @Html.Raw(new HtmlString("<p>Open</p>"))
+            }
+            @*@Html.DisplayFor(modelItem => item.Completed)*@
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new {id = item.RequestId}) |

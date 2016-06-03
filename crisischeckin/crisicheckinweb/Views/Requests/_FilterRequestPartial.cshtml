@@ -1,16 +1,9 @@
-﻿@model Models.Request
+﻿<br/>
 
-@{
-    ViewBag.Title = "Create";
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
-}
-
-<h2>Create Request</h2>
-
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <p>Create a request that can be latter assigned to volunteers.</p>
         <hr />
@@ -49,18 +42,10 @@
     </div>
 }
 
+
 <div>
-    @Html.ActionLink("Back to List", "Index", new { }, new { @class = "btn btn-black" })
+    <button class="btn btn-black">Filter</button>
 </div>
 
-@section scripts
-{
-    <script type="text/javascript">
-        (function ($) {
-            $(document).ready(function () {
-                $("#dp_startDate").datepicker();
-                $("#dp_endDate").datepicker();
-            });
-        })(jQuery);
-    </script>
-}
+<br/>
+

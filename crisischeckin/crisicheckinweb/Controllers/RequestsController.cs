@@ -1,8 +1,10 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Entity;
 using System.Threading.Tasks;
 using System.Net;
 using System.Threading;
 using System.Web.Mvc;
+using crisicheckinweb.Wrappers;
 using Models;
 
 namespace crisicheckinweb.Controllers
@@ -10,11 +12,17 @@ namespace crisicheckinweb.Controllers
     public class RequestsController : Controller
     {
         private CrisisCheckin db = new CrisisCheckin();
+        private readonly IWebSecurityWrapper _webSecurity;
+
+        public RequestsController(IWebSecurityWrapper webSecurity)
+        {
+            _webSecurity = webSecurity;
+        }
 
         // GET: Requests
         public async Task<ActionResult> Index()
         {
-            var requests = db.Requests.Include(r => r.Creator).Include(r => r.Organization);
+            var requests = db.Requests.Include(r => r.Creator);
             return View(await requests.ToListAsync());
         }
 
@@ -36,7 +44,7 @@ namespace crisicheckinweb.Controllers
         // GET: Requests/Create
         public ActionResult Create()
         {
-            ViewBag.CreatorId = new SelectList(db.Persons, "Id", "FirstName");
+            ViewBag.CreatorId = _webSecurity.CurrentUserId;
             ViewBag.OrganizationId = new SelectList(db.Organizations, "OrganizationId", "OrganizationName");
             return View();
         }
@@ -44,17 +52,19 @@ namespace crisicheckinweb.Controllers
         // POST: Requests/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "RequestId,CreatedDate,EndDate,Description,OrganizationId,CreatorId,Completed,Location")] Request request)
+        public async Task<ActionResult> Create([Bind(Include = "EndDate,Description,Location")] Request request)
         {
             if (ModelState.IsValid)
             {
+                request.CreatedDate = DateTime.Now;
+                request.CreatorId = _webSecurity.CurrentUserId;
+                request.Completed = false;
+
                 db.Requests.Add(request);
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.CreatorId = new SelectList(db.Persons, "Id", "FirstName", request.CreatorId);
-            ViewBag.OrganizationId = new SelectList(db.Organizations, "OrganizationId", "OrganizationName", request.OrganizationId);
             return View(request);
         }
 
@@ -71,7 +81,7 @@ namespace crisicheckinweb.Controllers
                 return HttpNotFound();
             }
             ViewBag.CreatorId = new SelectList(db.Persons, "Id", "FirstName", request.CreatorId);
-            ViewBag.OrganizationId = new SelectList(db.Organizations, "OrganizationId", "OrganizationName", request.OrganizationId);
+
             return View(request);
         }
 
@@ -87,7 +97,6 @@ namespace crisicheckinweb.Controllers
                 return RedirectToAction("Index");
             }
             ViewBag.CreatorId = new SelectList(db.Persons, "Id", "FirstName", request.CreatorId);
-            ViewBag.OrganizationId = new SelectList(db.Organizations, "OrganizationId", "OrganizationName", request.OrganizationId);
             return View(request);
         }
 

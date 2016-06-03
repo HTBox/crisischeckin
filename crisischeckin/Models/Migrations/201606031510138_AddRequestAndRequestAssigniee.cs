@@ -36,15 +36,12 @@ namespace Models.Migrations
                         CreatedDate = c.DateTime(nullable: false),
                         EndDate = c.DateTime(nullable: false),
                         Description = c.String(),
-                        OrganizationId = c.Int(nullable: false),
                         CreatorId = c.Int(nullable: false),
                         Completed = c.Boolean(nullable: false),
                         Location = c.String(),
                     })
                 .PrimaryKey(t => t.RequestId)
                 .ForeignKey("dbo.Person", t => t.CreatorId, cascadeDelete: true)
-                .ForeignKey("dbo.Organization", t => t.OrganizationId, cascadeDelete: true)
-                .Index(t => t.OrganizationId)
                 .Index(t => t.CreatorId);
             
         }
@@ -52,13 +49,11 @@ namespace Models.Migrations
         public override void Down()
         {
             DropForeignKey("dbo.RequestAssigniee", "Request_RequestId2", "dbo.Request");
-            DropForeignKey("dbo.Request", "OrganizationId", "dbo.Organization");
             DropForeignKey("dbo.Request", "CreatorId", "dbo.Person");
             DropForeignKey("dbo.RequestAssigniee", "Request_RequestId1", "dbo.Request");
             DropForeignKey("dbo.RequestAssigniee", "Request_RequestId", "dbo.Request");
             DropForeignKey("dbo.RequestAssigniee", "AssignieeId", "dbo.Person");
             DropIndex("dbo.Request", new[] { "CreatorId" });
-            DropIndex("dbo.Request", new[] { "OrganizationId" });
             DropIndex("dbo.RequestAssigniee", new[] { "Request_RequestId2" });
             DropIndex("dbo.RequestAssigniee", new[] { "Request_RequestId1" });
             DropIndex("dbo.RequestAssigniee", new[] { "Request_RequestId" });
