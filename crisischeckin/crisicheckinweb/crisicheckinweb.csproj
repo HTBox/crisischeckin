@@ -243,6 +243,7 @@
     <Compile Include="ViewModels\DisasterViewModel.cs" />
     <Compile Include="ViewModels\ForgotPasswordViewModel.cs" />
     <Compile Include="ViewModels\NewOrganizationViewModel.cs" />
+    <Compile Include="ViewModels\RequestDetailsViewModel.cs" />
     <Compile Include="ViewModels\RequestIndexPageViewModel.cs" />
     <Compile Include="ViewModels\ResetPasswordViewModel.cs" />
     <Compile Include="ViewModels\SelectedDisasterCluster.cs" />

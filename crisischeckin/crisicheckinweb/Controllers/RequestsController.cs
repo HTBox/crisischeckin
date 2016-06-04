@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
@@ -40,12 +41,18 @@ namespace crisicheckinweb.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Request request = await db.Requests.FindAsync(id);
+            Request request = await db.Requests.Where(r => r.RequestId == id)
+                                               .Include(r => r.Assigniees)
+                                               .FirstOrDefaultAsync();
             if (request == null)
             {
                 return HttpNotFound();
             }
-            return View(request);
+
+            return View(new RequestDetailsViewModel()
+            {
+                Request = request
+            });
         }
 
         // GET: Requests/Create

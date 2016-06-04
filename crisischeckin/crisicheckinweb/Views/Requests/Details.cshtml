@@ -1,4 +1,4 @@
-﻿@model Models.Request
+﻿@model crisicheckinweb.ViewModels.RequestDetailsViewModel
 
 @{
     ViewBag.Title = "Details";
@@ -9,67 +9,94 @@
 
 <div>
     <h4>Request</h4>
-    <hr />
+    <hr/>
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Creator.FirstName)
+            @*@Html.DisplayNameFor(model => model.Creator.FirstName)*@
+            Created By
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Creator.FirstName)
+            @Html.DisplayFor(model => model.Request.Creator.FirstName)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Organization.OrganizationName)
+            @Html.DisplayNameFor(model => model.Request.CreatedDate)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Organization.OrganizationName)
+            @Html.DisplayFor(model => model.Request.CreatedDate)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.CreatedDate)
+            @Html.DisplayNameFor(model => model.Request.EndDate)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.CreatedDate)
+            @Html.DisplayFor(model => model.Request.EndDate)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.EndDate)
+            @Html.DisplayNameFor(model => model.Request.Description)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.EndDate)
+            @Html.DisplayFor(model => model.Request.Description)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Description)
+            @Html.DisplayNameFor(model => model.Request.Completed)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Description)
+            @if (Model.Request.Completed == false)
+            {
+                if (Model.Request.Assigniees.Any())
+                {
+                    @Html.Raw(new HtmlString("<p>Assigned</p>"))
+                }
+                else
+                {
+                    @Html.Raw(new HtmlString("<p>Unassigned</p>"))
+                }
+            }
+            else
+            {
+                @Html.Raw(new HtmlString("<p>Completed</p>"))
+            }
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Completed)
+            @Html.DisplayNameFor(model => model.Request.Location)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Completed)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Location)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Location)
+            @Html.DisplayFor(model => model.Request.Location)
         </dd>
 
     </dl>
 </div>
+
+
+
+<h4>Existing Assigniees</h4>
+<ul>
+    @if (Model.Request.Assigniees.Any())
+    {
+        foreach (var person in Model.PoteintialAssigniees)
+        {
+            <li>
+                @person.FullName
+            </li>
+        }
+    }
+    else
+    {
+        @Html.Raw(new HtmlString("<p>This task is currently unassigned.</p>"))
+    }
+</ul>
+
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.RequestId }) |
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Request.RequestId }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
