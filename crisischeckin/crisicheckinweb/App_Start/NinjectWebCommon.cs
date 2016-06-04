@@ -5,6 +5,8 @@ using System.Web.Http;
 using crisicheckinweb.Infrastructure;
 using Models;
 using Services;
+using Services.Mocks;
+using Twilio;
 
 [assembly: WebActivator.PreApplicationStartMethod(typeof(crisicheckinweb.App_Start.NinjectWebCommon), "Start")]
 [assembly: WebActivator.ApplicationShutdownMethodAttribute(typeof(crisicheckinweb.App_Start.NinjectWebCommon), "Stop")]
@@ -66,21 +68,25 @@ namespace crisicheckinweb.App_Start
         private static void RegisterServices(IKernel kernel)
         {
             kernel.Bind<IDisaster>().To<DisasterService>().InRequestScope();
+            kernel.Bind<IOrganizationService>().To<OrganizationService>().InRequestScope();
             kernel.Bind<IVolunteerService>().To<VolunteerService>().InRequestScope();
             kernel.Bind<IDataService>().To<DataService>().InRequestScope();
             kernel.Bind<IAdmin>().To<AdminService>().InRequestScope();
             kernel.Bind<ICluster>().To<ClusterService>().InRequestScope();
+            kernel.Bind<IClusterGroup>().To<ClusterGroupService>().InRequestScope();
             kernel.Bind<CrisisCheckin>().ToSelf().InRequestScope();
             kernel.Bind<IWebSecurityWrapper>().To<WebSecurityWrapper>().InRequestScope();
             kernel.Bind<IVolunteerTypeService>().To<VolunteerTypesService>().InRequestScope();
             kernel.Bind<IMessageService>().To<MessageService>().InRequestScope();
             kernel.Bind<IMessageSender>().To<SmtpMessageSender>().InRequestScope();
+            kernel.Bind<IMessageSender>().To<SMSMessageSender>().InRequestScope();
             kernel.Bind<MailAddress>()
                 .ToConstant(new MailAddress(ConfigurationManager.AppSettings["smtp.fromaddress"], ConfigurationManager.AppSettings["smtp.fromname"]))
                 .WhenInjectedInto<SmtpMessageSender>();
             kernel.Bind<IMessageCoordinator>().To<MessageCoordinator>().InRequestScope();
             kernel.Bind<IClusterCoordinatorService>().To<ClusterCoordinatorService>().InRequestScope();
             kernel.Bind<IApiService>().To<ApiService>().InRequestScope();
+            kernel.Bind<IDisasterClusterService>().To<DisasterClusterService>().InRequestScope();
             kernel.Bind<Func<SmtpClient>>()
                 .ToMethod(c => () => new SmtpClient
                 {
@@ -96,6 +102,19 @@ namespace crisicheckinweb.App_Start
 #endif
                 })
                 .InRequestScope();
+            kernel.Bind<string>()
+                .ToConstant(ConfigurationManager.AppSettings["SMS.fromphone"])
+                .WhenInjectedInto<SMSMessageSender>();
+            kernel.Bind<Func<TwilioRestClient>>()
+                .ToMethod(c => () =>
+                {
+#if DEBUG
+                    return new TwilioRestClientMock(ConfigurationManager.AppSettings["twilio.account.sid"], ConfigurationManager.AppSettings["twilio.auth.token"])
+                    { SaveLocation = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) };
+#else
+                    return new TwilioRestClient(ConfigurationManager.AppSettings["twilio.account.sid"], ConfigurationManager.AppSettings["twilio.auth.token"]);
+#endif
+                });
         }
     }
 }

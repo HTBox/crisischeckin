@@ -58,12 +58,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Address.cs" />
+    <Compile Include="ClusterGroup.cs" />
     <Compile Include="ClusterCoordinator.cs" />
     <Compile Include="ClusterCoordinatorEvents.cs" />
     <Compile Include="ClusterCoordinatorLog.cs" />
     <Compile Include="Commitment.cs" />
+    <Compile Include="Contact.cs" />
     <Compile Include="CrisisCheckin.cs" />
     <Compile Include="Disaster.cs" />
+    <Compile Include="DisasterCluster.cs" />
     <Compile Include="Migrations\201501062117225_Initial.cs" />
     <Compile Include="Migrations\201501062117225_Initial.Designer.cs">
       <DependentUpon>201501062117225_Initial.cs</DependentUpon>
@@ -72,9 +76,72 @@
     <Compile Include="Migrations\201501090235260_AddVolunteerType.Designer.cs">
       <DependentUpon>201501090235260_AddVolunteerType.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201508081632194_ODFThatConf1.cs" />
+    <Compile Include="Migrations\201508081632194_ODFThatConf1.Designer.cs">
+      <DependentUpon>201508081632194_ODFThatConf1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201508081812447_ODFThatConf2.cs" />
+    <Compile Include="Migrations\201508081812447_ODFThatConf2.Designer.cs">
+      <DependentUpon>201508081812447_ODFThatConf2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201511132021070_RequireClusterName.cs" />
+    <Compile Include="Migrations\201511132021070_RequireClusterName.Designer.cs">
+      <DependentUpon>201511132021070_RequireClusterName.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601052014162_DropPersonIsCheckedInBoolean.cs" />
+    <Compile Include="Migrations\201601052014162_DropPersonIsCheckedInBoolean.Designer.cs">
+      <DependentUpon>201601052014162_DropPersonIsCheckedInBoolean.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601062244410_AddClusterGroup.cs" />
+    <Compile Include="Migrations\201601062244410_AddClusterGroup.Designer.cs">
+      <DependentUpon>201601062244410_AddClusterGroup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603151415056_AddOrganizations.cs" />
+    <Compile Include="Migrations\201603151415056_AddOrganizations.Designer.cs">
+      <DependentUpon>201603151415056_AddOrganizations.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603161244132_AddingContactsAndResources.cs" />
+    <Compile Include="Migrations\201603161244132_AddingContactsAndResources.Designer.cs">
+      <DependentUpon>201603161244132_AddingContactsAndResources.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603172354237_FixResources.cs" />
+    <Compile Include="Migrations\201603172354237_FixResources.Designer.cs">
+      <DependentUpon>201603172354237_FixResources.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603220312337_AddCommitmentLocation.cs" />
+    <Compile Include="Migrations\201603220312337_AddCommitmentLocation.Designer.cs">
+      <DependentUpon>201603220312337_AddCommitmentLocation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603220411258_AddPersonOrganizationRelationship.cs" />
+    <Compile Include="Migrations\201603220411258_AddPersonOrganizationRelationship.Designer.cs">
+      <DependentUpon>201603220411258_AddPersonOrganizationRelationship.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603220606458_ConnectResourceType.cs" />
+    <Compile Include="Migrations\201603220606458_ConnectResourceType.Designer.cs">
+      <DependentUpon>201603220606458_ConnectResourceType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201604062134388_AddingResourceTypes.cs" />
+    <Compile Include="Migrations\201604062134388_AddingResourceTypes.Designer.cs">
+      <DependentUpon>201604062134388_AddingResourceTypes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201604062202384_AddPersonToResource.cs" />
+    <Compile Include="Migrations\201604062202384_AddPersonToResource.Designer.cs">
+      <DependentUpon>201604062202384_AddPersonToResource.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201604080956174_DateEnteredOnResources.cs" />
+    <Compile Include="Migrations\201604080956174_DateEnteredOnResources.Designer.cs">
+      <DependentUpon>201604080956174_DateEnteredOnResources.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201604191341494_AddVerifiedFlagToOrganizations.cs" />
+    <Compile Include="Migrations\201604191341494_AddVerifiedFlagToOrganizations.Designer.cs">
+      <DependentUpon>201604191341494_AddVerifiedFlagToOrganizations.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Organization.cs" />
+    <Compile Include="Resource.cs" />
     <Compile Include="Person.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResourceType.cs" />
     <Compile Include="User.cs" />
     <Compile Include="v2\Assignment.cs" />
     <Compile Include="Cluster.cs" />
@@ -99,6 +166,51 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201501090235260_AddVolunteerType.resx">
       <DependentUpon>201501090235260_AddVolunteerType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201508081632194_ODFThatConf1.resx">
+      <DependentUpon>201508081632194_ODFThatConf1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201508081812447_ODFThatConf2.resx">
+      <DependentUpon>201508081812447_ODFThatConf2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201511132021070_RequireClusterName.resx">
+      <DependentUpon>201511132021070_RequireClusterName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601052014162_DropPersonIsCheckedInBoolean.resx">
+      <DependentUpon>201601052014162_DropPersonIsCheckedInBoolean.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601062244410_AddClusterGroup.resx">
+      <DependentUpon>201601062244410_AddClusterGroup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603151415056_AddOrganizations.resx">
+      <DependentUpon>201603151415056_AddOrganizations.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603161244132_AddingContactsAndResources.resx">
+      <DependentUpon>201603161244132_AddingContactsAndResources.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603172354237_FixResources.resx">
+      <DependentUpon>201603172354237_FixResources.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603220312337_AddCommitmentLocation.resx">
+      <DependentUpon>201603220312337_AddCommitmentLocation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603220411258_AddPersonOrganizationRelationship.resx">
+      <DependentUpon>201603220411258_AddPersonOrganizationRelationship.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603220606458_ConnectResourceType.resx">
+      <DependentUpon>201603220606458_ConnectResourceType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604062134388_AddingResourceTypes.resx">
+      <DependentUpon>201604062134388_AddingResourceTypes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604062202384_AddPersonToResource.resx">
+      <DependentUpon>201604062202384_AddPersonToResource.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604080956174_DateEnteredOnResources.resx">
+      <DependentUpon>201604080956174_DateEnteredOnResources.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604191341494_AddVerifiedFlagToOrganizations.resx">
+      <DependentUpon>201604191341494_AddVerifiedFlagToOrganizations.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

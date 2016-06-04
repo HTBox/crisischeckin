@@ -51,3 +51,7 @@
   position: absolute;
   right: 0;
 }
+
+#delayed-modal input {
+    background-color:#ffffff !important;
+}

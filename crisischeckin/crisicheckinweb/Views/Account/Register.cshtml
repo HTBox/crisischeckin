@@ -24,6 +24,12 @@
       @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
     </div>
 
+    <div class="form-group">
+        @Html.LabelFor(model => model.SelectedOrganizationId)
+        @Html.DropDownListFor(model => model.SelectedOrganizationId, new SelectList(Model.Organizations, "OrganizationId", "OrganizationName"), "-- no organization --", new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.SelectedOrganizationId, "", new { @class = "text-danger" })
+    </div>
+
     <div class="form-group required">
       @Html.LabelFor(m => m.PhoneNumber)
       @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control" })
@@ -47,11 +53,6 @@
     <div class="form-group required">
       @Html.LabelFor(m => m.ConfirmPassword)
       @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
-    </div>
-
-    <div class="form-group required">
-      @Html.LabelFor(m => m.Cluster)
-      @Html.DropDownListFor(m => m.Cluster, new SelectList(Model.Clusters, "Id", "Name", Model.Cluster), "-- Choose One --", new { @class = "form-control" })
     </div>
 
     <div class="form-group">

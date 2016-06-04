@@ -19,6 +19,11 @@ namespace crisicheckinweb.ViewModels
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
+        public IEnumerable<Organization> Organizations { get; set; }
+
+        [Display(Name = "Organization")]
+        public int? SelectedOrganizationId { get; set; }
+
         [Required]
         [Display(Name = "Phone Number")]
         public string PhoneNumber { get; set; }
@@ -30,7 +35,7 @@ namespace crisicheckinweb.ViewModels
 
         [Required]
         [StringLength(30, ErrorMessage = "The {0} must be between {2} and {1} characters long.", MinimumLength = 3)]
-        [Display(Name = "User name")]
+        [Display(Name = "Username")]
         public string UserName { get { return _userName; } set { _userName = value != null ? value.Trim() : value; } }
 
         [Required]
@@ -43,11 +48,5 @@ namespace crisicheckinweb.ViewModels
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
-
-        [Required]
-        [Display(Name = "Cluster")]
-        public int Cluster { get; set; }
-
-        public IEnumerable<Cluster> Clusters { get; set; }
     }
 }

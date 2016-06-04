@@ -22,6 +22,8 @@ namespace WebProjectTests
         private Mock<IWebSecurityWrapper> _webSecurity;
         private Mock<IClusterCoordinatorService> _clusterCoordinatorService;
         private Mock<IVolunteerTypeService> _volunteerTypeService;
+        private Mock<IDisasterClusterService> _disasterClusterService;
+        private Mock<IAdmin> _adminService;
 
         [SetUp]
         public void SetUp()
@@ -31,8 +33,10 @@ namespace WebProjectTests
             _webSecurity = new Mock<IWebSecurityWrapper>();
             _clusterCoordinatorService = new Mock<IClusterCoordinatorService>();
             _volunteerTypeService = new Mock<IVolunteerTypeService>();
+            _disasterClusterService = new Mock<IDisasterClusterService>();
+            _adminService = new Mock<IAdmin>();
 
-            _controllerUnderTest = new HomeController(_disaster.Object, _volunteerService.Object, _webSecurity.Object, _clusterCoordinatorService.Object, _volunteerTypeService.Object);
+            _controllerUnderTest = new HomeController(_disaster.Object, _volunteerService.Object, _webSecurity.Object, _clusterCoordinatorService.Object, _volunteerTypeService.Object, _disasterClusterService.Object, _adminService.Object);
         }
 
         [Test]
@@ -45,7 +49,9 @@ namespace WebProjectTests
                 It.IsAny<int>(),
                 It.IsAny<DateTime>(),
                 It.IsAny<DateTime>(),
-                It.IsAny<int>())).Throws(new ArgumentException(""));
+                It.IsAny<int>(), 
+                It.IsAny<int>(),
+                It.IsAny<string>())).Throws(new ArgumentException(""));
 
             // Act
             var viewModel = new VolunteerViewModel { SelectedStartDate = DateTime.Today.AddDays(-1) };
@@ -67,7 +73,9 @@ namespace WebProjectTests
                 It.IsAny<int>(),
                 It.IsAny<DateTime>(),
                 It.IsAny<DateTime>(),
-                It.IsAny<int>())).Throws(new ArgumentException(""));
+                It.IsAny<int>(),
+                It.IsAny<int>(),
+                It.IsAny<string>())).Throws(new ArgumentException(""));
 
             _webSecurity.SetupGet(x => x.CurrentUserId).Returns(10);
 
@@ -116,7 +124,7 @@ namespace WebProjectTests
         public void RemoveCommitmentById_Valid_RedirectsToHome()
         {
             // Arrange
-            var commitments = new List<Commitment>() { new Commitment() { Id = 7, PersonId = 13}};
+            var commitments = new List<Commitment>() { new Commitment() { Id = 7, PersonId = 13, ClusterId = 1, DisasterId = 1}};
 
             _volunteerService.Setup(service => service.FindByUserId(It.IsAny<int>())).Returns(new Person() { Id = 13 });
             _volunteerService.Setup(service => service.RetrieveCommitments(13, true)).Returns(commitments.AsQueryable());

@@ -6,7 +6,7 @@ namespace Services.Interfaces
 {
     public interface IVolunteerService
     {
-        Person Register(string firstName, string lastName, string email, string phoneNumber, int cluster, int userId);
+        Person Register(string firstName, string lastName, int? OrganizationId, string email, string phoneNumber, int userId);
 
         Person UpdateDetails(Person person);
 

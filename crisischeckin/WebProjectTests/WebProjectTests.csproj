@@ -106,6 +106,7 @@
     <Compile Include="DisasterControllerTests.cs" />
     <Compile Include="HomeControllerTests.cs" />
     <Compile Include="Infrastructure\Attributes\BasicPasswordAttributeTests.cs" />
+    <Compile Include="Infrastructure\ModelValidation.cs" />
     <Compile Include="Infrastructure\PasswordComplexityTests.cs" />
     <Compile Include="Mother.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

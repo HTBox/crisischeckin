@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Models;
 using Services.Interfaces;
+using System.Data.Entity;
 
 namespace Services
 {
@@ -37,50 +38,102 @@ namespace Services
             return GetVolunteersForDate(disaster.Id, date, clusterCoordinatorsOnly, checkedInOnly);
         }
 
-        public IEnumerable<Person> GetVolunteersForDate(int disasterId, DateTime date, bool clusterCoordinatorsOnly, bool checkedInOnly = false)
+        public IEnumerable<Person> GetVolunteersForDate(int disasterId, DateTime date, bool clusterCoordinatorsOnly, bool checkedInOnly = false, IEnumerable<int> inClusterIds = null)
         {
             if (disasterId <= 0)
                 throw new ArgumentException("disasterId is invalid.", "disasterId");
 
             var people = clusterCoordinatorsOnly
-                ? GetClusterCoordinatorsForDateQueryable(disasterId, date, checkedInOnly)
-                : GetVolunteersForDateQueryable(disasterId, date, checkedInOnly);
+                ? GetClusterCoordinatorsForDateQueryable(disasterId, date, checkedInOnly, inClusterIds)
+                : GetVolunteersForDateQueryable(disasterId, date, checkedInOnly, inClusterIds);
 
             if (people == null)
                 throw new NullReferenceException(string.Format("Attempt to get volunteers for disaster ID {0} returned null.", disasterId));
             return people.ToList();
         }
 
-        private IQueryable<Person> GetClusterCoordinatorsForDateQueryable(int disasterId, DateTime date, bool checkedInOnly)
+        private IQueryable<Person> GetClusterCoordinatorsForDateQueryable(int disasterId, DateTime date, bool checkedInOnly, IEnumerable<int> inClusterIds)
         {
             if (disasterId <= 0)
                 throw new ArgumentException("disasterId must be greater than zero", "disasterId");
 
+            var inClusterIdsArray = new int[0];
+            if (inClusterIds != null)
+            {
+                inClusterIdsArray = inClusterIds.ToArray();
+            }
+            var hasClusters = inClusterIdsArray.Length == 0;
+
             var people = from cc in _dataService.ClusterCoordinators
                          where cc.DisasterId == disasterId
-                         join c in _dataService.Commitments on cc.PersonId equals c.PersonId
+                         join c in Commitment.FilteredByStatus(_dataService.Commitments, checkedInOnly)
+                            on cc.PersonId equals c.PersonId
                          where c.DisasterId == disasterId
-                         where !checkedInOnly || c.PersonIsCheckedIn
                          where date >= c.StartDate && date <= c.EndDate
+                         where hasClusters || inClusterIdsArray.Any(cid => cid == c.ClusterId)
                          select cc.Person;
 
             return people.Distinct();
         }
 
-        private IQueryable<Person> GetVolunteersForDateQueryable(int disasterId, DateTime date, bool checkedInOnly)
+        private IQueryable<Person> GetVolunteersForDateQueryable(int disasterId, DateTime date, bool checkedInOnly, IEnumerable<int> inClusterIds)
         {
             if (disasterId <= 0)
                 throw new ArgumentException("disasterId must be greater than zero", "disasterId");
 
+            var inClusterIdsArray = new int [0];
+            if (inClusterIds != null)
+            {
+                inClusterIdsArray = inClusterIds.ToArray();
+            }
+            var hasClusters = inClusterIdsArray.Length == 0;
+
             var people = from p in _dataService.Persons
-                         join c in _dataService.Commitments on p.Id equals c.PersonId
+                         join c in Commitment.FilteredByStatus(_dataService.Commitments, checkedInOnly)
+                            on p.Id equals c.PersonId
                          where c.DisasterId == disasterId
-                         where !checkedInOnly || c.PersonIsCheckedIn
                          where date >= c.StartDate && date <= c.EndDate
+                         where hasClusters || inClusterIdsArray.Any(cid => cid == c.ClusterId)
                          select p;
-            //people.Include(x => x.Cluster);
 
             return people.Distinct();
+        }
+
+        public IEnumerable<Contact> GetContactsForDisaster(int disasterId)
+        {
+            IEnumerable<Contact> contacts;
+            contacts = _dataService.Contacts.Include("Organization").Include("Person");
+
+            //need to filter by current disaster after reworking contacts database
+
+            if (contacts == null)
+                throw new NullReferenceException(string.Format("Attempt to get volunteers for disaster ID {0} returned null.", disasterId));
+            return contacts.ToList();
+        }
+
+        public IEnumerable<ResourceType> GetResourceTypes()
+        {
+            return _dataService.ResourceTypes.ToList();
+        }
+
+        public IEnumerable<Resource> GetResourceCheckinsForOrganization(int organizationId)
+        {
+            IEnumerable<Resource> resources;
+            resources = GetResourcesForOrganization(organizationId);
+
+            if (resources == null)
+                throw new NullReferenceException(string.Format("Attempt to get volunteers for organization ID {0} returned null.", organizationId));
+            return resources.ToList();
+        }
+
+        public IEnumerable<Resource> GetResourceCheckinsForDisaster(int disasterId, DateTime? commitmentDate)
+        {
+            IEnumerable<Resource> resources;
+            resources = GetResources(disasterId, commitmentDate);
+
+            if (resources == null)
+                throw new NullReferenceException(string.Format("Attempt to get volunteers for disaster ID {0} returned null.", disasterId));
+            return resources.ToList();
         }
 
         public IEnumerable<Person> GetVolunteersForDisaster(int disasterId, DateTime? commitmentDate, bool checkedInOnly = false)
@@ -95,9 +148,68 @@ namespace Services
                 people = GetPeople(disasterId, checkedInOnly);
             }
 
+            //remove commitments not pertaining to this disaseter
+
             if (people == null)
                 throw new NullReferenceException(string.Format("Attempt to get volunteers for disaster ID {0} returned null.", disasterId));
             return people.ToList();
+        }
+
+        public void AddContactForOrganization(int organizationId, int contactId)
+        {
+            var organization = _dataService.Organizations.FirstOrDefault(o => o.OrganizationId == organizationId);
+            if (organization == null)
+            {
+                return;
+            }
+
+            var person = _dataService.Persons.FirstOrDefault(p => p.Id == contactId);
+            if (person == null)
+            {
+                return;
+            }
+
+            var contacts = _dataService.Contacts.Where(c => c.Organization.OrganizationId == organizationId && c.Person.Id == contactId);
+            if (contacts.Count() > 0)
+            {
+                return;
+            }
+
+            _dataService.AddContact(new Contact()
+            {
+                Organization = organization,
+                Person = person,
+                Title = "title"
+            });
+        }
+
+        private IQueryable<Resource> GetResourcesForOrganization(int organizationId)
+        {
+            if (organizationId <= 0)
+                throw new ArgumentException("organizationId is invalid.", "organizationId");
+
+            var results = from r in _dataService.Resources
+                          where r.Allocator.OrganizationId == organizationId
+                          select r;
+
+            return results;
+        }
+
+        private IQueryable<Resource> GetResources(int disasterId, DateTime? date)
+        {
+            if (disasterId <= 0)
+                throw new ArgumentException("disasterId is invalid.", "disasterId");
+
+            var results = from r in _dataService.Resources
+                          where r.DisasterId == disasterId
+                          select r;
+
+            if (date.HasValue)
+            {
+                results = results.Where(r => date >= r.StartOfAvailability && date <= r.EndOfAvailability);
+            }
+
+            return results;
         }
 
         private IQueryable<Person> GetPeople(int disasterId, bool checkedInOnly)
@@ -106,9 +218,9 @@ namespace Services
                 throw new ArgumentException("disasterId is invalid.", "disasterId");
 
             var people = from p in _dataService.Persons
-                         join c in _dataService.Commitments on p.Id equals c.PersonId
+                         join c in Commitment.FilteredByStatus(_dataService.Commitments, checkedInOnly)
+                            on p.Id equals c.PersonId
                          where c.DisasterId == disasterId
-                         where !checkedInOnly || c.PersonIsCheckedIn
                          select p;
 
             return people.Distinct();

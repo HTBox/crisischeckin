@@ -28,19 +28,22 @@ namespace AcceptanceTests
 
         static void Seed(CrisisCheckin dbContext)
         {
+            dbContext.ClusterGroups.AddOrUpdate(
+                g => g.Name, new ClusterGroup { Name = "UN Clusters", Description = "Some description here" });
+            
             dbContext.Clusters.AddOrUpdate(
                 c => c.Name,
-                new Cluster { Name = "Agriculture Cluster" },
-                new Cluster { Name = "Camp Coordination and Management Cluster" },
-                new Cluster { Name = "Early Recovery Cluster" },
-                new Cluster { Name = "Emergency Shelter Cluster" },
-                new Cluster { Name = "Emergency Telecommunications Cluster" },
-                new Cluster { Name = "Food Cluster" },
-                new Cluster { Name = "Health Cluster" },
-                new Cluster { Name = "Logistics Cluster" },
-                new Cluster { Name = "Nutrition Cluster" },
-                new Cluster { Name = "Protection Cluster" },
-                new Cluster { Name = "Water and Sanitation Cluster" }
+                new Cluster { Name = "Agriculture Cluster", ClusterGroupId = 1 },
+                new Cluster { Name = "Camp Coordination and Management Cluster", ClusterGroupId = 1 },
+                new Cluster { Name = "Early Recovery Cluster", ClusterGroupId = 1 },
+                new Cluster { Name = "Emergency Shelter Cluster", ClusterGroupId = 1 },
+                new Cluster { Name = "Emergency Telecommunications Cluster", ClusterGroupId = 1 },
+                new Cluster { Name = "Food Cluster", ClusterGroupId = 1 },
+                new Cluster { Name = "Health Cluster", ClusterGroupId = 1 },
+                new Cluster { Name = "Logistics Cluster", ClusterGroupId = 1 },
+                new Cluster { Name = "Nutrition Cluster", ClusterGroupId = 1 },
+                new Cluster { Name = "Protection Cluster", ClusterGroupId = 1 },
+                new Cluster { Name = "Water and Sanitation Cluster", ClusterGroupId = 1 }
                 );
             dbContext.SaveChanges();
         }
