@@ -1,6 +1,7 @@
 using System;
 using UIKit;
 using System.Collections.Generic;
+using CrisisCheckinMobile.ViewModels;
 using Foundation;
 
 namespace CrisisCheckinMobile.iOS
@@ -9,7 +10,7 @@ namespace CrisisCheckinMobile.iOS
     {
         const string CellIdentifier = "disasterListCell"; // set in the Storyboard
 
-        public List<DisasterListViewModel> DisasterListItems
+        public List<DisasterListItemViewModel> DisasterListItems
         {
             get;
             set;
@@ -21,7 +22,7 @@ namespace CrisisCheckinMobile.iOS
             set;
         }
             
-        public DisasterListTableSource(List<DisasterListViewModel> items, UITableViewController parent)
+        public DisasterListTableSource(List<DisasterListItemViewModel> items, UITableViewController parent)
         {
             DisasterListItems = items;
             Parent = parent;

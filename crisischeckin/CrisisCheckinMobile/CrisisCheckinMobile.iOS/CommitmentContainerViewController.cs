@@ -1,5 +1,6 @@
 using System;
 using CoreGraphics;
+using CrisisCheckinMobile.ViewModels;
 using Foundation;
 using UIKit;
 

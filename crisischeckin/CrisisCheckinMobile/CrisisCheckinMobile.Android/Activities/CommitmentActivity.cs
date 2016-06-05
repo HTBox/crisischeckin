@@ -1,19 +1,10 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
+﻿using Android.App;
 using Android.Content;
 using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 
-namespace CrisisCheckinMobile.Droid
+namespace CrisisCheckinMobile.Droid.Activities
 {
-    [Android.App.Activity(Label = "CommitmentActivity")]            
+    [Activity(Label = "CommitmentActivity")]            
     public class CommitmentActivity : Activity
     {
         protected override void OnCreate(Bundle bundle)
@@ -21,7 +12,7 @@ namespace CrisisCheckinMobile.Droid
             base.OnCreate(bundle);
 
             ActionBar.Title = "";
-            ActionBar.NavigationMode = Android.App.ActionBarNavigationMode.Standard;
+            ActionBar.NavigationMode = ActionBarNavigationMode.Standard;
             ActionBar.SetHomeButtonEnabled(true);
             //ActionBar.SetDisplayHomeAsUpEnabled(true);
 //            var htboxRedColor = Resources.GetColor(Resource.Color.htBoxRed); // see values/styles.xml for styling

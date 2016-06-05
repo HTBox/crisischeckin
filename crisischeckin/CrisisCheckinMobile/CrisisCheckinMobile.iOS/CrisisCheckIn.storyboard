@@ -577,6 +577,7 @@
         <image name="iosMenuIcons/CCI-menuSettingHi.png" width="34" height="29"/>
         <image name="Default-568h.png" width="640" height="1136"/>
         <image name="Images/Human-Toolbox_Logo_RGB.png" width="271" height="152"/>
+        <image name="Images/Default-568h.png" width="320" height="568"/>
     </resources>
     <color key="tintColor" colorSpace="calibratedRGB" red="0.82352941176470584" green="0.14901960784313725" blue="0.18823529411764706" alpha="1"/>
 </document>

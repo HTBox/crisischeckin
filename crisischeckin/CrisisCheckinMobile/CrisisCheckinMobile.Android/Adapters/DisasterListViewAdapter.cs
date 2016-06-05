@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using Android.Views;
 using Android.Content;
+using CrisisCheckinMobile.ViewModels;
 
 namespace CrisisCheckinMobile.Droid
 {
-    public class DisasterListViewAdapter : BaseAdapter<DisasterListViewModel>
+    public class DisasterListViewAdapter : BaseAdapter<DisasterListItemViewModel>
     {
-        private readonly List<DisasterListViewModel> _items;
+        private readonly List<DisasterListItemViewModel> _items;
         private readonly Context _context;
 
-        public DisasterListViewAdapter(Context context, List<DisasterListViewModel> items)
+        public DisasterListViewAdapter(Context context, List<DisasterListItemViewModel> items)
         {
             _items = items;
             _context = context;
@@ -44,7 +45,7 @@ namespace CrisisCheckinMobile.Droid
             }
         }
 
-        public override DisasterListViewModel this[int index]
+        public override DisasterListItemViewModel this[int index]
         {
             get
             {

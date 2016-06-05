@@ -1,47 +1,53 @@
-﻿using Breeze.Sharp;
-using CrisisCheckinMobile.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using CrisisCheckinMobile.Models;
+using Xamarin.Forms;
 
 namespace CrisisCheckinMobile
 {
-    // TODO: Remove Xamarin.Forms stuff and rewrite
-    public class App
+    public class App : Application
     {
         public static string AuthToken { get; set; }
         public static Commitment Commitment { get; set; }
         public static string BackIcon = "";
         public static string ReportTroubleIcon = "";
         public static string ProfileIcon = "";
-//        public static readonly Color ContentBackgroundColor = Color.FromHex("4f2c1d");
-//        public static readonly Color MastHeadBackgroundColor = Color.FromHex("d22630");
-//        public static readonly Color LowLightColor = Color.FromHex("ceb888");
-//        public static readonly Color TextColor = Color.White;
 
-        public static readonly ClientModel ClientModel = new ClientModel(new EntityManager("http://localhost:2077/Breeze/Entities"));
+        //public static readonly ClientModel ClientModel = new ClientModel(new EntityManager("http://localhost:2077/Breeze/Entities"));
 
-//        public static Page GetMainPage()
-//        {
-//            return new CommitmentPage(ClientModel.Person.Commitments[0]);
-//
-//            //NavigationPage mainPage;
-//            //if (string.IsNullOrWhiteSpace(AuthToken)) {
-//            //    mainPage = new NavigationPage(new LoginPage());
-//            //} else {
-//            //    mainPage = new NavigationPage(new DisasterListPage());
-//            //}
-//
-//            //if (Commitment != null) {
-//            //    mainPage.Navigation.PushAsync(new CommitmentPage());
-//            //}
-//
-//            //return mainPage;
-//        }
+        public App()
+        {
+            MainPage = GetMainPage();
+        }
+        public static Page GetMainPage()
+        {
+            //return new CommitmentPage(new Commitment
+            //{
+                
+            //});
 
+            NavigationPage mainPage;
+            if (string.IsNullOrWhiteSpace(AuthToken))
+            {
+                mainPage = new NavigationPage(new LoginPage())
+                {
+                    BarBackgroundColor = Constants.HtBoxRed,
+                    BarTextColor = Color.White
+                };
+            }
+            else
+            {
+                mainPage = new NavigationPage(new DisasterListPage())
+                {
+                    BarBackgroundColor = Constants.HtBoxRed,
+                    BarTextColor = Color.White
+                };
+            }
 
+            //if (Commitment != null)
+            //{
+            //    mainPage.Navigation.PushAsync(new CommitmentPage());
+            //}
 
+            return mainPage;
+        }
     }
-
 }

@@ -1,6 +1,6 @@
 using System;
 
-namespace CrisisCheckinMobile
+namespace CrisisCheckinMobile.ViewModels
 {
 	public class CommitmentViewModel
 	{

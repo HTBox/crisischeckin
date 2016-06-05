@@ -28,7 +28,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="iosAppIcon/iOS-AppIcon-iPad.png" width="152" height="152"/>
+        <image name="iosAppIcon/iOS-AppIcon-iPad.png" width="76" height="76"/>
         <image name="iosAppIcon/iOS-AppIcon-iPhone.png" width="60" height="60"/>
         <image name="iosAppIcon/iOS-StoreIcon.png" width="512" height="512"/>
         <image name="iosMenuIcons/CCI-menuHome.png" width="34" height="29"/>
@@ -41,5 +41,6 @@
         <image name="iosMenuIcons/CCI-menuSettingHi.png" width="34" height="29"/>
         <image name="Default-568h.png" width="640" height="1136"/>
         <image name="Images/Human-Toolbox_Logo_RGB.png" width="271" height="152"/>
+        <image name="Images/Default-568h.png" width="320" height="568"/>
     </resources>
 </document>

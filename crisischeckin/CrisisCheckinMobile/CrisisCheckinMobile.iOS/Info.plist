@@ -23,20 +23,12 @@
 	<string>org.HumanitarianToolbox.CrisisCheckinMobile</string>
 	<key>CFBundleVersion</key>
 	<string>1.0</string>
-	<key>XSAppIconAssets</key>
-	<string>Resources/Images.xcassets/AppIcons.appiconset</string>
 	<key>CFBundleShortVersionString</key>
 	<string>0.1</string>
-	<key>NSMainNibFile</key>
-	<string></string>
 	<key>NSMainNibFile~ipad</key>
 	<string></string>
-	<key>UIMainStoryboardFile</key>
-	<string>CrisisCheckIn</string>
 	<key>UIMainStoryboardFile~ipad</key>
 	<string>CrisisCheckIn</string>
-	<key>UIStatusBarStyle</key>
-	<string>UIStatusBarStyleLightContent</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<key>UIStatusBarTintParameters</key>
@@ -59,6 +51,6 @@
 		</dict>
 	</dict>
 	<key>UILaunchStoryboardName</key>
-	<string>CrisisCheckIn</string>
+	<string>LaunchScreen</string>
 </dict>
 </plist>
