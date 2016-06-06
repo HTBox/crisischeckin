@@ -26,7 +26,7 @@ namespace crisicheckinweb.Controllers
         // GET: Requests
         public async Task<ActionResult> Index()
         {
-            var requests = db.Requests.Include(r => r.Creator).Include(r => r.Assigniees);
+            var requests = db.Requests.Include(r => r.Creator).Include(r => r.Assignee);
             return View(new RequestIndexPageViewModel()
             {
                 Requests = await requests.ToListAsync(),
@@ -42,7 +42,7 @@ namespace crisicheckinweb.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Request request = await db.Requests.Where(r => r.RequestId == id)
-                                               .Include(r => r.Assigniees)
+                                               .Include(r => r.Assignee)
                                                .FirstOrDefaultAsync();
             if (request == null)
             {
@@ -144,7 +144,7 @@ namespace crisicheckinweb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Filter(RequestSearch specifiedRequest)
         {
-            var requests = db.Requests.Include(r => r.Creator).Include(r => r.Assigniees);
+            var requests = db.Requests.Include(r => r.Creator).Include(r => r.Assignee);
 
             if (specifiedRequest.Description != null)
             {
@@ -171,10 +171,10 @@ namespace crisicheckinweb.Controllers
                 switch (specifiedRequest.RequestStatus)
                 {
                     case RequestStatus.Unassigned:
-                        requests = requests.Where(x => x.Completed == false && !x.Assigniees.Any());
+                        requests = requests.Where(x => x.Completed == false && !x.AssigneeId.HasValue);
                         break;
                     case RequestStatus.Assigned:
-                        requests = requests.Where(x => x.Completed == false && x.Assigniees.Any());
+                        requests = requests.Where(x => x.Completed == false && x.AssigneeId.HasValue);
                         break;
                     case RequestStatus.Completed:
                         requests = requests.Where(x => x.Completed == true);
@@ -189,6 +189,84 @@ namespace crisicheckinweb.Controllers
             {
                 Requests = await requests.ToListAsync(),
                 RequestSearch = new RequestSearch()
+            });
+        }
+
+        [HttpGet, ActionName("VolunteerRequestIndex")]
+        public async Task<ActionResult> VolunteerRequestIndex(RequestSearch specifiedRequest)
+        {
+            var volunteersRequest = await db.Requests
+                                            .Include(r => r.Assignee)
+                                            .Where(r => r.AssigneeId == _webSecurity.CurrentUserId && r.Completed == false)
+                                            .ToListAsync();
+
+            var openRequests = await db.Requests
+                                        .Include(r => r.Assignee)
+                                        .Where(r => r.Completed == false && !r.AssigneeId.HasValue)
+                                        .ToListAsync();
+
+            return View("VolunteerRequestAssignment", new VolunteerRequestIndexViewModel()
+            {
+                RequestAssignedToVolunteer = volunteersRequest,
+                OpenRequests = openRequests
+            });
+        }
+
+        [HttpPost, ActionName("AssignRequest")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> AssignRequest(int requestId)
+        {
+            var request = db.Requests.FirstOrDefault(r => r.RequestId == requestId);
+            if (request != null)
+            {
+                request.AssigneeId = _webSecurity.CurrentUserId;
+                db.Entry(request).State = EntityState.Modified;
+                await db.SaveChangesAsync();
+            }
+
+            var volunteersRequest = await db.Requests
+                                            .Include(r => r.Assignee)
+                                            .Where(r => r.AssigneeId == _webSecurity.CurrentUserId && r.Completed == false)
+                                            .ToListAsync();
+
+            var openRequests = await db.Requests
+                                        .Include(r => r.Assignee)
+                                        .Where(r => r.Completed == false && !r.AssigneeId.HasValue)
+                                        .ToListAsync();
+
+            return View("VolunteerRequestAssignment", new VolunteerRequestIndexViewModel()
+            {
+                RequestAssignedToVolunteer = volunteersRequest,
+                OpenRequests = openRequests
+            });
+        }
+
+        [HttpPost, ActionName("CompleteRequest")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> CompleteRequest(int requestId)
+        {
+            var request = db.Requests.FirstOrDefault(r => r.RequestId == requestId);
+            if (request != null)
+            {
+                request.Completed = true;
+                db.Entry(request).State = EntityState.Modified;
+                await db.SaveChangesAsync();
+            }
+
+            var volunteersRequest = await db.Requests
+                                            .Include(r => r.Assignee)
+                                            .Where(r => r.AssigneeId == _webSecurity.CurrentUserId && r.Completed == false)
+                                            .ToListAsync();
+
+            var openRequests = await db.Requests
+                                        .Include(r => r.Assignee)
+                                        .Where(r => r.Completed == false && !r.AssigneeId.HasValue)
+                                        .ToListAsync();
+
+            return View("VolunteerRequestAssignment", new VolunteerRequestIndexViewModel()
+            {
+                RequestAssignedToVolunteer = volunteersRequest,
+                OpenRequests = openRequests
             });
         }
 

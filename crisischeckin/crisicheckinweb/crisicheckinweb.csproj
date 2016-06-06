@@ -249,6 +249,7 @@
     <Compile Include="ViewModels\SelectedDisasterCluster.cs" />
     <Compile Include="ViewModels\SendMessageToAllVolunteersByDisasterViewModel.cs" />
     <Compile Include="ViewModels\UnassignClusterCoordinatorViewModel.cs" />
+    <Compile Include="ViewModels\VolunteerRequestIndexViewModel.cs" />
     <Compile Include="Wrappers\UserCreationException.cs" />
     <Compile Include="Wrappers\IWebSecurityWrapper.cs" />
     <Compile Include="Controllers\VolunteerController.cs" />
@@ -441,6 +442,9 @@
     <Content Include="Views\Requests\Edit.cshtml" />
     <Content Include="Views\Requests\Index.cshtml" />
     <Content Include="Views\Requests\_FilterRequestPartial.cshtml" />
+    <Content Include="Views\Requests\VolunteerRequestAssignment.cshtml" />
+    <Content Include="Views\Requests\_CompleteRequestForm.cshtml" />
+    <Content Include="Views\Requests\_AssignRequestForm.cshtml" />
     <None Include="Web.Staging.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

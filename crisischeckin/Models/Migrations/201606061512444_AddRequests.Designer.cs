@@ -7,13 +7,13 @@ namespace Models.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.1-30610")]
-    public sealed partial class AddRequestAndRequestAssigniee : IMigrationMetadata
+    public sealed partial class AddRequests : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AddRequestAndRequestAssigniee));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(AddRequests));
         
         string IMigrationMetadata.Id
         {
-            get { return "201606031510138_AddRequestAndRequestAssigniee"; }
+            get { return "201606061512444_AddRequests"; }
         }
         
         string IMigrationMetadata.Source

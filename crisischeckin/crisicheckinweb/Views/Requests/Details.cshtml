@@ -53,7 +53,7 @@
         <dd>
             @if (Model.Request.Completed == false)
             {
-                if (Model.Request.Assigniees.Any())
+                if (Model.Request.AssigneeId.HasValue)
                 {
                     @Html.Raw(new HtmlString("<p>Assigned</p>"))
                 }
@@ -81,16 +81,13 @@
 
 
 
-<h4>Existing Assigniees</h4>
+<h4>Existing Assigniee</h4>
 <ul>
-    @if (Model.Request.Assigniees.Any())
+    @if (Model.Request.AssigneeId.HasValue)
     {
-        foreach (var person in Model.PoteintialAssigniees)
-        {
-            <li>
-                @person.FullName
-            </li>
-        }
+        <li>
+            @Model.Request.Assignee.FullName
+        </li>        
     }
     else
     {

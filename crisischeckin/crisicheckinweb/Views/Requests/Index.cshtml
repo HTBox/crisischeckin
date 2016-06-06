@@ -64,7 +64,7 @@
         <td>
             @if (item.Completed == false)
             {
-                if (item.Assigniees.Any())
+                if (item.AssigneeId.HasValue)
                 {
                     @Html.Raw(new HtmlString("<p>Assigned</p>"))
                 }

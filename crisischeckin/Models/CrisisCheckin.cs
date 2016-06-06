@@ -49,14 +49,11 @@ namespace Models
 
         public DbSet<Request> Requests { get; set; }
 
-        public DbSet<RequestAssigniee> RequestAssigniee { get; set; }
-
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
             modelBuilder.Conventions.Remove<StringLengthAttributeConvention>();
-            
         }
     }
 }
