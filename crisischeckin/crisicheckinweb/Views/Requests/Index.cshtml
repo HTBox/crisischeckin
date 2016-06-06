@@ -39,6 +39,9 @@
             Created By
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.RequestSearch.CreatedDate)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.RequestSearch.EndDate)
         </th>
         <th>
@@ -57,6 +60,9 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Creator.FirstName)
+        </td>
+        <td>
+            @item.CreatedDate.ToShortDateString()
         </td>
         <td>
             @item.EndDate.ToShortDateString()
