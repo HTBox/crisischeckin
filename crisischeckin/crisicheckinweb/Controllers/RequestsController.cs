@@ -25,6 +25,7 @@ namespace crisicheckinweb.Controllers
         }
 
         // GET: Requests
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Index(string sortField, string sortOrder, DateTime? endDate, DateTime? createdDate, string location, string description, RequestStatus? requestStatus)
         {
             var specifiedRequest = CreateRequestSearchObject(endDate, createdDate, location, description, requestStatus);
@@ -80,6 +81,7 @@ namespace crisicheckinweb.Controllers
         }
 
         // GET: Requests/Create
+        [Authorize(Roles = "Admin")]
         public ActionResult Create()
         {
             ViewBag.CreatorId = _webSecurity.CurrentUserId;
@@ -90,6 +92,7 @@ namespace crisicheckinweb.Controllers
         // POST: Requests/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Create([Bind(Include = "EndDate,Description,Location")] Request request)
         {
             if (ModelState.IsValid)
@@ -107,6 +110,7 @@ namespace crisicheckinweb.Controllers
         }
 
         // GET: Requests/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Edit(int? id)
         {
             if (id == null)
@@ -126,6 +130,7 @@ namespace crisicheckinweb.Controllers
         // POST: Requests/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Edit([Bind(Include = "RequestId,CreatedDate,EndDate,Description,OrganizationId,CreatorId,Completed,Location")] Request request)
         {
             if (ModelState.IsValid)
@@ -139,6 +144,7 @@ namespace crisicheckinweb.Controllers
         }
 
         // GET: Requests/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Delete(int? id)
         {
             if (id == null)
@@ -156,6 +162,7 @@ namespace crisicheckinweb.Controllers
         // POST: Requests/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
             Request request = await db.Requests.FindAsync(id);
@@ -166,6 +173,7 @@ namespace crisicheckinweb.Controllers
 
         [HttpPost, ActionName("Filter")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Filter(RequestSearch specifiedRequest, string sortField, string sortOrder)
         {
             IQueryable<Request> requests = db.Requests.Include(r => r.Creator).Include(r => r.Assignee);
@@ -188,6 +196,7 @@ namespace crisicheckinweb.Controllers
         }
 
         [HttpGet, ActionName("VolunteerRequestIndex")]
+        [Authorize]
         public async Task<ActionResult> VolunteerRequestIndex(RequestSearch specifiedRequest)
         {
             var volunteersRequest = await db.Requests
@@ -209,6 +218,7 @@ namespace crisicheckinweb.Controllers
 
         [HttpPost, ActionName("AssignRequest")]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<ActionResult> AssignRequest(int requestId)
         {
             var request = db.Requests.FirstOrDefault(r => r.RequestId == requestId);
@@ -238,6 +248,7 @@ namespace crisicheckinweb.Controllers
 
         [HttpPost, ActionName("CompleteRequest")]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<ActionResult> CompleteRequest(int requestId)
         {
             var request = db.Requests.FirstOrDefault(r => r.RequestId == requestId);
