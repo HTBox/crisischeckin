@@ -1,21 +1,21 @@
 ﻿body {
-  padding-top: 60px;
-  padding-bottom: 40px;
+    padding-top: 60px;
+    padding-bottom: 40px;
 }
 
 .success {
-	background-color: #39C339 !important;
-	color: white !important;
+    background-color: #39C339 !important;
+    color: white !important;
 }
 
 .failure {
-	background-color: #C33A3A !important;
-	color: white !important;
+    background-color: #C33A3A !important;
+    color: white !important;
 }
 
-.validation-summary-errors{
-	color: #C33A3A !important;
-	background-color: white !important;
+.validation-summary-errors {
+    color: #C33A3A !important;
+    background-color: white !important;
 }
 
 .input-validation-error {
@@ -23,18 +23,18 @@
 }
 
 .feedbackHelper {
-	color: white;
-	display: inline-block;
-	padding: 5px;
-	position: relative;
-	top: -4px;
-	margin-left: 10px;
+    color: white;
+    display: inline-block;
+    padding: 5px;
+    position: relative;
+    top: -4px;
+    margin-left: 10px;
 }
 
 .loginNavBar {
-  font-weight: 300;
-  color: white;
-  padding-top: 10px;
+    font-weight: 300;
+    color: white;
+    padding-top: 10px;
 }
 
 .required label:after {
@@ -44,14 +44,14 @@
 }
 
 .cluster-coordinator {
-  position: relative;
+    position: relative;
 }
 
-.cluster-coordinator .glyphicon {
-  position: absolute;
-  right: 0;
-}
+    .cluster-coordinator .glyphicon {
+        position: absolute;
+        right: 0;
+    }
 
 #delayed-modal input {
-    background-color:#ffffff !important;
+    background-color: #ffffff !important;
 }

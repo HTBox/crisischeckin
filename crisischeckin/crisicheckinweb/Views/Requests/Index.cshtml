@@ -8,10 +8,6 @@
 <h2>Requests</h2>
 <p>Put out requests to the volunteer community and people can assign themselves to them.</p>
 
-<p>
-    
-</p>
-
 <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
     <div class="btn-group" role="group" aria-label="First group">
         @Html.ActionLink("Create New", "Create", new { }, new { @class = "btn btn-black" })
@@ -25,72 +21,73 @@
     @Html.Partial("_FilterRequestPartial", Model.RequestSearch)
 </div>
 
-<br/>
+<br />
 
 <table class="table table-striped table-bordered">
     <tr class="ht-header">
         <th>
-            @Html.DisplayNameFor(model => model.RequestSearch.Description)
+            @Html.ActionLink(@Html.DisplayNameFor(model => model.RequestSearch.Description).ToString(), "Index", new { sortField = @Html.DisplayNameFor(model => model.RequestSearch.Description).ToString(), sortOrder = ViewBag.SortOrderParam, endDate = @ViewBag.SpecifiedRequest.NullableEndDate, createdDate = @ViewBag.SpecifiedRequest.NullableCreatedDate, location = @ViewBag.SpecifiedRequest.Location, description = @ViewBag.SpecifiedRequest.Description, requestStatus = @ViewBag.SpecifiedRequest.RequestStatus })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.RequestSearch.Location)
+            @Html.ActionLink(@Html.DisplayNameFor(model => model.RequestSearch.Location).ToString(), "Index", new { sortField = @Html.DisplayNameFor(model => model.RequestSearch.Location).ToString(), sortOrder = ViewBag.SortOrderParam, endDate = @ViewBag.SpecifiedRequest.NullableEndDate, createdDate = @ViewBag.SpecifiedRequest.NullableCreatedDate, location = @ViewBag.SpecifiedRequest.Location, description = @ViewBag.SpecifiedRequest.Description, requestStatus = @ViewBag.SpecifiedRequest.RequestStatus })
         </th>
         <th>
-            Created By
+            @Html.ActionLink("Created By", "Index", new { sortField = "Created By", sortOrder = ViewBag.SortOrderParam, endDate = @ViewBag.SpecifiedRequest.NullableEndDate, createdDate = @ViewBag.SpecifiedRequest.NullableCreatedDate, location = @ViewBag.SpecifiedRequest.Location, description = @ViewBag.SpecifiedRequest.Description, requestStatus = @ViewBag.SpecifiedRequest.RequestStatus })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.RequestSearch.CreatedDate)
+            @Html.ActionLink(@Html.DisplayNameFor(model => model.RequestSearch.CreatedDate).ToString(), "Index", new { sortField = @Html.DisplayNameFor(model => model.RequestSearch.CreatedDate).ToString(), sortOrder = ViewBag.SortOrderParam, endDate = @ViewBag.SpecifiedRequest.NullableEndDate, createdDate = @ViewBag.SpecifiedRequest.NullableCreatedDate, location = @ViewBag.SpecifiedRequest.Location, description = @ViewBag.SpecifiedRequest.Description, requestStatus = @ViewBag.SpecifiedRequest.RequestStatus })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.RequestSearch.EndDate)
+            @Html.ActionLink(@Html.DisplayNameFor(model => model.RequestSearch.EndDate).ToString(), "Index", new { sortField = @Html.DisplayNameFor(model => model.RequestSearch.EndDate).ToString(), sortOrder = ViewBag.SortOrderParam, endDate = @ViewBag.SpecifiedRequest.NullableEndDate, createdDate = @ViewBag.SpecifiedRequest.NullableCreatedDate, location = @ViewBag.SpecifiedRequest.Location, description = @ViewBag.SpecifiedRequest.Description, requestStatus = @ViewBag.SpecifiedRequest.RequestStatus })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.RequestSearch.Completed)
+            @Html.ActionLink(@Html.DisplayNameFor(model => model.RequestSearch.Completed).ToString(), "Index", new { sortField = @Html.DisplayNameFor(model => model.RequestSearch.Completed).ToString(), sortOrder = ViewBag.SortOrderParam, endDate = @ViewBag.SpecifiedRequest.NullableEndDate, createdDate = @ViewBag.SpecifiedRequest.NullableCreatedDate, location = @ViewBag.SpecifiedRequest.Location, description = @ViewBag.SpecifiedRequest.Description, requestStatus = @ViewBag.SpecifiedRequest.RequestStatus })
         </th>
         <th></th>
     </tr>
 
-@foreach (var item in Model.Requests) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Location)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Creator.FirstName)
-        </td>
-        <td>
-            @item.CreatedDate.ToShortDateString()
-        </td>
-        <td>
-            @item.EndDate.ToShortDateString()
-        </td>
-        <td>
-            @if (item.Completed == false)
-            {
-                if (item.AssigneeId.HasValue)
+    @foreach (var item in Model.Requests)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Location)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Creator.FirstName)
+            </td>
+            <td>
+                @item.CreatedDate.ToShortDateString()
+            </td>
+            <td>
+                @item.EndDate.ToShortDateString()
+            </td>
+            <td>
+                @if (item.Completed == false)
                 {
-                    @Html.Raw(new HtmlString("<p>Assigned</p>"))
+                    if (item.AssigneeId.HasValue)
+                    {
+                        @Html.Raw(new HtmlString("<p>Assigned</p>"))
+                    }
+                    else
+                    {
+                        @Html.Raw(new HtmlString("<p>Unassigned</p>"))
+                    }
                 }
                 else
                 {
-                    @Html.Raw(new HtmlString("<p>Unassigned</p>"))
+                    @Html.Raw(new HtmlString("<p>Completed</p>"))
                 }
-            }
-            else
-            {
-                @Html.Raw(new HtmlString("<p>Completed</p>"))
-            }
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new {id = item.RequestId}) |
-            @Html.ActionLink("Details", "Details", new {id = item.RequestId}) |
-            @Html.ActionLink("Delete", "Delete", new {id = item.RequestId})
-        </td>
-    </tr>
-}
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.RequestId }) |
+                @Html.ActionLink("Details", "Details", new { id = item.RequestId }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.RequestId })
+            </td>
+        </tr>
+    }
 
 </table>
 

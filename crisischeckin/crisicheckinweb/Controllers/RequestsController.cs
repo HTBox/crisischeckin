@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Net;
 using System.Threading;
+using System.Web;
 using System.Web.Mvc;
 using crisicheckinweb.ViewModels;
 using crisicheckinweb.Wrappers;
@@ -24,13 +25,36 @@ namespace crisicheckinweb.Controllers
         }
 
         // GET: Requests
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(string sortField, string sortOrder, DateTime? endDate, DateTime? createdDate, string location, string description, RequestStatus? requestStatus)
         {
-            var requests = db.Requests.Include(r => r.Creator).Include(r => r.Assignee);
+            var specifiedRequest = CreateRequestSearchObject(endDate, createdDate, location, description, requestStatus);
+            if (string.IsNullOrEmpty(sortOrder))
+            {
+                // If it's blank, default to descending
+                sortOrder = "desc";
+            }
+            else
+            {
+                // switch sortOrder otherwise
+                sortOrder = sortOrder == "desc" ? "asc" : "desc";
+            }
+
+            ViewBag.SortOrderParam   = sortOrder;
+            ViewBag.SortFieldParam   = String.IsNullOrEmpty(sortOrder) ? "EndDate" : sortField;
+            ViewBag.SpecifiedRequest = specifiedRequest;
+
+            IQueryable<Request> requests = db.Requests.Include(r => r.Creator).Include(r => r.Assignee);
+
+            IQueryable<Request> filteredRequests = FilterRequests(specifiedRequest, requests);
+
+            var unsortedRequests = await filteredRequests.ToListAsync();
+
+            IOrderedEnumerable<Request> sortedRequests = SortRequests(sortField, sortOrder, unsortedRequests);
+
             return View(new RequestIndexPageViewModel()
             {
-                Requests = await requests.ToListAsync(),
-                RequestSearch = new RequestSearch()
+                Requests = sortedRequests.ToList(),
+                RequestSearch = specifiedRequest
             });
         }
 
@@ -142,53 +166,24 @@ namespace crisicheckinweb.Controllers
 
         [HttpPost, ActionName("Filter")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Filter(RequestSearch specifiedRequest)
+        public async Task<ActionResult> Filter(RequestSearch specifiedRequest, string sortField, string sortOrder)
         {
-            var requests = db.Requests.Include(r => r.Creator).Include(r => r.Assignee);
+            IQueryable<Request> requests = db.Requests.Include(r => r.Creator).Include(r => r.Assignee);
 
-            if (specifiedRequest.Description != null)
-            {
-                requests = requests.Where(x => x.Description.Contains(specifiedRequest.Description));
-            }
+            IQueryable<Request> filteredRequests = FilterRequests(specifiedRequest, requests);
 
-            if (specifiedRequest.Location != null)
-            {
-                requests = requests.Where(x => x.Location.Contains(specifiedRequest.Location));
-            }
+            var unsortedRequests = await filteredRequests.ToListAsync();
 
-            if (specifiedRequest.NullableCreatedDate != null)
-            {
-                requests = requests.Where(x => x.CreatedDate == specifiedRequest.NullableCreatedDate);
-            }
+            IOrderedEnumerable<Request> sortedRequests = SortRequests(sortField, sortOrder, unsortedRequests);
 
-            if (specifiedRequest.NullableEndDate != null)
-            {
-                requests = requests.Where(x => x.EndDate == specifiedRequest.NullableEndDate);
-            }
-
-            if (specifiedRequest.RequestStatus != RequestStatus.All)
-            {
-                switch (specifiedRequest.RequestStatus)
-                {
-                    case RequestStatus.Unassigned:
-                        requests = requests.Where(x => x.Completed == false && !x.AssigneeId.HasValue);
-                        break;
-                    case RequestStatus.Assigned:
-                        requests = requests.Where(x => x.Completed == false && x.AssigneeId.HasValue);
-                        break;
-                    case RequestStatus.Completed:
-                        requests = requests.Where(x => x.Completed == true);
-                        break;
-                    default:
-                        ModelState.AddModelError("RequestStatus", "Please select a valid request status");
-                        break;
-                }
-            }
+            ViewBag.SortOrderParam   = String.IsNullOrEmpty(sortOrder) ? "desc" : sortOrder;
+            ViewBag.SortFieldParam   = String.IsNullOrEmpty(sortOrder) ? "EndDate" : sortField;
+            ViewBag.SpecifiedRequest = specifiedRequest;
 
             return View("Index", new RequestIndexPageViewModel()
             {
-                Requests = await requests.ToListAsync(),
-                RequestSearch = new RequestSearch()
+                Requests = sortedRequests,
+                RequestSearch = specifiedRequest
             });
         }
 
@@ -277,6 +272,110 @@ namespace crisicheckinweb.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        private static IOrderedEnumerable<Request> SortRequests(string sortField, string sortOrder, List<Request> requests)
+        {
+            IOrderedEnumerable<Request> orderRequest = null;
+            if (requests != null)
+            {
+                switch (sortField)
+                {
+                    case "End Date":
+                        orderRequest = sortOrder == "desc"
+                            ? requests.OrderByDescending(r => r.EndDate)
+                            : requests.OrderBy(r => r.EndDate);
+                        break;
+                    case "Location":
+                        orderRequest = sortOrder == "desc"
+                            ? requests.OrderByDescending(r => r.Location)
+                            : requests.OrderBy(r => r.Location);
+                        break;
+                    case "Created By":
+                        orderRequest = sortOrder == "desc"
+                            ? requests.OrderByDescending(r => r.Creator.FullName)
+                            : requests.OrderBy(r => r.Creator.FullName);
+                        break;
+                    case "Created On":
+                        orderRequest = sortOrder == "desc"
+                            ? requests.OrderByDescending(r => r.CreatedDate)
+                            : requests.OrderBy(r => r.CreatedDate);
+                        break;
+                    case "Status":
+                        orderRequest = sortOrder == "desc"
+                            ? requests.OrderByDescending(r => r.Completed)
+                            : requests.OrderBy(r => r.Completed);
+                        break;
+                    case "Description":
+                        orderRequest = sortOrder == "desc"
+                            ? requests.OrderByDescending(r => r.Description)
+                            : requests.OrderBy(r => r.Description);
+                        break;
+                    default:
+                        orderRequest = sortOrder == "desc"
+                            ? requests.OrderByDescending(r => r.EndDate)
+                            : requests.OrderBy(r => r.EndDate);
+                        break;
+                }
+            }
+            return orderRequest;
+        }
+
+        private IQueryable<Request> FilterRequests(RequestSearch specifiedRequest, IQueryable<Request> requests)
+        {
+            if (specifiedRequest.Description != null)
+            {
+                requests = requests.Where(x => x.Description.Contains(specifiedRequest.Description));
+            }
+
+            if (specifiedRequest.Location != null)
+            {
+                requests = requests.Where(x => x.Location.Contains(specifiedRequest.Location));
+            }
+
+            if (specifiedRequest.NullableCreatedDate != null)
+            {
+                requests = requests.Where(x => x.CreatedDate == specifiedRequest.NullableCreatedDate);
+            }
+
+            if (specifiedRequest.NullableEndDate != null)
+            {
+                requests = requests.Where(x => x.EndDate == specifiedRequest.NullableEndDate);
+            }
+
+            if (specifiedRequest.RequestStatus != RequestStatus.All)
+            {
+                switch (specifiedRequest.RequestStatus)
+                {
+                    case RequestStatus.Unassigned:
+                        requests = requests.Where(x => x.Completed == false && !x.AssigneeId.HasValue);
+                        break;
+                    case RequestStatus.Assigned:
+                        requests = requests.Where(x => x.Completed == false && x.AssigneeId.HasValue);
+                        break;
+                    case RequestStatus.Completed:
+                        requests = requests.Where(x => x.Completed == true);
+                        break;
+                    default:
+                        ModelState.AddModelError("RequestStatus", "Please select a valid request status");
+                        break;
+                }
+            }
+            return requests;
+        }
+
+        private RequestSearch CreateRequestSearchObject(DateTime? endDate, DateTime? createdDate, string location, string description,
+    RequestStatus? requestStatus)
+        {
+            var nonNullRequestStatus = requestStatus ?? RequestStatus.All;
+            return new RequestSearch()
+            {
+                NullableCreatedDate = createdDate,
+                NullableEndDate = endDate,
+                Location = location,
+                Description = description,
+                RequestStatus = nonNullRequestStatus
+            };
         }
     }
 }
