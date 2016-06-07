@@ -69,7 +69,8 @@
                 {
                     if (item.AssigneeId.HasValue)
                     {
-                        @Html.Raw(new HtmlString("<p>Assigned</p>"))
+                        @Html.Raw(new HtmlString("<p>Assigned (" + @item.Assignee.FullName + ")</p>"))
+                        
                     }
                     else
                     {
@@ -101,7 +102,7 @@
                 $("#dp_endDate").datepicker();
 
                 $("#filter-button").click(function () {
-                    $("#filter-holder").toggle();
+                    $("#filter-holder").toggle("slow");
                 });
             });
         })(jQuery);
