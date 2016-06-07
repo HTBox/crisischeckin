@@ -244,12 +244,11 @@
     <Compile Include="ViewModels\ForgotPasswordViewModel.cs" />
     <Compile Include="ViewModels\NewOrganizationViewModel.cs" />
     <Compile Include="ViewModels\RequestDetailsViewModel.cs" />
-    <Compile Include="ViewModels\RequestIndexPageViewModel.cs" />
+    <Compile Include="ViewModels\RequestIndexViewModel.cs" />
     <Compile Include="ViewModels\ResetPasswordViewModel.cs" />
     <Compile Include="ViewModels\SelectedDisasterCluster.cs" />
     <Compile Include="ViewModels\SendMessageToAllVolunteersByDisasterViewModel.cs" />
     <Compile Include="ViewModels\UnassignClusterCoordinatorViewModel.cs" />
-    <Compile Include="ViewModels\VolunteerRequestIndexViewModel.cs" />
     <Compile Include="Wrappers\UserCreationException.cs" />
     <Compile Include="Wrappers\IWebSecurityWrapper.cs" />
     <Compile Include="Controllers\VolunteerController.cs" />

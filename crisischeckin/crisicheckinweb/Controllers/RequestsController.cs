@@ -51,7 +51,7 @@ namespace crisicheckinweb.Controllers
 
             IOrderedEnumerable<Request> sortedRequests = SortRequests(sortField, sortOrder, unsortedRequests);
 
-            return View(new RequestIndexPageViewModel()
+            return View(new AdminRequestIndexViewModel()
             {
                 Requests = sortedRequests.ToList(),
                 RequestSearch = specifiedRequest
@@ -180,7 +180,7 @@ namespace crisicheckinweb.Controllers
             ViewBag.SortFieldParam   = String.IsNullOrEmpty(sortOrder) ? "EndDate" : sortField;
             ViewBag.SpecifiedRequest = specifiedRequest;
 
-            return View("Index", new RequestIndexPageViewModel()
+            return View("Index", new AdminRequestIndexViewModel()
             {
                 Requests = sortedRequests,
                 RequestSearch = specifiedRequest
