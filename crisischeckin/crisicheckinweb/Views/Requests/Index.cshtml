@@ -1,4 +1,5 @@
-﻿@model crisicheckinweb.ViewModels.AdminRequestIndexViewModel
+﻿@using crisicheckinweb.Helpers
+@model crisicheckinweb.ViewModels.AdminRequestIndexViewModel
 
 @{
     ViewBag.Title = "Index";
@@ -26,22 +27,22 @@
 <table class="table table-striped table-bordered">
     <tr class="ht-header">
         <th>
-            @Html.ActionLink(@Html.DisplayNameFor(model => model.RequestSearch.Description).ToString(), "Index", new { sortField = @Html.DisplayNameFor(model => model.RequestSearch.Description).ToString(), sortOrder = ViewBag.SortOrderParam, endDate = @ViewBag.SpecifiedRequest.NullableEndDate, createdDate = @ViewBag.SpecifiedRequest.NullableCreatedDate, location = @ViewBag.SpecifiedRequest.Location, description = @ViewBag.SpecifiedRequest.Description, requestStatus = @ViewBag.SpecifiedRequest.RequestStatus })
+            @Html.SortLink(@Html.DisplayNameFor(model => model.RequestSearch.Description).ToString(), "Index")
         </th>
         <th>
-            @Html.ActionLink(@Html.DisplayNameFor(model => model.RequestSearch.Location).ToString(), "Index", new { sortField = @Html.DisplayNameFor(model => model.RequestSearch.Location).ToString(), sortOrder = ViewBag.SortOrderParam, endDate = @ViewBag.SpecifiedRequest.NullableEndDate, createdDate = @ViewBag.SpecifiedRequest.NullableCreatedDate, location = @ViewBag.SpecifiedRequest.Location, description = @ViewBag.SpecifiedRequest.Description, requestStatus = @ViewBag.SpecifiedRequest.RequestStatus })
+            @Html.SortLink(@Html.DisplayNameFor(model => model.RequestSearch.Location).ToString(), "Index")
         </th>
         <th>
-            @Html.ActionLink("Created By", "Index", new { sortField = "Created By", sortOrder = ViewBag.SortOrderParam, endDate = @ViewBag.SpecifiedRequest.NullableEndDate, createdDate = @ViewBag.SpecifiedRequest.NullableCreatedDate, location = @ViewBag.SpecifiedRequest.Location, description = @ViewBag.SpecifiedRequest.Description, requestStatus = @ViewBag.SpecifiedRequest.RequestStatus })
+            @Html.SortLink("Created By", "Index")
         </th>
         <th>
-            @Html.ActionLink(@Html.DisplayNameFor(model => model.RequestSearch.CreatedDate).ToString(), "Index", new { sortField = @Html.DisplayNameFor(model => model.RequestSearch.CreatedDate).ToString(), sortOrder = ViewBag.SortOrderParam, endDate = @ViewBag.SpecifiedRequest.NullableEndDate, createdDate = @ViewBag.SpecifiedRequest.NullableCreatedDate, location = @ViewBag.SpecifiedRequest.Location, description = @ViewBag.SpecifiedRequest.Description, requestStatus = @ViewBag.SpecifiedRequest.RequestStatus })
+            @Html.SortLink(@Html.DisplayNameFor(model => model.RequestSearch.CreatedDate).ToString(), "Index")
         </th>
         <th>
-            @Html.ActionLink(@Html.DisplayNameFor(model => model.RequestSearch.EndDate).ToString(), "Index", new { sortField = @Html.DisplayNameFor(model => model.RequestSearch.EndDate).ToString(), sortOrder = ViewBag.SortOrderParam, endDate = @ViewBag.SpecifiedRequest.NullableEndDate, createdDate = @ViewBag.SpecifiedRequest.NullableCreatedDate, location = @ViewBag.SpecifiedRequest.Location, description = @ViewBag.SpecifiedRequest.Description, requestStatus = @ViewBag.SpecifiedRequest.RequestStatus })
+            @Html.SortLink(@Html.DisplayNameFor(model => model.RequestSearch.EndDate).ToString(), "Index")
         </th>
         <th>
-            @Html.ActionLink(@Html.DisplayNameFor(model => model.RequestSearch.Completed).ToString(), "Index", new { sortField = @Html.DisplayNameFor(model => model.RequestSearch.Completed).ToString(), sortOrder = ViewBag.SortOrderParam, endDate = @ViewBag.SpecifiedRequest.NullableEndDate, createdDate = @ViewBag.SpecifiedRequest.NullableCreatedDate, location = @ViewBag.SpecifiedRequest.Location, description = @ViewBag.SpecifiedRequest.Description, requestStatus = @ViewBag.SpecifiedRequest.RequestStatus })
+            @Html.SortLink(@Html.DisplayNameFor(model => model.RequestSearch.Completed).ToString(), "Index")
         </th>
         <th></th>
     </tr>
