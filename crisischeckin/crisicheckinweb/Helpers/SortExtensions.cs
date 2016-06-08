@@ -18,7 +18,7 @@ namespace crisicheckinweb.Helpers
                 requestStatus = htmlHelper.ViewBag.SpecifiedRequest.RequestStatus
             };
 
-            var r = htmlHelper.ActionLink(linkText, controllerMethod, sortValues).ToHtmlString();
+            var r = htmlHelper.ActionLink(linkText, controllerMethod, sortValues, new {@class = "sort-link"}).ToHtmlString();
             return MvcHtmlString.Create(r);
         }
     }

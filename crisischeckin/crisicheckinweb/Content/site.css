@@ -55,3 +55,12 @@
 #delayed-modal input {
     background-color: #ffffff !important;
 }
+
+.sort-link {
+    color: #fff;
+    text-decoration: underline;
+}
+
+.sort-link:hover {
+    color: #333;
+}
