@@ -3,6 +3,7 @@ using Services.Exceptions;
 using Services.Interfaces;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Models.Migrations;
 
 namespace Services
@@ -49,6 +50,11 @@ namespace Services
         public IQueryable<Disaster> Disasters
         {
             get { return context.Disasters; }
+        }
+
+        public IQueryable<Request> Requests
+        {
+            get { return context.Requests; }
         }
 
         public IQueryable<DisasterCluster> DisasterClusters
@@ -232,6 +238,32 @@ namespace Services
             return result;
         }
 
+        public async Task AssignRequestToUserAsync(int userId, int requestId)
+        {
+            var result = await context.Requests.FindAsync(requestId);
+
+            if (result == null)
+                throw new RequestNotFoundException();
+
+            if (result.AssigneeId.HasValue)
+                throw new RequestAlreadyAssignedException();
+
+            result.AssigneeId = userId;
+
+            await context.SaveChangesAsync();
+        }
+
+        public async Task CompleteRequestAsync(int requestId)
+        {
+            var result = await context.Requests.FindAsync(requestId);
+
+            if (result == null)
+                throw new RequestNotFoundException();
+
+            result.Completed = true;
+
+            await context.SaveChangesAsync();
+        }
 
         public void AddClusterGroup(ClusterGroup newCluster)
         {

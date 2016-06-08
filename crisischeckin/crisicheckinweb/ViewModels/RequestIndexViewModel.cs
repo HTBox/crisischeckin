@@ -23,21 +23,4 @@ namespace crisicheckinweb.ViewModels
         // Empty Request object used for Razor templates 
         public Request Request { get; set; }
     }
-
-    public class RequestSearch : Request
-    {
-        [DisplayName("Request Status")]
-        public RequestStatus RequestStatus { get; set; }
-
-        public DateTime? NullableEndDate { get; set; }
-        public DateTime? NullableCreatedDate { get; set; }
-    }
-
-    public enum RequestStatus
-    {
-        All,
-        Unassigned,
-        Assigned,
-        Completed
-    }
 }

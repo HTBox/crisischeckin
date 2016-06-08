@@ -66,9 +66,9 @@
     <Compile Include="Commitment.cs" />
     <Compile Include="Contact.cs" />
     <Compile Include="CrisisCheckin.cs" />
-    <Compile Include="Migrations\201606061512444_AddRequests.cs" />
-    <Compile Include="Migrations\201606061512444_AddRequests.Designer.cs">
-      <DependentUpon>201606061512444_AddRequests.cs</DependentUpon>
+    <Compile Include="Migrations\201606081924202_AddRequests.cs" />
+    <Compile Include="Migrations\201606081924202_AddRequests.Designer.cs">
+      <DependentUpon>201606081924202_AddRequests.cs</DependentUpon>
     </Compile>
     <Compile Include="Request.cs" />
     <Compile Include="Disaster.cs" />
@@ -217,8 +217,8 @@
     <EmbeddedResource Include="Migrations\201604191341494_AddVerifiedFlagToOrganizations.resx">
       <DependentUpon>201604191341494_AddVerifiedFlagToOrganizations.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201606061512444_AddRequests.resx">
-      <DependentUpon>201606061512444_AddRequests.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201606081924202_AddRequests.resx">
+      <DependentUpon>201606081924202_AddRequests.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

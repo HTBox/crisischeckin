@@ -17,6 +17,7 @@ namespace Models
         public string Description { get; set; }
         public int CreatorId { get; set; }
         public int? AssigneeId { get; set; }
+        public int? OrganizationId { get; set; }
 
         [DisplayName("Status")]
         public bool Completed { get; set; }
@@ -24,6 +25,23 @@ namespace Models
 
         public virtual Person Creator { get; set; }
         public virtual Person Assignee { get; set; }
+        public virtual Organization Organization { get; set; }
+    }
 
+    public class RequestSearch : Request
+    {
+        [DisplayName("Request Status")]
+        public RequestStatus RequestStatus { get; set; }
+
+        public DateTime? NullableEndDate { get; set; }
+        public DateTime? NullableCreatedDate { get; set; }
+    }
+
+    public enum RequestStatus
+    {
+        All,
+        Unassigned,
+        Assigned,
+        Completed
     }
 }

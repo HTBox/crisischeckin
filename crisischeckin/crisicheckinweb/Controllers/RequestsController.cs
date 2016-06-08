@@ -11,6 +11,7 @@ using crisicheckinweb.ViewModels;
 using crisicheckinweb.Wrappers;
 using Microsoft.Ajax.Utilities;
 using Models;
+using Services.Interfaces;
 
 namespace crisicheckinweb.Controllers
 {
@@ -18,17 +19,19 @@ namespace crisicheckinweb.Controllers
     {
         private CrisisCheckin db = new CrisisCheckin();
         private readonly IWebSecurityWrapper _webSecurity;
+        private readonly IRequest _requestSvc;
 
-        public RequestsController(IWebSecurityWrapper webSecurity)
+        public RequestsController(IWebSecurityWrapper webSecurity, IRequest requestSvc)
         {
             _webSecurity = webSecurity;
+            _requestSvc = requestSvc;
         }
 
         // GET: Requests
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Index(string sortField, string sortOrder, DateTime? endDate, DateTime? createdDate, string location, string description, RequestStatus? requestStatus)
         {
-            var specifiedRequest = CreateRequestSearchObject(endDate, createdDate, location, description, requestStatus);
+            var specifiedRequest = _requestSvc.CreateRequestSearchObject(endDate, createdDate, location, description, requestStatus);
             if (string.IsNullOrEmpty(sortOrder))
             {
                 // If it's blank, default to descending
@@ -44,13 +47,11 @@ namespace crisicheckinweb.Controllers
             ViewBag.SortFieldParam   = String.IsNullOrEmpty(sortOrder) ? "EndDate" : sortField;
             ViewBag.SpecifiedRequest = specifiedRequest;
 
-            IQueryable<Request> requests = db.Requests.Include(r => r.Creator).Include(r => r.Assignee);
+            IQueryable<Request> requests = db.Requests.Include(r => r.Creator).Include(r => r.Assignee).AsQueryable();
 
-            IQueryable<Request> filteredRequests = FilterRequests(specifiedRequest, requests);
+            IEnumerable<Request> filteredRequests = await _requestSvc.FilterRequestsAsync(specifiedRequest, requests);
 
-            var unsortedRequests = await filteredRequests.ToListAsync();
-
-            IOrderedEnumerable<Request> sortedRequests = SortRequests(sortField, sortOrder, unsortedRequests);
+            IOrderedEnumerable<Request> sortedRequests = _requestSvc.SortRequests(sortField, sortOrder, filteredRequests);
 
             return View(new AdminRequestIndexViewModel()
             {
@@ -85,7 +86,6 @@ namespace crisicheckinweb.Controllers
         public ActionResult Create()
         {
             ViewBag.CreatorId = _webSecurity.CurrentUserId;
-            ViewBag.OrganizationId = new SelectList(db.Organizations, "OrganizationId", "OrganizationName");
             return View();
         }
 
@@ -178,11 +178,9 @@ namespace crisicheckinweb.Controllers
         {
             IQueryable<Request> requests = db.Requests.Include(r => r.Creator).Include(r => r.Assignee);
 
-            IQueryable<Request> filteredRequests = FilterRequests(specifiedRequest, requests);
+            IEnumerable<Request> filteredRequests = await _requestSvc.FilterRequestsAsync(specifiedRequest, requests);
 
-            var unsortedRequests = await filteredRequests.ToListAsync();
-
-            IOrderedEnumerable<Request> sortedRequests = SortRequests(sortField, sortOrder, unsortedRequests);
+            IOrderedEnumerable<Request> sortedRequests = _requestSvc.SortRequests(sortField, sortOrder, filteredRequests);
 
             ViewBag.SortOrderParam   = String.IsNullOrEmpty(sortOrder) ? "desc" : sortOrder;
             ViewBag.SortFieldParam   = String.IsNullOrEmpty(sortOrder) ? "EndDate" : sortField;
@@ -199,15 +197,9 @@ namespace crisicheckinweb.Controllers
         [Authorize]
         public async Task<ActionResult> VolunteerRequestIndex(RequestSearch specifiedRequest)
         {
-            var volunteersRequest = await db.Requests
-                                            .Include(r => r.Assignee)
-                                            .Where(r => r.AssigneeId == _webSecurity.CurrentUserId && r.Completed == false)
-                                            .ToListAsync();
+            var volunteersRequest = await _requestSvc.GetRequestForUserAsync(_webSecurity.CurrentUserId);
 
-            var openRequests = await db.Requests
-                                        .Include(r => r.Assignee)
-                                        .Where(r => r.Completed == false && !r.AssigneeId.HasValue)
-                                        .ToListAsync();
+            var openRequests = await _requestSvc.GetOpenRequestsAsync();
 
             return View("VolunteerRequestAssignment", new VolunteerRequestIndexViewModel()
             {
@@ -221,23 +213,11 @@ namespace crisicheckinweb.Controllers
         [Authorize]
         public async Task<ActionResult> AssignRequest(int requestId)
         {
-            var request = db.Requests.FirstOrDefault(r => r.RequestId == requestId);
-            if (request != null)
-            {
-                request.AssigneeId = _webSecurity.CurrentUserId;
-                db.Entry(request).State = EntityState.Modified;
-                await db.SaveChangesAsync();
-            }
+            await _requestSvc.AssignRequestToUserAsync(_webSecurity.CurrentUserId, requestId);
 
-            var volunteersRequest = await db.Requests
-                                            .Include(r => r.Assignee)
-                                            .Where(r => r.AssigneeId == _webSecurity.CurrentUserId && r.Completed == false)
-                                            .ToListAsync();
+            var volunteersRequest = await _requestSvc.GetRequestForUserAsync(_webSecurity.CurrentUserId);
 
-            var openRequests = await db.Requests
-                                        .Include(r => r.Assignee)
-                                        .Where(r => r.Completed == false && !r.AssigneeId.HasValue)
-                                        .ToListAsync();
+            var openRequests = await _requestSvc.GetOpenRequestsAsync();
 
             return View("VolunteerRequestAssignment", new VolunteerRequestIndexViewModel()
             {
@@ -251,23 +231,11 @@ namespace crisicheckinweb.Controllers
         [Authorize]
         public async Task<ActionResult> CompleteRequest(int requestId)
         {
-            var request = db.Requests.FirstOrDefault(r => r.RequestId == requestId);
-            if (request != null)
-            {
-                request.Completed = true;
-                db.Entry(request).State = EntityState.Modified;
-                await db.SaveChangesAsync();
-            }
+            await _requestSvc.CompleteRequestAsync(requestId);
 
-            var volunteersRequest = await db.Requests
-                                            .Include(r => r.Assignee)
-                                            .Where(r => r.AssigneeId == _webSecurity.CurrentUserId && r.Completed == false)
-                                            .ToListAsync();
+            var volunteersRequest = await _requestSvc.GetRequestForUserAsync(_webSecurity.CurrentUserId);
 
-            var openRequests = await db.Requests
-                                        .Include(r => r.Assignee)
-                                        .Where(r => r.Completed == false && !r.AssigneeId.HasValue)
-                                        .ToListAsync();
+            var openRequests = await _requestSvc.GetOpenRequestsAsync();
 
             return View("VolunteerRequestAssignment", new VolunteerRequestIndexViewModel()
             {
@@ -283,110 +251,6 @@ namespace crisicheckinweb.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
-        }
-
-        private static IOrderedEnumerable<Request> SortRequests(string sortField, string sortOrder, List<Request> requests)
-        {
-            IOrderedEnumerable<Request> orderRequest = null;
-            if (requests != null)
-            {
-                switch (sortField)
-                {
-                    case "End Date":
-                        orderRequest = sortOrder == "desc"
-                            ? requests.OrderByDescending(r => r.EndDate)
-                            : requests.OrderBy(r => r.EndDate);
-                        break;
-                    case "Location":
-                        orderRequest = sortOrder == "desc"
-                            ? requests.OrderByDescending(r => r.Location)
-                            : requests.OrderBy(r => r.Location);
-                        break;
-                    case "Created By":
-                        orderRequest = sortOrder == "desc"
-                            ? requests.OrderByDescending(r => r.Creator.FullName)
-                            : requests.OrderBy(r => r.Creator.FullName);
-                        break;
-                    case "Created On":
-                        orderRequest = sortOrder == "desc"
-                            ? requests.OrderByDescending(r => r.CreatedDate)
-                            : requests.OrderBy(r => r.CreatedDate);
-                        break;
-                    case "Status":
-                        orderRequest = sortOrder == "desc"
-                            ? requests.OrderByDescending(r => r.Completed)
-                            : requests.OrderBy(r => r.Completed);
-                        break;
-                    case "Description":
-                        orderRequest = sortOrder == "desc"
-                            ? requests.OrderByDescending(r => r.Description)
-                            : requests.OrderBy(r => r.Description);
-                        break;
-                    default:
-                        orderRequest = sortOrder == "desc"
-                            ? requests.OrderByDescending(r => r.EndDate)
-                            : requests.OrderBy(r => r.EndDate);
-                        break;
-                }
-            }
-            return orderRequest;
-        }
-
-        private IQueryable<Request> FilterRequests(RequestSearch specifiedRequest, IQueryable<Request> requests)
-        {
-            if (specifiedRequest.Description != null)
-            {
-                requests = requests.Where(x => x.Description.Contains(specifiedRequest.Description));
-            }
-
-            if (specifiedRequest.Location != null)
-            {
-                requests = requests.Where(x => x.Location.Contains(specifiedRequest.Location));
-            }
-
-            if (specifiedRequest.NullableCreatedDate != null)
-            {
-                requests = requests.Where(x => x.CreatedDate == specifiedRequest.NullableCreatedDate);
-            }
-
-            if (specifiedRequest.NullableEndDate != null)
-            {
-                requests = requests.Where(x => x.EndDate == specifiedRequest.NullableEndDate);
-            }
-
-            if (specifiedRequest.RequestStatus != RequestStatus.All)
-            {
-                switch (specifiedRequest.RequestStatus)
-                {
-                    case RequestStatus.Unassigned:
-                        requests = requests.Where(x => x.Completed == false && !x.AssigneeId.HasValue);
-                        break;
-                    case RequestStatus.Assigned:
-                        requests = requests.Where(x => x.Completed == false && x.AssigneeId.HasValue);
-                        break;
-                    case RequestStatus.Completed:
-                        requests = requests.Where(x => x.Completed == true);
-                        break;
-                    default:
-                        ModelState.AddModelError("RequestStatus", "Please select a valid request status");
-                        break;
-                }
-            }
-            return requests;
-        }
-
-        private RequestSearch CreateRequestSearchObject(DateTime? endDate, DateTime? createdDate, string location, string description,
-    RequestStatus? requestStatus)
-        {
-            var nonNullRequestStatus = requestStatus ?? RequestStatus.All;
-            return new RequestSearch()
-            {
-                NullableCreatedDate = createdDate,
-                NullableEndDate = endDate,
-                Location = location,
-                Description = description,
-                RequestStatus = nonNullRequestStatus
-            };
         }
     }
 }
