@@ -218,6 +218,7 @@
     <Compile Include="Controllers\DisasterController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\OrganizationController.cs" />
+    <Compile Include="Helpers\ModelStateExtensions.cs" />
     <Compile Include="Filters\AccessDeniedAuthorizeAttribute.cs" />
     <Compile Include="Filters\CrisisCheckInApiAuthorizeAttribute.cs" />
     <Compile Include="Helpers\ElmahHandleErrorAttribute.cs" />

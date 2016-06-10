@@ -44,6 +44,9 @@ namespace crisicheckinweb.ViewModels
         public string ResourceLocation { get; set; }
 
 
+        public int RemoveResourceId { get; set; }
+
+
         public IEnumerable<ResourceType> ResourceTypes { get; set; }
     }
 }

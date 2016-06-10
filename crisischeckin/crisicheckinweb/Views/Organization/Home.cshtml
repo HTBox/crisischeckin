@@ -35,6 +35,7 @@
         <th>Start Date</th>
         <th>End Date</th>
         <th>Location</th>
+        <th>&nbsp;</th>
     </tr>
     @foreach (var r in Model.OrganizationResources)
     {
@@ -46,6 +47,15 @@
             <td>@r.StartOfAvailability.ToShortDateString()</td>
             <td>@r.EndOfAvailability.ToShortDateString()</td>
             <td>@r.Location.AddressLine1</td>
+            <td>
+                @using (Html.BeginForm("RemoveResource", "Organization", FormMethod.Post, new { @class = "navbar-form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(m => m.OrganizationId, new { @Value = Model.OrganizationId })
+                    @Html.HiddenFor(m => m.RemoveResourceId, new { @Value = r.ResourceId })
+                    <button class="btn btn-danger btn-xs" type="submit"><i class="glyphicon glyphicon-remove"></i> Remove</button>
+                }
+            </td>
         </tr>
     }
 </table>

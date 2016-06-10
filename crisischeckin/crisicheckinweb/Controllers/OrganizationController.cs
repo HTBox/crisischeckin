@@ -121,12 +121,11 @@ namespace crisicheckinweb.Controllers
 
             try
             {
+                // Get the current user and check membership
                 var person = VolunteerService.FindByUserId(WebSecurityWrapper.CurrentUserId);
-                if ((person == null) || (person.OrganizationId != model.OrganizationId))
-                {
-                    throw new ArgumentException(
-                        "The logged in user is either the administrator or is not a member of the specified organisation."); // Should be verifying access to entire page?
-                }
+                ConfirmMembership(person, model.OrganizationId);
+
+                // Ok
                 model.Organization = OrganizationService.Get(model.OrganizationId);
                 DisasterService.AddResourceCheckIn(model.Organization, person, model.ResourceDisasterId, model.ResourceDescription,
                     model.ResourceQuantity, model.ResourceTypeId, model.ResourceStartDate, model.ResourceEndDate, model.ResourceLocation);
@@ -139,6 +138,41 @@ namespace crisicheckinweb.Controllers
             }
 
             return View("Home", CreateHomeViewModel(model));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult RemoveResource(OrganizationHomeViewModel model)
+        {
+            ModelState.RemoveErrorsExcept(nameof(OrganizationHomeViewModel.RemoveResourceId));
+            if (!ModelState.IsValid)
+                return View("Home", CreateHomeViewModel(model));
+
+            try
+            {
+                // Get the current user and check membership
+                var person = VolunteerService.FindByUserId(WebSecurityWrapper.CurrentUserId);
+                ConfirmMembership(person, model.OrganizationId);
+
+                // Check the resource ID
+                var resources = AdminService.GetResourceCheckinsForOrganization(model.OrganizationId);
+                var resource = resources.FirstOrDefault(r => r.ResourceId == model.RemoveResourceId);
+                if (resource == null)
+                {
+                    throw new ArgumentException("The specified resource does not belong to this Organization.");
+                }
+
+                // Ok
+                DisasterService.RemoveResourceById(resource.ResourceId);
+
+                return Redirect("Home/" + model.OrganizationId);
+            }
+            catch (ArgumentException ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+            }
+
+            return View("Home", CreateHomeViewModel(model.OrganizationId));
         }
 
         OrganizationHomeViewModel CreateHomeViewModel(int organizationId)
@@ -174,8 +208,18 @@ namespace crisicheckinweb.Controllers
             model.ResourceStartDate = inputModel.ResourceStartDate;
             model.ResourceEndDate = inputModel.ResourceEndDate;
             model.ResourceLocation = inputModel.ResourceLocation;
+            model.RemoveResourceId = inputModel.RemoveResourceId;
 
             return model;
+        }
+
+        void ConfirmMembership(Person person, int organizationId)
+        {
+            if ((person == null) || (person.OrganizationId != organizationId))
+            {
+                throw new ArgumentException(
+                    "The logged in user is either the administrator or is not a member of the specified organisation."); // Should be verifying access to entire page?
+            }
         }
     }
 }
