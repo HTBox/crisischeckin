@@ -105,7 +105,7 @@ namespace Services
                         requests = requests.Where(x => x.Completed == true);
                         break;
                     default:
-                        throw new Exception("A valid request status was not selected.");
+                        throw new ArgumentException("A valid request status was not selected.");
                 }
             }
             return await requests.ToListAsync();

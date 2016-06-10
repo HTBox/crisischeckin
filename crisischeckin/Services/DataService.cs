@@ -243,10 +243,10 @@ namespace Services
             var result = await context.Requests.FindAsync(requestId);
 
             if (result == null)
-                throw new RequestNotFoundException();
+                throw new ArgumentException("The specified request does not exist.");
 
             if (result.AssigneeId.HasValue)
-                throw new RequestAlreadyAssignedException();
+                throw new InvalidOperationException("Cannot assign a request that has already been assigned.");
 
             result.AssigneeId = userId;
 
@@ -258,7 +258,7 @@ namespace Services
             var result = await context.Requests.FindAsync(requestId);
 
             if (result == null)
-                throw new RequestNotFoundException();
+                throw new ArgumentException("The specified request does not exist.");
 
             result.Completed = true;
 
