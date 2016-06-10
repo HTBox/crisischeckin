@@ -445,6 +445,7 @@
     <Content Include="Views\Requests\VolunteerRequestAssignment.cshtml" />
     <Content Include="Views\Requests\_CompleteRequestForm.cshtml" />
     <Content Include="Views\Requests\_AssignRequestForm.cshtml" />
+    <Content Include="Views\Shared\_LoginLayout.cshtml" />
     <None Include="Web.Staging.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
