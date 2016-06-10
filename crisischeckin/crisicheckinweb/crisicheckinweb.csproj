@@ -433,6 +433,9 @@
     <Content Include="Views\Organization\RegisterNewOrganization.cshtml" />
     <Content Include="Views\Organization\ProcessNewOrganization.cshtml" />
     <Content Include="Views\Organization\OrganizationVerified.cshtml" />
+    <Content Include="Views\Volunteer\ListResourceCheckinsByDisaster.cshtml" />
+    <Content Include="Views\Volunteer\_FilterResourceCheckinResults.cshtml" />
+    <Content Include="Views\Shared\_LoginLayout.cshtml" />
     <Content Include="Views\Organization\List.cshtml" />
     <Content Include="Views\Organization\Home.cshtml" />
     <None Include="Web.Staging.config">
