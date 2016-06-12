@@ -6,7 +6,7 @@ namespace CrisisCheckinMobile
     public class App : Application
     {
         public static string AuthToken { get; set; }
-        public static Commitment Commitment { get; set; }
+        //public static Commitment Commitment { get; set; }
         public static string BackIcon = "";
         public static string ReportTroubleIcon = "";
         public static string ProfileIcon = "";

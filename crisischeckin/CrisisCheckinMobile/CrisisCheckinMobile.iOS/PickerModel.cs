@@ -1,5 +1,5 @@
 ﻿using System;
-using CrisisCheckinMobile.ViewModels;
+using CrisisCheckinMobile.Models;
 using UIKit;
 
 namespace CrisisCheckinMobile.iOS

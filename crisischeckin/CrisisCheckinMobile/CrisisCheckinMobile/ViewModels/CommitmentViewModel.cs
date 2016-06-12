@@ -1,4 +1,5 @@
 using System;
+using CrisisCheckinMobile.Models;
 
 namespace CrisisCheckinMobile.ViewModels
 {
@@ -13,15 +14,4 @@ namespace CrisisCheckinMobile.ViewModels
         public bool PersonIsCheckedIn { get; set; }
         public CommitmentStatus Status { get; set; }
 	}
-
-    public enum CommitmentStatus
-    {
-        None,
-        Planned,
-        Delayed,
-        Out,
-        Here,
-        Unavailable,
-        Finished
-    }
 }

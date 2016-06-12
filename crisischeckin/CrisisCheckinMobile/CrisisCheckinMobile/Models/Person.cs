@@ -15,6 +15,6 @@ namespace CrisisCheckinMobile.Models
         public string FullName { get { return LastName + ", " + FirstName; } }
 
         public Cluster Cluster { get { return GetValue<Cluster>(); } set { SetValue(value); } }
-        public NavigationSet<Commitment> Commitments { get { return GetValue<NavigationSet<Commitment>>(); } set { SetValue(value); } }
+        //public NavigationSet<Commitment> Commitments { get { return GetValue<NavigationSet<Commitment>>(); } set { SetValue(value); } }
     }
 }

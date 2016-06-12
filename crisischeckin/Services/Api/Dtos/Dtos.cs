@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Models;
 
 namespace Services.Api.Dtos
 {
@@ -27,6 +24,8 @@ namespace Services.Api.Dtos
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public bool IsActive { get; set; }
+        public int PersonId { get; set; }
+        public CommitmentStatus Status { get; set; }
 
         public DisasterDto Disaster { get; set; }
     }
