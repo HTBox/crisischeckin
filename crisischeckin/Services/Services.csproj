@@ -99,6 +99,7 @@
     <Compile Include="Interfaces\IApiService.cs" />
     <Compile Include="Interfaces\IOrganizationService.cs" />
     <Compile Include="Interfaces\IRequest.cs" />
+    <Compile Include="Interfaces\IResource.cs" />
     <Compile Include="Interfaces\IVolunteerTypeService.cs" />
     <Compile Include="MessageCoordinator.cs" />
     <Compile Include="MessageRecipient.cs" />
@@ -115,6 +116,7 @@
     <Compile Include="Interfaces\IVolunteerService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RequestService.cs" />
+    <Compile Include="ResourceService.cs" />
     <Compile Include="SMSMessageSender.cs" />
     <Compile Include="SmtpMessageSender.cs" />
     <Compile Include="SubjectEnrichmentService.cs" />
