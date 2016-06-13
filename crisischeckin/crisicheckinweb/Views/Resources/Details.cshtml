@@ -1,0 +1,99 @@
+﻿@model Models.Resource
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Resource</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Disaster.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Disaster.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Person.FirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Person.FirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ResourceType.TypeName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ResourceType.TypeName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EntryMade)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EntryMade)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.StartOfAvailability)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StartOfAvailability)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EndOfAvailability)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EndOfAvailability)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Location)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Location)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Qty)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Qty)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ResourceId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
