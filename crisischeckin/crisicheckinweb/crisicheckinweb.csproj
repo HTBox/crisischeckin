@@ -218,10 +218,12 @@
     <Compile Include="Controllers\DisasterController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\OrganizationController.cs" />
+    <Compile Include="Controllers\RequestsController.cs" />
     <Compile Include="Filters\AccessDeniedAuthorizeAttribute.cs" />
     <Compile Include="Filters\CrisisCheckInApiAuthorizeAttribute.cs" />
     <Compile Include="Helpers\ElmahHandleErrorAttribute.cs" />
     <Compile Include="Helpers\MenuExtensions.cs" />
+    <Compile Include="Helpers\SortExtensions.cs" />
     <Compile Include="Infrastructure\Attributes\BasicPasswordAttribute.cs" />
     <Compile Include="Infrastructure\Attributes\ExpireContentAttribute.cs" />
     <Compile Include="Infrastructure\PasswordComplexity.cs" />
@@ -242,6 +244,8 @@
     <Compile Include="ViewModels\DisasterViewModel.cs" />
     <Compile Include="ViewModels\ForgotPasswordViewModel.cs" />
     <Compile Include="ViewModels\NewOrganizationViewModel.cs" />
+    <Compile Include="ViewModels\RequestDetailsViewModel.cs" />
+    <Compile Include="ViewModels\RequestIndexViewModel.cs" />
     <Compile Include="ViewModels\ResetPasswordViewModel.cs" />
     <Compile Include="ViewModels\SelectedDisasterCluster.cs" />
     <Compile Include="ViewModels\SendMessageToAllVolunteersByDisasterViewModel.cs" />
@@ -432,6 +436,15 @@
     <Content Include="Views\Organization\OrganizationVerified.cshtml" />
     <Content Include="Views\Volunteer\ListResourceCheckinsByDisaster.cshtml" />
     <Content Include="Views\Volunteer\_FilterResourceCheckinResults.cshtml" />
+    <Content Include="Views\Requests\Create.cshtml" />
+    <Content Include="Views\Requests\Delete.cshtml" />
+    <Content Include="Views\Requests\Details.cshtml" />
+    <Content Include="Views\Requests\Edit.cshtml" />
+    <Content Include="Views\Requests\Index.cshtml" />
+    <Content Include="Views\Requests\_FilterRequestPartial.cshtml" />
+    <Content Include="Views\Requests\VolunteerRequestAssignment.cshtml" />
+    <Content Include="Views\Requests\_CompleteRequestForm.cshtml" />
+    <Content Include="Views\Requests\_AssignRequestForm.cshtml" />
     <Content Include="Views\Shared\_LoginLayout.cshtml" />
     <None Include="Web.Staging.config">
       <DependentUpon>Web.config</DependentUpon>
