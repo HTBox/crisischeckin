@@ -7,13 +7,17 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h2>Index</h2>
+<h2>Resources</h2>
+<p>The following is a list of reources your organization has listed for this disaster.  These reources can be viewed by volunteers.</p>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New", "Create", new { }, new { @class = "btn btn-black" })
 </p>
-<table class="table">
-    <tr>
+<table class="table table-bordered table-striped">
+    <tr class="ht-header">
+        <th>
+            Disaster Name
+        </th>
         <th>
             @Html.DisplayNameFor(model => model.ResourceType.TypeName)
         </th>
@@ -44,6 +48,9 @@
 @foreach (var item in Model) {
     <tr>
         <td>
+            @Html.DisplayFor(modelItem => item.Disaster.Name)
+        </td>
+        <td>
             @Html.DisplayFor(modelItem => item.ResourceType.TypeName)
         </td>
         <td>
@@ -68,9 +75,9 @@
             @Html.DisplayFor(modelItem => item.Status)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ResourceId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ResourceId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ResourceId })
+            @Html.ActionLink("Edit", "Edit", new {id = item.ResourceId}) |
+            @Html.ActionLink("Details", "Details", new {id = item.ResourceId}) |
+            @Html.ActionLink("Delete", "Delete", new {id = item.ResourceId})
         </td>
     </tr>
 }
