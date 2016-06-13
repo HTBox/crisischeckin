@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,12 +14,14 @@ namespace Models
 
         public Organization Allocator { get; set; }
         public virtual Person Person { get; set; }
+        [DisplayName("Contact")]
         public int? PersonId { get; set; }
         public string Description { get; set; }
-
+        [DisplayName("Date Created")]
         public DateTime EntryMade { get; set; }
-
+        [DisplayName("Availability Start")]
         public DateTime StartOfAvailability { get; set; }
+        [DisplayName("Availability End")]
         public DateTime EndOfAvailability { get; set; }
         public Address Location { get; set; }
         public Decimal Qty { get; set; }

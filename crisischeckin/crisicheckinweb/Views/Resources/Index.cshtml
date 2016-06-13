@@ -1,0 +1,88 @@
+﻿@model IEnumerable<Models.Resource>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Disaster.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Person.FirstName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ResourceType.TypeName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EntryMade)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StartOfAvailability)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EndOfAvailability)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Location)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Qty)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Status)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Disaster.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Person.FirstName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ResourceType.TypeName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EntryMade)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.StartOfAvailability)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EndOfAvailability)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Location)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Qty)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Status)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.ResourceId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.ResourceId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.ResourceId })
+        </td>
+    </tr>
+}
+
+</table>
