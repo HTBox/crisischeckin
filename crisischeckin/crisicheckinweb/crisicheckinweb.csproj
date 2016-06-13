@@ -223,6 +223,7 @@
     <Compile Include="Filters\AccessDeniedAuthorizeAttribute.cs" />
     <Compile Include="Filters\CrisisCheckInApiAuthorizeAttribute.cs" />
     <Compile Include="Helpers\ElmahHandleErrorAttribute.cs" />
+    <Compile Include="Helpers\LocationForExtension.cs" />
     <Compile Include="Helpers\MenuExtensions.cs" />
     <Compile Include="Helpers\SortExtensions.cs" />
     <Compile Include="Infrastructure\Attributes\BasicPasswordAttribute.cs" />

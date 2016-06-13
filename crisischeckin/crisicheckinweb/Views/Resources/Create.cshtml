@@ -15,13 +15,6 @@
         <h4>Resource</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.PersonId, "PersonId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("PersonId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.PersonId, "", new { @class = "text-danger" })
-            </div>
-        </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -32,17 +25,9 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.EntryMade, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.EntryMade, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.EntryMade, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
             @Html.LabelFor(model => model.StartOfAvailability, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.StartOfAvailability, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.StartOfAvailability, new { htmlAttributes = new { @id = "dp_startDate", @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.StartOfAvailability, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -50,7 +35,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.EndOfAvailability, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.EndOfAvailability, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.EndOfAvailability, new { htmlAttributes = new { @id = "dp_endDate", @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.EndOfAvailability, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -80,7 +65,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.DisasterId, "DisasterId", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.DisasterId, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownList("DisasterId", null, htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.DisasterId, "", new { @class = "text-danger" })
@@ -88,7 +73,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.ResourceTypeId, "ResourceTypeId", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.ResourceTypeId, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownList("ResourceTypeId", null, htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.ResourceTypeId, "", new { @class = "text-danger" })
@@ -106,3 +91,15 @@
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
+
+@section scripts
+{
+    <script type="text/javascript">
+        (function ($) {
+            $(document).ready(function () {
+                $("#dp_startDate").datepicker();
+                $("#dp_endDate").datepicker();
+            });
+        })(jQuery);
+    </script>
+}

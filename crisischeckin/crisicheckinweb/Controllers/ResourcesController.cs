@@ -7,13 +7,21 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using crisicheckinweb.Wrappers;
 using Models;
+using WebMatrix.WebData;
 
 namespace crisicheckinweb.Controllers
 {
     public class ResourcesController : Controller
     {
         private CrisisCheckin db = new CrisisCheckin();
+        private readonly IWebSecurityWrapper _webSecurity ;
+
+        public ResourcesController(IWebSecurityWrapper webSecurity)
+        {
+            _webSecurity = webSecurity;
+        }
 
         // GET: Resources
         public async Task<ActionResult> Index()
@@ -47,14 +55,15 @@ namespace crisicheckinweb.Controllers
         }
 
         // POST: Resources/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "ResourceId,PersonId,Description,EntryMade,StartOfAvailability,EndOfAvailability,Location,Qty,Status,DisasterId,ResourceTypeId")] Resource resource)
+        public async Task<ActionResult> Create([Bind(Include = "ResourceId,Description,StartOfAvailability,EndOfAvailability,Location,Qty,Status,DisasterId,ResourceTypeId")] Resource resource)
         {
             if (ModelState.IsValid)
             {
+                resource.PersonId = _webSecurity.CurrentUserId;
+                resource.EntryMade = DateTime.Now;
+
                 db.Resources.Add(resource);
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
@@ -89,7 +98,7 @@ namespace crisicheckinweb.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "ResourceId,PersonId,Description,EntryMade,StartOfAvailability,EndOfAvailability,Location,Qty,Status,DisasterId,ResourceTypeId")] Resource resource)
+        public async Task<ActionResult> Edit([Bind(Include = "ResourceId,EntryMade,PersonId,Description,StartOfAvailability,EndOfAvailability,Location,Qty,Status,DisasterId,ResourceTypeId")] Resource resource)
         {
             if (ModelState.IsValid)
             {
@@ -97,6 +106,7 @@ namespace crisicheckinweb.Controllers
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
+
             ViewBag.DisasterId = new SelectList(db.Disasters, "Id", "Name", resource.DisasterId);
             ViewBag.PersonId = new SelectList(db.Persons, "Id", "FirstName", resource.PersonId);
             ViewBag.ResourceTypeId = new SelectList(db.ResourceTypes, "ResourceTypeId", "TypeName", resource.ResourceTypeId);

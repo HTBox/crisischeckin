@@ -1,4 +1,5 @@
 ﻿@model Models.Resource
+@using crisicheckinweb.Helpers
 
 @{
     ViewBag.Title = "Details";
@@ -20,11 +21,11 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Person.FirstName)
+            Created By
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Person.FirstName)
+            @Html.DisplayFor(model => model.Person.FullName)
         </dd>
 
         <dt>
@@ -72,7 +73,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Location)
+            @Html.LocationFor(Model.Location)
         </dd>
 
         <dt>

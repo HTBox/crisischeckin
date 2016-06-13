@@ -1,4 +1,6 @@
 ﻿@model IEnumerable<Models.Resource>
+@using crisicheckinweb.Helpers
+@using Models
 
 @{
     ViewBag.Title = "Index";
@@ -12,12 +14,6 @@
 </p>
 <table class="table">
     <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Disaster.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Person.FirstName)
-        </th>
         <th>
             @Html.DisplayNameFor(model => model.ResourceType.TypeName)
         </th>
@@ -48,12 +44,6 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.Disaster.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Person.FirstName)
-        </td>
-        <td>
             @Html.DisplayFor(modelItem => item.ResourceType.TypeName)
         </td>
         <td>
@@ -69,7 +59,7 @@
             @Html.DisplayFor(modelItem => item.EndOfAvailability)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Location)
+            @Html.LocationFor(item.Location)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Qty)
