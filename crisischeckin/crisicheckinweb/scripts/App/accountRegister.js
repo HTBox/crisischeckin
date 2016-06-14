@@ -1,6 +1,9 @@
 ﻿var emailInvalid = false;
 var usernameInvalid = false;
 var passwordInvalid = false;
+var phonenumberInvalid = false;
+var lastnameInvalid = false;
+var firstnameInvalid = false;
 
 (function ($) {
 
@@ -86,6 +89,15 @@ var passwordInvalid = false;
         return match;
     }
 
+    function validatePhoneNumber(phoneNumber, regex) {
+        if (!regex) {
+            regex = new RegExp(/^\d{0,15}$/i);
+        }
+        var match = regex.test(phoneNumber);
+        phonenumberInvalid = !match;
+        return match;
+    }
+
     function requiredMessage(element, fieldType) {
         element.after('<div class=\"feedbackHelper failure\">' + fieldType + ' is required.</div>');
     }
@@ -100,7 +112,9 @@ var passwordInvalid = false;
     }
 
     function validateRequiredWithMaxLength(element, fieldName) {
+        var isValid = true;
         if (element.val().length === 0) {
+            isValid = false;
             requiredMessage(element, fieldName);
         } else {
             var lengthRequirement = element.attr("data-val-length-max");
@@ -108,6 +122,7 @@ var passwordInvalid = false;
                 try {
                     lengthRequirement = parseInt(lengthRequirement);
                     if (element.val().length > lengthRequirement) {
+                        isValid = false;
                         var message = element.attr("data-val-length");
                         if (!message)
                             message = fieldName + " length is not valid.";
@@ -118,6 +133,7 @@ var passwordInvalid = false;
                 }
             }
         }
+        return isValid;
     }
 
     $(document).ready(function () {
@@ -155,6 +171,7 @@ var passwordInvalid = false;
             clearWarning(element);
 
             if (element.val().length === 0) {
+                emailInvalid = true;
                 requiredMessage(element, "Email Address");
             } else {
                 var regex = element.attr("data-val-regex-pattern"); //follow pattern set in code
@@ -171,28 +188,46 @@ var passwordInvalid = false;
             setSubmitDisabled();
         });
 
+        $("#PhoneNumber").focusout(function () {
+            var element = $(this);
+            clearWarning(element);
+
+            if (element.val().length === 0) {
+                phonenumberInvalid = true;
+                requiredMessage(element, "Phone Number");
+            } else {
+                var regex = element.attr("data-val-regex-pattern"); //follow pattern set in code
+                if (regex) {
+                    regex = new RegExp(regex);
+                }
+                if (!validatePhoneNumber(element.val(), regex)) {
+                    var message = element.attr("data-val-regex");
+                    if (!message)
+                        message = "This is not a valid phone number.";
+                    addErrorMessage(element, message);
+                }
+            }
+            setSubmitDisabled();
+        });
+
         function setSubmitDisabled()
         {
-            var disable = usernameInvalid || emailInvalid || passwordInvalid;
-            $('input[type="submit"]').prop('disabled', disable);
+            var disable = usernameInvalid || emailInvalid || passwordInvalid || phonenumberInvalid || lastnameInvalid || firstnameInvalid;
+            $('input[type="submit"]').prop("disabled", disable);
         }
 
         $("#FirstName").focusout(function () {
             var element = $(this);
             clearWarning(element);
-            validateRequiredWithMaxLength(element, "First Name");
+            firstnameInvalid = !validateRequiredWithMaxLength(element, "First Name");
+            setSubmitDisabled();
         });
 
         $("#LastName").focusout(function () {
             var element = $(this);
             clearWarning(element);
-            validateRequiredWithMaxLength(element, "Last Name");
-        });
-
-        $("#PhoneNumber").focusout(function () {
-            var element = $(this);
-            clearWarning(element);
-            validateRequiredWithMaxLength(element, "Phone Number");
+            lastnameInvalid = !validateRequiredWithMaxLength(element, "Last Name");
+            setSubmitDisabled();
         });
 
         $("#txt_userName").focusout(function () {
