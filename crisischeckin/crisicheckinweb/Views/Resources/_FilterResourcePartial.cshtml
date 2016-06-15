@@ -1,6 +1,6 @@
 ﻿@model crisicheckinweb.ViewModels.SearchModels.ResourceSearch
 
-@using (Html.BeginForm("Filter", "Resources"))
+@using (Html.BeginForm("Filter", "Resources", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
 
