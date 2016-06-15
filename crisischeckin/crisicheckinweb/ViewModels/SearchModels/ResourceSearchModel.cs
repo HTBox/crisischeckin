@@ -11,10 +11,30 @@ namespace crisicheckinweb.ViewModels.SearchModels
 {
     public class ResourceSearch : Resource
     {
+        public const int GeneralSelectId = -100;
+        public ResourceSearch()
+        {
+        }
+
         public ResourceSearch(List<Disaster> disasters, List<ResourceType> resourceTypes)
         {
-            this._disasters = disasters;
-            this._resourceTypes = resourceTypes;
+            var alldisasters = new Disaster()
+            {
+                Id = GeneralSelectId,
+                IsActive = true,
+                Name = "All Disasters"
+            };
+            disasters.Insert(0, alldisasters);
+
+            var allResourceTypes = new ResourceType()
+            {
+                ResourceTypeId = GeneralSelectId,
+                TypeName = "All Resource Types"
+            };
+            resourceTypes.Insert(0, allResourceTypes);
+
+            _disasters = disasters;
+            _resourceTypes = resourceTypes;
         }
 
         [DisplayName("Availability Start")]

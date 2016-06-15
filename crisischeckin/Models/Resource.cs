@@ -45,8 +45,10 @@ namespace Models
 
     public enum ResourceStatus
     {
+        All = 0,
         Available = 1,
         EnRoute = 2,
-        Delivered = 3
+        Delivered = 3,
+        
     }
 }

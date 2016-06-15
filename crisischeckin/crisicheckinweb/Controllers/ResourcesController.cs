@@ -26,18 +26,15 @@ namespace crisicheckinweb.Controllers
         }
 
         // GET: Resources
-        public async Task<ActionResult> Index(IQueryable<Resource> filteredResources = null)
+        public async Task<ActionResult> Index()
         {
-            IQueryable<Resource> resources;
-
-            resources = filteredResources ??
-                        db.Resources.Include(r => r.Disaster)
-                                    .Include(r => r.Person)
-                                    .Include(r => r.ResourceType);
+            IEnumerable<Resource> resources = await db.Resources.Include(r => r.Disaster)
+                                                      .Include(r => r.Person)
+                                                      .Include(r => r.ResourceType).ToListAsync();
 
             return View(new AdminResourceIndexViewModel()
             {
-                Resources =  await resources.ToListAsync(),
+                Resources = resources,
                 ResourceSearch = new ResourceSearch(await db.Disasters.ToListAsync(), await db.ResourceTypes.ToListAsync())
             });
         }
@@ -71,6 +68,12 @@ namespace crisicheckinweb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create([Bind(Include = "ResourceId,Description,StartOfAvailability,EndOfAvailability,Location,Qty,Status,DisasterId,ResourceTypeId")] Resource resource)
         {
+            if (resource.Status == ResourceStatus.All)
+                ModelState.AddModelError("Status", "You must select a status other than 'All'.");
+
+            if (resource.StartOfAvailability > resource.EndOfAvailability)
+                ModelState.AddModelError("StartOfAvailability", "The start of the availability for this resource cannot be after the end of its availability.");
+
             if (ModelState.IsValid)
             {
                 resource.PersonId = _webSecurity.CurrentUserId;
@@ -112,6 +115,12 @@ namespace crisicheckinweb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit([Bind(Include = "ResourceId,EntryMade,PersonId,Description,StartOfAvailability,EndOfAvailability,Location,Qty,Status,DisasterId,ResourceTypeId")] Resource resource)
         {
+            if (resource.Status == ResourceStatus.All)
+                ModelState.AddModelError("Status", "You must select a status other than 'All'.");
+
+            if (resource.StartOfAvailability > resource.EndOfAvailability)
+                ModelState.AddModelError("StartOfAvailability", "The start of the availability for this resource cannot be after the end of its availability.");
+
             if (ModelState.IsValid)
             {
                 db.Entry(resource).State = EntityState.Modified;
@@ -163,94 +172,97 @@ namespace crisicheckinweb.Controllers
         [HttpPost, ActionName("Filter")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public ActionResult Filter(ResourceSearch specifiedResource)
+        public async Task<ActionResult> Filter(ResourceSearch specifiedResource)
         {
-            var resource = db.Resources.Include(r => r.Disaster)
+            var resources = db.Resources.Include(r => r.Disaster)
                                     .Include(r => r.Person)
                                     .Include(r => r.ResourceType);
 
             if (specifiedResource.Description != null)
             {
-                resource = resource.Where(x => x.Description.Contains(specifiedResource.Description));
+                resources = resources.Where(x => x.Description.Contains(specifiedResource.Description));
             }
 
             if (specifiedResource.NullableCreatedDate != null)
             {
-                resource = resource.Where(x => DbFunctions.TruncateTime(x.EntryMade) == DbFunctions.TruncateTime(specifiedResource.NullableCreatedDate));
+                resources = resources.Where(x => DbFunctions.TruncateTime(x.EntryMade) == DbFunctions.TruncateTime(specifiedResource.NullableCreatedDate));
             }
 
             if (specifiedResource.NullableStartDate != null)
             {
-                resource = resource.Where(x => DbFunctions.TruncateTime(x.StartOfAvailability) == DbFunctions.TruncateTime(specifiedResource.NullableStartDate));
+                resources = resources.Where(x => DbFunctions.TruncateTime(x.StartOfAvailability) == DbFunctions.TruncateTime(specifiedResource.NullableStartDate));
             }
 
             if (specifiedResource.NullableEndDate != null)
             {
-                resource = resource.Where(x => DbFunctions.TruncateTime(x.EndOfAvailability) == DbFunctions.TruncateTime(specifiedResource.NullableEndDate));
+                resources = resources.Where(x => DbFunctions.TruncateTime(x.EndOfAvailability) == DbFunctions.TruncateTime(specifiedResource.NullableEndDate));
             }
 
             if (specifiedResource.Location.AddressLine1 != null)
             {
-                resource = resource.Where(x => x.Location.AddressLine1.Contains(specifiedResource.Location.AddressLine1));
+                resources = resources.Where(x => x.Location.AddressLine1.Contains(specifiedResource.Location.AddressLine1));
             }
 
             if (specifiedResource.Location.AddressLine2 != null)
             {
-                resource = resource.Where(x => x.Location.AddressLine2.Contains(specifiedResource.Location.AddressLine2));
+                resources = resources.Where(x => x.Location.AddressLine2.Contains(specifiedResource.Location.AddressLine2));
             }
 
             if (specifiedResource.Location.AddressLine3 != null)
             {
-                resource = resource.Where(x => x.Location.AddressLine3.Contains(specifiedResource.Location.AddressLine3));
+                resources = resources.Where(x => x.Location.AddressLine3.Contains(specifiedResource.Location.AddressLine3));
             }
 
             if (specifiedResource.Location.City != null)
             {
-                resource = resource.Where(x => x.Location.City.Contains(specifiedResource.Location.City));
+                resources = resources.Where(x => x.Location.City.Contains(specifiedResource.Location.City));
             }
 
             if (specifiedResource.Location.County != null)
             {
-                resource = resource.Where(x => x.Location.County.Contains(specifiedResource.Location.County));
+                resources = resources.Where(x => x.Location.County.Contains(specifiedResource.Location.County));
             }
 
             if (specifiedResource.Location.State != null)
             {
-                resource = resource.Where(x => x.Location.State.Contains(specifiedResource.Location.State));
+                resources = resources.Where(x => x.Location.State.Contains(specifiedResource.Location.State));
             }
 
             if (specifiedResource.Location.Country != null)
             {
-                resource = resource.Where(x => x.Location.Country.Contains(specifiedResource.Location.Country));
+                resources = resources.Where(x => x.Location.Country.Contains(specifiedResource.Location.Country));
             }
 
             if (specifiedResource.Location.PostalCode != null)
             {
-                resource = resource.Where(x => x.Location.PostalCode.Contains(specifiedResource.Location.PostalCode));
+                resources = resources.Where(x => x.Location.PostalCode.Contains(specifiedResource.Location.PostalCode));
             }
 
             if (specifiedResource.Qty > 0.1m)
             {
-                resource = resource.Where(x => x.Qty == specifiedResource.Qty);
+                resources = resources.Where(x => x.Qty == specifiedResource.Qty);
             }
 
-            if (specifiedResource.SelectedResourceTypeId != null)
+            if (specifiedResource.SelectedResourceTypeId != ResourceSearch.GeneralSelectId)
             {
-                resource = resource.Where(x => x.ResourceTypeId == specifiedResource.SelectedResourceTypeId);
+                resources = resources.Where(x => x.ResourceTypeId == specifiedResource.SelectedResourceTypeId);
             }
 
-            if (specifiedResource.SelectedDisasterId != null)
+            if (specifiedResource.SelectedDisasterId != ResourceSearch.GeneralSelectId)
             {
-                resource = resource.Where(x => x.DisasterId == specifiedResource.SelectedDisasterId);
+                resources = resources.Where(x => x.DisasterId == specifiedResource.SelectedDisasterId);
             }
 
-            if (specifiedResource.Status != null)
+            if (specifiedResource.Status != ResourceStatus.All)
             {
-                resource = resource.Where(x => x.Status == specifiedResource.Status);
+                resources = resources.Where(x => x.Status == specifiedResource.Status);
             }
 
-            // Left Off - 
-            return RedirectToAction("Index", resource);
+            return View("Index", new AdminResourceIndexViewModel()
+            {
+                Resources = resources,
+                ResourceSearch = new ResourceSearch(await db.Disasters.ToListAsync(), await db.ResourceTypes.ToListAsync())
+            });
         }
     }
 }
