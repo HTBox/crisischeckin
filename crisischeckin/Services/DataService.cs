@@ -145,11 +145,10 @@ namespace Services
             context.SaveChanges();
         }
 
-        public void AddResource(Resource newResource)
+        public async Task AddResourceAsync(Resource newResource)
         {
-            newResource.EntryMade = DateTime.Now;
             context.Resources.Add(newResource);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
 
         public void AddCommitment(Commitment newCommitment)
@@ -158,11 +157,11 @@ namespace Services
             context.SaveChanges();
         }
 
-        public void RemoveResourceById(int id)
+        public async Task RemoveResourceByIdAsync(int id)
         {
-            var resource = context.Resources.Find(id);
+            var resource = await context.Resources.FindAsync(id);
             context.Resources.Remove(resource);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
 
         public void RemoveCommitmentById(int id)
