@@ -89,6 +89,10 @@
   color: #fff
 }
 
+.table > tbody > tr.ht-utility > td{
+  background-color: #3C3C3C;
+  color: #fff
+}
 
 
 .btn-black {

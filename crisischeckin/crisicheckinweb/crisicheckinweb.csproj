@@ -23,6 +23,7 @@
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
     <WebGreaseLibPath>..\packages\WebGrease.1.5.2\lib</WebGreaseLibPath>
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -93,6 +94,10 @@
     <Reference Include="Ninject.Web.Mvc, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Ninject.MVC3.3.2.1.0\lib\net45-full\Ninject.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp, Version=105.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.105.0.1\lib\net4\RestSharp.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -166,6 +171,10 @@
     </Reference>
     <Reference Include="System.Net.Http.WebRequest">
     </Reference>
+    <Reference Include="Twilio.Api, Version=3.4.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Twilio.4.0.3\lib\3.5\Twilio.Api.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="WebActivator, Version=1.5.3.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\WebActivator.1.5.3\lib\net40\WebActivator.dll</HintPath>
@@ -203,9 +212,12 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="App_Start\AuthConfig.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\ClusterGroupController.cs" />
+    <Compile Include="Controllers\ClusterController.cs" />
     <Compile Include="Controllers\ClusterCoordinatorController.cs" />
     <Compile Include="Controllers\DisasterController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\OrganizationController.cs" />
     <Compile Include="Filters\AccessDeniedAuthorizeAttribute.cs" />
     <Compile Include="Filters\CrisisCheckInApiAuthorizeAttribute.cs" />
     <Compile Include="Helpers\ElmahHandleErrorAttribute.cs" />
@@ -219,14 +231,19 @@
     <Compile Include="NavigationRoutes\NavigationRouteConfigurationExtensions.cs" />
     <Compile Include="NavigationRoutes\NavigationRouteFilter.cs" />
     <Compile Include="ViewModels\AssignClusterCoordinatorViewModel.cs" />
+    <Compile Include="ViewModels\AvailableAction.cs" />
     <Compile Include="ViewModels\ChangeContactInfoViewModel.cs" />
+    <Compile Include="ViewModels\CheckinListsResultsViewModel.cs" />
     <Compile Include="ViewModels\ClusterCoordinatorViewModel.cs" />
+    <Compile Include="ViewModels\ClusterGroupViewModel.cs" />
     <Compile Include="ViewModels\ClusterViewModel.cs" />
     <Compile Include="ViewModels\ConfirmUnassignClusterCoordinatorViewModel.cs" />
     <Compile Include="ViewModels\DisasterClusterCoordinatorsViewModel.cs" />
     <Compile Include="ViewModels\DisasterViewModel.cs" />
     <Compile Include="ViewModels\ForgotPasswordViewModel.cs" />
+    <Compile Include="ViewModels\NewOrganizationViewModel.cs" />
     <Compile Include="ViewModels\ResetPasswordViewModel.cs" />
+    <Compile Include="ViewModels\SelectedDisasterCluster.cs" />
     <Compile Include="ViewModels\SendMessageToAllVolunteersByDisasterViewModel.cs" />
     <Compile Include="ViewModels\UnassignClusterCoordinatorViewModel.cs" />
     <Compile Include="Wrappers\UserCreationException.cs" />
@@ -343,6 +360,8 @@
     <Content Include="scripts\App\amplify-setup.js" />
     <Content Include="scripts\App\config.js" />
     <Content Include="scripts\App\Controllers\Volunteer\listByDisasterController.js" />
+    <Content Include="scripts\App\disasterEdit.js" />
+    <Content Include="scripts\App\home.js" />
     <Content Include="scripts\App\Models\Volunteer\listByDisasterModel.js" />
     <Content Include="scripts\bootstrap.js" />
     <Content Include="scripts\bootstrap.min.js" />
@@ -404,6 +423,13 @@
     <Content Include="Views\Account\PasswordResetCompleted.cshtml" />
     <Content Include="Views\Account\ConfirmAccount.cshtml" />
     <Content Include="Views\Account\RegistrationSuccessful.cshtml" />
+    <Content Include="Views\Cluster\List.cshtml" />
+    <Content Include="Views\Cluster\Create.cshtml" />
+    <Content Include="Views\ClusterGroup\Create.cshtml" />
+    <Content Include="Views\ClusterGroup\List.cshtml" />
+    <Content Include="Views\Organization\RegisterNewOrganization.cshtml" />
+    <Content Include="Views\Organization\ProcessNewOrganization.cshtml" />
+    <Content Include="Views\Organization\OrganizationVerified.cshtml" />
     <None Include="Web.Staging.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
@@ -462,6 +488,7 @@
   <ItemGroup>
     <Content Include="Views\Account\UserLogOff.cshtml" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

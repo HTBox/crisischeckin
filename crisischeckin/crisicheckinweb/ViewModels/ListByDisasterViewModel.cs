@@ -13,5 +13,8 @@ namespace crisicheckinweb.ViewModels
         public IEnumerable<Disaster> Disasters { get; set; }
         public int SelectedDisaster { get; set; }
         public DateTime? CommitmentDate { get; set; }
+
+
+        public int AddContactId { get; set; }
     }
 }

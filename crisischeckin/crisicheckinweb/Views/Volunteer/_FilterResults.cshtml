@@ -1,6 +1,6 @@
-﻿@model IEnumerable<Models.Person>
+﻿@model crisicheckinweb.ViewModels.CheckinListsResultsViewModel
 @{
-    ViewBag.Title = "_FilterResults";
+    ViewBag.Title = "_FilterResults";    
 }
 
 <style>
@@ -10,24 +10,107 @@
     }
 </style>
 
+<h3>Volunteer Checkins</h3>
 <table>
     <tr>
         <th>Volunteer Name</th>
+        <th>Organization</th>
         <th>Email</th>
         <th>Phone</th>
-        <th>Cluster</th>
+        <th>Activity</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Location</th>
     </tr>
-    @if (Model != null)
+    @if (Model.VolunteerCheckins != null)
     {
-        foreach (var person in Model)
+        foreach (var person in Model.VolunteerCheckins)
         {
-            <tr>
-                <td>@(person.LastName + ", " + person.FirstName)</td>
-                <td>@person.Email</td>
-                <td>@person.PhoneNumber</td>
-                <td>@(Html.Encode(person.Cluster != null ? person.Cluster.Name : ""))</td>
-            </tr>
+            for (int ci = 0; ci < person.Commitments.Count(); ci++)
+            {
+                var commitment = person.Commitments.ElementAt(ci);
+
+                <tr>
+                    @if (ci == 0)
+                    {
+                        <td rowspan="@person.Commitments.Count()">@(person.LastName + ", " + person.FirstName)<br />
+                            @using (Html.BeginForm("AddContact", "Volunteer", FormMethod.Post, new { @class = "navbar-form" }))
+                            {
+                              @Html.AntiForgeryToken()
+                              @Html.HiddenFor(m => m.AddContactId, new { @Value = person.Id })
+                              <button class="btn btn-black btn-xs" type="submit">Add as Contact</button>
+                            }                        
+                        </td>
+                        <td rowspan="@person.Commitments.Count()">@(person.Organization != null ? person.Organization.OrganizationName : "none")</td>
+                        <td rowspan="@person.Commitments.Count()">@person.Email</td>
+                        <td rowspan="@person.Commitments.Count()">@person.PhoneNumber</td>
+                    }
+                    <td>@commitment.Cluster.Name</td>
+                    <td>@commitment.StartDate.ToShortDateString()</td>
+                    <td>@commitment.EndDate.ToShortDateString()</td>
+                    <td>
+                        @commitment.VolunteerType.Name
+                        @if (!String.IsNullOrWhiteSpace(commitment.Location))
+                        {
+                            @(" (" + commitment.Location + ")")
+                        }
+                    </td>
+                </tr>
+            }
         }
     }
 </table>    
 
+<h3>Field Reported Data</h3>
+<table>
+    <tr>
+        <th>Entry Made</th>
+        <th>Description</th>
+        <th>Organization</th>
+        <th>Quantity</th>
+        <th>Type</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Location</th>
+    </tr>
+    @if (Model.ResourceCheckins != null)
+    {
+        foreach (var resource in Model.ResourceCheckins)
+        {
+            <tr>
+                <td>@resource.EntryMade.ToShortDateString() @resource.EntryMade.ToShortTimeString()</td>
+                <td>@resource.Description</td>
+                <td>@(resource.Allocator != null ? resource.Allocator.OrganizationName  : "none") @if (resource.Person != null) { @("- " + resource.Person.FullName)}</td>
+                <td>@resource.Qty </td>
+                <td>@resource.ResourceType.TypeName</td>
+                <td>@resource.StartOfAvailability.ToShortDateString()</td>
+                <td>@resource.EndOfAvailability.ToShortDateString()</td>
+                <td>@resource.Location.AddressLine1</td>
+            </tr>
+        }
+    }
+</table>
+
+<h3>Organization Contacts</h3>
+<table>
+    <tr>
+        <th>Organization</th>
+        <th>Contact Name</th>
+        <th>Contact Organization</th>
+        <th>Email</th>
+        <th>Phone</th>
+    </tr>
+    @if (Model.OrganizationContacts != null)
+    {
+        foreach (var contact in Model.OrganizationContacts)
+        {
+                <tr>
+                    <td>@contact.Organization.OrganizationName</td>
+                    <td>@(contact.Person.LastName + ", " + contact.Person.FirstName)</td>
+                    <td>@(contact.Person.Organization != null ? contact.Person.Organization.OrganizationName : "none")</td>
+                    <td>@contact.Person.Email</td>
+                    <td>@contact.Person.PhoneNumber</td>
+                </tr>
+        }
+    }
+</table>

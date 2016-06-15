@@ -14,6 +14,7 @@ using Common;
 using Services.Exceptions;
 using NUnit.Framework;
 using Services;
+using System.Collections.Generic;
 
 namespace WebProjectTests
 {
@@ -29,6 +30,7 @@ namespace WebProjectTests
         private Mock<HttpContextBase> _httpContext;
         private Mock<IMessageService> _messageService;
         private RouteCollection _routeCollection;
+        private Mock<IOrganizationService> _organisationService;
 
         [SetUp]
         public void Setup()
@@ -54,13 +56,23 @@ namespace WebProjectTests
             _httpContext.SetupGet(x => x.Response).Returns(response.Object);
 
             var reqContext = new RequestContext(_httpContext.Object, new RouteData());
-
-            _controllerUnderTest = new AccountController(_volunteerService.Object, _cluster.Object, _webSecurity.Object, _messageService.Object);
+            var organization = new Organization()
+            {
+                OrganizationName = "Test",
+                OrganizationId = 1
+            };
+            var organizationList = new List<Organization>();
+            organizationList.Add(organization);
+            _organisationService = new Mock<IOrganizationService>();
+            _organisationService.Setup(x => x.GetActiveList()).Returns(organizationList);
+            _controllerUnderTest = new AccountController(_volunteerService.Object, _cluster.Object, _webSecurity.Object, _messageService.Object, _organisationService.Object);
             _controllerUnderTest.ControllerContext = new ControllerContext(reqContext, _controllerUnderTest);
 
             _routeCollection = new RouteCollection();
             RouteConfig.RegisterRoutes(_routeCollection);
             _controllerUnderTest.Url = new UrlHelper(reqContext, _routeCollection);
+
+            
         }
 
         private RegisterModel CreateValidRegisterModel()
@@ -73,8 +85,7 @@ namespace WebProjectTests
                 UserName = "user",
                 Email = "user@email.com",
                 Password = "p@ssw0rd",
-                ConfirmPassword = "p@ssw0rd",
-                Cluster = 42
+                ConfirmPassword = "p@ssw0rd"
             };
         }
 
@@ -83,7 +94,7 @@ namespace WebProjectTests
         {
             // Arrange
             _volunteerService.Setup(x => x.EmailAlreadyInUse("existing@email.com")).Returns(true);
-
+            
             // Act
             var model = CreateValidRegisterModel();
             model.Email = "existing@email.com";
@@ -136,9 +147,9 @@ namespace WebProjectTests
             _volunteerService.Verify(x => x.Register(
                 It.IsAny<string>(),
                 It.IsAny<string>(),
+                It.IsAny<int?>(),
                 It.IsAny<string>(),
                 It.IsAny<string>(),
-                It.IsAny<int>(),
                 It.IsAny<int>()), Times.Never);
         }
 
@@ -152,7 +163,7 @@ namespace WebProjectTests
 
             _volunteerService.Setup(x => x.EmailAlreadyInUse(It.IsAny<string>()))
                 .Returns(false);
-            _volunteerService.Setup(x => x.Register(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()))
+            _volunteerService.Setup(x => x.Register(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int?>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()))
                 .Returns(volunteer);
             _webSecurity.Setup(x => x.CreateUser(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string[]>(), out newUserId))
                 .Returns(confirmationToken);
@@ -170,9 +181,9 @@ namespace WebProjectTests
             _volunteerService.Verify(x => x.Register(
                 model.FirstName,
                 model.LastName,
+                model.SelectedOrganizationId,
                 model.Email,
                 model.PhoneNumber,
-                model.Cluster,
                 newUserId));
 
             _messageService.Verify(x => x.SendMessage(
@@ -441,8 +452,9 @@ namespace WebProjectTests
             var response = _controllerUnderTest.Login(model, "/return/url");
 
             // Assert
-            var result = response as RedirectResult;
-            Assert.AreEqual("/return/url", result.Url);
+            var result = response as RedirectToRouteResult;
+            Assert.AreEqual("Index", result.RouteValues["action"]);
+            Assert.AreEqual("Home", result.RouteValues["controller"]);
         }
 
         [Test]
@@ -504,8 +516,9 @@ namespace WebProjectTests
             var response = _controllerUnderTest.Login(model, "/return/url");
 
             // Assert
-            var result = response as RedirectResult;
-            Assert.AreEqual("/return/url", result.Url);
+            var result = response as RedirectToRouteResult;
+            Assert.AreEqual("Index", result.RouteValues["action"]);
+            Assert.AreEqual("Home", result.RouteValues["controller"]);
         }
 
         [Test]

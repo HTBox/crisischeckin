@@ -17,7 +17,7 @@ namespace AcceptanceTests.ClusterCoordinatorFeature
         public Person Create_a_volunteer()
         {
             var volunteerService = new VolunteerService(_dataService);
-            return volunteerService.Register("Sally", "Struthers", "sally@struthers.com", "890-1230-4567", GetRandomClusterId(), 100);
+            return volunteerService.Register("Sally", "Struthers", null, "sally@struthers.com", "890-1230-4567", 100);
         }
 
         public Disaster Create_a_disaster()

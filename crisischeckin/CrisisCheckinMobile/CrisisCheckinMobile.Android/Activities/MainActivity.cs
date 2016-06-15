@@ -1,16 +1,9 @@
-﻿using System;
-
-using Android.App;
+﻿using Android.App;
 using Android.Content;
 using Android.Content.PM;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using Android.OS;
-using Android.Graphics;
-using Android.Graphics.Drawables;
 
-namespace CrisisCheckinMobile.Droid
+namespace CrisisCheckinMobile.Droid.Activities
 {
     [Activity(
         Label = "", // "CrisisCheckinMobile",
@@ -22,41 +15,20 @@ namespace CrisisCheckinMobile.Droid
         Categories = new[] { Intent.CategoryLauncher },
         DataScheme = "crisischeckin",
         DataHost = "CrisisCheckinMobile.Android")]
-    public class MainActivity : Activity
+    public class MainActivity : Xamarin.Forms.Platform.Android.FormsApplicationActivity
     {
-        protected override void OnCreate(Bundle savedInstanceState)
+        protected override void OnCreate(Bundle bundle)
         {
-            base.OnCreate(savedInstanceState);
-
-//            ActionBar.Title = "";
-//            ActionBar.NavigationMode = ActionBarNavigationMode.Standard;
-//            ActionBar.SetHomeButtonEnabled(true);
-//            //ActionBar.SetDisplayHomeAsUpEnabled(true);
-//            var htboxRedColor = Resources.GetColor(Resource.Color.htBoxRed);
-//            var colorDrawable = new ColorDrawable(htboxRedColor);
-//            ActionBar.SetBackgroundDrawable(colorDrawable);
-
-            if (false) // TODO: if already authenticated
-            {
-                var commitmentActivity = new Intent(this, typeof(CommitmentActivity));
-                //commitmentActivity.PutExtra("disasterId", disasterId);
-                StartActivity(commitmentActivity);
-            }
-            else // TODO: send to log on page
-            {
-                var disasterListActivity = new Intent(this, typeof(DisasterListActivity));
-                StartActivity(disasterListActivity);
-            }
-  
+            base.OnCreate(bundle);
+            Xamarin.Forms.Forms.Init(this, bundle);
+            LoadApplication(new App());
         }
 
         protected override void OnNewIntent(Intent intent)
         {
             base.OnNewIntent(intent);
-
             var disasterId = intent.Data.GetQueryParameter("disaster");
-
-            // TODO: do something with this disaster ID
+            // TODO - do something with this disaster ID
         }
     }
 }

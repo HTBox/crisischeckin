@@ -12,14 +12,14 @@ These are the steps I followed to get crisischeckin up and running on my develop
 * Run "Rebuild solution" from the Build menu (it should complete with no errors)
 * Open up the Package Manager Console (Tools -> NuGet Package Manager -> Package Manager Console)
 * Run the command `Update-Database -ProjectName models -StartupProject crisicheckinweb`  in the package manager console window. This should apply the code-based migrations and complete with no errors (but I did get yellow warnings that don't seem to have caused any problems)
-* You may need to install the NUnit Test runner so that all the unit tests appear.
+* You may need to install the NUnit Test Adapter (by Tomer Lieber) so that all the unit tests appear.
 * Run all the tests (Test -> Run -> All Tests), they should all pass without problems
 * Set the start up project to crisicheckinweb
 * Press F5 to run the site (or choose Debug -> Start Debugging)
 
 When the site starts up, you should be presented with a log in page. You can use the Register link at the bottom to start making new accounts.
 
-To log in as an administrator you can use "Administrator" and "P@$$w0rd" for the user name and password.
+To log in as an administrator you can use "**Administrator**" and "**P@$$w0rd**" for the user name and password.
 
 To get test data into your database:
 * Open Solution Explorer in Visual Studio
@@ -59,4 +59,4 @@ A bug in Visual Studio 2015 RC's handling of EF can cause the `Update-Datebase` 
 Jumping in
 ====
 
-Once you've gotten the projet running in your local environment, check out these issues https://github.com/HTBox/crisischeckin/issues?labels=jump-in&state=open any of which would be a great place to get started helping our project.
+Once you've gotten the project running in your local environment, check out these issues https://github.com/HTBox/crisischeckin/issues?labels=jump-in&state=open any of which would be a great place to get started helping our project.

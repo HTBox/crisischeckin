@@ -120,3 +120,6 @@ UpgradeLog*.XML
 *.userpref
 *.userprefs
 crisischeckin/CrisisCheckinMobile/Components/
+
+#GhostDoc
+*.sln.GhostDoc.xml
