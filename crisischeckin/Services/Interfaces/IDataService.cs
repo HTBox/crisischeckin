@@ -30,7 +30,7 @@ namespace Services.Interfaces
         void VerifyOrganization(int organizationId);
         Person AddPerson(Person newPerson);
         Person UpdatePerson(Person updatedPerson);
-        void AddResource(Resource newResource);
+        Task AddResourceAsync(Resource newResource);
         void AddContact(Contact newContact);
         void AddCommitment(Commitment newCommitment);
         void AddCluster(Cluster newCluster);
@@ -42,7 +42,7 @@ namespace Services.Interfaces
         void RemoveClusterGroup(ClusterGroup clusterToDelete);
         ClusterGroup UpdateClusterGroup(ClusterGroup updatedCluster);
         void RemoveCommitmentById(int id);
-        void RemoveResourceById(int id);
+        Task RemoveResourceByIdAsync(int id);
         void AddDisaster(Disaster newDisaster);
         Disaster UpdateDisaster(Disaster updatedDisaster);
         void AddDisasterCluster(DisasterCluster newDisasterCluster);

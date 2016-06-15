@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using crisicheckinweb.ViewModels;
 using crisicheckinweb.ViewModels.SearchModels;
 using crisicheckinweb.Wrappers;
 using Models;
-using WebMatrix.WebData;
+using Services.Interfaces;
 
 namespace crisicheckinweb.Controllers
 {
@@ -19,18 +17,17 @@ namespace crisicheckinweb.Controllers
     {
         private CrisisCheckin db = new CrisisCheckin();
         private readonly IWebSecurityWrapper _webSecurity ;
-
-        public ResourcesController(IWebSecurityWrapper webSecurity)
+        private readonly IResource _resourceSvc;
+        public ResourcesController(IWebSecurityWrapper webSecurity, IResource resourceSvc)
         {
             _webSecurity = webSecurity;
+            _resourceSvc = resourceSvc;
         }
 
         // GET: Resources
         public async Task<ActionResult> Index()
         {
-            IEnumerable<Resource> resources = await db.Resources.Include(r => r.Disaster)
-                                                      .Include(r => r.Person)
-                                                      .Include(r => r.ResourceType).ToListAsync();
+            IEnumerable<Resource> resources = await _resourceSvc.GetAllResourcesAsync();
 
             return View(new AdminResourceIndexViewModel()
             {
@@ -76,11 +73,7 @@ namespace crisicheckinweb.Controllers
 
             if (ModelState.IsValid)
             {
-                resource.PersonId = _webSecurity.CurrentUserId;
-                resource.EntryMade = DateTime.Now;
-
-                db.Resources.Add(resource);
-                await db.SaveChangesAsync();
+                await _resourceSvc.SaveNewResourceAsync(_webSecurity.CurrentUserId, resource);
                 return RedirectToAction("Index");
             }
 
@@ -154,9 +147,7 @@ namespace crisicheckinweb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            Resource resource = await db.Resources.FindAsync(id);
-            db.Resources.Remove(resource);
-            await db.SaveChangesAsync();
+            await _resourceSvc.RemoveResourceById(id);
             return RedirectToAction("Index");
         }
 
@@ -169,12 +160,15 @@ namespace crisicheckinweb.Controllers
             base.Dispose(disposing);
         }
 
+        // This method should be refactored into the Resource Service, but 
+        // the difficult part would be moving the ResourceSearch class to a place where 
+        // the ResourceService can access it.
         [HttpPost, ActionName("Filter")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Filter(ResourceSearch specifiedResource)
         {
-            var resources = db.Resources.Include(r => r.Disaster)
+            IQueryable<Resource> resources = db.Resources.Include(r => r.Disaster)
                                     .Include(r => r.Person)
                                     .Include(r => r.ResourceType);
 
