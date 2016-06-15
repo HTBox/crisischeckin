@@ -11,19 +11,12 @@ namespace CrisisCheckinMobile
         public static string ReportTroubleIcon = "";
         public static string ProfileIcon = "";
 
-        //public static readonly ClientModel ClientModel = new ClientModel(new EntityManager("http://localhost:2077/Breeze/Entities"));
-
         public App()
         {
             MainPage = GetMainPage();
         }
         public static Page GetMainPage()
         {
-            //return new CommitmentPage(new Commitment
-            //{
-                
-            //});
-
             NavigationPage mainPage;
             if (string.IsNullOrWhiteSpace(AuthToken))
             {
