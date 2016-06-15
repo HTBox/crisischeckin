@@ -1,6 +1,5 @@
-﻿@model IEnumerable<Models.Resource>
+﻿@model crisicheckinweb.ViewModels.AdminResourceIndexViewModel
 @using crisicheckinweb.Helpers
-@using Models
 
 @{
     ViewBag.Title = "Index";
@@ -10,42 +9,54 @@
 <h2>Resources</h2>
 <p>The following is a list of reources your organization has listed for this disaster.  These reources can be viewed by volunteers.</p>
 
-<p>
-    @Html.ActionLink("Create New", "Create", new { }, new { @class = "btn btn-black" })
-</p>
+<div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+    <div class="btn-group" role="group" aria-label="First group">
+        @Html.ActionLink("Create New", "Create", new {}, new {@class = "btn btn-black"})
+    </div>
+    <div class="btn-group" role="group" aria-label="Second group">
+        <button type="button" class="btn btn-black" id="filter-button">Filter</button>
+    </div>
+</div>
+
+<div id="filter-holder" style="display: none;">
+    @Html.Partial("_FilterResourcePartial", Model.ResourceSearch)
+</div>
+
+<br/>
+
 <table class="table table-bordered table-striped">
     <tr class="ht-header">
         <th>
             Disaster Name
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.ResourceType.TypeName)
+            @Html.DisplayNameFor(model => model.ResourceSearch.ResourceType.TypeName)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Description)
+            @Html.DisplayNameFor(model => model.ResourceSearch.Description)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.EntryMade)
+            @Html.DisplayNameFor(model => model.ResourceSearch.EntryMade)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.StartOfAvailability)
+            @Html.DisplayNameFor(model => model.ResourceSearch.StartOfAvailability)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.EndOfAvailability)
+            @Html.DisplayNameFor(model => model.ResourceSearch.EndOfAvailability)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Location)
+            @Html.DisplayNameFor(model => model.ResourceSearch.Location)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Qty)
+            @Html.DisplayNameFor(model => model.ResourceSearch.Qty)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Status)
+            @Html.DisplayNameFor(model => model.ResourceSearch.Status)
         </th>
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
+@foreach (var item in Model.Resources) {
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.Disaster.Name)
@@ -83,3 +94,22 @@
 }
 
 </table>
+
+
+@section scripts
+{
+    <script type="text/javascript">
+        (function ($) {
+            $(document).ready(function () {
+                $("#dp_startDate").datepicker();
+                $("#dp_endDate").datepicker();
+                $("#dp_createdDate").datepicker();
+                
+
+                $("#filter-button").click(function () {
+                    $("#filter-holder").toggle("slow");
+                });
+            });
+        })(jQuery);
+    </script>
+}
