@@ -66,11 +66,14 @@
     <Compile Include="Commitment.cs" />
     <Compile Include="Contact.cs" />
     <Compile Include="CrisisCheckin.cs" />
+<<<<<<< HEAD
     <Compile Include="Migrations\201606081924202_AddRequests.cs" />
     <Compile Include="Migrations\201606081924202_AddRequests.Designer.cs">
       <DependentUpon>201606081924202_AddRequests.cs</DependentUpon>
     </Compile>
     <Compile Include="Request.cs" />
+=======
+>>>>>>> refs/remotes/HTBox/mobile_rework
     <Compile Include="Disaster.cs" />
     <Compile Include="DisasterCluster.cs" />
     <Compile Include="Migrations\201501062117225_Initial.cs" />
@@ -217,9 +220,12 @@
     <EmbeddedResource Include="Migrations\201604191341494_AddVerifiedFlagToOrganizations.resx">
       <DependentUpon>201604191341494_AddVerifiedFlagToOrganizations.cs</DependentUpon>
     </EmbeddedResource>
+<<<<<<< HEAD
     <EmbeddedResource Include="Migrations\201606081924202_AddRequests.resx">
       <DependentUpon>201606081924202_AddRequests.cs</DependentUpon>
     </EmbeddedResource>
+=======
+>>>>>>> refs/remotes/HTBox/mobile_rework
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj">
