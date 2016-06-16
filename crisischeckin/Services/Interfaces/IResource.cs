@@ -10,7 +10,7 @@ namespace Services.Interfaces
     public interface IResource
     {
         Task<IEnumerable<Resource>> GetAllResourcesAsync();
-        Task<Resource> FindResourceByIdAsync(int resourceId);
+        Task<Resource> FindResourceByIdAsync(int? resourceId);
         Task SaveNewResourceAsync(int currentUserId, Resource resource);
         Task RemoveResourceById(int resourceId);
     }

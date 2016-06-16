@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Net;
 using System.Web.Mvc;
+using crisicheckinweb.Infrastructure.Attributes;
 using crisicheckinweb.ViewModels;
 using crisicheckinweb.ViewModels.SearchModels;
 using crisicheckinweb.Wrappers;
@@ -43,11 +43,14 @@ namespace crisicheckinweb.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Resource resource = await db.Resources.FindAsync(id);
+
+            Resource resource = await _resourceSvc.FindResourceByIdAsync(id);
+
             if (resource == null)
             {
                 return HttpNotFound();
             }
+
             return View(resource);
         }
 
@@ -90,11 +93,14 @@ namespace crisicheckinweb.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Resource resource = await db.Resources.FindAsync(id);
+
+            Resource resource = await _resourceSvc.FindResourceByIdAsync(id);
+
             if (resource == null)
             {
                 return HttpNotFound();
             }
+
             ViewBag.DisasterId = new SelectList(db.Disasters, "Id", "Name", resource.DisasterId);
             ViewBag.PersonId = new SelectList(db.Persons, "Id", "FirstName", resource.PersonId);
             ViewBag.ResourceTypeId = new SelectList(db.ResourceTypes, "ResourceTypeId", "TypeName", resource.ResourceTypeId);
@@ -102,8 +108,6 @@ namespace crisicheckinweb.Controllers
         }
 
         // POST: Resources/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit([Bind(Include = "ResourceId,EntryMade,PersonId,Description,StartOfAvailability,EndOfAvailability,Location,Qty,Status,DisasterId,ResourceTypeId")] Resource resource)
@@ -134,11 +138,14 @@ namespace crisicheckinweb.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Resource resource = await db.Resources.FindAsync(id);
+
+            Resource resource = await _resourceSvc.FindResourceByIdAsync(id);
+
             if (resource == null)
             {
                 return HttpNotFound();
             }
+
             return View(resource);
         }
 
