@@ -13,7 +13,7 @@ namespace CrisisCheckinMobile.ViewModels
         {
             _id = dto.Disaster.Id;
             _disasterName = dto.Disaster.Name;
-            _disasterStatusAndDate = string.Format("{0} - until {1}", 
+            _disasterStatusAndDate = string.Format("{0} - until {1}",
                 Enum.GetName(typeof(CommitmentStatus), dto.Status), dto.EndDate.ToString("MMMM dd, yyyy"));
 
             CommitmentData = new CommitmentViewModel

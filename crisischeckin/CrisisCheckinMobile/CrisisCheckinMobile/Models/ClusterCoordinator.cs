@@ -1,4 +1,5 @@
 ﻿
+
 namespace CrisisCheckinMobile.Models
 {
     public class ClusterCoordinator
