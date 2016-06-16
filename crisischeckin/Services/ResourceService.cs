@@ -15,22 +15,22 @@ namespace Services
 
         public ResourceService(IDataService service)
         {
-            if (service == null) { throw new ArgumentNullException("service"); }
+            if (service == null)
+            {
+                throw new ArgumentNullException("service");
+            }
 
             _dataService = service;
         }
 
         public async Task<IEnumerable<Resource>> GetAllResourcesAsync()
         {
-            return await _dataService.Resources.Include(r => r.Disaster)
-                                               .Include(r => r.Person)
-                                               .Include(r => r.ResourceType)
-                                               .ToListAsync();
+            return await _dataService.GetAllResourcesAsync();
         }
 
-        public Task<Resource> FindResourceByIdAsync(int resourceId)
+        public async Task<Resource> FindResourceByIdAsync(int? resourceId)
         {
-            throw new NotImplementedException();
+            return await _dataService.FindResourceByIdAsync(resourceId);
         }
 
         public async Task SaveNewResourceAsync(int currentUserId, Resource resource)

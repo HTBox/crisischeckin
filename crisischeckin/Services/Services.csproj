@@ -89,6 +89,7 @@
     <Compile Include="Exceptions\DisasterNotFoundException.cs" />
     <Compile Include="Exceptions\PersonAlreadyExistsException.cs" />
     <Compile Include="Exceptions\PersonNotFoundException.cs" />
+    <Compile Include="Exceptions\ResourceNotFoundException.cs" />
     <Compile Include="Interfaces\IClusterGroup.cs" />
     <Compile Include="Interfaces\IDisasterClusterService.cs" />
     <Compile Include="Interfaces\IMessageCoordinator.cs" />
