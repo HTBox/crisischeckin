@@ -1,4 +1,6 @@
-﻿
+﻿using System;
+using CrisisCheckinMobile.Models;
+
 namespace CrisisCheckinMobile.ViewModels
 {
     public class DisasterListItemViewModel
@@ -7,21 +9,25 @@ namespace CrisisCheckinMobile.ViewModels
         private readonly string _disasterStatusAndDate;
         private readonly int _id;
 
-        public DisasterListItemViewModel(int id, string disasterName, 
-            string disasterStatusAndDate, CommitmentViewModel commitmentData)
+        public DisasterListItemViewModel(CommitmentDto dto)
         {
-            _disasterName = disasterName;
-            _disasterStatusAndDate = disasterStatusAndDate;
-            _id = id;
-            CommitmentData = commitmentData;
+            _id = dto.Disaster.Id;
+            _disasterName = dto.Disaster.Name;
+            _disasterStatusAndDate = string.Format("{0} - until {1}",
+                Enum.GetName(typeof(CommitmentStatus), dto.Status), dto.EndDate.ToString("MMMM dd, yyyy"));
+
+            CommitmentData = new CommitmentViewModel
+            {
+                Id = dto.Id,
+                PersonId = dto.PersonId,
+                StartDate = dto.StartDate,
+                EndDate = dto.EndDate,
+                DisasterId = dto.Disaster.Id,
+                Status = dto.Status
+            };
         }
 
         public CommitmentViewModel CommitmentData { get; set; }
-
-        public int Id
-        {
-            get { return _id; }
-        }
 
         public string DisasterName
         {

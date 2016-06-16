@@ -46,15 +46,6 @@
     <Reference Include="Antlr3.Runtime">
       <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
-    <Reference Include="Breeze.ContextProvider">
-      <HintPath>..\packages\Breeze.Server.ContextProvider.1.4.16\lib\Breeze.ContextProvider.dll</HintPath>
-    </Reference>
-    <Reference Include="Breeze.ContextProvider.EF6">
-      <HintPath>..\packages\Breeze.Server.ContextProvider.EF6.1.4.16\lib\Breeze.ContextProvider.EF6.dll</HintPath>
-    </Reference>
-    <Reference Include="Breeze.WebApi2">
-      <HintPath>..\packages\Breeze.Server.WebApi2.1.4.16\lib\Breeze.WebApi2.dll</HintPath>
-    </Reference>
     <Reference Include="Elmah, Version=1.2.14706.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\elmah.corelibrary.1.2.2\lib\Elmah.dll</HintPath>
@@ -199,13 +190,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Api\EntitiesController.cs" />
+    <Compile Include="Api\PersonController.cs" />
     <Compile Include="App_GlobalResources\DefaultErrorMessages.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DefaultErrorMessages.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_Start\BreezeWebApiConfig.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\DbConfig.cs" />
     <Compile Include="App_Start\NinjectWebCommon.cs" />

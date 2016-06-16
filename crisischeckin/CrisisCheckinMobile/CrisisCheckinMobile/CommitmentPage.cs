@@ -1,5 +1,4 @@
-﻿using CrisisCheckinMobile.Models;
-using CrisisCheckinMobile.ViewModels;
+﻿using CrisisCheckinMobile.ViewModels;
 using Xamarin.Forms;
 
 namespace CrisisCheckinMobile
@@ -15,33 +14,34 @@ namespace CrisisCheckinMobile
             BackgroundColor = Constants.HtBoxDarkBrown;
             BindingContext = commitment;
 
-            //var grid = new Grid() {
-            //    RowDefinitions = new RowDefinitionCollection {
-            //        new RowDefinition(),
-            //        new RowDefinition(),
-            //    },
-            //    ColumnDefinitions = new ColumnDefinitionCollection {
-            //        new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },
-            //        new ColumnDefinition { Width = new GridLength(2, GridUnitType.Star) },
-            //    }
-            //};
+            var grid = new Grid()
+            {
+                RowDefinitions = new RowDefinitionCollection {
+                    new RowDefinition(),
+                    new RowDefinition(),
+                },
+                ColumnDefinitions = new ColumnDefinitionCollection {
+                    new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },
+                    new ColumnDefinition { Width = new GridLength(2, GridUnitType.Star) },
+                }
+            };
 
-            //var plannedLabel = new Label {
-            //    Text = "I am"
-            //};
-            //plannedLabel.SetValue(Grid.RowProperty, 0);
+            var plannedLabel = new Label
+            {
+                Text = "I am",
+                TextColor = Constants.HtBoxTan,
+                BackgroundColor = Constants.HtBoxDarkBrown
+            };
+            plannedLabel.SetValue(Grid.RowProperty, 0);
 
-            //var plannedTextCell = new TextCell {
+            var plannedTextCell = new TextCell
+            {
 
-            //};
-            //plannedTextCell.SetBinding(TextCell.TextProperty, "Status");
-            //grid.Children.Add(plannedLabel);
+            };
+            plannedTextCell.SetBinding(TextCell.TextProperty, "Status");
+            grid.Children.Add(plannedLabel);
 
-            //Content = grid;
+            Content = grid;
         }
-        //void SaveChanges()
-        //{
-        //    App.ClientModel.SaveChanges();
-        //}
     }
 }
