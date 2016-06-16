@@ -55,6 +55,7 @@ namespace crisicheckinweb.Controllers
         }
 
         // GET: Resources/Create
+        [Authorize(Roles = "Admin")]
         public ActionResult Create()
         {
             ViewBag.DisasterId = new SelectList(db.Disasters, "Id", "Name");
@@ -66,6 +67,7 @@ namespace crisicheckinweb.Controllers
         // POST: Resources/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Create([Bind(Include = "ResourceId,Description,StartOfAvailability,EndOfAvailability,Location,Qty,Status,DisasterId,ResourceTypeId")] Resource resource)
         {
             if (resource.Status == ResourceStatus.All)
@@ -87,6 +89,7 @@ namespace crisicheckinweb.Controllers
         }
 
         // GET: Resources/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Edit(int? id)
         {
             if (id == null)
@@ -110,6 +113,7 @@ namespace crisicheckinweb.Controllers
         // POST: Resources/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Edit([Bind(Include = "ResourceId,EntryMade,PersonId,Description,StartOfAvailability,EndOfAvailability,Location,Qty,Status,DisasterId,ResourceTypeId")] Resource resource)
         {
             if (resource.Status == ResourceStatus.All)
@@ -132,6 +136,7 @@ namespace crisicheckinweb.Controllers
         }
 
         // GET: Resources/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Delete(int? id)
         {
             if (id == null)
@@ -152,6 +157,7 @@ namespace crisicheckinweb.Controllers
         // POST: Resources/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
             await _resourceSvc.RemoveResourceById(id);
