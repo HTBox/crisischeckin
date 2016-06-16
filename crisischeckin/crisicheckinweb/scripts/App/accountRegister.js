@@ -114,7 +114,6 @@ var firstnameInvalid = false;
     function validateRequiredWithMaxLength(element, fieldName) {
         var isValid = true;
         if (element.val().length === 0) {
-            isValid = false;
             requiredMessage(element, fieldName);
         } else {
             var lengthRequirement = element.attr("data-val-length-max");
@@ -122,7 +121,6 @@ var firstnameInvalid = false;
                 try {
                     lengthRequirement = parseInt(lengthRequirement);
                     if (element.val().length > lengthRequirement) {
-                        isValid = false;
                         var message = element.attr("data-val-length");
                         if (!message)
                             message = fieldName + " length is not valid.";
@@ -171,7 +169,6 @@ var firstnameInvalid = false;
             clearWarning(element);
 
             if (element.val().length === 0) {
-                emailInvalid = true;
                 requiredMessage(element, "Email Address");
             } else {
                 var regex = element.attr("data-val-regex-pattern"); //follow pattern set in code
@@ -219,15 +216,19 @@ var firstnameInvalid = false;
         $("#FirstName").focusout(function () {
             var element = $(this);
             clearWarning(element);
-            firstnameInvalid = !validateRequiredWithMaxLength(element, "First Name");
-            setSubmitDisabled();
+            validateRequiredWithMaxLength(element, "First Name");
         });
 
         $("#LastName").focusout(function () {
             var element = $(this);
             clearWarning(element);
-            lastnameInvalid = !validateRequiredWithMaxLength(element, "Last Name");
-            setSubmitDisabled();
+            validateRequiredWithMaxLength(element, "Last Name");
+        });
+
+        $("#PhoneNumber").focusout(function () {
+            var element = $(this);
+            clearWarning(element);
+            validateRequiredWithMaxLength(element, "Phone Number");
         });
 
         $("#txt_userName").focusout(function () {

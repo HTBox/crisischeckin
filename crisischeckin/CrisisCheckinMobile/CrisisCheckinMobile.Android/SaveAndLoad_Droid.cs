@@ -1,10 +1,8 @@
-﻿using CrisisCheckinMobile.Droid;
-using CrisisCheckinMobile.SaveLoad;
+﻿using CrisisCheckinMobile.SaveLoad;
 using System;
 using System.IO;
-using Xamarin.Forms;
 
-[assembly: Dependency (typeof (SaveAndLoad_Droid))]
+//[assembly: Dependency (typeof (SaveAndLoad_Droid))]
 namespace CrisisCheckinMobile.Droid
 {
 	public class SaveAndLoad_Droid : ISaveAndLoad
