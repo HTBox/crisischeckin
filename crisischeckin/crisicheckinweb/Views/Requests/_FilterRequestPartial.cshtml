@@ -1,0 +1,74 @@
+﻿@using crisicheckinweb.ViewModels
+@using Models
+@model Models.RequestSearch
+<br/>
+
+@using (Html.BeginForm("Filter", "Requests"))
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        <h4>Filter Requests</h4>
+        <hr/>
+        @Html.ValidationSummary(true, "", new {@class = "text-danger"})
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CreatedDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.NullableCreatedDate, new { htmlAttributes = new { id = "dp_startDate", @class = "form-control", @Value = Model.NullableCreatedDate.HasValue ? Model.NullableCreatedDate.Value.ToShortDateString() : Model.NullableCreatedDate.ToString() } })
+                @Html.ValidationMessageFor(model => model.NullableCreatedDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.EndDate, htmlAttributes: new {@class = "control-label col-md-2"})
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.NullableEndDate, new {htmlAttributes = new {id = "dp_endDate", @class = "form-control", @Value = Model.NullableEndDate.HasValue ? Model.NullableEndDate.Value.ToShortDateString() : Model.NullableEndDate.ToString() } })
+                @Html.ValidationMessageFor(model => model.NullableEndDate, "", new {@class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Location, htmlAttributes: new {@class = "control-label col-md-2"})
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Location, new {htmlAttributes = new {@class = "form-control"}})
+                @Html.ValidationMessageFor(model => model.Location, "", new {@class = "text-danger"})
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description, htmlAttributes: new {@class = "control-label col-md-2"})
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Description, new {htmlAttributes = new {@class = "form-control"}})
+                @Html.ValidationMessageFor(model => model.Description, "", new {@class = "text-danger"})
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.RequestStatus, htmlAttributes: new {@class = "control-label col-md-2"})
+            <div class="col-md-10">
+                @Html.DropDownList("RequestStatus", EnumHelper.GetSelectList(typeof (RequestStatus)), "Select Status", new {@class = "form-control"})
+                @Html.ValidationMessageFor(model => model.RequestStatus, "", new {@class = "text-danger"})
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                @Html.Hidden("sortField", (string) ViewBag.SortFieldParam)
+                @Html.Hidden("sortOrder", (string)ViewBag.SortOrderParam)
+
+                <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                    <div class="btn-group" role="group" aria-label="First group">
+                        <input type="submit" value="Filter" class="btn btn-default"/>
+                    </div>
+                    <div class="btn-group" role="group" aria-label="Second group">
+                        @Html.ActionLink("Clear Filters", "Index", new {sortField = ViewBag.SortFieldParam, sortOrder = ViewBag.SortOrderParam}, new {@class = "btn btn-default"})
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <hr />
+}
+
+<br/>

@@ -1,0 +1,24 @@
+﻿@using System.Web.Optimization
+@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/">Crisis Check-In</a>
+        </div>
+    </div>
+</div>
+
+
+<div class="container">
+    @RenderBody()
+</div>
+
+@section scripts {
+    @RenderSection("scripts", required: false)
+}
+
+@section styles {
+    @RenderSection("styles", required: false)
+}

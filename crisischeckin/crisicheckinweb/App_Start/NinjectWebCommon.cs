@@ -68,6 +68,7 @@ namespace crisicheckinweb.App_Start
         private static void RegisterServices(IKernel kernel)
         {
             kernel.Bind<IDisaster>().To<DisasterService>().InRequestScope();
+            kernel.Bind<IRequest>().To<RequestService>().InRequestScope();
             kernel.Bind<IOrganizationService>().To<OrganizationService>().InRequestScope();
             kernel.Bind<IVolunteerService>().To<VolunteerService>().InRequestScope();
             kernel.Bind<IDataService>().To<DataService>().InRequestScope();
