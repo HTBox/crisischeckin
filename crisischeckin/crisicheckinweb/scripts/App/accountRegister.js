@@ -1,6 +1,9 @@
 ﻿var emailInvalid = false;
 var usernameInvalid = false;
 var passwordInvalid = false;
+var phonenumberInvalid = false;
+var lastnameInvalid = false;
+var firstnameInvalid = false;
 
 (function ($) {
 
@@ -86,6 +89,15 @@ var passwordInvalid = false;
         return match;
     }
 
+    function validatePhoneNumber(phoneNumber, regex) {
+        if (!regex) {
+            regex = new RegExp(/^\d{0,15}$/i);
+        }
+        var match = regex.test(phoneNumber);
+        phonenumberInvalid = !match;
+        return match;
+    }
+
     function requiredMessage(element, fieldType) {
         element.after('<div class=\"feedbackHelper failure\">' + fieldType + ' is required.</div>');
     }
@@ -100,6 +112,7 @@ var passwordInvalid = false;
     }
 
     function validateRequiredWithMaxLength(element, fieldName) {
+        var isValid = true;
         if (element.val().length === 0) {
             requiredMessage(element, fieldName);
         } else {
@@ -118,6 +131,7 @@ var passwordInvalid = false;
                 }
             }
         }
+        return isValid;
     }
 
     $(document).ready(function () {
@@ -171,10 +185,32 @@ var passwordInvalid = false;
             setSubmitDisabled();
         });
 
+        $("#PhoneNumber").focusout(function () {
+            var element = $(this);
+            clearWarning(element);
+
+            if (element.val().length === 0) {
+                phonenumberInvalid = true;
+                requiredMessage(element, "Phone Number");
+            } else {
+                var regex = element.attr("data-val-regex-pattern"); //follow pattern set in code
+                if (regex) {
+                    regex = new RegExp(regex);
+                }
+                if (!validatePhoneNumber(element.val(), regex)) {
+                    var message = element.attr("data-val-regex");
+                    if (!message)
+                        message = "This is not a valid phone number.";
+                    addErrorMessage(element, message);
+                }
+            }
+            setSubmitDisabled();
+        });
+
         function setSubmitDisabled()
         {
-            var disable = usernameInvalid || emailInvalid || passwordInvalid;
-            $('input[type="submit"]').prop('disabled', disable);
+            var disable = usernameInvalid || emailInvalid || passwordInvalid || phonenumberInvalid || lastnameInvalid || firstnameInvalid;
+            $('input[type="submit"]').prop("disabled", disable);
         }
 
         $("#FirstName").focusout(function () {

@@ -68,6 +68,13 @@ namespace crisicheckinweb.Controllers
 
 
         [HttpGet]
+        public ActionResult ListResourceCheckinsByDisaster()
+        {
+            var model = new ListByDisasterViewModel { Disasters = _disasterSvc.GetActiveList(), CommitmentDate = null };
+            return View(model);
+        }
+
+        [HttpGet]
         public ActionResult CreateMessageToVolunteersByDisaster(int id)
         {
             var model = new SendMessageToAllVolunteersByDisasterViewModel { DisasterId = id };
@@ -151,11 +158,22 @@ namespace crisicheckinweb.Controllers
                                                     PhoneNumber = person.PhoneNumber,
                                                     UserId = person.UserId
                                                 }).ToList();
-
                 }
             }
-
             return PartialView("_FilterResults", result);
+        }
+
+        [HttpPost]
+        public PartialViewResult FilterResourceCheckins(ListByDisasterViewModel model)
+        {
+            var result = new CheckinListsResultsViewModel();
+
+            if (model.SelectedDisaster != 0)
+            {
+                result.ResourceCheckins = _adminSvc.GetResourceCheckinsForDisaster(model.SelectedDisaster, model.CommitmentDate).ToList();
+            }
+
+            return PartialView("_FilterResourceCheckinResults", result);
         }
     }
 }
