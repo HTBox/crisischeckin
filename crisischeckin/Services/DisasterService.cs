@@ -30,7 +30,7 @@ namespace Services
                 throw new ArgumentException("Please enter a start date that is greater than or equal to today's date.");
             }
 
-            _dataService.AddResource(new Resource
+            _dataService.AddResourceAsync(new Resource
             {
                 Allocator = organization,
                 Person = person,
@@ -119,7 +119,7 @@ namespace Services
         public void RemoveResourceById(int resourceId)
         {
             //  idempotent method - don't care if the id does not exist.
-            _dataService.RemoveResourceById(resourceId);
+            _dataService.RemoveResourceByIdAsync(resourceId);
         }
 
         public void RemoveCommitmentById(int commitmentId)

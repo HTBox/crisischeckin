@@ -2,6 +2,8 @@
 using Services.Exceptions;
 using Services.Interfaces;
 using System;
+using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using Models.Migrations;
@@ -139,17 +141,49 @@ namespace Services
             return result;
         }
 
+
+
         public void AddContact(Contact newContact)
         {
             context.Contacts.Add(newContact);
             context.SaveChanges();
         }
 
-        public void AddResource(Resource newResource)
+        public async Task AddResourceAsync(Resource newResource)
         {
-            newResource.EntryMade = DateTime.Now;
             context.Resources.Add(newResource);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
+        }
+
+        public async Task<Resource> FindResourceByIdAsync(int? id)
+        {
+            var resource = await context.Resources.Where(r => r.ResourceId == id)
+                                    .Include(r => r.Person)
+                                    .Include(r => r.ResourceType)
+                                    .FirstOrDefaultAsync();
+
+            return resource;
+        }
+
+        public async Task RemoveResourceByIdAsync(int id)
+        {
+            var resource = await context.Resources.FindAsync(id);
+
+            if (resource == null)
+            {
+                throw new ResourceNotFoundException();
+            }
+
+            context.Resources.Remove(resource);
+            await context.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<Resource>> GetAllResourcesAsync()
+        {
+            return await context.Resources.Include(r => r.Disaster)
+                                               .Include(r => r.Person)
+                                               .Include(r => r.ResourceType)
+                                               .ToListAsync();
         }
 
         public void AddCommitment(Commitment newCommitment)
@@ -158,12 +192,7 @@ namespace Services
             context.SaveChanges();
         }
 
-        public void RemoveResourceById(int id)
-        {
-            var resource = context.Resources.Find(id);
-            context.Resources.Remove(resource);
-            context.SaveChanges();
-        }
+
 
         public void RemoveCommitmentById(int id)
         {
