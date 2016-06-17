@@ -1,6 +1,8 @@
 ﻿{
   "dependencies": {
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.0.0",
+    "Newtonsoft.Json": "8.0.3",
+    "refit": "2.4.1",
     "Xamarin.Forms": "2.2.0.45"
   },
   "frameworks": {
