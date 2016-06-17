@@ -1,5 +1,6 @@
 using Models;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Services.Interfaces
 {
@@ -10,6 +11,7 @@ namespace Services.Interfaces
     {
         IQueryable<Commitment> Commitments { get; }
         IQueryable<Disaster> Disasters { get; }
+        IQueryable<Request> Requests { get; }
         IQueryable<Person> Persons { get; }
         IQueryable<User> Users { get; }
         IQueryable<ClusterGroup> ClusterGroups { get; }
@@ -33,6 +35,8 @@ namespace Services.Interfaces
         void AddCommitment(Commitment newCommitment);
         void AddCluster(Cluster newCluster);
         void RemoveCluster(Cluster clusterToDelete);
+        Task AssignRequestToUserAsync(int userId, int requestId);
+        Task CompleteRequestAsync(int requestId);
         Cluster UpdateCluster(Cluster updatedCluster);
         void AddClusterGroup(ClusterGroup newCluster);
         void RemoveClusterGroup(ClusterGroup clusterToDelete);

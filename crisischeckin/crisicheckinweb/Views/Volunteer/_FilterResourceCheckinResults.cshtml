@@ -1,0 +1,41 @@
+﻿@model crisicheckinweb.ViewModels.CheckinListsResultsViewModel
+@{
+    ViewBag.Title = "_FilterResourceCheckinResults";    
+}
+
+<style>
+    table, tr, th, td {
+        padding: 7px;
+        border: 1px solid grey;
+    }
+</style>
+
+<h3>Field Reported Data</h3>
+<table>
+    <tr>
+        <th>Entry Made</th>
+        <th>Description</th>
+        <th>Organization</th>
+        <th>Quantity</th>
+        <th>Type</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Location</th>
+    </tr>
+    @if (Model.ResourceCheckins != null)
+    {
+        foreach (var resource in Model.ResourceCheckins)
+        {
+            <tr>
+                <td>@resource.EntryMade.ToShortDateString() @resource.EntryMade.ToShortTimeString()</td>
+                <td>@resource.Description</td>
+                <td>@(resource.Allocator != null ? resource.Allocator.OrganizationName  : "none") @if (resource.Person != null) { @("- " + resource.Person.FullName)}</td>
+                <td>@resource.Qty </td>
+                <td>@resource.ResourceType.TypeName</td>
+                <td>@resource.StartOfAvailability.ToShortDateString()</td>
+                <td>@resource.EndOfAvailability.ToShortDateString()</td>
+                <td>@resource.Location.AddressLine1</td>
+            </tr>
+        }
+    }
+</table>
