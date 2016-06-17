@@ -1,3 +1,5 @@
+[![Build status](https://ci.appveyor.com/api/projects/status/s39nui8rkxipt0er/branch/master?svg=true)](https://ci.appveyor.com/project/HTBox/crisischeckin/branch/master)
+
 crisischeckin
 =============
 
