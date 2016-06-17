@@ -44,24 +44,12 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Breeze.Sharp">
-      <HintPath>..\packages\Breeze.Sharp.0.6.0.2\lib\portable-net45+wp80+win\Breeze.Sharp.dll</HintPath>
-    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Data.Edm.Portable">
-      <HintPath>..\packages\Breeze.Sharp.0.6.0.2\lib\portable-net45+wp80+win\Microsoft.Data.Edm.Portable.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Data.OData.Portable">
-      <HintPath>..\packages\Breeze.Sharp.0.6.0.2\lib\portable-net45+wp80+win\Microsoft.Data.OData.Portable.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Data.Services.Client.Portable">
-      <HintPath>..\packages\Breeze.Sharp.0.6.0.2\lib\portable-net45+wp80+win\Microsoft.Data.Services.Client.Portable.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -77,9 +65,6 @@
     <Reference Include="System.Net.Http.Formatting, Version=5.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.1.0\lib\net45\System.Net.Http.Formatting.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Spatial.Portable">
-      <HintPath>..\packages\Breeze.Sharp.0.6.0.2\lib\portable-net45+wp80+win\System.Spatial.Portable.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Http, Version=5.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

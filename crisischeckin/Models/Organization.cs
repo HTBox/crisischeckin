@@ -28,6 +28,7 @@ namespace Models
         public virtual IList<Resource> Resources { get; set; }
 
         public virtual IList<Person> Persons { get; set; }
+        public virtual ICollection<Request> Requests { get; set; }
 
         public virtual IList<Contact> Contacts { get; set; }
     }

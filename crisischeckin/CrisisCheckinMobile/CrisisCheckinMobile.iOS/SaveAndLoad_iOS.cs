@@ -2,9 +2,9 @@ using CrisisCheckinMobile.iOS;
 using CrisisCheckinMobile.SaveLoad;
 using System;
 using System.IO;
-using Xamarin.Forms;
 
-[assembly: Dependency (typeof (SaveAndLoad_iOS))]
+
+//[assembly: Dependency (typeof (SaveAndLoad_iOS))]
 namespace CrisisCheckinMobile.iOS
 {
 	public class SaveAndLoad_iOS : ISaveAndLoad

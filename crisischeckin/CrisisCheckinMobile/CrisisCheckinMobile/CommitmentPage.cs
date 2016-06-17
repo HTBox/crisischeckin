@@ -1,23 +1,21 @@
-﻿using CrisisCheckinMobile.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CrisisCheckinMobile.ViewModels;
 using Xamarin.Forms;
 
 namespace CrisisCheckinMobile
 {
     public class CommitmentPage : ContentPage
     {
-        readonly Commitment _commitment;
+        private CommitmentViewModel _commitment;
 
-        public CommitmentPage(Commitment commitment)
+        public CommitmentPage(CommitmentViewModel commitment)
         {
             _commitment = commitment;
+
+            BackgroundColor = Constants.HtBoxDarkBrown;
             BindingContext = commitment;
 
-            var grid = new Grid() {
+            var grid = new Grid()
+            {
                 RowDefinitions = new RowDefinitionCollection {
                     new RowDefinition(),
                     new RowDefinition(),
@@ -28,23 +26,22 @@ namespace CrisisCheckinMobile
                 }
             };
 
-            var plannedLabel = new Label {
-                Text = "I am"
+            var plannedLabel = new Label
+            {
+                Text = "I am",
+                TextColor = Constants.HtBoxTan,
+                BackgroundColor = Constants.HtBoxDarkBrown
             };
             plannedLabel.SetValue(Grid.RowProperty, 0);
 
-            var plannedTextCell = new TextCell {
+            var plannedTextCell = new TextCell
+            {
 
             };
             plannedTextCell.SetBinding(TextCell.TextProperty, "Status");
             grid.Children.Add(plannedLabel);
 
             Content = grid;
-        }
-
-        void SaveChanges()
-        {
-            App.ClientModel.SaveChanges();
         }
     }
 }

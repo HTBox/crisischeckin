@@ -1,0 +1,10 @@
+﻿@model Models.Request
+    
+@using (Html.BeginForm("CompleteRequest", "Requests", FormMethod.Post, Model.RequestId))
+{
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="requestId" value="@Model.RequestId">
+    <button class="btn btn-sm btn-black" type="submit">
+        Complete
+    </button>
+}

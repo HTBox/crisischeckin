@@ -46,15 +46,6 @@
     <Reference Include="Antlr3.Runtime">
       <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
-    <Reference Include="Breeze.ContextProvider">
-      <HintPath>..\packages\Breeze.Server.ContextProvider.1.4.16\lib\Breeze.ContextProvider.dll</HintPath>
-    </Reference>
-    <Reference Include="Breeze.ContextProvider.EF6">
-      <HintPath>..\packages\Breeze.Server.ContextProvider.EF6.1.4.16\lib\Breeze.ContextProvider.EF6.dll</HintPath>
-    </Reference>
-    <Reference Include="Breeze.WebApi2">
-      <HintPath>..\packages\Breeze.Server.WebApi2.1.4.16\lib\Breeze.WebApi2.dll</HintPath>
-    </Reference>
     <Reference Include="Elmah, Version=1.2.14706.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\elmah.corelibrary.1.2.2\lib\Elmah.dll</HintPath>
@@ -199,13 +190,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Api\EntitiesController.cs" />
+    <Compile Include="Api\PersonController.cs" />
     <Compile Include="App_GlobalResources\DefaultErrorMessages.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DefaultErrorMessages.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_Start\BreezeWebApiConfig.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\DbConfig.cs" />
     <Compile Include="App_Start\NinjectWebCommon.cs" />
@@ -218,11 +208,15 @@
     <Compile Include="Controllers\DisasterController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\OrganizationController.cs" />
-    <Compile Include="Helpers\ModelStateExtensions.cs" />
+    <Compile Include="Controllers\RequestsController.cs" />
+    <Compile Include="Controllers\ResourcesController.cs" />
+  <Compile Include="Helpers\ModelStateExtensions.cs" />
     <Compile Include="Filters\AccessDeniedAuthorizeAttribute.cs" />
     <Compile Include="Filters\CrisisCheckInApiAuthorizeAttribute.cs" />
     <Compile Include="Helpers\ElmahHandleErrorAttribute.cs" />
+    <Compile Include="Helpers\LocationForExtension.cs" />
     <Compile Include="Helpers\MenuExtensions.cs" />
+    <Compile Include="Helpers\SortExtensions.cs" />
     <Compile Include="Infrastructure\Attributes\BasicPasswordAttribute.cs" />
     <Compile Include="Infrastructure\Attributes\ExpireContentAttribute.cs" />
     <Compile Include="Infrastructure\PasswordComplexity.cs" />
@@ -231,6 +225,7 @@
     <Compile Include="NavigationRoutes\NavigationExtensions.cs" />
     <Compile Include="NavigationRoutes\NavigationRouteConfigurationExtensions.cs" />
     <Compile Include="NavigationRoutes\NavigationRouteFilter.cs" />
+    <Compile Include="ViewModels\ResourceIndexViewModels.cs" />
     <Compile Include="ViewModels\AssignClusterCoordinatorViewModel.cs" />
     <Compile Include="ViewModels\AvailableAction.cs" />
     <Compile Include="ViewModels\ChangeContactInfoViewModel.cs" />
@@ -245,7 +240,10 @@
     <Compile Include="ViewModels\NewOrganizationViewModel.cs" />
     <Compile Include="ViewModels\OrganizationDisasterViewModel.cs" />
     <Compile Include="ViewModels\OrganizationHomeViewModel.cs" />
+    <Compile Include="ViewModels\RequestDetailsViewModel.cs" />
+    <Compile Include="ViewModels\RequestIndexViewModel.cs" />
     <Compile Include="ViewModels\ResetPasswordViewModel.cs" />
+    <Compile Include="ViewModels\SearchModels\ResourceSearchModel.cs" />
     <Compile Include="ViewModels\SelectedDisasterCluster.cs" />
     <Compile Include="ViewModels\SendMessageToAllVolunteersByDisasterViewModel.cs" />
     <Compile Include="ViewModels\UnassignClusterCoordinatorViewModel.cs" />
@@ -436,9 +434,24 @@
     <Content Include="Views\Organization\OrganizationVerified.cshtml" />
     <Content Include="Views\Volunteer\ListResourceCheckinsByDisaster.cshtml" />
     <Content Include="Views\Volunteer\_FilterResourceCheckinResults.cshtml" />
+    <Content Include="Views\Requests\Create.cshtml" />
+    <Content Include="Views\Requests\Delete.cshtml" />
+    <Content Include="Views\Requests\Details.cshtml" />
+    <Content Include="Views\Requests\Edit.cshtml" />
+    <Content Include="Views\Requests\Index.cshtml" />
+    <Content Include="Views\Requests\_FilterRequestPartial.cshtml" />
+    <Content Include="Views\Requests\VolunteerRequestAssignment.cshtml" />
+    <Content Include="Views\Requests\_CompleteRequestForm.cshtml" />
+    <Content Include="Views\Requests\_AssignRequestForm.cshtml" />
     <Content Include="Views\Shared\_LoginLayout.cshtml" />
     <Content Include="Views\Organization\List.cshtml" />
     <Content Include="Views\Organization\Home.cshtml" />
+    <Content Include="Views\Resources\Create.cshtml" />
+    <Content Include="Views\Resources\Delete.cshtml" />
+    <Content Include="Views\Resources\Details.cshtml" />
+    <Content Include="Views\Resources\Edit.cshtml" />
+    <Content Include="Views\Resources\Index.cshtml" />
+    <Content Include="Views\Resources\_FilterResourcePartial.cshtml" />
     <None Include="Web.Staging.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

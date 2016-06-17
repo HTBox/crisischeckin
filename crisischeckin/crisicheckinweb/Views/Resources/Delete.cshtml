@@ -1,0 +1,105 @@
+﻿@model Models.Resource
+@using crisicheckinweb.Helpers
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Resource</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Disaster.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Disaster.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Person.FirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Person.FirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ResourceType.TypeName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ResourceType.TypeName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EntryMade)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EntryMade)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.StartOfAvailability)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StartOfAvailability)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EndOfAvailability)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EndOfAvailability)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Location)
+        </dt>
+
+        <dd>
+            @Html.LocationFor(Model.Location)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Qty)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Qty)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" />
+        </div>
+    }
+</div>

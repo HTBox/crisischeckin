@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using Models;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Services.Interfaces
 {
@@ -10,6 +12,7 @@ namespace Services.Interfaces
     {
         IQueryable<Commitment> Commitments { get; }
         IQueryable<Disaster> Disasters { get; }
+        IQueryable<Request> Requests { get; }
         IQueryable<Person> Persons { get; }
         IQueryable<User> Users { get; }
         IQueryable<ClusterGroup> ClusterGroups { get; }
@@ -25,20 +28,26 @@ namespace Services.Interfaces
 
         Organization AddOrganization(Organization newOrganization);
 
+        Task AddResourceAsync(Resource newResource);
+        Task RemoveResourceByIdAsync(int id);
+        Task<Resource> FindResourceByIdAsync(int? id);
+        Task<IEnumerable<Resource>> GetAllResourcesAsync();
+
         void VerifyOrganization(int organizationId);
         Person AddPerson(Person newPerson);
         Person UpdatePerson(Person updatedPerson);
-        void AddResource(Resource newResource);
         void AddContact(Contact newContact);
         void AddCommitment(Commitment newCommitment);
         void AddCluster(Cluster newCluster);
         void RemoveCluster(Cluster clusterToDelete);
+        Task AssignRequestToUserAsync(int userId, int requestId);
+        Task CompleteRequestAsync(int requestId);
         Cluster UpdateCluster(Cluster updatedCluster);
         void AddClusterGroup(ClusterGroup newCluster);
         void RemoveClusterGroup(ClusterGroup clusterToDelete);
         ClusterGroup UpdateClusterGroup(ClusterGroup updatedCluster);
         void RemoveCommitmentById(int id);
-        void RemoveResourceById(int id);
+        
         void AddDisaster(Disaster newDisaster);
         Disaster UpdateDisaster(Disaster updatedDisaster);
         void AddDisasterCluster(DisasterCluster newDisasterCluster);
