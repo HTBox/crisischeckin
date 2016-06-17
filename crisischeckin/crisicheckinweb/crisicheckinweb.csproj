@@ -209,9 +209,11 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\OrganizationController.cs" />
     <Compile Include="Controllers\RequestsController.cs" />
+    <Compile Include="Controllers\ResourcesController.cs" />
     <Compile Include="Filters\AccessDeniedAuthorizeAttribute.cs" />
     <Compile Include="Filters\CrisisCheckInApiAuthorizeAttribute.cs" />
     <Compile Include="Helpers\ElmahHandleErrorAttribute.cs" />
+    <Compile Include="Helpers\LocationForExtension.cs" />
     <Compile Include="Helpers\MenuExtensions.cs" />
     <Compile Include="Helpers\SortExtensions.cs" />
     <Compile Include="Infrastructure\Attributes\BasicPasswordAttribute.cs" />
@@ -222,6 +224,7 @@
     <Compile Include="NavigationRoutes\NavigationExtensions.cs" />
     <Compile Include="NavigationRoutes\NavigationRouteConfigurationExtensions.cs" />
     <Compile Include="NavigationRoutes\NavigationRouteFilter.cs" />
+    <Compile Include="ViewModels\ResourceIndexViewModels.cs" />
     <Compile Include="ViewModels\AssignClusterCoordinatorViewModel.cs" />
     <Compile Include="ViewModels\AvailableAction.cs" />
     <Compile Include="ViewModels\ChangeContactInfoViewModel.cs" />
@@ -237,6 +240,7 @@
     <Compile Include="ViewModels\RequestDetailsViewModel.cs" />
     <Compile Include="ViewModels\RequestIndexViewModel.cs" />
     <Compile Include="ViewModels\ResetPasswordViewModel.cs" />
+    <Compile Include="ViewModels\SearchModels\ResourceSearchModel.cs" />
     <Compile Include="ViewModels\SelectedDisasterCluster.cs" />
     <Compile Include="ViewModels\SendMessageToAllVolunteersByDisasterViewModel.cs" />
     <Compile Include="ViewModels\UnassignClusterCoordinatorViewModel.cs" />
@@ -436,6 +440,12 @@
     <Content Include="Views\Requests\_CompleteRequestForm.cshtml" />
     <Content Include="Views\Requests\_AssignRequestForm.cshtml" />
     <Content Include="Views\Shared\_LoginLayout.cshtml" />
+    <Content Include="Views\Resources\Create.cshtml" />
+    <Content Include="Views\Resources\Delete.cshtml" />
+    <Content Include="Views\Resources\Details.cshtml" />
+    <Content Include="Views\Resources\Edit.cshtml" />
+    <Content Include="Views\Resources\Index.cshtml" />
+    <Content Include="Views\Resources\_FilterResourcePartial.cshtml" />
     <None Include="Web.Staging.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
