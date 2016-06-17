@@ -123,3 +123,4 @@ crisischeckin/CrisisCheckinMobile/Components/
 
 #GhostDoc
 *.sln.GhostDoc.xml
+project.lock.json
