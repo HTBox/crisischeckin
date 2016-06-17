@@ -31,11 +31,7 @@ namespace Models
         public virtual IList<Resource> Resources { get; set; }
 
         public virtual IList<Person> Persons { get; set; }
-<<<<<<< HEAD
         public virtual ICollection<Request> Requests { get; set; }
-=======
->>>>>>> refs/remotes/HTBox/mobile_rework
-
     }
 
     public enum OrganizationTypeEnum

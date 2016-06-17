@@ -74,35 +74,6 @@ namespace crisicheckinweb.Controllers
             return View(model);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult AddContact(ListByDisasterViewModel model)
-        {
-            try
-            {
-                var person = _volunteerSvc.FindByUserId(_webSecurity.CurrentUserId);
-                if (!person.OrganizationId.HasValue)
-                {
-                    throw new ArgumentException("Signed in User is not part of an Organization");
-                }
-
-                _adminSvc.AddContactForOrganization(person.OrganizationId.Value, model.AddContactId);
-            }
-            catch (ArgumentException ex)
-            {
-                ModelState.AddModelError("", ex.Message);
-            }
-
-            var viewModel = new ListByDisasterViewModel
-            {
-                Disasters = _disasterSvc.GetActiveList(),
-                SelectedDisaster = model.SelectedDisaster,
-                CommitmentDate = model.CommitmentDate
-            };
-            return View("ListByDisaster", viewModel);
-        }
-
-
         [HttpGet]
         public ActionResult CreateMessageToVolunteersByDisaster(int id)
         {

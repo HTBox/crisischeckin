@@ -3,10 +3,7 @@ using Services.Exceptions;
 using Services.Interfaces;
 using System;
 using System.Linq;
-<<<<<<< HEAD
 using System.Threading.Tasks;
-=======
->>>>>>> refs/remotes/HTBox/mobile_rework
 using Models.Migrations;
 
 namespace Services
@@ -55,14 +52,11 @@ namespace Services
             get { return context.Disasters; }
         }
 
-<<<<<<< HEAD
         public IQueryable<Request> Requests
         {
             get { return context.Requests; }
         }
 
-=======
->>>>>>> refs/remotes/HTBox/mobile_rework
         public IQueryable<DisasterCluster> DisasterClusters
         {
             get { return context.DisasterClusters; }
@@ -244,7 +238,6 @@ namespace Services
             return result;
         }
 
-<<<<<<< HEAD
         public async Task AssignRequestToUserAsync(int userId, int requestId)
         {
             var result = await context.Requests.FindAsync(requestId);
@@ -271,8 +264,6 @@ namespace Services
 
             await context.SaveChangesAsync();
         }
-=======
->>>>>>> refs/remotes/HTBox/mobile_rework
 
         public void AddClusterGroup(ClusterGroup newCluster)
         {

@@ -25,10 +25,6 @@ namespace Models
         public int? OrganizationId { get; set; }
         
         public virtual Organization Organization { get; set; }
-<<<<<<< HEAD
-=======
-
->>>>>>> refs/remotes/HTBox/mobile_rework
         public virtual ICollection<Commitment> Commitments { get; set; }
         public virtual ICollection<Request> CreatedRequests { get; set; }
         public virtual ICollection<Request> AssignedRequests { get; set; }

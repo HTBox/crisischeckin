@@ -1,9 +1,6 @@
 using Models;
 using System.Linq;
-<<<<<<< HEAD
 using System.Threading.Tasks;
-=======
->>>>>>> refs/remotes/HTBox/mobile_rework
 
 namespace Services.Interfaces
 {
@@ -38,11 +35,8 @@ namespace Services.Interfaces
         void AddCommitment(Commitment newCommitment);
         void AddCluster(Cluster newCluster);
         void RemoveCluster(Cluster clusterToDelete);
-<<<<<<< HEAD
         Task AssignRequestToUserAsync(int userId, int requestId);
         Task CompleteRequestAsync(int requestId);
-=======
->>>>>>> refs/remotes/HTBox/mobile_rework
         Cluster UpdateCluster(Cluster updatedCluster);
         void AddClusterGroup(ClusterGroup newCluster);
         void RemoveClusterGroup(ClusterGroup clusterToDelete);
