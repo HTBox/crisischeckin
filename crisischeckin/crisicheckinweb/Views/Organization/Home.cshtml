@@ -7,6 +7,59 @@
 
 <h2>@Model.Organization.OrganizationName - Home</h2>
 
+
+<h3>Active Disasters</h3>
+<table class="table table-striped table-bordered">
+    <tr class="ht-header">
+        <th>Name</th>
+        <th>Volunteer Checkins</th>
+        <th>Resource Checkins</th>
+    </tr>
+    @foreach (var disaster in Model.Disasters)
+    {
+        <tr>
+            <td>@disaster.Disaster.Name</td>
+            <td>
+                @if (disaster.Commitments.Count() > 0)
+                {
+                    foreach (var clusterGroup in disaster.Commitments.GroupBy(commitment => commitment.ClusterId))
+                    {
+                        if (!clusterGroup.Key.HasValue)
+                        {
+                            <text>No cluster</text>
+                        }
+                        else
+                        {
+                            <text>@clusterGroup.First().Cluster.Name</text>
+                        }
+                        <text>: @clusterGroup.Count()</text>
+                        <br />
+                    }
+                }
+                else
+                {
+                    <text>None</text>
+                }
+            </td>
+            <td>
+                @if (disaster.Resources.Count() > 0)
+                {
+                    foreach (var typeGroup in disaster.Resources.GroupBy(resource => resource.ResourceType))
+                    {
+                        <text>@typeGroup.First().ResourceType.TypeName: @typeGroup.Count()</text>
+                        <br />
+                    }
+                }
+                else
+                {
+                    <text>None</text>
+                }
+            </td>
+        </tr>
+    }
+</table>
+
+
 <h3>Contacts</h3>
 <table class="table table-striped table-bordered">
     <tr class="ht-header">

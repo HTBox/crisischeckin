@@ -15,6 +15,9 @@ namespace crisicheckinweb.ViewModels
         public Organization Organization { get; set; }
         public IEnumerable<Resource> OrganizationResources { get; set; }
 
+        public IEnumerable<OrganizationDisasterViewModel> Disasters { get; set; }
+
+
         public IEnumerable<Disaster> AllDisasters { get; set; }
 
 
