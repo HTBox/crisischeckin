@@ -53,18 +53,21 @@
       <DependentUpon>MyRequests.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResourceListPage.cs" />
+    <Compile Include="ResourceViewPage.cs" />
     <Compile Include="SaveLoad\Serialize.cs" />
     <Compile Include="SaveLoad\ISaveAndLoad.cs" />
     <Compile Include="App.cs" />
     <Compile Include="ViewModels\ProfileViewModel.cs" />
-    <Compile Include="ViewModels\CommitmentViewModel.cs" />
-    <Compile Include="ViewModels\DisasterListItemViewModel.cs" />
     <Compile Include="Views\ProfileView.xaml.cs">
       <DependentUpon>ProfileView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TemporaryView.xaml.cs">
       <DependentUpon>TemporaryView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\CommitmentViewModel.cs" />
+    <Compile Include="ViewModels\DisasterListItemViewModel.cs" />
+    <Compile Include="ViewModels\ResourceListItemViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Fusillade, Version=0.6.0.0, Culture=neutral, processorArchitecture=MSIL">
