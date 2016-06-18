@@ -1,5 +1,6 @@
 ﻿
 
+using CrisisCheckinMobile.ApiClient;
 using CrisisCheckinMobile.ViewModels;
 using Xamarin.Forms;
 
@@ -13,9 +14,13 @@ namespace CrisisCheckinMobile.Views
         {
 
 
+
             InitializeComponent();
-            viewModel = new RegistrationPageViewModel(this.Navigation);
+            var client = new CrisisCheckInApiClient();
+            viewModel = new RegistrationPageViewModel(this, client);
             BindingContext = viewModel;
+
+
 
 
         }
