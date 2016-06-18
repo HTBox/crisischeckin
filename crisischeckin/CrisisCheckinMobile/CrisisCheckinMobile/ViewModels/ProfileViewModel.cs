@@ -122,8 +122,7 @@ namespace CrisisCheckinMobile.ViewModels
             {
                 return new Command(() =>
                 {
-                    this.IsCheckedInVisible = true;
-                    this.IsCheckedOutVisisble = false;
+                    this.IsCheckedIn = false;
                 });
             }
         }
@@ -136,14 +135,13 @@ namespace CrisisCheckinMobile.ViewModels
                 {
                     // TODO call to check in page
                     //await navigation.PushAsync(new TemporaryView());
-                    this.IsCheckedInVisible = false;
-                    this.IsCheckedOutVisisble = true;
+                    this.IsCheckedIn = true;
                 });
             }
         }
 
-        private bool isCheckedIn = true;
-        public bool IsCheckedInVisible
+        private bool isCheckedIn = false;
+        private bool IsCheckedIn
         {
             get
             {
@@ -151,31 +149,28 @@ namespace CrisisCheckinMobile.ViewModels
             }
             set
             {
-                if (isCheckedIn != value)
-                {
-                    isCheckedIn = value;
-
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsCheckedInVisible)));
-                }
+                isCheckedIn = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsCheckedInVisible)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsCheckedOutVisisble)));
             }
         }
 
-        private bool isCheckedout;
+        
+        public bool IsCheckedInVisible
+        {
+            get
+            {
+                return !isCheckedIn;
+            }
+        }
+
         public bool IsCheckedOutVisisble
         {
             get
             {
-                return isCheckedout;
+                return isCheckedIn;
             }
-            set
-            {
-                if (isCheckedout != value)
-                {
-                    isCheckedout = value;
-
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsCheckedOutVisisble)));
-                }
-            }
+         
         }
 
 
