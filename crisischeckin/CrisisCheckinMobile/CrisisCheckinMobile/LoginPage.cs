@@ -15,7 +15,7 @@ namespace CrisisCheckinMobile
             if (isValid)
             {
                 //App.IsUserLoggedIn = true;
-                Navigation.InsertPageBefore(new DisasterListPage(), this);
+                Navigation.InsertPageBefore(new DisasterCheckInPage(), this);
                 await Navigation.PopAsync();
             }
             else
