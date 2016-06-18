@@ -16,6 +16,7 @@ namespace CrisisCheckinMobile.Views
 
 
             InitializeComponent();
+            //TODO: Use a container to pass in parameters
             var client = new CrisisCheckInApiClient();
             viewModel = new RegistrationPageViewModel(this, client);
             BindingContext = viewModel;
