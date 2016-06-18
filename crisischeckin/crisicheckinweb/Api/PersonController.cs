@@ -41,5 +41,24 @@ namespace crisicheckinweb.Api
 
                 }).ToList();
         }
+
+        [HttpGet]
+        [Route("api/person/{personId}/requests")]
+        public IEnumerable<RequestDto> GetRequests(int personId)
+        {
+            return DbContext.Requests.Where(c => c.AssigneeId == personId)
+                .Select(c => new RequestDto
+                {
+                    CreatedDate = c.CreatedDate,
+                    EndDate = c.EndDate,
+                    Description = c.Description,
+                    CreatorId = c.CreatorId,
+                    AssigneeId = c.AssigneeId,
+                    OrganizationId = c.OrganizationId,
+                    Completed =c.Completed,
+                    Location = c.Location                  
+                }).ToList();
+        }
+
     }
 }
