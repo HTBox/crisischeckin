@@ -48,5 +48,31 @@ namespace CrisisCheckinMobile.ApiClient
             // otherwise, check cache. use that if data exist. 
             // Error/something if no data and can't connect
         }
+
+        public async Task<IEnumerable<RequestDto>> GetRequests(int personId)
+        {
+            var apiClient = RestService.For<ICrisisCheckInApi>(EndpointUrl);
+
+            var policy = Policy
+                .Handle<System.Net.WebException>()
+                .WaitAndRetryAsync(new[]
+                {
+                    TimeSpan.FromSeconds(1),
+                    TimeSpan.FromSeconds(2),
+                    TimeSpan.FromSeconds(3)
+                });
+            // TODO: add authentication header to hook up to Autho0
+            var dtos = await policy.ExecuteAsync(() =>
+                    apiClient.GetRequests(personId
+                        /* [Header("Authorization")] string authorization = "bearer AUTH0-TOKEN" */)
+                );
+
+            return dtos;
+            // check for connectivity
+            // if connected, retrieve
+            // otherwise, check cache. use that if data exist. 
+            // Error/something if no data and can't connect
+        }
+
     }
 }

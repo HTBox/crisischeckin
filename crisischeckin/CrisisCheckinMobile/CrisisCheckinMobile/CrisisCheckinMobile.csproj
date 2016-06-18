@@ -48,6 +48,7 @@
     <Compile Include="Models\CommitmentDto.cs" />
     <Compile Include="Models\Disaster.cs" />
     <Compile Include="Models\Person.cs" />
+    <Compile Include="Models\RequestDto.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="MyRequests.xaml.cs">
       <DependentUpon>MyRequests.xaml</DependentUpon>
