@@ -10,7 +10,7 @@ namespace CrisisCheckinMobile.iOS
     {
         const string CellIdentifier = "disasterListCell"; // set in the Storyboard
 
-        public List<DisasterListItemViewModel> DisasterListItems
+        public List<DisasterViewModel> DisasterListItems
         {
             get;
             set;
@@ -22,7 +22,7 @@ namespace CrisisCheckinMobile.iOS
             set;
         }
             
-        public DisasterListTableSource(List<DisasterListItemViewModel> items, UITableViewController parent)
+        public DisasterListTableSource(List<DisasterViewModel> items, UITableViewController parent)
         {
             DisasterListItems = items;
             Parent = parent;
@@ -36,9 +36,9 @@ namespace CrisisCheckinMobile.iOS
             // NOTE: Don't call the base implementation on a Model class
             // in a Storyboard, Dequeue will ALWAYS return a cell, 
             var cell = tableView.DequeueReusableCell (CellIdentifier);
-            var item = DisasterListItems[indexPath.Row];
-            cell.TextLabel.Text = item.DisasterName;
-            cell.DetailTextLabel.Text = item.DisasterStatusAndDate;
+            //var item = DisasterListItems[indexPath.Row];
+            //cell.TextLabel.Text = item.DisasterName;
+            //cell.DetailTextLabel.Text = item.DisasterStatusAndDate;
 
             return cell;
         }

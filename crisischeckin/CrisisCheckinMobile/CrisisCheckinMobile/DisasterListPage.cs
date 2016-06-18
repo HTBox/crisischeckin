@@ -13,7 +13,7 @@ namespace CrisisCheckinMobile
         private ListView _disasterListView;
         private EventHandler<SelectedItemChangedEventArgs> _itemSelectedEventHandler;
 
-        public IEnumerable<DisasterListItemViewModel> Data
+        public IEnumerable<DisasterViewModel> Data
         {
             get;
             set;
@@ -24,9 +24,9 @@ namespace CrisisCheckinMobile
             var task = Init();
 
             // TODO: Replace sample data creation with API call
-            //Data = new List<DisasterListItemViewModel>
+            //Data = new List<DisasterViewModel>
             //{
-            //    new DisasterListItemViewModel(1, "Terrible Disaster", "Working - until August 12, 2015",
+            //    new DisasterViewModel(1, "Terrible Disaster", "Working - until August 12, 2015",
             //        new CommitmentViewModel
             //        {
             //            Id = 1,
@@ -36,8 +36,8 @@ namespace CrisisCheckinMobile
             //            PersonIsCheckedIn = true,
             //            EndDate = new DateTime(2015, 8, 12)
             //        }),
-            //    new DisasterListItemViewModel(2, "Disaster Name 2", "", new CommitmentViewModel()),
-            //    new DisasterListItemViewModel(3, "Disaster Name 3", "Planned - September 5 - 21, 2015",
+            //    new DisasterViewModel(2, "Disaster Name 2", "", new CommitmentViewModel()),
+            //    new DisasterViewModel(3, "Disaster Name 3", "Planned - September 5 - 21, 2015",
             //        new CommitmentViewModel
             //        {
             //            Id = 2,
@@ -60,7 +60,7 @@ namespace CrisisCheckinMobile
                     return;
 
                 var listView = sender as ListView;
-                var selectedItem = args.SelectedItem as DisasterListItemViewModel;
+                var selectedItem = args.SelectedItem as DisasterViewModel;
                 if (selectedItem != null)
                 {
                     Navigation.PushAsync(new CommitmentPage(selectedItem.CommitmentData));
@@ -76,7 +76,7 @@ namespace CrisisCheckinMobile
             // TODO: Implement a progress indicator
             ICrisisCheckInApiClient apiClient = new CrisisCheckInApiClient();
             var dtos = await apiClient.GetCommitmentsList(2); //TODO: wire up to Auth0 so we don't have to pass person ID
-            Data = dtos.Select(c => new DisasterListItemViewModel(c));
+           // Data = dtos.Select(c => new DisasterViewModel(c));
 
             _disasterListView = new ListView
             {

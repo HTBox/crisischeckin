@@ -18,7 +18,14 @@
 
     <Label x:Name="endDateLabel" Text="End Date" />
     <DatePicker x:Name="endDate" />
+    
+    <Label x:Name="locationLabel" Text="Location" />
+    <Entry x:Name="locationEntry" />
 
     <Button x:Name="checkInToDisasterButton" Text="Check In To Disaster" />
+  
+    <!--<Switch x:Name="VolunteerTypeSwitch"  />-->
+    
+            
   </StackLayout>
 </ContentPage>

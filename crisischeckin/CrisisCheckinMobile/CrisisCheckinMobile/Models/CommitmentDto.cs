@@ -12,7 +12,7 @@ namespace CrisisCheckinMobile.Models
         public bool PersonIsCheckedIn { get; set; }
         public CommitmentStatus Status { get; set; }
 
-        public Disaster Disaster { get; set; }       
+        public DisasterDto Disaster { get; set; }       
     }
 
     public enum CommitmentStatus // TODO: Commented-out the previously-used values. They don't line up with the data model enum. Using the data model version for now

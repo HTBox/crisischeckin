@@ -49,7 +49,7 @@
     <Compile Include="Models\ClusterCoordinatorEvents.cs" />
     <Compile Include="Models\ClusterCoordinatorLog.cs" />
     <Compile Include="Models\CommitmentDto.cs" />
-    <Compile Include="Models\Disaster.cs" />
+    <Compile Include="Models\DisasterDto.cs" />
     <Compile Include="Models\Person.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="MyRequests.xaml.cs">
@@ -62,7 +62,7 @@
     <Compile Include="ViewModels\ProfileViewModel.cs" />
     <Compile Include="Utilities\ObjectToIndexConverter.cs" />
     <Compile Include="ViewModels\CommitmentViewModel.cs" />
-    <Compile Include="ViewModels\DisasterListItemViewModel.cs" />
+    <Compile Include="ViewModels\DisasterViewModel.cs" />
     <Compile Include="Views\ProfileView.xaml.cs">
       <DependentUpon>ProfileView.xaml</DependentUpon>
     </Compile>
