@@ -1,5 +1,4 @@
-﻿using CrisisCheckinMobile.Annotations;
-using CrisisCheckinMobile.ApiClient;
+﻿using CrisisCheckinMobile.ApiClient;
 using CrisisCheckinMobile.Models;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -144,7 +143,7 @@ namespace CrisisCheckinMobile.ViewModels
             };
 
             //TODO: finish implementation for send info to client api
-            _client.AddNewUser(person);
+            //  _client.AddNewUser(person);
 
             //Show confirm message
             await _page.DisplayAlert("Crisis Registraion", "Confirm registraion thru email", "Ok");
@@ -156,13 +155,18 @@ namespace CrisisCheckinMobile.ViewModels
 
     }
 
+    public class Orginazation
+    {
+        public int Id { get; set; }
+    }
+
 
     public abstract class ViewModelBase : INotifyPropertyChanged
     {
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        [NotifyPropertyChangedInvocator]
+
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
