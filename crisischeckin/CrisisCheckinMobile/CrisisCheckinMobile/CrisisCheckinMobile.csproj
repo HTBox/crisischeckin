@@ -65,7 +65,6 @@
     <Compile Include="Views\TemporaryView.xaml.cs">
       <DependentUpon>TemporaryView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="TempLandingPage.cs" />
     <Compile Include="ViewModels\CommitmentViewModel.cs" />
     <Compile Include="ViewModels\DisasterListItemViewModel.cs" />
     <Compile Include="ViewModels\ResourceListItemViewModel.cs" />
