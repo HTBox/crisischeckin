@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CrisisCheckinMobile.Views.TemporaryView">
+  <Label Text="Temporary Page wired in for profile page. Update profile view action with appriate page" VerticalOptions="Center" HorizontalOptions="Center" />
+</ContentPage>

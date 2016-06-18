@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CrisisCheckinMobile.Views.ProfileView"
+             >
+
+    <StackLayout>
+      <StackLayout.Children>
+        <Button Text="My Contacts"
+                Command="{Binding GoToMyContacts}"
+                 HorizontalOptions="FillAndExpand"
+                 VerticalOptions="Start"
+                BorderWidth="1"
+                BorderColor="Black">
+        
+        </Button>
+
+        <Button Text="My Requests" 
+                Command="{Binding GoToMyRequests}"
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="Start"
+                 BorderWidth="1"
+                BorderColor="Black"/>
+
+          <Button Text="My Info"
+              Command="{Binding GoToMyInfo}"
+               HorizontalOptions="FillAndExpand"
+               VerticalOptions="Start"
+                   BorderWidth="1"
+                BorderColor="Black"/>
+
+        <Button Text="View Disaster Data"
+              Command="{Binding GoToViewDisasterData}"
+               HorizontalOptions="FillAndExpand"
+               VerticalOptions="Start"
+                 BorderWidth="1"
+                BorderColor="Black"/>
+
+        <Button Text="View Disaster Resources"
+              Command="{Binding GoToViewDisasterResources}"
+               HorizontalOptions="FillAndExpand"
+               VerticalOptions="Start"
+                 BorderWidth="1"
+                BorderColor="Black"/>
+
+        <Button Text="Add Resources"
+              Command="{Binding AddResources}"
+               HorizontalOptions="Center"
+               VerticalOptions="Center" />
+
+        <Button Text="Add Contacts"
+               Command="{Binding AddContacts}"
+                HorizontalOptions="Center"
+                VerticalOptions="Center" />
+
+        <Button Text="Report Data"
+            Command="{Binding ReportData}"
+             HorizontalOptions="Center"
+             VerticalOptions="Center" />
+
+        <Button Text="Check in to Disaster"
+              Command="{Binding CheckInToDisaster}"
+               HorizontalOptions="Center"
+               VerticalOptions="Center" IsVisible="{Binding IsCheckedInVisible}" />
+
+        <Button Text="Check out of Disaster"
+              Command="{Binding CheckOutOfDisaster}"
+               HorizontalOptions="Center"
+               VerticalOptions="Center" IsVisible="{Binding IsCheckedOutVisisble}" />
+          </StackLayout.Children>
+    </StackLayout>
+
+    
+
+</ContentPage>

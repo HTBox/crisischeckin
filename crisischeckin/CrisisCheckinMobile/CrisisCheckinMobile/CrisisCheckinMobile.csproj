@@ -59,9 +59,16 @@
     <Compile Include="SaveLoad\Serialize.cs" />
     <Compile Include="SaveLoad\ISaveAndLoad.cs" />
     <Compile Include="App.cs" />
+    <Compile Include="ViewModels\ProfileViewModel.cs" />
     <Compile Include="Utilities\ObjectToIndexConverter.cs" />
     <Compile Include="ViewModels\CommitmentViewModel.cs" />
     <Compile Include="ViewModels\DisasterListItemViewModel.cs" />
+    <Compile Include="Views\ProfileView.xaml.cs">
+      <DependentUpon>ProfileView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TemporaryView.xaml.cs">
+      <DependentUpon>TemporaryView.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Fusillade, Version=0.6.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -153,6 +160,18 @@
     <None Include="App.config">
     </None>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\ProfileView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\TemporaryView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

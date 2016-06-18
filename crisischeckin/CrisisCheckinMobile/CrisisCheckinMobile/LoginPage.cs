@@ -1,3 +1,4 @@
+using CrisisCheckinMobile.Views;
 using System;
 using Xamarin.Forms;
 
@@ -15,7 +16,7 @@ namespace CrisisCheckinMobile
             if (isValid)
             {
                 //App.IsUserLoggedIn = true;
-                Navigation.InsertPageBefore(new DisasterCheckInPage(), this);
+                Navigation.InsertPageBefore(new ProfileView(), this);
                 await Navigation.PopAsync();
             }
             else

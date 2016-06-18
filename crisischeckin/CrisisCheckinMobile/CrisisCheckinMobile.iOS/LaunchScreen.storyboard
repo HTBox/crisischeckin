@@ -17,7 +17,7 @@
                         <color key="backgroundColor" customColorSpace="calibratedWhite" colorSpace="calibratedRGB" red="0.23921568627450981" green="0.12549019607843137" blue="0.086274509803921567" alpha="1"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="center" id="9" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" image="Images/Human-Toolbox_Logo_RGB.png">
-                                <rect key="frame" x="220" y="150" width="160" height="240"/>
+                                <rect key="frame" x="109" y="84" width="160" height="240"/>
                             </imageView>
                         </subviews>
                     </view>
@@ -39,8 +39,6 @@
         <image name="iosMenuIcons/CCI-menuRptHi.png" width="35" height="29"/>
         <image name="iosMenuIcons/CCI-menuSetting.png" width="34" height="29"/>
         <image name="iosMenuIcons/CCI-menuSettingHi.png" width="34" height="29"/>
-        <image name="Default-568h.png" width="640" height="1136"/>
         <image name="Images/Human-Toolbox_Logo_RGB.png" width="271" height="152"/>
-        <image name="Images/Default-568h.png" width="320" height="568"/>
     </resources>
 </document>
