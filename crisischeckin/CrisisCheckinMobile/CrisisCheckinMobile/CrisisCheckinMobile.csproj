@@ -52,6 +52,9 @@
     <Compile Include="Models\Disaster.cs" />
     <Compile Include="Models\Person.cs" />
     <Compile Include="Models\User.cs" />
+    <Compile Include="MyRequests.xaml.cs">
+      <DependentUpon>MyRequests.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SaveLoad\Serialize.cs" />
     <Compile Include="SaveLoad\ISaveAndLoad.cs" />
@@ -159,6 +162,12 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <ItemGroup>
+    <EmbeddedResource Include="MyRequests.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="DisasterCheckInPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
