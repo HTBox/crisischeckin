@@ -37,6 +37,12 @@ namespace crisicheckinweb.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        public ActionResult ListResourceCheckinsByDisaster()
+        {
+            var model = new ListByDisasterViewModel { Disasters = _disasterSvc.GetActiveList(), CommitmentDate = null };
+            return View(model);
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -114,7 +120,6 @@ namespace crisicheckinweb.Controllers
 
             if (model.SelectedDisaster != 0)
             {
-                result.ResourceCheckins = _adminSvc.GetResourceCheckinsForDisaster(model.SelectedDisaster, model.CommitmentDate).ToList();
                 result.OrganizationContacts = _adminSvc.GetContactsForDisaster(model.SelectedDisaster).ToList();
 
                 var volunteers = _adminSvc.GetVolunteersForDisaster(model.SelectedDisaster, model.CommitmentDate);
@@ -156,6 +161,20 @@ namespace crisicheckinweb.Controllers
             }
 
             return PartialView("_FilterResults", result);
+        }
+
+
+        [HttpPost]
+        public PartialViewResult FilterResourceCheckins(ListByDisasterViewModel model)
+        {
+            var result = new CheckinListsResultsViewModel();
+
+            if (model.SelectedDisaster != 0)
+            {
+                result.ResourceCheckins = _adminSvc.GetResourceCheckinsForDisaster(model.SelectedDisaster, model.CommitmentDate).ToList();
+            }
+
+            return PartialView("_FilterResourceCheckinResults", result);
         }
     }
 }

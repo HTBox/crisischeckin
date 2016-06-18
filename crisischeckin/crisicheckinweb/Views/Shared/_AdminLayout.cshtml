@@ -17,8 +17,11 @@
         </div>
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-                @Html.MenuItem("Home (Disaster List)", "List", "Disaster")
-                @Html.MenuItem("View Checkins", "ListbyDisaster", "Volunteer")
+                @Html.MenuItem("Disasters", "List", "Disaster")
+                @Html.MenuItem("Checkins", "ListbyDisaster", "Volunteer")
+                @Html.MenuItem("Field Data", "ListResourceCheckinsbyDisaster", "Volunteer")
+                @Html.MenuItem("Requests", "Index", "Requests")
+                @Html.MenuItem("Resources", "Index", "Resources")
             </ul>
             @Html.Partial("_LoginStatus")
         </div><!--/.nav-collapse -->

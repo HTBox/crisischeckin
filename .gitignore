@@ -119,6 +119,8 @@ UpgradeLog*.XML
 #Xamarin
 *.userpref
 *.userprefs
+crisischeckin/CrisisCheckinMobile/Components/
 
 #GhostDoc
 *.sln.GhostDoc.xml
+project.lock.json

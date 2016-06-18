@@ -1,7 +1,14 @@
 ﻿@model crisicheckinweb.ViewModels.ListByDisasterViewModel
 @{
     ViewBag.Title = "List Checkins";
-    Layout = "~/Views/Shared/_VolunteerLayout.cshtml";
+    if (User.IsInRole("Admin"))
+    {
+        Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_VolunteerLayout.cshtml";
+    }
 }
 
 <h2>@ViewBag.Title</h2>

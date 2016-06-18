@@ -1,0 +1,99 @@
+﻿@model crisicheckinweb.ViewModels.VolunteerRequestIndexViewModel
+
+@{
+    ViewBag.Title = "Volunteer Request Assignment";
+    Layout = "~/Views/Shared/_VolunteerLayout.cshtml";
+}
+
+<h2>Volunteer Request Assigment</h2>
+
+<p>
+    The following are tasks your organization has requested help with. You can self-assign these tasks.
+    After you complete a tasks, please mark them as completed.
+</p>
+
+<h4>Request Assigned to you</h4>
+@Html.AntiForgeryToken()
+<table class="table table-striped table-bordered">
+    <tr class="ht-header">
+        <th>
+            @Html.DisplayNameFor(model => model.Request.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Request.Location)
+        </th>
+        <th>
+            Created By
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Request.EndDate)
+        </th>
+        <th>
+            Complete
+        </th>
+    </tr>
+
+    @foreach (var item in Model.RequestAssignedToVolunteer)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Location)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Creator.FirstName)
+            </td>
+            <td>
+                @item.EndDate.ToShortDateString()
+            </td>
+            <td>
+                @Html.Partial("_CompleteRequestForm", item)
+            </td>
+        </tr>
+    }
+</table>
+
+<h4>Open requests</h4>
+
+<table class="table table-striped table-bordered">
+    <tr class="ht-header">
+        <th>
+            @Html.DisplayNameFor(model => model.Request.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Request.Location)
+        </th>
+        <th>
+            Created By
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Request.EndDate)
+        </th>
+        <th>
+            Self-Assign
+        </th>
+    </tr>
+
+    @foreach (var item in Model.OpenRequests)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Location)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Creator.FirstName)
+            </td>
+            <td>
+                @item.EndDate.ToShortDateString()
+            </td>
+            <td>
+                @Html.Partial("_AssignRequestForm", item)
+            </td>
+        </tr>
+    }
+</table>

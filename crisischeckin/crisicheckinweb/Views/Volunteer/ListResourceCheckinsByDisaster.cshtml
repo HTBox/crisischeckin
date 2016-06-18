@@ -1,0 +1,35 @@
+﻿@model crisicheckinweb.ViewModels.ListByDisasterViewModel
+@{
+    ViewBag.Title = "List Field Data";
+    if (User.IsInRole("Admin"))
+    {
+        Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    } else {
+        Layout = "~/Views/Shared/_VolunteerLayout.cshtml";
+    }
+}
+
+
+<h2>@ViewBag.Title</h2>
+@using (Ajax.BeginForm("FilterResourceCheckins", "Volunteer", new AjaxOptions() { UpdateTargetId = "results" }))
+{
+    <div class="form-inline form-group">
+        <text>Disaster: </text>@Html.DropDownListFor(m => m.SelectedDisaster, new SelectList(Model.Disasters, "Id", "Name", Model.SelectedDisaster), "-- Choose One --", new { @class = "form-control" })
+
+        <text>Filter by Date: </text>@Html.TextBoxFor(m => m.CommitmentDate, new { id = "dp_startDate", @class = "form-control" })
+        <input class="btn btn-black" id="GoButton" type="submit" value="Go" />
+    </div>
+}
+
+<div id="results"></div>
+
+@section scripts
+{
+    <script type="text/javascript">
+        (function ($) {
+            $(document).ready(function () {
+                $("#dp_startDate").datepicker();
+            });
+        })(jQuery);
+    </script>
+}

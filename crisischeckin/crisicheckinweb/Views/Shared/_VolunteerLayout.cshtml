@@ -15,7 +15,9 @@
         </div>
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-                @Html.MenuItem("View Checkins", "ListbyDisaster", "Volunteer")
+                @Html.MenuItem("Checkins", "ListbyDisaster", "Volunteer")
+                @Html.MenuItem("Field Data", "ListResourceCheckinsbyDisaster", "Volunteer")
+                @Html.MenuItem("Requests", "VolunteerRequestIndex", "Requests")
             </ul>
             @Html.Partial("_LoginStatus")
         </div><!--/.nav-collapse -->
