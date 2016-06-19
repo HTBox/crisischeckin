@@ -39,7 +39,7 @@ namespace CrisisCheckinMobile.ViewModels
                 return new Command(async () =>
                 {
                     //TODO 
-                    await navigation.PushAsync(new TemporaryView());
+                    await navigation.PushAsync(new MyRequests());
                 });
             }
         }
@@ -75,7 +75,7 @@ namespace CrisisCheckinMobile.ViewModels
                 return new Command(async () =>
                 {
                     //TODO 
-                    await navigation.PushAsync(new TemporaryView());
+                    await navigation.PushAsync(new ResourceListPage());
                 });
             }
         }

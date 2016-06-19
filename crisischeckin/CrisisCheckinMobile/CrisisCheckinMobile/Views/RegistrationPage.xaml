@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="using:CrisisCheckinMobile.Views.Controls"
+             x:Class="CrisisCheckinMobile.Views.RegistrationPage"
+            BackgroundColor="#4F2C1D"
+  >
+  <StackLayout Padding="30">
+    <StackLayout Padding="5">
+      <Label Text="{Binding Status}"/>
+    </StackLayout>
+      <StackLayout Orientation="Vertical">
+        <Label Text="First Name" FontAttributes="Bold"/>
+        <Entry Text="{Binding Firstname}" Placeholder="John"/>
+      </StackLayout>
+      <StackLayout Orientation="Vertical">
+        <Label Text="Last Name" FontAttributes="Bold"/>
+        <Entry Text="{Binding LastName}" Placeholder="Smith"/>
+      </StackLayout>
+      <StackLayout Orientation="Vertical">
+        <Label Text="Contribution level" FontAttributes="Bold"/>
+        <Picker SelectedIndex="{Binding ContributionLevel}">
+          <Picker.Items>
+              <x:String>Personal</x:String>
+            <x:String>Organization</x:String>
+          </Picker.Items>
+        </Picker>
+      </StackLayout>
+      <StackLayout Orientation="Vertical" IsVisible="{Binding IsOrganization}">
+        <StackLayout>
+          <Label Text="Organization Type" FontAttributes="Bold"/>
+          <Entry Text="{Binding OrganizationType}" Placeholder="Tech"/>
+        </StackLayout>
+      </StackLayout>
+      <StackLayout Orientation="Vertical">
+        <Label Text="Phone Number" FontAttributes="Bold"/>
+        <Entry Text="{Binding PhoneNumber}" Placeholder="555-555-5555"/>
+      </StackLayout>
+      <StackLayout Orientation="Vertical">
+        <Label Text="Email" FontAttributes="Bold"/>
+        <Entry Text="{Binding Email}" Placeholder="John@gmail.com"/>
+      </StackLayout>
+      <StackLayout Orientation="Vertical">
+        <Label Text="User Name" FontAttributes="Bold"/>
+        <Entry Text="{Binding UserName}" Placeholder="JohnSmith"/>
+      </StackLayout>
+      <StackLayout Orientation="Vertical">
+        <Label Text="Password" FontAttributes="Bold"/>
+        <Entry Text="{Binding Password}" IsPassword="True"/>
+      </StackLayout>
+      <StackLayout Orientation="Vertical" WidthRequest="100">
+        <Label Text="Confirm Password" FontAttributes="Bold"/>
+        <Entry Text="{Binding PasswordConfirm}" IsPassword="True"/>
+      </StackLayout>
+      <Button Text="Continue" WidthRequest="100"
+                 TextColor="White"
+                 BackgroundColor="#D22630"
+                 BorderColor="Black"
+                 Command="{Binding AddUserCommand}"
+                 FontAttributes="Bold"/>
+    </StackLayout>
+</ContentPage>
