@@ -9,7 +9,7 @@ namespace CrisisCheckinMobile
         private readonly Button _loginButton;
         private readonly Button _registerButton;
 
-        private async void OnLoginButtonClicked (object sender, EventArgs e)
+        private async void OnLoginButtonClicked(object sender, EventArgs e)
         {
             //...
             var isValid = true; //AreCredentialsCorrect (user);
@@ -24,7 +24,7 @@ namespace CrisisCheckinMobile
                 // Login failed
             }
         }
-         
+
         public LoginPage()
         {
             _loginButton = new Button
@@ -39,7 +39,7 @@ namespace CrisisCheckinMobile
                 Text = "Register",
                 TextColor = Color.White
             };
-            // TODO: register button click
+            _registerButton.Clicked += OnRegistrationButtonClicked;
 
             BackgroundColor = Constants.HtBoxDarkBrown;
             Content = new StackLayout
@@ -76,8 +76,14 @@ namespace CrisisCheckinMobile
             }
             if (_registerButton != null)
             {
-                // TODO: remove handler here
+                _registerButton.Clicked -= OnRegistrationButtonClicked;
             }
+        }
+
+        private async void OnRegistrationButtonClicked(object sender, EventArgs e)
+        {
+            Navigation.InsertPageBefore(new RegistrationPage(), this);
+            await Navigation.PopAsync();
         }
     }
 }

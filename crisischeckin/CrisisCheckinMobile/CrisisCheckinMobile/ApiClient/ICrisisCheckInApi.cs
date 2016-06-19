@@ -12,5 +12,10 @@ namespace CrisisCheckinMobile.ApiClient
         // Remove personId argument at that time; the server will use the bearer token to identify the logged-in user
         [Get("/person/{personId}/commitments")]
         Task<List<CommitmentDto>> GetCommitmentsWithDisasterInfo(int personId);
+
+        // TODO: add authentication header with Auth0
+        // Remove personId argument at that time; the server will use the bearer token to identify the logged-in user
+        [Get("/person/{personId}/requests")]
+        Task<List<RequestDto>> GetRequests(int personId);
     }
 }
