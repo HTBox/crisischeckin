@@ -1,0 +1,35 @@
+﻿@model crisicheckinweb.ViewModels.VolunteerResourceIndexViewModel
+@{
+    Layout = "~/Views/Shared/_VolunteerLayout.cshtml";
+}
+
+<h2>Resources</h2>
+<p>Select a disaster from the dropdown below to view the available reources your organization has listed for the specified disaster. You can optionally specify a date and if a resource is available during that date it will appear below.</p>
+
+@using (Ajax.BeginForm("ResourcesByDisaster", "Resources", new AjaxOptions() { UpdateTargetId = "results" }))
+{
+    <form class="form-inline">
+        <div class="form-group inline-block">
+            <label for="SelectedDisaster">Disaster</label>
+            @Html.DropDownListFor(m => m.SelectedDisaster, new SelectList(Model.Disasters, "Id", "Name", Model.SelectedDisaster), "-- Select Disaster --", new { @class = "form-control" })
+        </div>
+        <div class="form-group inline-block">
+            <label for="CommitmentDate">Date</label>
+            @Html.TextBoxFor(m => m.CommitmentDate, new { id = "dp_startDate", @class = "form-control" })
+        </div>
+        <button type="submit" class="btn btn-default">View Resources</button>
+    </form>
+}
+
+<div id="results"></div>
+
+@section scripts
+{
+    <script type="text/javascript">
+        (function ($) {
+            $(document).ready(function () {
+                $("#dp_startDate").datepicker();
+            });
+        })(jQuery);
+    </script>
+}

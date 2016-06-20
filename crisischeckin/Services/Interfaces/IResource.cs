@@ -13,5 +13,6 @@ namespace Services.Interfaces
         Task<Resource> FindResourceByIdAsync(int? resourceId);
         Task SaveNewResourceAsync(int currentUserId, Resource resource);
         Task RemoveResourceById(int resourceId);
+        Task<IEnumerable<Resource>> GetResourcesByDisasterAsync(int selectedDisaster, DateTime? commitmentDate);
     }
 }

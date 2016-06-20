@@ -45,5 +45,10 @@ namespace Services
         {
             await _dataService.RemoveResourceByIdAsync(resourceId);
         }
+
+        public Task<IEnumerable<Resource>> GetResourcesByDisasterAsync(int selectedDisaster, DateTime? commitmentDate)
+        {
+            return _dataService.GetResourcesByDisasterAsync(selectedDisaster, commitmentDate);
+        }
     }
 }

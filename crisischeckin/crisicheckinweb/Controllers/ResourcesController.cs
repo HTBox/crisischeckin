@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Net;
 using System.Web.Mvc;
-using crisicheckinweb.Infrastructure.Attributes;
 using crisicheckinweb.ViewModels;
 using crisicheckinweb.ViewModels.SearchModels;
 using crisicheckinweb.Wrappers;
@@ -18,10 +17,12 @@ namespace crisicheckinweb.Controllers
         private CrisisCheckin db = new CrisisCheckin();
         private readonly IWebSecurityWrapper _webSecurity ;
         private readonly IResource _resourceSvc;
-        public ResourcesController(IWebSecurityWrapper webSecurity, IResource resourceSvc)
+        private readonly IDisaster _disasterSvc;
+        public ResourcesController(IWebSecurityWrapper webSecurity, IResource resourceSvc, IDisaster disasterSvc)
         {
             _webSecurity = webSecurity;
             _resourceSvc = resourceSvc;
+            _disasterSvc = disasterSvc;
         }
 
         // GET: Resources
@@ -34,6 +35,26 @@ namespace crisicheckinweb.Controllers
                 Resources = resources,
                 ResourceSearch = new ResourceSearch(await db.Disasters.ToListAsync(), await db.ResourceTypes.ToListAsync())
             });
+        }
+
+        // GET: Resources
+        public async Task<ActionResult> VolunteerResourcesIndex()
+        {
+            var model = new VolunteerResourceIndexViewModel { Disasters = _disasterSvc.GetActiveList(), CommitmentDate = null };
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<PartialViewResult> ResourcesByDisaster(VolunteerResourceIndexViewModel model)
+        {
+            var result = new VolunteerResourceIndexViewModel();
+
+            if (model.SelectedDisaster != 0)
+            {
+                result.Resources = await _resourceSvc.GetResourcesByDisasterAsync(model.SelectedDisaster, model.CommitmentDate);
+            }
+
+            return PartialView("_VolunteerResourceIndexResults", result);
         }
 
         // GET: Resources/Details/5
