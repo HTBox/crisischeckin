@@ -1,6 +1,6 @@
 ﻿namespace CrisisCheckinMobile.Models
 {
-    public class Disaster
+    public class DisasterDto
     {
         public int Id { get; set; }
         public string Name { get; set; }

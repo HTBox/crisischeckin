@@ -7,7 +7,7 @@ namespace CrisisCheckinMobile.iOS
 {
 	partial class CrisisCheckInTableViewController : UITableViewController
 	{
-        List<DisasterListItemViewModel> Data
+        List<DisasterViewModel> Data
         {
             get;
             set;

@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CrisisCheckinMobile.DisasterCheckInPage">
+  <StackLayout>
+    <Label 
+      x:Name="selectDisaster"
+      Text="Select Disaster"/>
+
+    <Picker x:Name="disasterNamePicker" />
+
+    <Label x:Name="activity" Text="Activity" />
+    
+    <Picker x:Name="activityPicker" />
+
+    <Label x:Name="startDateLabel" Text="Start Date" />
+    <DatePicker x:Name="startDate" />
+
+    <Label x:Name="endDateLabel" Text="End Date" />
+    <DatePicker x:Name="endDate" />
+    
+    <Label x:Name="locationLabel" Text="Location" />
+    <Entry x:Name="locationEntry" />
+
+    <Button x:Name="checkInToDisasterButton" Text="Check In To Disaster" />
+  
+    <!--<Switch x:Name="VolunteerTypeSwitch"  />-->
+    
+            
+  </StackLayout>
+</ContentPage>
