@@ -1,4 +1,4 @@
-﻿@model Models.Resource
+﻿@model crisicheckinweb.ViewModels.ResourceCrudViewModel
 @using crisicheckinweb.Helpers
 
 @{
@@ -97,6 +97,8 @@
 
     @using (Html.BeginForm()) {
         @Html.AntiForgeryToken()
+
+        @Html.Hidden("returnUrl", ViewBag.ReturnUrl as string);
 
         <div class="form-actions no-color">
             <input type="submit" value="Delete" class="btn btn-default" />

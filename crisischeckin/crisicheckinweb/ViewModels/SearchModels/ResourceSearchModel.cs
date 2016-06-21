@@ -16,7 +16,7 @@ namespace crisicheckinweb.ViewModels.SearchModels
         {
         }
 
-        public ResourceSearch(List<Disaster> disasters, List<ResourceType> resourceTypes)
+        public ResourceSearch(List<Disaster> disasters, List<Organization> organizations, List<ResourceType> resourceTypes)
         {
             var alldisasters = new Disaster()
             {
@@ -26,6 +26,13 @@ namespace crisicheckinweb.ViewModels.SearchModels
             };
             disasters.Insert(0, alldisasters);
 
+            var allOrganizations = new Organization()
+            {
+                OrganizationId = GeneralSelectId,
+                OrganizationName = "All Organizations"
+            };
+            organizations.Insert(0, allOrganizations);
+
             var allResourceTypes = new ResourceType()
             {
                 ResourceTypeId = GeneralSelectId,
@@ -34,8 +41,29 @@ namespace crisicheckinweb.ViewModels.SearchModels
             resourceTypes.Insert(0, allResourceTypes);
 
             _disasters = disasters;
+            _organizations = organizations;
             _resourceTypes = resourceTypes;
         }
+
+        public ResourceSearch(List<Disaster> disasters, List<Organization> organizations, List<ResourceType> resourceTypes, Disaster fixedDisaster, Organization fixedOrganization)
+            : this(disasters, organizations, resourceTypes)
+        {
+            if (fixedDisaster != null)
+            {
+                FixedDisasterId = fixedDisaster.Id;
+                FixedDisaster = fixedDisaster;
+            }
+            if (fixedOrganization != null)
+            {
+                FixedOrganizationId = fixedOrganization.OrganizationId;
+                FixedOrganization = fixedOrganization;
+            }
+        }
+
+        public int? FixedOrganizationId { get; set; }
+        public Organization FixedOrganization { get; set; }
+        public int? FixedDisasterId { get; set; }
+        public Disaster FixedDisaster { get; set; }
 
         [DisplayName("Availability Start")]
         public DateTime? NullableStartDate { get; set; }
@@ -55,6 +83,17 @@ namespace crisicheckinweb.ViewModels.SearchModels
         public IEnumerable<SelectListItem> DisasterItems
         {
             get { return new SelectList(_disasters, "Id", "Name"); }
+        }
+
+        // organizations
+        private readonly List<Organization> _organizations;
+
+        [DisplayName("Selected Organization")]
+        public int SelectedOrganizationId { get; set; }
+
+        public IEnumerable<SelectListItem> OrganizationItems
+        {
+            get { return new SelectList(_organizations, "OrganizationId", "OrganizationName"); }
         }
 
         // resource types

@@ -1,4 +1,4 @@
-﻿@model Models.Resource
+﻿@model crisicheckinweb.ViewModels.ResourceCrudViewModel
 @using crisicheckinweb.Helpers
 
 @{
@@ -95,5 +95,5 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new {id = Model.ResourceId}, new { @class = "btn btn-black" })
+    @Html.ActionLink("Edit", "Edit", new {id = Model.ResourceId, returnUrl = ViewBag.returnUrl}, new { @class = "btn btn-black" })
 </p>

@@ -2,16 +2,45 @@
 @using crisicheckinweb.Helpers
 
 @{
-    ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    string title = null;
+    if (Model.ResourceSearch.FixedDisasterId.HasValue && Model.ResourceSearch.FixedOrganizationId.HasValue)
+    {
+        title = string.Format("{0} resources for '{1}'", Model.ResourceSearch.FixedOrganization.OrganizationName, Model.ResourceSearch.FixedDisaster.Name);
+    }
+    else if (Model.ResourceSearch.FixedDisasterId.HasValue)
+    {
+        title = string.Format("Resources - {0}", Model.ResourceSearch.FixedDisaster.Name);
+    }
+    else if (Model.ResourceSearch.FixedOrganizationId.HasValue)
+    {
+        title = string.Format("Resources - {0}", Model.ResourceSearch.FixedOrganization.OrganizationName);
+    }
+    else
+    {
+        title = "Resources";
+    }
+
+    ViewBag.Title = title;
 }
 
-<h2>Resources</h2>
-<p>The following is a list of reources your organization has listed for this disaster.  These reources can be viewed by volunteers.</p>
+<h2>@title</h2>
+
+@if (Model.ResourceSearch.FixedOrganizationId.HasValue)
+{
+    <p>
+        @Html.ActionLink(Model.ResourceSearch.FixedOrganization.OrganizationName + " home page", "Home", "Organization", new { id = Model.ResourceSearch.FixedOrganizationId }, new { })
+    </p>
+}
+@if (Model.ResourceSearch.FixedDisasterId.HasValue)
+{
+    <p>
+        @Html.ActionLink(Model.ResourceSearch.FixedDisaster.Name + " home page", "Edit", "Disaster", new { id = Model.ResourceSearch.FixedDisasterId }, new { })
+    </p>
+}
 
 <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
     <div class="btn-group" role="group" aria-label="First group">
-        @Html.ActionLink("Create New", "Create", new {}, new {@class = "btn btn-black"})
+        @Html.ActionLink("Create New", "Create", new { disasterId = Model.ResourceSearch.FixedDisasterId, organizationId = Model.ResourceSearch.FixedOrganizationId, returnUrl = Request.RawUrl }, new { @class = "btn btn-black" })
     </div>
     <div class="btn-group" role="group" aria-label="Second group">
         <button type="button" class="btn btn-black" id="filter-button">Filter</button>
@@ -22,76 +51,95 @@
     @Html.Partial("_FilterResourcePartial", Model.ResourceSearch)
 </div>
 
-<br/>
+<br />
 
 <table class="table table-bordered table-striped">
     <tr class="ht-header">
+        @if (!Model.ResourceSearch.FixedDisasterId.HasValue)
+        {
+            <th>
+                @Html.DisplayNameFor(model => model.Resources.First().Disaster)
+            </th>
+        }
+        @if (!Model.ResourceSearch.FixedOrganizationId.HasValue)
+        {
+            <th>
+                @Html.DisplayNameFor(model => model.Resources.First().Allocator)
+            </th>
+        }
         <th>
-            Disaster Name
+            @Html.DisplayNameFor(model => model.Resources.First().ResourceType)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.ResourceSearch.ResourceType.TypeName)
+            @Html.DisplayNameFor(model => model.Resources.First().Description)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.ResourceSearch.Description)
+            @Html.DisplayNameFor(model => model.Resources.First().EntryMade)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.ResourceSearch.EntryMade)
+            @Html.DisplayNameFor(model => model.Resources.First().StartOfAvailability)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.ResourceSearch.StartOfAvailability)
+            @Html.DisplayNameFor(model => model.Resources.First().EndOfAvailability)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.ResourceSearch.EndOfAvailability)
+            @Html.DisplayNameFor(model => model.Resources.First().Location)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.ResourceSearch.Location)
+            @Html.DisplayNameFor(model => model.Resources.First().Qty)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.ResourceSearch.Qty)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ResourceSearch.Status)
+            @Html.DisplayNameFor(model => model.Resources.First().Status)
         </th>
         <th></th>
     </tr>
 
-@foreach (var item in Model.Resources) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Disaster.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ResourceType.TypeName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EntryMade)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.StartOfAvailability)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EndOfAvailability)
-        </td>
-        <td>
-            @Html.LocationFor(item.Location)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Qty)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Status)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new {id = item.ResourceId}) |
-            @Html.ActionLink("Details", "Details", new {id = item.ResourceId}) |
-            @Html.ActionLink("Delete", "Delete", new {id = item.ResourceId})
-        </td>
-    </tr>
-}
+    @foreach (var item in Model.Resources)
+    {
+        <tr>
+            @if (!Model.ResourceSearch.FixedDisasterId.HasValue)
+            {
+                <td>
+                    @Html.DisplayFor(modelItem => item.Disaster.Name)
+                </td>
+            }
+            @if (!Model.ResourceSearch.FixedOrganizationId.HasValue)
+            {
+                <td>
+                    @Html.DisplayFor(modelitem => item.Allocator.OrganizationName)
+                </td>
+            }
+            <td>
+                @Html.DisplayFor(modelItem => item.ResourceType.TypeName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EntryMade)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartOfAvailability)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndOfAvailability)
+            </td>
+            <td>
+                @Html.LocationFor(item.Location)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Qty)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.ResourceId, returnUrl = Request.RawUrl }) |
+                @Html.ActionLink("Details", "Details", new { id = item.ResourceId, returnUrl = Request.RawUrl }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.ResourceId, returnUrl = Request.RawUrl })
+            </td>
+        </tr>
+    }
 
 </table>
 
@@ -104,7 +152,7 @@
                 $("#dp_startDate").datepicker();
                 $("#dp_endDate").datepicker();
                 $("#dp_createdDate").datepicker();
-                
+
 
                 $("#filter-button").click(function () {
                     $("#filter-holder").toggle("slow");

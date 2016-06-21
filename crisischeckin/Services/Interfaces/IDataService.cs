@@ -29,6 +29,7 @@ namespace Services.Interfaces
         Organization AddOrganization(Organization newOrganization);
 
         Task AddResourceAsync(Resource newResource);
+        Task<Resource> UpdateResourceAsync(Resource updatedResource);
         Task RemoveResourceByIdAsync(int id);
         Task<Resource> FindResourceByIdAsync(int? id);
         Task<IEnumerable<Resource>> GetAllResourcesAsync();

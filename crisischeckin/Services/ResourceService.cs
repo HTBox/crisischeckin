@@ -41,6 +41,11 @@ namespace Services
             await _dataService.AddResourceAsync(resource);
         }
 
+        public async Task<Resource> UpdateResourceAsync(Resource updatedResource)
+        {
+            return await _dataService.UpdateResourceAsync(updatedResource);
+        }
+
         public async Task RemoveResourceById(int resourceId)
         {
             await _dataService.RemoveResourceByIdAsync(resourceId);
