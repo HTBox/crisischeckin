@@ -1,0 +1,70 @@
+﻿@model crisicheckinweb.ViewModels.VolunteerResourceIndexViewModel
+@using crisicheckinweb.Helpers
+
+<h4>Available Resources</h4>
+
+<table class="table table-bordered table-striped">
+    <tr class="ht-header">
+        <th>
+            Disaster Name
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ResourceSearch.ResourceType.TypeName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ResourceSearch.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ResourceSearch.EntryMade)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ResourceSearch.StartOfAvailability)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ResourceSearch.EndOfAvailability)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ResourceSearch.Location)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ResourceSearch.Qty)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ResourceSearch.Status)
+        </th>
+    </tr>
+
+    @foreach (var item in Model.Resources)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Disaster.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ResourceType.TypeName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EntryMade)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartOfAvailability)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndOfAvailability)
+            </td>
+            <td>
+                @Html.LocationFor(item.Location)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Qty)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+        </tr>
+    }
+
+</table>

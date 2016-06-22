@@ -446,6 +446,8 @@
     <Content Include="Views\Resources\Edit.cshtml" />
     <Content Include="Views\Resources\Index.cshtml" />
     <Content Include="Views\Resources\_FilterResourcePartial.cshtml" />
+    <Content Include="Views\Resources\VolunteerResourcesIndex.cshtml" />
+    <Content Include="Views\Resources\_VolunteerResourceIndexResults.cshtml" />
     <None Include="Web.Staging.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

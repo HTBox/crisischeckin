@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Models;
 using System.Linq;
@@ -32,6 +33,7 @@ namespace Services.Interfaces
         Task RemoveResourceByIdAsync(int id);
         Task<Resource> FindResourceByIdAsync(int? id);
         Task<IEnumerable<Resource>> GetAllResourcesAsync();
+        Task<IEnumerable<Resource>> GetResourcesByDisasterAsync(int selectedDisaster, DateTime? commitmentDate);
 
         void VerifyOrganization(int organizationId);
         Person AddPerson(Person newPerson);

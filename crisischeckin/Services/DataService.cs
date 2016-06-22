@@ -165,6 +165,25 @@ namespace Services
             return resource;
         }
 
+        public async Task<IEnumerable<Resource>> GetResourcesByDisasterAsync(int selectedDisaster, DateTime? commitmentDate)
+        {
+            IEnumerable<Resource> resources;
+            if (commitmentDate != null)
+            {
+                resources = await context.Resources
+                        .Where(
+                        r => DbFunctions.TruncateTime(r.EndOfAvailability) > DbFunctions.TruncateTime(commitmentDate)
+                        && DbFunctions.TruncateTime(r.StartOfAvailability) < DbFunctions.TruncateTime(commitmentDate)
+                        && r.DisasterId == selectedDisaster).ToListAsync();
+            }
+            else
+            {
+                resources = await context.Resources.Where(r => r.DisasterId == selectedDisaster).ToListAsync();
+            }
+
+            return resources.OrderBy(r => r.Description);
+        }
+
         public async Task RemoveResourceByIdAsync(int id)
         {
             var resource = await context.Resources.FindAsync(id);
