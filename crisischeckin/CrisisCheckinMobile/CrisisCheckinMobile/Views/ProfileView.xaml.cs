@@ -15,14 +15,9 @@ namespace CrisisCheckinMobile.Views
         {
             InitializeComponent();
             BindingContext = new ProfileViewModel(this.Navigation);
-
-        }
-
-        protected override async void OnAppearing()
-        {
             if (!App.IsUserLoggedIn)
             {
-                await Navigation.PushModalAsync(new LoginPage(), true);
+                Navigation.PushModalAsync(new LoginPage(), true);
             }
         }
     }
