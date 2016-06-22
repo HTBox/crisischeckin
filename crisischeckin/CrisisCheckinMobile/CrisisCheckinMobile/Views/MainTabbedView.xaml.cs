@@ -12,31 +12,46 @@ namespace CrisisCheckinMobile.Views
     {
         public MainTabbedView()
         {
-            BackgroundColor = Color.White;
 
-            var homePage = new NavigationPage(new ProfileView());
-            homePage.Title = "Home";
-            homePage.Icon = "iosMenuIcons/CCI-menuHomeHi.png";
-            homePage.BarBackgroundColor = Constants.HtBoxRed;
-            homePage.BarTextColor = Color.White;
-            Children.Add(homePage);
+            Children.Add(new NavigationPage(new ProfileView()
+            {
+                Title = "Home"
+            })
+            {
+                Title = "Home",
+                Icon = "iosMenuIcons/CCI-menuHomeHi.png",
+                BarBackgroundColor = Constants.HtBoxRed,
+                BarTextColor = Color.White
+            });
 
-            Children.Add(new ResourceListPage()
+            Children.Add(new NavigationPage(new ResourceListPage())
             {
                 Title = "Resources",
-                Icon = "iosMenuIcons/CCI-menuSettingHi.png"
+                Icon = "iosMenuIcons/CCI-menuSettingHi.png",
+                BarBackgroundColor = Constants.HtBoxRed,
+                BarTextColor = Color.White
             });
 
-            Children.Add(new MyRequests()
+            Children.Add(new NavigationPage(new MyRequests()
+            {
+                Title = "Requests"
+            })
             {
                 Title = "Requests",
-                Icon = "iosMenuIcons/CCI-menuListHi.png"
+                Icon = "iosMenuIcons/CCI-menuListHi.png",
+                BarBackgroundColor = Constants.HtBoxRed,
+                BarTextColor = Color.White
             });
 
-            Children.Add(new TemporaryView()
+            Children.Add(new NavigationPage(new TemporaryView()
+            {
+                Title = "Report"
+            })
             {
                 Title = "Report",
-                Icon = "iosMenuIcons/CCI-menuRptHi.png"
+                Icon = "iosMenuIcons/CCI-menuRptHi.png",
+                BarBackgroundColor = Constants.HtBoxRed,
+                BarTextColor = Color.White
             });
 
         }
