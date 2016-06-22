@@ -39,6 +39,7 @@
     <Compile Include="ApiClient\ICrisisCheckInApiClient.cs" />
     <Compile Include="CommitmentPage.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="CustomRenderers\PaddedButton.cs" />
     <Compile Include="DisasterCheckInPage.xaml.cs">
       <DependentUpon>DisasterCheckInPage.xaml</DependentUpon>
     </Compile>

@@ -1,5 +1,6 @@
 using CrisisCheckinMobile.Views;
 using System;
+using CrisisCheckinMobile.CustomRenderers;
 using Xamarin.Forms;
 
 namespace CrisisCheckinMobile
@@ -27,28 +28,44 @@ namespace CrisisCheckinMobile
 
         public LoginPage()
         {
-            _loginButton = new Button
+            _loginButton = new PaddedButton
             {
                 Text = "Login",
-                TextColor = Color.White
+                TextColor = Color.White,
+                HorizontalOptions = LayoutOptions.CenterAndExpand,
+                BorderWidth = 1.0,
+                BorderColor = Color.White
             };
             _loginButton.Clicked += OnLoginButtonClicked;
 
-            _registerButton = new Button
+            _registerButton = new PaddedButton
             {
                 Text = "Register",
-                TextColor = Color.White
+                TextColor = Color.White,
+                HorizontalOptions = LayoutOptions.CenterAndExpand,
+                BorderWidth = 1.0,
+                BorderColor = Color.White
             };
             _registerButton.Clicked += OnRegistrationButtonClicked;
 
             BackgroundColor = Constants.HtBoxDarkBrown;
+
+            Title = "Crisis Checkin Login";
             Content = new StackLayout
             {
                 Orientation = StackOrientation.Vertical,
-                VerticalOptions = LayoutOptions.Center,
+                HorizontalOptions = LayoutOptions.FillAndExpand,
+                VerticalOptions = LayoutOptions.StartAndExpand,
+                Padding = new Thickness(10, 100, 10, 20),
                 WidthRequest = 280.0,
                 Children =
                 {
+                    new Image()
+                    {
+                        Source = ImageSource.FromFile("Images/Human-Toolbox_Logo_RGB.png"),
+                        Aspect = Aspect.AspectFit,
+                        Margin = new Thickness(0, 0, 0, 20.0)
+                    },
                     new Entry
                     {
                         Placeholder = "Username",
@@ -62,8 +79,20 @@ namespace CrisisCheckinMobile
                         IsPassword = true,
                         WidthRequest = 280.0
                     },
-                    _loginButton,
-                    _registerButton
+
+                    new StackLayout()
+                    {
+                        Margin = new Thickness(0, 20.0, 0, 0),
+                        Orientation = StackOrientation.Horizontal,
+                        HorizontalOptions = LayoutOptions.CenterAndExpand,
+                        Spacing = 60.0,
+                        Children =
+                        {
+                            _loginButton,
+                            _registerButton
+                        }
+                    }
+
                 }
             };
         }
