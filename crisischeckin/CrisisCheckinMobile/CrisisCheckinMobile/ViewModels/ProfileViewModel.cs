@@ -179,7 +179,8 @@ namespace CrisisCheckinMobile.ViewModels
             {
                 return new Command(async () =>
                 {
-                    await navigation.PopModalAsync(true);
+                    App.IsUserLoggedIn = false;
+                    await navigation.PushModalAsync(new LoginPage(), true);
                 });
             }
         }
