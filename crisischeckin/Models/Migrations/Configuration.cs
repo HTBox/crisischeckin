@@ -16,7 +16,7 @@ namespace Models.Migrations
         {
             // Populate resource types
             context.ResourceTypes.AddOrUpdate(x => x.ResourceTypeId,
-                new ResourceType { ResourceTypeId = 1, TypeName = "Food" },
+                new ResourceType { ResourceTypeId = 1, TypeName = "Resource-Food" },
                 new ResourceType { ResourceTypeId = 2, TypeName = "Water"},
                 new ResourceType { ResourceTypeId = 3, TypeName = "Medical"},
                 new ResourceType { ResourceTypeId = 4, TypeName = "Shelter"},
