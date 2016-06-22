@@ -67,6 +67,11 @@
               Command="{Binding CheckOutOfDisaster}"
                HorizontalOptions="Center"
                VerticalOptions="Center" IsVisible="{Binding IsCheckedOutVisisble}" />
+
+        <Button Text="Logout"
+               Command="{Binding Logout}"
+               HorizontalOptions="Center"
+               VerticalOptions="Center" />
           </StackLayout.Children>
     </StackLayout>
 

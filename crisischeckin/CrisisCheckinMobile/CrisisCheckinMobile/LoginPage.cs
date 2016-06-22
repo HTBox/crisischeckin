@@ -17,8 +17,9 @@ namespace CrisisCheckinMobile
             if (isValid)
             {
                 //App.IsUserLoggedIn = true;
-                Navigation.InsertPageBefore(new ProfileView(), this);
-                await Navigation.PopAsync();
+                //Navigation.InsertPageBefore(new ProfileView(), this);
+                //await Navigation.PopAsync();
+                await Navigation.PushModalAsync(new Views.MainTabbedView(), true);
             }
             else
             {

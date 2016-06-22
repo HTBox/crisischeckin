@@ -173,7 +173,16 @@ namespace CrisisCheckinMobile.ViewModels
          
         }
 
-
+        public ICommand Logout
+        {
+            get
+            {
+                return new Command(async () =>
+                {
+                    await navigation.PopModalAsync(true);
+                });
+            }
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
