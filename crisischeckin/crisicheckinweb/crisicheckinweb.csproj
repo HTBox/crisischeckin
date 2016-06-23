@@ -210,7 +210,7 @@
     <Compile Include="Controllers\OrganizationController.cs" />
     <Compile Include="Controllers\RequestsController.cs" />
     <Compile Include="Controllers\ResourcesController.cs" />
-    <Compile Include="Helpers\ModelStateExtensions.cs" />
+  <Compile Include="Helpers\ModelStateExtensions.cs" />
     <Compile Include="Filters\AccessDeniedAuthorizeAttribute.cs" />
     <Compile Include="Filters\CrisisCheckInApiAuthorizeAttribute.cs" />
     <Compile Include="Helpers\ElmahHandleErrorAttribute.cs" />
@@ -247,7 +247,6 @@
     <Compile Include="ViewModels\SelectedDisasterCluster.cs" />
     <Compile Include="ViewModels\SendMessageToAllVolunteersByDisasterViewModel.cs" />
     <Compile Include="ViewModels\UnassignClusterCoordinatorViewModel.cs" />
-    <Compile Include="ViewModels\ResourceCrudViewModel.cs" />
     <Compile Include="Wrappers\UserCreationException.cs" />
     <Compile Include="Wrappers\IWebSecurityWrapper.cs" />
     <Compile Include="Controllers\VolunteerController.cs" />

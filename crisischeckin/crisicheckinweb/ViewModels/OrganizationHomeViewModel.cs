@@ -13,7 +13,7 @@ namespace crisicheckinweb.ViewModels
     {
         public int OrganizationId { get; set; }
         public Organization Organization { get; set; }
-        public IEnumerable<Resource> RecentResources { get; set; }
+        public IEnumerable<Resource> OrganizationResources { get; set; }
 
         public IEnumerable<OrganizationDisasterViewModel> Disasters { get; set; }
 

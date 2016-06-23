@@ -81,7 +81,7 @@ namespace Services
 
         public IQueryable<Organization> Organizations
         {
-            get { return context.Organizations; }
+            get { return context.Organizations;  }
         }
 
         public IQueryable<Resource> Resources
@@ -165,30 +165,6 @@ namespace Services
             return resource;
         }
 
-        public async Task<Resource> UpdateResourceAsync(Resource updatedResource)
-        {
-            var result = await context.Resources.FindAsync(updatedResource.ResourceId);
-
-            if (result == null)
-                throw new DisasterNotFoundException();
-
-            result.Allocator = updatedResource.Allocator == null ? null : Organizations.First(org => org.OrganizationId == updatedResource.Allocator.OrganizationId);
-            result.Description = updatedResource.Description;
-            result.DisasterId = updatedResource.DisasterId;
-            result.StartOfAvailability = updatedResource.StartOfAvailability;
-            result.EndOfAvailability = updatedResource.EndOfAvailability;
-            result.EntryMade = updatedResource.EntryMade;
-            result.Location = updatedResource.Location;
-            result.PersonId = updatedResource.PersonId;
-            result.Qty = updatedResource.Qty;
-            result.ResourceTypeId = updatedResource.ResourceTypeId;
-            result.Status = updatedResource.Status;
-
-            context.SaveChanges();
-
-            return result;
-        }
-
         public async Task RemoveResourceByIdAsync(int id)
         {
             var resource = await context.Resources.FindAsync(id);
@@ -205,7 +181,6 @@ namespace Services
         public async Task<IEnumerable<Resource>> GetAllResourcesAsync()
         {
             return await context.Resources.Include(r => r.Disaster)
-                                               .Include(r => r.Allocator)
                                                .Include(r => r.Person)
                                                .Include(r => r.ResourceType)
                                                .ToListAsync();
@@ -276,7 +251,7 @@ namespace Services
             context.SaveChanges();
         }
 
-
+        
         public Disaster UpdateDisaster(Disaster updatedDisaster)
         {
             var result = context.Disasters.Find(updatedDisaster.Id);
@@ -376,7 +351,7 @@ namespace Services
 
             return result;
         }
-
+        
         public void SubmitChanges()
         {
             context.SaveChanges();
@@ -401,7 +376,7 @@ namespace Services
             context.SaveChanges();
         }
 
-
+       
         public void AppendClusterCoordinatorLogEntry(ClusterCoordinatorLogEntry clusterCoordinatorLogEntry)
         {
             context.ClusterCoordinatorLogEntries.Add(clusterCoordinatorLogEntry);

@@ -6,7 +6,7 @@ namespace crisicheckinweb.ViewModels
 {
     public class AdminResourceIndexViewModel
     {
-        public IEnumerable<ResourceCrudViewModel> Resources { get; set; }
+        public IEnumerable<Resource> Resources { get; set; }
         public ResourceSearch ResourceSearch { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿@model crisicheckinweb.ViewModels.ResourceCrudViewModel
+﻿@model Models.Resource
 
 @{
     ViewBag.Title = "Create";
@@ -7,21 +7,10 @@
 
 <h2>Create</h2>
 
-@using (Html.BeginForm())
+@using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
-
-    @Html.Hidden("returnUrl", ViewBag.ReturnUrl as string);
-
-    if (Model.FixedDisasterId.HasValue)
-    {
-        @Html.HiddenFor(model => model.FixedDisasterId, new { @Value = Model.FixedDisasterId });
-    }
-    if (Model.FixedOrganizationId.HasValue)
-    {
-        @Html.HiddenFor(model => model.FixedOrganizationId, new { @Value = Model.FixedOrganizationId });
-    }
-
+    
     <div class="form-horizontal">
         <h4>Resource</h4>
         <hr />
@@ -78,36 +67,8 @@
         <div class="form-group">
             @Html.LabelFor(model => model.DisasterId, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @if (!Model.FixedDisasterId.HasValue)
-                {
-                    @Html.DropDownList("DisasterId", null, htmlAttributes: new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.DisasterId, "", new { @class = "text-danger" })
-                }
-                else
-                {
-                    @Html.HiddenFor(model => model.DisasterId, new { @Value = Model.FixedDisasterId });
-                    <p>
-                        <strong>@Model.FixedDisaster.Name</strong>
-                    </p>
-                }
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.SelectedOrganizationId, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @if (!Model.FixedOrganizationId.HasValue)
-                {
-                    @Html.DropDownList("SelectedOrganizationId", null, htmlAttributes: new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.SelectedOrganizationId, "", new { @class = "text-danger" })
-                }
-                else
-                {
-                    @Html.HiddenFor(model => model.SelectedOrganizationId, new { @Value = Model.FixedOrganizationId });
-                    <p>
-                        <strong>@Model.FixedOrganization.OrganizationName</strong>
-                    </p>
-                }
+                @Html.DropDownList("DisasterId", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.DisasterId, "", new { @class = "text-danger" })
             </div>
         </div>
 

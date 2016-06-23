@@ -189,11 +189,8 @@ namespace crisicheckinweb.Controllers
             int id = inputModel.OrganizationId;
             Organization org = OrganizationService.Get(id);
 
-            // Recent resource checkins
-            var resources = (from resource in AdminService.GetResourceCheckinsForOrganization(id)
-                            orderby resource.EntryMade descending
-                            select resource).Take(15);
-                            
+            // Resources
+            var resources = AdminService.GetResourceCheckinsForOrganization(id);
             var resourceTypes = AdminService.GetResourceTypes();
 
             // Commitments
@@ -210,7 +207,7 @@ namespace crisicheckinweb.Controllers
             {
                 OrganizationId = id,
                 Organization = org,
-                RecentResources = resources,
+                OrganizationResources = resources,
                 Disasters = disasters,
                 ResourceTypes = resourceTypes,
                 AllDisasters = allDisasters
