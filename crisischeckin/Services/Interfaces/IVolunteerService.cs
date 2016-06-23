@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Collections.Generic;
 using Models;
 
 namespace Services.Interfaces
@@ -13,6 +14,8 @@ namespace Services.Interfaces
         IQueryable<Commitment> RetrieveCommitments(int personId, bool showInactive);
 
         IQueryable<Commitment> RetrieveCommitmentsForDisaster(Person person, Disaster disaster);
+
+        IEnumerable<Commitment> GetCommitmentsForOrganization(int organizationId, bool includeInactive);
 
         Person FindByUserId(int userId);
         Person GetPersonDetailsForChangeContactInfo(int userId);

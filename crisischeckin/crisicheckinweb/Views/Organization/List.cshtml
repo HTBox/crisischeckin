@@ -1,0 +1,28 @@
+﻿@model IEnumerable<Models.Organization>
+@{
+    ViewBag.Title = "List of Organizations";
+}
+
+<h2>List of Organizations</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.OrganizationName)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var org in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => org.OrganizationName)
+            </td>
+            <td>
+                @Html.ActionLink("View", "Home", new { id = org.OrganizationId })
+            </td>
+        </tr>
+    }
+
+</table>

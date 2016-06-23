@@ -4,6 +4,7 @@ using Services.Interfaces;
 using System;
 using System.Data.Entity;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace Services
 {
@@ -102,6 +103,16 @@ namespace Services
                 throw new ArgumentNullException("disaster", "Disaster cannot be null");
 
             return RetrieveCommitments(person.Id, true).Where(c => c.DisasterId == disaster.Id);
+        }
+
+        public IEnumerable<Commitment> GetCommitmentsForOrganization(int organizationId, bool includeInactive)
+        {
+            var result = from commitment in ourService.Commitments
+                         where commitment.Person.OrganizationId == organizationId
+                         && (commitment.Disaster.IsActive || includeInactive)
+                         select commitment;
+
+            return result;
         }
 
         public void UpdateCommitment(Commitment commitment)
