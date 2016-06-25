@@ -41,16 +41,14 @@ namespace crisicheckinweb.Controllers
         public ActionResult RegisterNewOrganization()
         {
             var person = VolunteerService.FindByUserId(WebSecurityWrapper.CurrentUserId);
-            int personId = 0;
-
-            if (person != null) personId = person.Id;
+            if (person == null)
+                throw new InvalidOperationException("A volunteer must be logged in to register a new organization.");
 
             var model = new NewOrganizationViewModel()
             {
                 Address = new Address(),
                 OrganizationName = "",
-                Type = OrganizationTypeEnum.Local,
-                UserIdRegisteringOrganization = personId
+                Type = OrganizationTypeEnum.Local
             };
 
             return View(model);
@@ -77,8 +75,13 @@ namespace crisicheckinweb.Controllers
             // TODO POint of contact?
 
 
+            // Get registering person to make them the organization admin
+            Person person = GetCurrentVolunteer();
+            if (person == null)
+                throw new ArgumentException("Logged-in person not found or is an administrator.");
+
             // Now pass the new organization out through the Organisation service so it can be persisted in the database.
-            newOrg = OrganizationService.AddOrganization(newOrg);
+            newOrg = OrganizationService.AddOrganization(newOrg, person.Id);
 
             Task.Run(() =>
             {
@@ -91,7 +94,6 @@ namespace crisicheckinweb.Controllers
                         @"<p>Click on the following link to verify the new organization : <a href='{0}'>{0}</a> </p>",
                         organizationVerificationLink);
                 var message = new Message("CrisisCheckin - Verify your organization", body);
-                Person person = VolunteerService.FindByUserId(newOrganization.UserIdRegisteringOrganization);
                 MessageService.SendMessage(message, person, "CrisisCheckin");
 
             });
@@ -108,9 +110,23 @@ namespace crisicheckinweb.Controllers
             return View("OrganizationVerified");
         }
 
-        public ActionResult Home(int id)
+        public ActionResult Home(int? id)
         {
-            return View(CreateHomeViewModel(id));
+            if (id.HasValue)
+            {
+                // Check user can see this org
+                ConfirmAccess(id.Value);
+            }
+            else
+            {
+                // Get current person and show their organization
+                Person person = GetCurrentVolunteer();
+                if ((person == null) || (!person.OrganizationId.HasValue))
+                    throw new InvalidOperationException("The logged-in user is either an administrator or is not associated with an organization.");
+                id = person.OrganizationId;
+            }
+
+            return View(CreateHomeViewModel(id.Value));
         }
 
         [HttpPost]
@@ -121,9 +137,9 @@ namespace crisicheckinweb.Controllers
 
             try
             {
-                // Get the current user and check membership
-                var person = VolunteerService.FindByUserId(WebSecurityWrapper.CurrentUserId);
-                ConfirmMembership(person, model.OrganizationId);
+                // Check access
+                var person = GetCurrentVolunteer();
+                ConfirmAccess(model.OrganizationId);
 
                 // Ok
                 model.Organization = OrganizationService.Get(model.OrganizationId);
@@ -150,9 +166,8 @@ namespace crisicheckinweb.Controllers
 
             try
             {
-                // Get the current user and check membership
-                var person = VolunteerService.FindByUserId(WebSecurityWrapper.CurrentUserId);
-                ConfirmMembership(person, model.OrganizationId);
+                // Check access
+                ConfirmAccess(model.OrganizationId);
 
                 // Check the resource ID
                 var resources = AdminService.GetResourceCheckinsForOrganization(model.OrganizationId);
@@ -164,6 +179,52 @@ namespace crisicheckinweb.Controllers
 
                 // Ok
                 DisasterService.RemoveResourceById(resource.ResourceId);
+
+                return Redirect("Home/" + model.OrganizationId);
+            }
+            catch (ArgumentException ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+            }
+
+            return View("Home", CreateHomeViewModel(model.OrganizationId));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult PromoteToAdmin(OrganizationHomeViewModel model)
+        {
+            ModelState.RemoveErrorsExcept("OrganizationId,PromoteToAdminPersonId");
+            if (!ModelState.IsValid)
+                return View("Home", CreateHomeViewModel(model));
+
+            try
+            {
+                ConfirmAdminAccess(model.OrganizationId);
+                VolunteerService.PromoteVolunteerToOrganizationAdmin(model.OrganizationId, model.PromoteToAdminPersonId);
+
+                return Redirect("Home/" + model.OrganizationId);
+            }
+            catch (ArgumentException ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+            }
+
+            return View("Home", CreateHomeViewModel(model.OrganizationId));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DemoteFromAdmin(OrganizationHomeViewModel model)
+        {
+            ModelState.RemoveErrorsExcept("OrganizationId,DemoteFromAdminPersonId");
+            if (!ModelState.IsValid)
+                return View("Home", CreateHomeViewModel(model));
+
+            try
+            {
+                ConfirmAdminAccess(model.OrganizationId);
+                VolunteerService.DemoteVolunteerFromOrganizationAdmin(model.OrganizationId, model.DemoteFromAdminPersonId);
 
                 return Redirect("Home/" + model.OrganizationId);
             }
@@ -189,6 +250,13 @@ namespace crisicheckinweb.Controllers
             int id = inputModel.OrganizationId;
             Organization org = OrganizationService.Get(id);
 
+            // Access level
+            var isAdministrator = WebSecurityWrapper.IsUserInRole(Common.Constants.RoleAdmin);
+            var isOrgAdmin = HasOrgAdminAccess(id);
+
+            // Volunteers
+            var volunteers = VolunteerService.GetVolunteersByOrganization(id).OrderBy(p => p.IsOrganizationAdmin).Reverse();
+
             // Resources
             var resources = AdminService.GetResourceCheckinsForOrganization(id);
             var resourceTypes = AdminService.GetResourceTypes();
@@ -207,6 +275,9 @@ namespace crisicheckinweb.Controllers
             {
                 OrganizationId = id,
                 Organization = org,
+                IsAdministrator = isAdministrator,
+                IsOrgAdmin = isOrgAdmin,
+                Volunteers = volunteers,
                 OrganizationResources = resources,
                 Disasters = disasters,
                 ResourceTypes = resourceTypes,
@@ -246,7 +317,7 @@ namespace crisicheckinweb.Controllers
                                             from rd in resourcesByDisaster
                                             select rd.Key)
                                     )
-                                            select disasterId;
+                                             select disasterId;
 
             // Result
             var disasters = from disasterId in allDisasterIdsWithCheckins
@@ -269,13 +340,69 @@ namespace crisicheckinweb.Controllers
             return disasters;
         }
 
-        void ConfirmMembership(Person person, int organizationId)
+        Person GetCurrentVolunteer()
         {
-            if ((person == null) || (person.OrganizationId != organizationId))
-            {
-                throw new ArgumentException(
-                    "The logged in user is either the administrator or is not a member of the specified organisation."); // Should be verifying access to entire page?
-            }
+            return VolunteerService.FindByUserId(WebSecurityWrapper.CurrentUserId);
+        }
+
+        /// <summary>
+        /// Returns true if the user is an administrator user or is associated with this organization.
+        /// </summary>
+        /// <param name="organizationId"></param>
+        /// <returns></returns>
+        bool HasAccess(int organizationId)
+        {
+            if (WebSecurityWrapper.IsUserInRole(Common.Constants.RoleAdmin))
+                return true;
+
+            var person = GetCurrentVolunteer();
+            if (person.OrganizationId == organizationId)
+                return true;
+
+            return false;
+        }
+
+        /// <summary>
+        /// Returns true if the user is an administrator or an organization admin.
+        /// </summary>
+        bool HasAdminAccess(int organizationId)
+        {
+            if (WebSecurityWrapper.IsUserInRole(Common.Constants.RoleAdmin))
+                return true;
+
+            return HasOrgAdminAccess(organizationId);
+        }
+
+        /// <summary>
+        /// Returns true only if the user is an organization admin.
+        /// </summary>
+        bool HasOrgAdminAccess(int organizationId)
+        {
+            Person currentPerson = GetCurrentVolunteer();
+            if (currentPerson == null)
+                return false;
+            if ((currentPerson.OrganizationId == organizationId) && currentPerson.IsOrganizationAdmin)
+                return true;
+
+            return false;
+        }
+
+        void ConfirmAccess(int organizationId)
+        {
+            if (!HasAccess(organizationId))
+                throw new InvalidOperationException("You do not have access to this organization");
+        }
+
+        void ConfirmAdminAccess(int organizationId)
+        {
+            if (!HasAdminAccess(organizationId))
+                throw new InvalidOperationException("You do not have administrative privelages for this organization.");
+        }
+
+        void ConfirmOrgAdminAccess(int organizationId)
+        {
+            if (!HasOrgAdminAccess(organizationId))
+                throw new InvalidOperationException("You are not an administrator for this organization.");
         }
     }
 }

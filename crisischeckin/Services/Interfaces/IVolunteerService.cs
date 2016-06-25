@@ -25,5 +25,9 @@ namespace Services.Interfaces
         User FindUserByEmail(string email);
 
         void UpdateCommitment(Commitment commitment);
+
+        IEnumerable<Person> GetVolunteersByOrganization(int organizationId);
+        void PromoteVolunteerToOrganizationAdmin(int organizationId, int personId);
+        void DemoteVolunteerFromOrganizationAdmin(int organizationId, int personId);
     }
 }

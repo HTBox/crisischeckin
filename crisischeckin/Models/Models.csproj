@@ -70,6 +70,10 @@
     <Compile Include="Migrations\201606081924202_AddRequests.Designer.cs">
       <DependentUpon>201606081924202_AddRequests.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201606231411512_AddPersonIsOrganizationAdmin.cs" />
+    <Compile Include="Migrations\201606231411512_AddPersonIsOrganizationAdmin.Designer.cs">
+      <DependentUpon>201606231411512_AddPersonIsOrganizationAdmin.cs</DependentUpon>
+    </Compile>
     <Compile Include="Request.cs" />
     <Compile Include="Disaster.cs" />
     <Compile Include="DisasterCluster.cs" />
@@ -219,6 +223,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201606081924202_AddRequests.resx">
       <DependentUpon>201606081924202_AddRequests.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201606231411512_AddPersonIsOrganizationAdmin.resx">
+      <DependentUpon>201606231411512_AddPersonIsOrganizationAdmin.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

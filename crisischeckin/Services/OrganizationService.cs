@@ -29,9 +29,9 @@ namespace Services
             return _dataService.Organizations.Where(x => x.Verified).OrderBy(o => o.OrganizationName);
         }
 
-        public Organization AddOrganization(Organization newOrganization)
+        public Organization AddOrganization(Organization newOrganization, int registeringPersonId)
         {
-            return _dataService.AddOrganization(newOrganization);
+            return _dataService.AddOrganization(newOrganization, registeringPersonId);
         }
 
         public void VerifyOrganization(int organizationId)
