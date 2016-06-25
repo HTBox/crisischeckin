@@ -9,7 +9,7 @@ namespace Services.Interfaces
     {
         Organization Get(int id);
         IEnumerable<Organization> GetActiveList();
-        Organization AddOrganization(Organization newOrganization);
+        Organization AddOrganization(Organization newOrganization, int registeringPersonId);
         void VerifyOrganization(int organizationId);
     }
 }

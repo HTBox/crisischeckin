@@ -152,6 +152,59 @@
 }
 
 
+<h3>Volunteers</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Admin</th>
+            @if (Model.IsAdmin)
+            {
+                <th></th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var volunteer in Model.Volunteers)
+        {
+            <tr>
+                <td>@volunteer.FullName</td>
+                <td>@volunteer.Email</td>
+                <td>@volunteer.PhoneNumber</td>
+                <td>@(volunteer.IsOrganizationAdmin ? "Yes" : "")</td>
+                @if (Model.IsAdmin)
+                {
+                    <td>
+                        @if (!volunteer.IsOrganizationAdmin)
+                        {
+                            using (Html.BeginForm("PromoteToAdmin", "Organization", FormMethod.Post, new { @class = "navbar-form" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                @Html.HiddenFor(m => m.OrganizationId, new { @Value = Model.OrganizationId })
+                                @Html.HiddenFor(m => m.PromoteToAdminPersonId, new { @Value = volunteer.Id })
+                                <button class="btn btn-danger btn-xs" type="submit"><i class="glyphicon glyphicon-remove"></i> Elevate admin</button>
+                            }
+                        }
+                        else
+                        {
+                            using (Html.BeginForm("DemoteFromAdmin", "Organization", FormMethod.Post, new { @class = "navbar-form" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                @Html.HiddenFor(m => m.OrganizationId, new { @Value = Model.OrganizationId })
+                                @Html.HiddenFor(m => m.DemoteFromAdminPersonId, new { @Value = volunteer.Id })
+                                <button class="btn btn-danger btn-xs" type="submit"><i class="glyphicon glyphicon-remove"></i> Remove admin</button>
+                            }
+                        }
+                    </td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+
+
 
 @section scripts
 {

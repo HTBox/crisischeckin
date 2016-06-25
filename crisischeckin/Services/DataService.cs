@@ -99,11 +99,49 @@ namespace Services
             get { return context.ResourceTypes; }
         }
 
-        public Organization AddOrganization(Organization newOrganization)
+        public Organization AddOrganization(Organization newOrganization, int registeringPersonId)
         {
+            var person = context.Persons.Find(registeringPersonId);
+            if (person.OrganizationId.HasValue)
+                throw new InvalidOperationException("A person cannot belong to more than one organization.");
+
             var result = context.Organizations.Add(newOrganization);
+
+            person.OrganizationId = result.OrganizationId;
+            person.IsOrganizationAdmin = true;
+
             context.SaveChanges();
             return result;
+        }
+
+        public void PromoteVolunteerToOrganizationAdmin(int organizationId, int personId)
+        {
+            var person = context.Persons.FirstOrDefault(p => p.Id == personId);
+
+            if (person == null)
+                throw new PersonNotFoundException();
+            if (person.OrganizationId != organizationId)
+                throw new InvalidOperationException("The specified person is not associated with the specified organization.");
+            if (person.IsOrganizationAdmin)
+                throw new InvalidOperationException("The specified person is already an organization admin.");
+
+            person.IsOrganizationAdmin = true;
+            context.SaveChanges();
+        }
+
+        public void DemoteVolunteerFromOrganizationAdmin(int organizationId, int personId)
+        {
+            var person = context.Persons.FirstOrDefault(p => p.Id == personId);
+
+            if (person == null)
+                throw new PersonNotFoundException();
+            if (person.OrganizationId != organizationId)
+                throw new InvalidOperationException("The specified person is not associated with the specified organization.");
+            if (!person.IsOrganizationAdmin)
+                throw new InvalidOperationException("The specified person is not already an organization admin.");
+
+            person.IsOrganizationAdmin = false;
+            context.SaveChanges();
         }
 
         public void VerifyOrganization(int organizationId)

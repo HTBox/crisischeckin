@@ -25,8 +25,6 @@ namespace crisicheckinweb.ViewModels
         public Address Address { get; set; }
 
         public OrganizationTypeEnum Type { get; set; }
-    
-        public int UserIdRegisteringOrganization { get; set; }
 
         public List<SelectListItem> TypeSelectionList { get; set; }
 

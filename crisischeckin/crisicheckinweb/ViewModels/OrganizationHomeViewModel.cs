@@ -13,9 +13,22 @@ namespace crisicheckinweb.ViewModels
     {
         public int OrganizationId { get; set; }
         public Organization Organization { get; set; }
+
+        public IEnumerable<Person> Volunteers { get; set; }
+
         public IEnumerable<Resource> OrganizationResources { get; set; }
 
         public IEnumerable<OrganizationDisasterViewModel> Disasters { get; set; }
+
+        public bool IsAdministrator { get; set; }
+        public bool IsOrgAdmin { get; set; }
+        public bool IsAdmin
+        {
+            get
+            {
+                return IsAdministrator || IsOrgAdmin;
+            }
+        }
 
 
         public IEnumerable<Disaster> AllDisasters { get; set; }
@@ -48,6 +61,10 @@ namespace crisicheckinweb.ViewModels
 
 
         public int RemoveResourceId { get; set; }
+
+
+        public int PromoteToAdminPersonId { get; set; }
+        public int DemoteFromAdminPersonId { get; set; }
 
 
         public IEnumerable<ResourceType> ResourceTypes { get; set; }
