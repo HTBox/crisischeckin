@@ -27,7 +27,10 @@ namespace Services.Interfaces
         IQueryable<Contact> Contacts { get; }
         IQueryable<ResourceType> ResourceTypes { get; }
 
-        Organization AddOrganization(Organization newOrganization);
+        Organization AddOrganization(Organization newOrganization, int registeringPersonId);
+        void PromoteVolunteerToOrganizationAdmin(int organizationId, int personId);
+        void DemoteVolunteerFromOrganizationAdmin(int organizationId, int personId);
+
 
         Task AddResourceAsync(Resource newResource);
         Task RemoveResourceByIdAsync(int id);

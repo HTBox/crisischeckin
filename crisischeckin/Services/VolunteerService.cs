@@ -169,5 +169,21 @@ namespace Services
 
             return userId.HasValue ? ourService.Users.FirstOrDefault(u => u.Id == userId) : null;
         }
+
+        public IEnumerable<Person> GetVolunteersByOrganization(int organizationId)
+        {
+            var result = ourService.Persons.Where(person => person.OrganizationId == organizationId);
+            return result.ToList();
+        }
+
+        public void PromoteVolunteerToOrganizationAdmin(int organizationId, int personId)
+        {
+            ourService.PromoteVolunteerToOrganizationAdmin(organizationId, personId);
+        }
+
+        public void DemoteVolunteerFromOrganizationAdmin(int organizationId, int personId)
+        {
+            ourService.DemoteVolunteerFromOrganizationAdmin(organizationId, personId);
+        }
     }
 }
