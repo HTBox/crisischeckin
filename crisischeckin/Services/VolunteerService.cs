@@ -45,6 +45,11 @@ namespace Services
             });
         }
 
+        public IEnumerable<Person> GetList()
+        {
+            return ourService.Persons.ToList();
+        }
+
         public Person UpdateDetails(Person updatedPerson)
         {
             if (updatedPerson == null)
@@ -174,6 +179,34 @@ namespace Services
         {
             var result = ourService.Persons.Where(person => person.OrganizationId == organizationId);
             return result.ToList();
+        }
+
+        public void AddVolunteerToOrganization(int organizationId, int personId)
+        {
+            var person = ourService.Persons.FirstOrDefault(p => p.Id == personId);
+            if (person == null)
+                throw new PersonNotFoundException();
+            if (person.OrganizationId.HasValue)
+            {
+                if (person.OrganizationId == organizationId)
+                    throw new InvalidOperationException("The person is already associated with this Organization.");
+                else
+                    throw new InvalidOperationException("The person is associated with another Organization.");
+            }
+            person.OrganizationId = organizationId;
+            ourService.UpdatePerson(person);
+        }
+
+        public void RemoveVolunteerFromOrganization(int organizationId, int personId)
+        {
+            var person = ourService.Persons.FirstOrDefault(p => p.Id == personId);
+            if (person == null)
+                throw new PersonNotFoundException();
+            if (!person.OrganizationId.HasValue || (person.OrganizationId != organizationId))
+                throw new InvalidOperationException("The person is not currently associated with this Organization.");
+            person.OrganizationId = null;
+            person.IsOrganizationAdmin = false;
+            ourService.UpdatePerson(person);
         }
 
         public void PromoteVolunteerToOrganizationAdmin(int organizationId, int personId)

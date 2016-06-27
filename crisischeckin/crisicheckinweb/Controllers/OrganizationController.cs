@@ -192,6 +192,52 @@ namespace crisicheckinweb.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        public ActionResult AddVolunteer(OrganizationHomeViewModel model)
+        {
+            ModelState.RemoveErrorsExcept("OrganizationId,AddVolunteerId");
+            if (!ModelState.IsValid)
+                return View("Home", CreateHomeViewModel(model));
+
+            try
+            {
+                ConfirmAdminAccess(model.OrganizationId);
+                VolunteerService.AddVolunteerToOrganization(model.OrganizationId, model.AddVolunteerId);
+
+                return Redirect("Home/" + model.OrganizationId);
+            }
+            catch (InvalidOperationException ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+            }
+
+            return View("Home", CreateHomeViewModel(model.OrganizationId));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult RemoveVolunteer(OrganizationHomeViewModel model)
+        {
+            ModelState.RemoveErrorsExcept("OrganizationId,RemoveVolunteerId");
+            if (!ModelState.IsValid)
+                return View("Home", CreateHomeViewModel(model));
+
+            try
+            {
+                ConfirmAdminAccess(model.OrganizationId);
+                VolunteerService.RemoveVolunteerFromOrganization(model.OrganizationId, model.RemoveVolunteerId);
+
+                return Redirect("Home/" + model.OrganizationId);
+            }
+            catch (InvalidOperationException ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+            }
+
+            return View("Home", CreateHomeViewModel(model.OrganizationId));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult PromoteToAdmin(OrganizationHomeViewModel model)
         {
             ModelState.RemoveErrorsExcept("OrganizationId,PromoteToAdminPersonId");
@@ -264,8 +310,14 @@ namespace crisicheckinweb.Controllers
             // Commitments
             var commitments = VolunteerService.GetCommitmentsForOrganization(id, false);
 
-            // Disasters for lookup
+            // Lookup lists
             var allDisasters = DisasterService.GetActiveList();
+            var volunteersSelectList = VolunteerService.GetList().OrderBy(person => person.LastName).Select(person => new SelectListItem()
+            {
+                Value = person.Id.ToString(),
+                Text = $"{person.LastName}, {person.FirstName} - {person.Email}",
+                Selected = (person.Id == inputModel.AddVolunteerId)
+            });
 
             // Disaster info breakdown - get all disasters with any volunteer or resource checkin
             var disasters = GetDisasterInfos(allDisasters, resources, commitments);
@@ -281,7 +333,8 @@ namespace crisicheckinweb.Controllers
                 OrganizationResources = resources,
                 Disasters = disasters,
                 ResourceTypes = resourceTypes,
-                AllDisasters = allDisasters
+                AllDisasters = allDisasters,
+                VolunteersSelectList = volunteersSelectList
             };
 
             // Resources form fields

@@ -173,6 +173,7 @@ namespace Services
             result.Email = updatedPerson.Email;
             result.PhoneNumber = updatedPerson.PhoneNumber;
             result.OrganizationId = updatedPerson.OrganizationId;
+            result.IsOrganizationAdmin = updatedPerson.IsOrganizationAdmin;
 
             context.SaveChanges();
 

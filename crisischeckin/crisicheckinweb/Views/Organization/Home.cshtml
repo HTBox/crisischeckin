@@ -153,6 +153,7 @@
 
 
 <h3>Volunteers</h3>
+@Html.ValidationSummary()
 <table class="table">
     <thead>
         <tr>
@@ -162,6 +163,7 @@
             <th>Admin</th>
             @if (Model.IsAdmin)
             {
+                <th></th>
                 <th></th>
             }
         </tr>
@@ -173,9 +175,18 @@
                 <td>@volunteer.FullName</td>
                 <td>@volunteer.Email</td>
                 <td>@volunteer.PhoneNumber</td>
-                <td>@(volunteer.IsOrganizationAdmin ? "Yes" : "")</td>
+                <td>@(volunteer.IsOrganizationAdmin ? "Yes" : "No")</td>
                 @if (Model.IsAdmin)
                 {
+                    <td>
+                        @using (Html.BeginForm("RemoveVolunteer", "Organization", FormMethod.Post, new { @class = "navbar-form" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.HiddenFor(m => m.OrganizationId, new { @Value = Model.OrganizationId })
+                            @Html.HiddenFor(m => m.RemoveVolunteerId, new { @Value = volunteer.Id })
+                            <button class="btn btn-danger btn-xs" type="submit"><i class="glyphicon glyphicon-remove"></i> Remove</button>
+                        }
+                    </td>
                     <td>
                         @if (!volunteer.IsOrganizationAdmin)
                         {
@@ -203,6 +214,19 @@
         }
     </tbody>
 </table>
+
+@if (Model.IsAdmin)
+{
+    <h4>Add Volunteer to Organization</h4>
+    using (Html.BeginForm("AddVolunteer", "Organization", FormMethod.Post, new { @class = "navbar-form" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary()
+        @Html.HiddenFor(m => m.OrganizationId, new { @Value = Model.OrganizationId })
+        @Html.DropDownListFor(m => m.AddVolunteerId, Model.VolunteersSelectList, "-- Select Volunteer --", new { @class = "form-control", @id = "addvolunteerlist" })
+        <button class="btn btn-danger btn-xs" type="submit"><i class="glyphicon glyphicon-remove"></i> Add</button>
+    }
+}
 
 
 
