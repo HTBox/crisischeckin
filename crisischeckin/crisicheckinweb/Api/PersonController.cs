@@ -49,6 +49,7 @@ namespace crisicheckinweb.Api
             return DbContext.Requests.Where(c => c.AssigneeId == personId)
                 .Select(c => new RequestDto
                 {
+                    RequestId = c.RequestId,
                     CreatedDate = c.CreatedDate,
                     EndDate = c.EndDate,
                     Description = c.Description,

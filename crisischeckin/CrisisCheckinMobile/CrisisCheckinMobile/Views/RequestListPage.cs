@@ -53,6 +53,13 @@ namespace CrisisCheckinMobile.Views
             Content = _requestListView;
         }
 
+        protected override void OnChildRemoved(Element child)
+        {
+            var task = Init();
+            base.OnChildRemoved(child);
+        }
+
+
         private DataTemplate CreateRequestCell()
         {
             var cell = new DataTemplate(typeof (TextCell));

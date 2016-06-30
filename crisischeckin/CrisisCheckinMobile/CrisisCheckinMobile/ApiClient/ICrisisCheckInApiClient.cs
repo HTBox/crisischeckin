@@ -9,5 +9,6 @@ namespace CrisisCheckinMobile.ApiClient
         Task<IEnumerable<CommitmentDto>> GetCommitmentsList(int personId);
 
         Task<IEnumerable<RequestDto>> GetRequests(int personId);
+        Task CompleteRequest(int requestId);
     }
 }

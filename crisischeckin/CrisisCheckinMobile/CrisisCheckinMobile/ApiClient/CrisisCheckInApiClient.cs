@@ -24,6 +24,22 @@ namespace CrisisCheckinMobile.ApiClient
                 };
         }
 
+        public async Task CompleteRequest(int requestId)
+        {
+            var apiClient = RestService.For<ICrisisCheckInApi>(EndpointUrl);
+
+            var policy = Policy
+                .Handle<System.Net.WebException>()
+                .WaitAndRetryAsync(new[]
+                {
+                    TimeSpan.FromSeconds(1),
+                    TimeSpan.FromSeconds(2),
+                    TimeSpan.FromSeconds(3)
+                });
+
+            await policy.ExecuteAsync(() => apiClient.CompleteRequest(requestId));
+        }
+
         public async Task<IEnumerable<CommitmentDto>> GetCommitmentsList(int personId)
         {
             var apiClient = RestService.For<ICrisisCheckInApi>(EndpointUrl);

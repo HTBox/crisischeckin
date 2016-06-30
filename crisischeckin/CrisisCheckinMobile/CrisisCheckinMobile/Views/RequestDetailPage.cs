@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CrisisCheckinMobile.ApiClient;
+using CrisisCheckinMobile.CustomRenderers;
 using CrisisCheckinMobile.Models;
 using Xamarin.Forms;
 
@@ -49,15 +51,67 @@ namespace CrisisCheckinMobile.Views
                 TextColor = Color.White
             };
 
-            Content = new ScrollView
+            var statusLabel = new Label
             {
-                Content = new StackLayout
-                {
-                    Spacing = 10,
-                    Padding =  10,
-                    Children = { descriptionLabel, locationLabel, createdLabel, endLabel }
-                }
+                Text = $"Completed: {selectedRequest.Completed}",
+                FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
+                TextColor = Color.White
             };
+
+
+
+            if (selectedRequest.Completed == false)
+            {
+                var completeButton = BuildCompleteButton();
+                await GetCompleteButtonHandler(selectedRequest, completeButton);
+
+                Content = new ScrollView
+                {
+                    Content = new StackLayout
+                    {
+                        Spacing = 10,
+                        Padding = 10,
+                        Children = {descriptionLabel, locationLabel, createdLabel, endLabel, statusLabel, completeButton}
+                    }
+                };
+            }
+            else
+            {
+                Content = new ScrollView
+                {
+                    Content = new StackLayout
+                    {
+                        Spacing = 10,
+                        Padding = 10,
+                        Children = { descriptionLabel, locationLabel, createdLabel, endLabel, statusLabel }
+                    }
+                };
+            }
+        }
+
+        private async Task GetCompleteButtonHandler(RequestDto selectedRequest, PaddedButton completeButton)
+        {
+            completeButton.Clicked += async (o, e) =>
+            {
+                ICrisisCheckInApiClient apiClient = new CrisisCheckInApiClient();
+                await apiClient.CompleteRequest(selectedRequest.RequestId);
+                await Navigation.PopAsync();
+            };
+        }
+
+        private PaddedButton BuildCompleteButton()
+        {
+            var completeButton = new PaddedButton
+            {
+                Text = "Complete",
+                TextColor = Color.White,
+                HorizontalOptions = LayoutOptions.FillAndExpand,
+                BorderWidth = 1.0,
+                BorderColor = Color.White,
+                BackgroundColor = Constants.HtBoxRed,
+                Margin = new Thickness(0, 30, 0, 0)
+            };
+            return completeButton;
         }
     }
 }
