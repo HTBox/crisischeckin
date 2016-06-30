@@ -57,17 +57,22 @@ namespace CrisisCheckinMobile
 
         public MyRequests()
         {
-            InitializeComponent();
-            BindingContext = this;
-            var task = Init();
         }
+
         private async Task Init()
         {
             ICrisisCheckInApiClient apiClient = new CrisisCheckInApiClient();
-            var dtos = await apiClient.GetRequests(4);  //TODO: wire up to Auth0 so we don't have to pass person ID
+            var dtos = await apiClient.GetRequests(2);  //TODO: wire up to Auth0 so we don't have to pass person ID
             listRequests = new ObservableCollection<RequestDto>(dtos);
             listViewRequests.ItemsSource = listRequests;
             Debug.WriteLine(dtos.ToString());
+        }
+
+        protected override void OnAppearing()
+        {
+            InitializeComponent();
+            BindingContext = this;
+            var task = Init();
         }
     }
 }
