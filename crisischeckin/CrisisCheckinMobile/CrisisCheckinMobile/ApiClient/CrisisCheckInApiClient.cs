@@ -12,7 +12,7 @@ namespace CrisisCheckinMobile.ApiClient
 {
     public class CrisisCheckInApiClient : ICrisisCheckInApiClient
     {
-        private const string EndpointUrl = "http://localhost:2077/api"; // TODO: Need System.Configuration to put this in app.config
+        private const string EndpointUrl = "http://192.168.1.81:2077/api"; // TODO: Need System.Configuration to put this in app.config
 
         public CrisisCheckInApiClient()
         {

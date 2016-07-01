@@ -34,9 +34,6 @@ namespace CrisisCheckinMobile.Views
                 Navigation.PushAsync(new RequestDetailPage(selectedItem));
             };
 
-            ICrisisCheckInApiClient apiClient = new CrisisCheckInApiClient();
-            var requests = await apiClient.GetRequests(2);
-
             var cell = CreateRequestCell();
 
             Padding = new Thickness(0, Device.OnPlatform(20, 0, 0), 0, 0);
@@ -45,7 +42,6 @@ namespace CrisisCheckinMobile.Views
 
             _requestListView = new ListView()
             {
-                ItemsSource = requests,
                 ItemTemplate = cell,
                 BackgroundColor = Constants.HtBoxDarkBrown
             };
@@ -53,10 +49,17 @@ namespace CrisisCheckinMobile.Views
             Content = _requestListView;
         }
 
-        protected override void OnChildRemoved(Element child)
+        protected override void OnAppearing()
         {
-            var task = Init();
-            base.OnChildRemoved(child);
+            var t = GetRequests();
+        }
+
+        private async Task GetRequests()
+        {
+            ICrisisCheckInApiClient apiClient = new CrisisCheckInApiClient();
+            var requests = await apiClient.GetRequests(2);
+
+            _requestListView.ItemsSource = requests;
         }
 
 
