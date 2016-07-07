@@ -9,6 +9,8 @@ namespace Services.Interfaces
     {
         Person Register(string firstName, string lastName, int? OrganizationId, string email, string phoneNumber, int userId);
 
+        IEnumerable<Person> GetList();
+
         Person UpdateDetails(Person person);
 
         IQueryable<Commitment> RetrieveCommitments(int personId, bool showInactive);
@@ -25,5 +27,11 @@ namespace Services.Interfaces
         User FindUserByEmail(string email);
 
         void UpdateCommitment(Commitment commitment);
+
+        IEnumerable<Person> GetVolunteersByOrganization(int organizationId);
+        void AddVolunteerToOrganization(int organizationId, int personId);
+        void RemoveVolunteerFromOrganization(int organizationId, int personId);
+        void PromoteVolunteerToOrganizationAdmin(int organizationId, int personId);
+        void DemoteVolunteerFromOrganizationAdmin(int organizationId, int personId);
     }
 }
