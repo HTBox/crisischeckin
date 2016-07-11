@@ -173,7 +173,17 @@ namespace CrisisCheckinMobile.ViewModels
          
         }
 
-
+        public ICommand Logout
+        {
+            get
+            {
+                return new Command(async () =>
+                {
+                    App.IsUserLoggedIn = false;
+                    await navigation.PushModalAsync(new LoginPage(), true);
+                });
+            }
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

@@ -1,4 +1,5 @@
 ﻿using CrisisCheckinMobile.Models;
+using CrisisCheckinMobile.Views;
 using Xamarin.Forms;
 
 namespace CrisisCheckinMobile
@@ -6,6 +7,8 @@ namespace CrisisCheckinMobile
     public class App : Application
     {
         public static string AuthToken { get; set; }
+        public static bool IsUserLoggedIn { get; internal set; }
+
         //public static Commitment Commitment { get; set; }
         public static string BackIcon = "";
         public static string ReportTroubleIcon = "";
@@ -17,30 +20,31 @@ namespace CrisisCheckinMobile
         }
         public static Page GetMainPage()
         {
-            NavigationPage mainPage;
-            if (string.IsNullOrWhiteSpace(AuthToken))
-            {
-                mainPage = new NavigationPage(new LoginPage())
-                {
-                    BarBackgroundColor = Constants.HtBoxRed,
-                    BarTextColor = Color.White
-                };
-            }
-            else
-            {
-                mainPage = new NavigationPage(new DisasterListPage())
-                {
-                    BarBackgroundColor = Constants.HtBoxRed,
-                    BarTextColor = Color.White
-                };
-            }
-
-            //if (Commitment != null)
+            return new MainTabbedView();
+            //NavigationPage mainPage;
+            //if (string.IsNullOrWhiteSpace(AuthToken))
             //{
-            //    mainPage.Navigation.PushAsync(new CommitmentPage());
+            //    mainPage = new NavigationPage(new LoginPage())
+            //    {
+            //        BarBackgroundColor = Constants.HtBoxRed,
+            //        BarTextColor = Color.White
+            //    };
+            //}
+            //else
+            //{
+            //    mainPage = new NavigationPage(new DisasterListPage())
+            //    {
+            //        BarBackgroundColor = Constants.HtBoxRed,
+            //        BarTextColor = Color.White
+            //    };
             //}
 
-            return mainPage;
+            ////if (Commitment != null)
+            ////{
+            ////    mainPage.Navigation.PushAsync(new CommitmentPage());
+            ////}
+
+            //return mainPage;
         }
     }
 }
