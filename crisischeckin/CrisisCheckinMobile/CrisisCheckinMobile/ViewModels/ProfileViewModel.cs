@@ -32,18 +32,6 @@ namespace CrisisCheckinMobile.ViewModels
             }
         }
 
-        public ICommand GoToMyRequests
-        {
-            get
-            {
-                return new Command(async () =>
-                {
-                    //TODO 
-                    await navigation.PushAsync(new RequestListPage());
-                });
-            }
-        }
-
         public ICommand GoToMyInfo
         {
             get

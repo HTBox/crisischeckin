@@ -15,13 +15,6 @@
         
         </Button>
 
-        <Button Text="My Requests" 
-                Command="{Binding GoToMyRequests}"
-                HorizontalOptions="FillAndExpand"
-                VerticalOptions="Start"
-                 BorderWidth="1"
-                BorderColor="Black"/>
-
           <Button Text="My Info"
               Command="{Binding GoToMyInfo}"
                HorizontalOptions="FillAndExpand"
