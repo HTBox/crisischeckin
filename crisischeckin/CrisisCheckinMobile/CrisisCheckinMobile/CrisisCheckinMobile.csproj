@@ -54,9 +54,6 @@
     <Compile Include="Models\Person.cs" />
     <Compile Include="Models\RequestDto.cs" />
     <Compile Include="Models\User.cs" />
-    <Compile Include="MyRequests.xaml.cs">
-      <DependentUpon>MyRequests.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResourceListPage.cs" />
     <Compile Include="ResourceViewPage.cs" />
@@ -73,6 +70,8 @@
     <Compile Include="Views\ProfileView.xaml.cs">
       <DependentUpon>ProfileView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\RequestDetailPage.cs" />
+    <Compile Include="Views\RequestListPage.cs" />
     <Compile Include="Views\TemporaryView.xaml.cs">
       <DependentUpon>TemporaryView.xaml</DependentUpon>
     </Compile>
@@ -196,12 +195,6 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <ItemGroup>
-    <EmbeddedResource Include="MyRequests.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\RegistrationPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>

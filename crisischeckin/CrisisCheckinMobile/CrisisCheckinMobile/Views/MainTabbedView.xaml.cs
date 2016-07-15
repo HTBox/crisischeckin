@@ -32,7 +32,7 @@ namespace CrisisCheckinMobile.Views
                 BarTextColor = Color.White
             });
 
-            Children.Add(new NavigationPage(new MyRequests()
+            Children.Add(new NavigationPage(new RequestListPage()
             {
                 Title = "Requests"
             })
