@@ -366,6 +366,9 @@ namespace crisicheckinweb.Controllers
                     ModelState.AddModelError("Email", "This Email Address is already in use!");
                 }
             }
+            // rehydrate organizations if necessary.
+            model.Organizations = model.Organizations ?? _organizationService.GetActiveList();
+
             return View("ChangeContactInfo", DetermineLayout(), model);
         }
 
