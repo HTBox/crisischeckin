@@ -11,7 +11,7 @@ namespace crisicheckinweb.ViewModels
     {
         public Request Request { get; set; }
 
-        [DisplayName("Possible Assigniees")]
-        public IEnumerable<Person> PoteintialAssigniees { get; set; } 
+        [DisplayName("Possible Assignees")]
+        public IEnumerable<Person> PotentialAssignees { get; set; } 
     }
 }
