@@ -20,6 +20,7 @@ namespace crisicheckinweb.ViewModels
 
         [Required]
         [MaxLength(50)]
+        [Display(Name ="Organization Name")]
         public string OrganizationName { get; set; }
 
         public Address Address { get; set; }
