@@ -103,9 +103,9 @@ namespace crisicheckinweb.Controllers
             return View();
         }
 
-        public ActionResult VerifyOrganization(int id)
+        public ActionResult VerifyOrganization(int organizationId)
         {
-            OrganizationService.VerifyOrganization(id);
+            OrganizationService.VerifyOrganization(organizationId);
 
             return View("OrganizationVerified");
         }
