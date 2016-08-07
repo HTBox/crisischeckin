@@ -21,8 +21,9 @@ namespace crisicheckinweb.ViewModels
 
         public IEnumerable<Organization> Organizations { get; set; }
 
+		[Required]
         [Display(Name = "Organization")]
-        public int? SelectedOrganizationId { get; set; }
+        public int SelectedOrganizationId { get; set; }
 
         [Required]
         [Display(Name = "Phone Number")]
