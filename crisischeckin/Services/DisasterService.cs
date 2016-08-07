@@ -34,6 +34,8 @@ namespace Services
             {
                 Allocator = organization,
                 Person = person,
+                PersonId = person.Id,
+                EntryMade = DateTime.Now,
                 DisasterId = disasterId,
                 Description = description,
                 Qty = qty,
