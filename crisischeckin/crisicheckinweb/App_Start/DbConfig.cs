@@ -118,7 +118,29 @@ namespace crisicheckinweb
                                     Disaster = new Disaster { Name = "Test Disaster", IsActive = true },
                                     VolunteerType = vtype, Cluster = firstCluster
                                 }
-                            }
+                            },
+						OrganizationId = 1,
+ 
+                        Organization = new Organization
+                            {
+								OrganizationName = "Humanitarian Toolbox",
+								OrganizationId = 1,
+								Type = OrganizationTypeEnum.NonProfit,
+								Location = new Address
+								{
+									AddressLine1 = "HT AddressLine 1",
+									AddressLine2 = "HT Address Line 2",
+									AddressLine3 = "HT Address Line 3",
+									BuildingName = "HT Building Name",
+									City = "HTCity",
+									Country = "USA",
+									County = "HT County",
+									PostalCode = "12345",
+									State = "HT State"
+								},
+								Verified = true
+							}
+
                     });
                 }
             }
