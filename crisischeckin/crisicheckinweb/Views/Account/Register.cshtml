@@ -1,4 +1,6 @@
-﻿@model crisicheckinweb.ViewModels.RegisterModel
+﻿@using System.Web.Optimization
+
+@model crisicheckinweb.ViewModels.RegisterModel
 
 @{
   ViewBag.Title = "Create new account...";
@@ -63,5 +65,6 @@
 
 @section scripts
 {
+    @Scripts.Render("~/bundles/jquery-validate")
     <script src="~/scripts/App/accountRegister.js"></script>
 }

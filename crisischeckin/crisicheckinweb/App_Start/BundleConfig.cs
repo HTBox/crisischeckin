@@ -21,6 +21,9 @@ namespace crisicheckinweb
                 "~/Scripts/jquery-ui-1.10.4.js",
                 "~/Scripts/bootstrap.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/jquery-validate").Include(
+                "~/Scripts/jquery.validate.min.js",
+                "~/Scripts/jquery.validate.unobtrusive.min.js"));
         }
     }
 }
