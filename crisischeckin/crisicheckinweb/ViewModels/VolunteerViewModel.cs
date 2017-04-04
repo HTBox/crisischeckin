@@ -33,6 +33,8 @@ namespace crisicheckinweb.ViewModels
         public DateTime ResourceStartDate { get; set; }
         [DisplayName("End Date")]
         public DateTime ResourceEndDate { get; set; }
+
+        [Required]
         [DisplayName("Description")]
         public string Description { get; set; }
         [DisplayName("Quantity")]
