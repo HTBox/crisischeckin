@@ -139,8 +139,8 @@
         <tbody>
             <tr>
                 <td>@Html.DropDownListFor(m => m.ResourceDisasterId, new SelectList(Model.AllDisasters, "Id", "Name", Model.ResourceDisasterId), "-- Choose One --", new { @class = "form-control", @id = "disasterList" })</td>
-                <td>@Html.TextBoxFor(m => m.ResourceDescription)</td>
-                <td>@Html.TextBoxFor(m => m.ResourceQuantity)</td>
+                <td>@Html.TextBoxFor(m => m.ResourceDescription, new { @class = "form-control" })</td>
+                <td>@Html.TextBoxFor(m => m.ResourceQuantity, new { @class = "form-control" })</td>
                 <td>@Html.DropDownListFor(m => m.ResourceTypeId, new SelectList(Model.ResourceTypes, "ResourceTypeId", "TypeName", Model.ResourceTypeId), "-- Choose One --", new { @class = "form-control", @id = "resourcetypelist" })</td>
                 <td>@Html.TextBoxFor(m => m.ResourceStartDate, new { id = "dp_resourceStartDate", @class = "form-control" })</td>
                 <td>@Html.TextBoxFor(m => m.ResourceEndDate, new { id = "dp_resourceEndDate", @class = "form-control" })</td>
