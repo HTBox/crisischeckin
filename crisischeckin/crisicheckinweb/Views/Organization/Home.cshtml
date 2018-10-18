@@ -139,11 +139,25 @@
         <tbody>
             <tr>
                 <td>@Html.DropDownListFor(m => m.ResourceDisasterId, new SelectList(Model.AllDisasters, "Id", "Name", Model.ResourceDisasterId), "-- Choose One --", new { @class = "form-control", @id = "disasterList" })</td>
-                <td>@Html.TextBoxFor(m => m.ResourceDescription)</td>
-                <td>@Html.TextBoxFor(m => m.ResourceQuantity)</td>
+                <td>@Html.TextBoxFor(m => m.ResourceDescription, new { @class = "form-control" })</td>
+                <td>@Html.TextBoxFor(m => m.ResourceQuantity, new { @class = "form-control numeric-only" })</td>
                 <td>@Html.DropDownListFor(m => m.ResourceTypeId, new SelectList(Model.ResourceTypes, "ResourceTypeId", "TypeName", Model.ResourceTypeId), "-- Choose One --", new { @class = "form-control", @id = "resourcetypelist" })</td>
-                <td>@Html.TextBoxFor(m => m.ResourceStartDate, new { id = "dp_resourceStartDate", @class = "form-control" })</td>
-                <td>@Html.TextBoxFor(m => m.ResourceEndDate, new { id = "dp_resourceEndDate", @class = "form-control" })</td>
+                <td>
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <i class="glyphicon glyphicon-calendar"></i>
+                        </span>
+                        @Html.TextBoxFor(m => m.ResourceStartDate, new { id = "dp_resourceStartDate", @class = "form-control"})
+                    </div>
+                </td>
+                <td>
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <i class="glyphicon glyphicon-calendar"></i>
+                        </span>
+                        @Html.TextBoxFor(m => m.ResourceEndDate, new { id = "dp_resourceEndDate", @class = "form-control" })
+                    </div>
+                </td>
                 <td>@Html.TextBoxFor(m => m.ResourceLocation, new { @class = "form-control" })</td>
                 <td><input class="btn btn-black" id="GoButton" type="submit" value="Checkin" /></td>
             </tr>
@@ -195,7 +209,7 @@
                                 @Html.AntiForgeryToken()
                                 @Html.HiddenFor(m => m.OrganizationId, new { @Value = Model.OrganizationId })
                                 @Html.HiddenFor(m => m.PromoteToAdminPersonId, new { @Value = volunteer.Id })
-                                <button class="btn btn-danger btn-xs" type="submit"><i class="glyphicon glyphicon-remove"></i> Elevate admin</button>
+                                <button class="btn btn-black btn-xs" type="submit"><i class="glyphicon glyphicon-arrow-up"></i> Elevate admin</button>
                             }
                         }
                         else
@@ -224,7 +238,7 @@
         @Html.ValidationSummary()
         @Html.HiddenFor(m => m.OrganizationId, new { @Value = Model.OrganizationId })
         @Html.DropDownListFor(m => m.AddVolunteerId, Model.VolunteersSelectList, "-- Select Volunteer --", new { @class = "form-control", @id = "addvolunteerlist" })
-        <button class="btn btn-danger btn-xs" type="submit"><i class="glyphicon glyphicon-remove"></i> Add</button>
+        <button class="btn btn-black btn-sm" type="submit"><i class="glyphicon glyphicon-plus"></i> Add</button>
     }
 }
 
