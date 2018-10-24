@@ -93,8 +93,8 @@ namespace crisicheckinweb.Controllers
                     string.Format(
                         @"<p>Click on the following link to verify the new organization : <a href='{0}'>{0}</a> </p>",
                         organizationVerificationLink);
-                var message = new Message("CrisisCheckin - Verify your organization", body);
-                MessageService.SendMessage(message, person, "CrisisCheckin");
+                var message = new Message("Crisis Check-In - Verify your organization", body);
+                MessageService.SendMessage(message, person, "Crisis Check-In");
 
             });
 

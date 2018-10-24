@@ -200,7 +200,7 @@ namespace crisicheckinweb.Controllers
                     availableActions.Add(new AvailableAction
                     {
                         ActionName = "Checkin",
-                        ButtonText = "Check-in",
+                        ButtonText = "Check-In",
                         Description = " Start helping now!",
                         ButtonId = "check-in-button"
                     });

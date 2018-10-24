@@ -138,7 +138,7 @@ namespace crisicheckinweb.Controllers
                             var accountActivationLink = Url.Action("ConfirmAccount", "Account", routeValues, Request.Url.Scheme);
 
                             var body = String.Format(@"<p>Click on the following link to activate your account: <a href='{0}'>{0}</a></p>", accountActivationLink);
-                            var message = new Message("CrisisCheckin - Activate your account", body);
+                            var message = new Message("Crisis Check-In - Activate your account", body);
 
                             _messageService.SendMessage(message, volunteer);
                         }
@@ -225,7 +225,7 @@ namespace crisicheckinweb.Controllers
                         var passwordResetLink = Url.Action("ResetPassword", "Account", routeValues, Request.Url.Scheme);
 
                         var body = String.Format(@"<p>Click on the following link to reset your password: <a href='{0}'>{0}</a></p>", passwordResetLink);
-                        var message = new Message("CrisisCheckin - Password Reset", body);
+                        var message = new Message("Crisis Check-In - Password Reset", body);
 
                         _messageService.SendMessage(message, volunteer);
                     }

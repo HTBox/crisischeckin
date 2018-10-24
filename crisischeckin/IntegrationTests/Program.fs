@@ -49,7 +49,7 @@ resize (800, 600)
 
 "The user can signin for the disaster" &&& fun _ -> 
     Actions.Login "TestUser" "test"
-    click "Check-in"
+    click "Check-In"
     "span" *= "Thank you for your help today!"
     
     
